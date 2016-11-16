@@ -28,7 +28,9 @@ add_filter( 'invite_anyone_send_friend_requests_on_acceptance', '__return_false'
  * Buddypress Group Documents
  * See also: mu-plugins/openlab-group-documents-privacy.php
  */
-require_once( STYLESHEETPATH . '/lib/plugin-mods/files-funcs.php' );
+if ( defined( 'BP_GROUP_DOCUMENTS_VERSION' ) ) {
+	require_once( STYLESHEETPATH . '/lib/plugin-mods/files-funcs.php' );
+}
 
 /**
  * Plugin: BuddyPress Docs
