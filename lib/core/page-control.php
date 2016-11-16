@@ -6,11 +6,12 @@
 
 /**
  * Create a custom page
+ *
  * @param type $slug
  * @param type $title
  * @return type
  */
-function openlab_custom_page( $slug, $title, $parent_obj = NULL ) {
+function openlab_custom_page( $slug, $title, $parent_obj = null ) {
 
 	$post_id = -1;
 	$author_id = 1;
@@ -30,7 +31,7 @@ function openlab_custom_page( $slug, $title, $parent_obj = NULL ) {
 		$check_path = implode( '/', $ancestor_path ) . '/' . $slug;
 	}
 
-	if ( NULL === get_page_by_path($check_path )) {
+	if ( null === get_page_by_path( $check_path ) ) {
 		$post_id = wp_insert_post(
 			array(
 				'comment_status' => 'closed',
@@ -55,7 +56,7 @@ function openlab_custom_page( $slug, $title, $parent_obj = NULL ) {
  */
 function openlab_custom_pages() {
 	$about_page_obj = get_page_by_path( 'about' );
-	openlab_custom_page( 'calendar', 'OpenLab Calendar', array( $about_page_obj ));
+	openlab_custom_page( 'calendar', 'OpenLab Calendar', array( $about_page_obj ) );
 
 	$calendar_page_obj = get_page_by_path( 'about/calendar' );
 	openlab_custom_page( 'upcoming', 'OpenLab Calendar: Upcoming', array( $about_page_obj, $calendar_page_obj ) );

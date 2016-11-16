@@ -19,7 +19,7 @@ function openlab_get_courses_owned_by_user( $user_id ) {
 	}
 
 	// Next, get list of those that are courses
-	$user_course_ids = $wpdb->get_col( "SELECT group_id FROM {$bp->groups->table_name_groupmeta} WHERE meta_key = 'wds_group_type' AND meta_value = 'course' AND group_id IN (" . implode( ',', wp_parse_id_list( $is_admin_of_ids ) ) . ")" );
+	$user_course_ids = $wpdb->get_col( "SELECT group_id FROM {$bp->groups->table_name_groupmeta} WHERE meta_key = 'wds_group_type' AND meta_value = 'course' AND group_id IN (" . implode( ',', wp_parse_id_list( $is_admin_of_ids ) ) . ')' );
 	if ( empty( $user_course_ids ) ) {
 		$user_course_ids = array( 0 );
 	}
@@ -302,7 +302,8 @@ class Openlab_Clone_Course_Group {
 			}
 		}
 
-		/* 1.4+ */
+		/*
+		 1.4+ */
 		/*
 		$docs_args = array(
 			'group_id' => $this->source_group_id,
@@ -399,7 +400,7 @@ class Openlab_Clone_Course_Group {
 		}
 	}
 
-        protected function migrate_topics() {
+	protected function migrate_topics() {
 		$source_group_admins = $this->get_source_group_admins();
 		$forum_ids = bbp_get_group_forum_ids( $this->group_id );
 
@@ -452,7 +453,7 @@ class Openlab_Clone_Course_Group {
 				'post_content' => $sftk->post_content,
 				'post_title' => $sftk->post_title,
 				'post_date' => $sftk->post_date,
-			), array(
+				), array(
 				'forum_id' => $forum_id,
 			) );
 		}
@@ -460,17 +461,16 @@ class Openlab_Clone_Course_Group {
 		return;
 
 		// bbPress 1
-
 		// rekey for better lookups
 		$source_forum_topics_keyed = array();
-		foreach ($source_forum_topics as $sft) {
-			if (!in_array($sft->post_author, $source_group_admins)) {
+		foreach ( $source_forum_topics as $sft ) {
+			if ( ! in_array( $sft->post_author, $source_group_admins ) ) {
 				continue;
 			}
-			$source_forum_topics_keyed[$sft->ID] = $sft;
+			$source_forum_topics_keyed[ $sft->ID ] = $sft;
 		}
 
-                // And their first posts
+		// And their first posts
 		global $wpdb, $bp, $bbdb;
 		$source_forum_topic_ids = implode( ',', wp_list_pluck( $source_forum_topics, 'topic_id' ) );
 		$source_forum_posts = $wpdb->get_results( "SELECT topic_id, post_text FROM {$bbdb->posts} WHERE topic_id IN ({$source_forum_topic_ids}) AND post_position = 1" );
@@ -501,15 +501,15 @@ class Openlab_Clone_Course_Group {
 	}
 
 	protected function get_source_group_admins() {
-            if (empty($this->source_group_admins)) {
-            $g = groups_get_group(array(
-                'group_id' => $this->source_group_id,
-                'populate_extras' => true,
-                    ));
-            $this->source_group_admins = wp_list_pluck($g->admins, 'user_id');
-        }
+		if ( empty( $this->source_group_admins ) ) {
+			$g = groups_get_group(array(
+				'group_id' => $this->source_group_id,
+				'populate_extras' => true,
+			));
+			$this->source_group_admins = wp_list_pluck( $g->admins, 'user_id' );
+		}
 
-        return $this->source_group_admins;
+		return $this->source_group_admins;
 	}
 }
 
@@ -618,7 +618,7 @@ class Openlab_Clone_Course_Site {
 		// now write them all back
 		switch_to_blog( $this->site_id );
 		foreach ( $options as $key => $value ) {
-			if ( !in_array( $key, $preserve_option ) ) {
+			if ( ! in_array( $key, $preserve_option ) ) {
 				update_option( $key, $value );
 			}
 		}
@@ -626,9 +626,9 @@ class Openlab_Clone_Course_Site {
 		// add the theme mods
 		update_option( 'mods_' . $theme, $mods );
 
-                // Just in case
-                create_initial_taxonomies();
-                flush_rewrite_rules();
+				// Just in case
+				create_initial_taxonomies();
+				flush_rewrite_rules();
 
 		restore_current_blog();
 	}
@@ -658,12 +658,12 @@ class Openlab_Clone_Course_Site {
 
 			// @todo
 			if ( defined( 'DO_SHARDB' ) && DO_SHARDB ) {
-                                global $shardb_hash_length, $shardb_prefix;
-                                $source_table_hash = strtoupper( substr( md5( $this->source_site_id ), 0, $shardb_hash_length ) );
-                                $table_hash = strtoupper( substr( md5( $this->site_id ), 0, $shardb_hash_length ) );
+								global $shardb_hash_length, $shardb_prefix;
+								$source_table_hash = strtoupper( substr( md5( $this->source_site_id ), 0, $shardb_hash_length ) );
+								$table_hash = strtoupper( substr( md5( $this->site_id ), 0, $shardb_hash_length ) );
 
-                                $source_table = $shardb_prefix . $source_table_hash . '.' . $source_table;
-                                $table = $shardb_prefix . $table_hash . '.' . $table;
+								$source_table = $shardb_prefix . $source_table_hash . '.' . $source_table;
+								$table = $shardb_prefix . $table_hash . '.' . $table;
 			}
 
 			$wpdb->query( "DELETE FROM {$table}" );
@@ -679,7 +679,7 @@ class Openlab_Clone_Course_Site {
 		$source_site_url = get_blog_option( $this->source_site_id, 'home' );
 		$dest_site_url = get_option( 'home' );
 
-                // Copy over attachments. Whee!
+				// Copy over attachments. Whee!
 		$upload_dir = wp_upload_dir();
 		$this->copyr( str_replace( $this->site_id, $this->source_site_id, $upload_dir['basedir'] ), $upload_dir['basedir'] );
 
@@ -725,13 +725,13 @@ class Openlab_Clone_Course_Site {
 		}
 
 		// Replace the site URL in all post content.
-                // For some reason a regular MySQL query is not working.
-                $this_site_url = get_option( 'home' );
-                foreach ( $wpdb->get_col( "SELECT ID FROM $wpdb->posts" ) as $post_id ) {
-                        $post = get_post( $post_id );
-                        $post->post_content = str_replace( $source_site_url, $this_site_url, $post->post_content );
-                        wp_update_post( $post );
-                }
+				// For some reason a regular MySQL query is not working.
+				$this_site_url = get_option( 'home' );
+		foreach ( $wpdb->get_col( "SELECT ID FROM $wpdb->posts" ) as $post_id ) {
+			$post = get_post( $post_id );
+			$post->post_content = str_replace( $source_site_url, $this_site_url, $post->post_content );
+			wp_update_post( $post );
+		}
 
 		restore_current_blog();
 	}
@@ -748,42 +748,42 @@ class Openlab_Clone_Course_Site {
 		return $this->source_group_admins;
 	}
 
-        /**
-	 * Copy a file, or recursively copy a folder and its contents
-	 *
-	 * @author      Aidan Lister <aidan@php.net>
-	 * @version     1.0.1
-	 * @link        http://aidanlister.com/2004/04/recursively-copying-directories-in-php/
-	 * @param       string   $source    Source path
-	 * @param       string   $dest      Destination path
-	 * @return      bool     Returns TRUE on success, FALSE on failure
-	 */
-	function copyr($source, $dest) {
+		/**
+		 * Copy a file, or recursively copy a folder and its contents
+		 *
+		 * @author      Aidan Lister <aidan@php.net>
+		 * @version     1.0.1
+		 * @link        http://aidanlister.com/2004/04/recursively-copying-directories-in-php/
+		 * @param       string $source    Source path
+		 * @param       string $dest      Destination path
+		 * @return      bool     Returns TRUE on success, FALSE on failure
+		 */
+	function copyr( $source, $dest ) {
 	    // Check for symlinks
-	    if (is_link($source)) {
-		return symlink(readlink($source), $dest);
+	    if ( is_link( $source ) ) {
+			return symlink( readlink( $source ), $dest );
 	    }
 
 	    // Simple copy for a file
-	    if (is_file($source)) {
-		return copy($source, $dest);
+	    if ( is_file( $source ) ) {
+			return copy( $source, $dest );
 	    }
 
 	    // Make destination directory
-	    if (!is_dir($dest)) {
-		mkdir($dest);
+	    if ( ! is_dir( $dest ) ) {
+			mkdir( $dest );
 	    }
 
 	    // Loop through the folder
-	    $dir = dir($source);
-	    while (false !== $entry = $dir->read()) {
-		// Skip pointers
-		if ($entry == '.' || $entry == '..') {
-		    continue;
-		}
+	    $dir = dir( $source );
+	    while ( false !== $entry = $dir->read() ) {
+			// Skip pointers
+			if ( $entry == '.' || $entry == '..' ) {
+				continue;
+			}
 
-		// Deep copy directories
-		$this->copyr("$source/$entry", "$dest/$entry");
+			// Deep copy directories
+			$this->copyr( "$source/$entry", "$dest/$entry" );
 	    }
 
 	    // Clean up
