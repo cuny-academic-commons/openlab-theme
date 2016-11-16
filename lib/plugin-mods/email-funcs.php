@@ -19,12 +19,12 @@ function openlab_ass_admin_notice_form() {
 		?>
 		<form action="<?php echo $submit_link ?>" method="post" class="form-panel">
 			<?php wp_nonce_field( 'ass_email_options' ); ?>
-			
+
 			<div class="panel-button-group">
 				<div class="panel panel-default">
 					<div class="panel-heading semibold"><?php _e( 'Send an email notice to everyone in the group', 'bp-ass' ); ?></div>
 					<div class="panel-body">
-						
+
 						<p><?php _e( 'You can use the form below to send an email notice to all group members.', 'bp-ass' ); ?> <br>
 							<b><?php _e( 'Everyone in the group will receive the email -- regardless of their email settings -- so use with caution', 'bp-ass' ); ?></b>.</p>
 
@@ -51,7 +51,7 @@ function openlab_ass_admin_notice_form() {
 				<div class="panel panel-default">
 					<div class="panel-heading semibold"><?php _e( 'Welcome Email', 'bp-ass' ); ?></div>
 					<div class="panel-body">
-						
+
 						<p><?php _e( 'Send an email when a new member join the group.', 'bp-ass' ); ?></p>
 
 						<p class="checkbox">
@@ -204,11 +204,11 @@ To view this group log in and follow the link below:
 %1$s
 
 ---------------------
-'
-			'%s'
+
+			%s
 
 			To view this group log in and follow the link below:
-			% s
+			%s
 
 			-------------------- -
 			', 'bp -ass' ), $group_name,  $notice, $group_link );
@@ -261,15 +261,13 @@ function openlab_ass_add_notice_to_notifications_page() {
 						<td>&nbsp;</td>
 						<td>
 							<p><?php _e( 'To change the email notification settings for { your Courses, Projects, Clubs and Portfolio:','bp -ass' ); ?></p>
-														<ol>
-															<li>Visit the group's Profile page < / li >
-															< li > In the sidebar, click 'Membership' < / li >
-															< li > Select 'Your Email Options' < / li >
-														< / ol >
+																			<ol>
+																				<li>Visit the group's Profile page </li>
+																				<li>In the sidebar, click 'Membership'</li>
+																				<li>Select 'Your Email Options'</li>
+																			</ol>
 
-							< ?php if ( get_option( 'ass-global-unsubscribe-link' ) == 'yes' ) { }
-}
-			} ?>
+							<?php if ( get_option( 'ass-global-unsubscribe-link' ) == 'yes' ) : ?>
 								<p><a href="<?php echo wp_nonce_url( add_query_arg( 'ass_unsubscribe', 'all' ), 'ass_unsubscribe_all' ); ?>"><?php _e( "Or set all your group's email options to No Email", 'bp-ass' ); ?></a></p>
 							<?php endif; ?>
 						</td>

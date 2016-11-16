@@ -698,7 +698,7 @@ function cuny_group_single() {
 							<?php
 							$wds_school = openlab_generate_school_name( $group_id );
 							$wds_departments = openlab_generate_department_name( $group_id );
-							?> 
+							?>
 
 							<?php if ( $wds_school && ! empty( $wds_school ) ) : ?>
 
@@ -858,17 +858,17 @@ function openlab_group_profile_activity_list() {
 									<h2 class="title activity-title"><a class="no-deco" href="<?php site_url(); ?>/groups/<?php echo $group_slug; ?>/docs/">Recent Docs<span class="fa fa-chevron-circle-right" aria-hidden="true"></span></a></h2>
 									<?php
 									$docs_arg = array(
-									'posts_per_page' => '3',
+										'posts_per_page' => '3',
 										'post_type' => 'bp_doc',
 										'tax_query' =>
 										array(
-									array(
-									'taxonomy' => 'bp_docs_associated_item',
+											array(
+												'taxonomy' => 'bp_docs_associated_item',
 												'field' => 'slug',
 												'terms' => $group_slug,
-										),,
-									),
-									);,
+											),
+										),
+									);
 									$query = new WP_Query( $docs_arg );
 									// $query = new WP_Query( "posts_per_page=3&post_type=bp_doc&category_name=$group_slug" );
 									// $query = new WP_Query( "posts_per_page=3&post_type=bp_doc&category_name=$group_id" );

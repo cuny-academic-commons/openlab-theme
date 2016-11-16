@@ -777,17 +777,17 @@ function openlab_filter_subnav_docs( $subnav_item ) {
 	$group_slug = bp_get_group_slug();
 
 	$docs_arg = array(
-	'posts_per_page' => '3',
+		'posts_per_page' => '3',
 		'post_type' => 'bp_doc',
 		'tax_query' =>
 		array(
-	array(
-	'taxonomy' => 'bp_docs_associated_item',
+			array(
+				'taxonomy' => 'bp_docs_associated_item',
 				'field' => 'slug',
 				'terms' => $group_slug,
-		),,
-	),
-	);,
+			),
+		),
+	);
 	$query = new WP_Query( $docs_arg );
 
 	$total_doc_count = ! empty( $query->found_posts ) ? $query->found_posts : 0;
