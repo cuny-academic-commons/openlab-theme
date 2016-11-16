@@ -20,6 +20,10 @@ function openlab_custom_page($slug, $title, $parent_obj = NULL) {
 
         $ancestor_path = array();
         foreach ($parent_obj as $parent) {
+	    if ( ! $parent instanceof WP_Post ) {
+		    continue;
+	    }
+
             $ancestor_path[] = $parent->post_name;
             $parent_id = $parent->ID;
         }
