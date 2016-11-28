@@ -75,12 +75,15 @@ function openlab_load_scripts() {
 		wp_enqueue_script( 'vendor-js' );
 
 		$utility_deps = array( 'jquery' );
+		/*
 		if ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) {
 			$utility_deps[] = 'hyphenator-js';
 		} else {
 			$utility_deps[] = 'openlab-smoothscroll';
 		}
+		*/
 		wp_register_script( 'utility', $stylesheet_dir_uri . '/js/utility.js', $utility_deps, '1.6.9.8', true );
+
 		wp_enqueue_script( 'utility' );
 		wp_localize_script( 'utility', 'localVars', array(
 			'nonce' => wp_create_nonce( 'request-nonce' ),
