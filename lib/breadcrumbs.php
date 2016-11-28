@@ -113,37 +113,6 @@ function openlab_specific_archive_breadcrumb($crumb, $args) {
     return $crumb;
 }
 
-add_filter('openlab_page_crumb', 'openlab_page_crumb_overrides', 10, 2);
-
-function openlab_page_crumb_overrides($crumb, $args) {
-    global $post, $bp;
-
-    if ( bp_is_group() && ! bp_is_group_create() ) {
-
-        $group_type = openlab_get_group_type();
-        $crumb = '<a href="' . site_url() . '/' . $group_type . 's/">' . ucfirst($group_type) . 's</a> / ' . bp_get_group_name();
-    }
-
-    if (bp_is_user()) {
-
-        $account_type = xprofile_get_field_data('Account Type', $bp->displayed_user->id);
-        if ($account_type == "Staff") {
-            $b1 = '<a href="' . site_url() . '/people/">People</a> / <a href="' . site_url() . '/people/staff/">Staff</a>';
-        } elseif ($account_type == "Faculty") {
-            $b1 = '<a href="' . site_url() . '/people/">People</a> / <a href="' . site_url() . '/people/faculty/">Faculty</a>';
-        } elseif ($account_type == "Student") {
-            $b1 = '<a href="' . site_url() . '/people/">People</a> / <a href="' . site_url() . '/people/students/">Students</a>';
-        } else {
-            $b1 = '<a href="' . site_url() . '/people/">People</a>';
-        }
-        $last_name = xprofile_get_field_data('Last Name', $bp->displayed_user->id);
-        $b2 = ucfirst($bp->displayed_user->fullname); //.''.ucfirst( $last_name )
-
-        $crumb = $b1 . ' / ' . $b2;
-    }
-    return $crumb;
-}
-
 /**
  * Class to control breadcrumbs display.
  *

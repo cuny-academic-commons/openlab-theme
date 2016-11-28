@@ -3,6 +3,9 @@
 // Enqueue BP-dependent scripts.
 add_action( 'wp_enqueue_scripts', 'openlab_bp_load_scripts' );
 
+// BP-specific breadcrumb overrides.
+add_filter( 'openlab_page_crumb', 'openlab_page_crumb_overrides', 10, 2 );
+
 /**
  * Enqueue front-end script that are BP-dependent.
  *
@@ -27,4 +30,44 @@ function openlab_bp_enqueue_scripts() {
 			'account_type_field' => xprofile_get_field_id_from_name( 'Account Type ' ),
 		) );
 	}
+}
+
+
+/**
+ * Override breadcrumb info based on BuddyPress content.
+ *
+ * @since 1.0.0
+ *
+ * @param string $crumb HTML of breadcrumb.
+ * @param array  $args  Argument array.
+ * @return string
+ */
+function openlab_page_crumb_overrides( $crumb, $args ) {
+	global $post, $bp;
+
+	if ( bp_is_group() && ! bp_is_group_create() ) {
+
+		$group_type = openlab_get_group_type();
+		$crumb = '<a href="' . site_url() . '/' . $group_type . 's/">' . ucfirst( $group_type ) . 's</a> / ' . bp_get_group_name();
+	}
+
+	if ( bp_is_user() ) {
+
+		$account_type = xprofile_get_field_data( 'Account Type', $bp->displayed_user->id );
+		// @todo Account type switch does not need to be hardcoded.
+		if ( 'Staff' === $account_type ) {
+			$b1 = '<a href="' . site_url() . '/people/">People</a> / <a href="' . site_url() . '/people/staff/">Staff</a>';
+		} elseif ( 'Faculty' === $account_type ) {
+			$b1 = '<a href="' . site_url() . '/people/">People</a> / <a href="' . site_url() . '/people/faculty/">Faculty</a>';
+		} elseif ( 'Student' === $account_type ) {
+			$b1 = '<a href="' . site_url() . '/people/">People</a> / <a href="' . site_url() . '/people/students/">Students</a>';
+		} else {
+			$b1 = '<a href="' . site_url() . '/people/">People</a>';
+		}
+		$last_name = xprofile_get_field_data( 'Last Name', $bp->displayed_user->id );
+		$b2 = ucfirst( $bp->displayed_user->fullname ); //.''.ucfirst( $last_name )
+
+		$crumb = $b1 . ' / ' . $b2;
+	}
+	return $crumb;
 }
