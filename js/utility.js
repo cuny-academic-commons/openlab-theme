@@ -109,11 +109,11 @@
 
 		    var startTime = OpenLab.utility.buildTime( rawStartDate, rawStartTime );
 		    var endTime   = OpenLab.utility.buildTime( rawEndDate, rawEndTime );
-                    
+
                     if (startTime > endTime) {
                         e.preventDefault();
                         var message = '<div class="bp-template-notice error">Start Time must be earlier than the End Time.</div>';
-                        
+
                         //clean up first before adding new error message
                         eventDetailMetaBox.find('.bp-template-notice').remove();
                         eventDetailMetaBox.prepend(message);
@@ -223,14 +223,14 @@
 	    var hour = parseInt( timeParts[0] );
 	    var min = parseInt( timeParts[1].substr( 0, 2 ) );
 	    var amOrPm = timeParts[1].substr( 2 );
-            
+
 	    if ( 'pm' === amOrPm && hour < 12) {
 	        hour = hour + 12;
 	    } else if ('am' === amOrPm && hour === 12){
                 //clock strikes midnight
                 hour = 0;
             }
-	    
+
 	    d.setHours( hour );
 	    d.setMinutes( min );
 
@@ -617,7 +617,7 @@
 
         jQuery("#header #menu-item-40 ul li ul li a").prepend("+ ");
 
-        // this add an onclick event to the "New Topic" button while preserving 
+        // this add an onclick event to the "New Topic" button while preserving
         // the original event; this is so "New Topic" can have a "current" class
         $('.show-hide-new').click(function () {
             var origOnClick = $('.show-hide-new').onclick;
@@ -812,7 +812,7 @@
         });
     }
 
-    /*this is for the homepage group list, so that cells in each row all have the same height 
+    /*this is for the homepage group list, so that cells in each row all have the same height
      - there is a possiblity of doing this template-side, but requires extensive restructuring of the group list function*/
     function equal_row_height() {
         /*first we get the number of rows by finding the column with the greatest number of rows*/
