@@ -74,7 +74,9 @@ function openlab_load_scripts() {
 		wp_register_script( 'vendor-js', $stylesheet_dir_uri . '/js/dist/vendor.js', array( 'jquery' ), '1.6.8', true );
 		wp_enqueue_script( 'vendor-js' );
 
-		$utility_deps = array( 'jquery' );
+		wp_register_script( 'select2', $stylesheet_dir_uri . '/js/select2.min.js', array( 'jquery' ) );
+
+		$utility_deps = array( 'jquery', 'select2' );
 		/*
 		if ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) {
 			$utility_deps[] = 'hyphenator-js';
