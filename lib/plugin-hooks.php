@@ -14,7 +14,9 @@ require_once( STYLESHEETPATH . '/lib/plugin-mods/invite-funcs.php' );
  * Event Organiser
  * BuddyPress Event Organiser
  */
-require_once( STYLESHEETPATH . '/lib/plugin-mods/calendar-control.php' );
+if ( function_exists( 'bpeo_is_action' ) ) {
+	require_once( STYLESHEETPATH . '/lib/plugin-mods/calendar-control.php' );
+}
 
 /**
  * Plugin: Invite Anyone
