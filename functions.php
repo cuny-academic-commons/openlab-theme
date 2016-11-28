@@ -82,9 +82,9 @@ function openlab_load_scripts() {
 		}
 		wp_register_script( 'utility', $stylesheet_dir_uri . '/js/utility.js', $utility_deps, '1.6.9.8', true );
 		wp_enqueue_script( 'utility' );
-		wp_localize_script('utility', 'localVars', array(
+		wp_localize_script( 'utility', 'localVars', array(
 			'nonce' => wp_create_nonce( 'request-nonce' ),
-		));
+		) );
 
 		wp_register_script( 'parsley', $stylesheet_dir_uri . '/js/parsley.min.js', array( 'jquery' ) );
 	}
@@ -120,7 +120,7 @@ function openlab_load_scripts_high_priority() {
 		wp_enqueue_style( 'main-styles' );
 	}
 
-	if ( isset( $post->post_type ) && $post->post_type == 'help' ) {
+	if ( isset( $post->post_type ) && 'help' === $post->post_type ) {
 		wp_register_style( 'print-styles', $stylesheet_dir_uri . '/css/print.css', array(), '2015', 'print' );
 		wp_enqueue_style( 'print-styles' );
 	}
@@ -157,11 +157,11 @@ function cuny_widgets_init() {
 add_action( 'widgets_init', 'cuny_widgets_init' );
 
 function cuny_o_e_class( $num ) {
-	return $num % 2 == 0 ? ' even' : ' odd';
+	return 0 === $num % 2 ? ' even' : ' odd';
 }
 
 function cuny_third_end_class( $num ) {
-	return $num % 3 == 0 ? ' last' : '';
+	return 0 === $num % 3 ? ' last' : '';
 }
 
 /**
