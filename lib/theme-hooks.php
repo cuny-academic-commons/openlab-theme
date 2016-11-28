@@ -70,7 +70,7 @@ function openlab_main_menu( $location = 'header' ) {
 		<div class="main-nav-wrapper">
 			<div class="container-fluid">
 				<div class="navbar-header hidden-xs">
-					<header class="menu-title"><a href="<?php echo home_url(); ?>" title="<?php _ex( 'Home', 'Home page banner link title', 'buddypress' ); ?>"><?php bp_site_name(); ?></a></header>
+					<header class="menu-title"><a href="<?php echo home_url(); ?>" title="<?php _ex( 'Home', 'Home page banner link title', 'buddypress' ); ?>"><?php echo esc_html( get_bloginfo( 'name', 'display' ) ); ?></a></header>
 				</div>
 				<div class="navbar-collapse collapse" id="main-nav-<?php echo $location ?>">
 					<?php

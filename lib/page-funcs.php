@@ -7,6 +7,9 @@
  * 	Home page login box layout
  */
 function cuny_home_login() {
+	if ( ! function_exists( 'buddypress' ) ) {
+		return;
+	}
 
 	if ( is_user_logged_in() ) :
 
@@ -68,7 +71,7 @@ function cuny_home_login() {
 					</div>
 					<input class="btn btn-default btn-primary link-btn pull-right semibold" type="submit" name="wp-submit" id="sidebar-wp-submit" value="<?php _e( 'Log In' ); ?>" tabindex="0" />
 				</div>
-				<input type="hidden" name="redirect_to" value="<?php echo bp_get_root_domain(); ?>" />
+				<?php /*<input type="hidden" name="redirect_to" value="<?php echo bp_get_root_domain(); ?>" /> */ ?>
 
 				<?php do_action( 'bp_sidebar_login_form' ) ?>
 
