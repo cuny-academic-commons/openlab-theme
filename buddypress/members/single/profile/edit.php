@@ -1,8 +1,8 @@
 <?php do_action('bp_before_profile_edit_content') ?>
 
 <?php
-global $bp, $user_ID, $profile_template;
-if (is_super_admin($user_ID)) {
+$displayed_user_id = bp_displayed_user_id();
+if ( is_super_admin( $displayed_user_id ) ) {
     $pgroup = bp_get_current_profile_group_id();
     $account_type = bp_get_profile_field_data('field=Account Type&user_id=' . bp_displayed_user_id());
 } else {
@@ -35,7 +35,7 @@ $field_ids = array(1);
 
         <?php do_action('bp_before_profile_field_content') ?>
 
-        <?php if (is_super_admin($user_ID)): ?>
+        <?php if ( is_super_admin( $displayed_user_id ) ) : ?>
             <ul class="button-nav">
 
                 <?php bp_profile_group_tabs(); ?>
@@ -90,7 +90,7 @@ $field_ids = array(1);
                             <?php
                             if ('selectbox' == bp_get_the_profile_field_type()) :
                                 $style = "";
-                                if (bp_get_the_profile_field_name() == "Account Type" && !is_super_admin($user_ID) || $account_type) {
+                                if ( bp_get_the_profile_field_name() == "Account Type" && ! is_super_admin( $displayed_user_id ) || $account_type ) {
                                     //$style="style='display:none;'";
                                 }
                                 ?>
