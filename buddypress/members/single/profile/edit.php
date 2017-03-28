@@ -1,47 +1,23 @@
 <?php do_action( 'bp_before_profile_edit_content' ) ?>
 
 <?php
-$displayed_user_id = bp_displayed_user_id();
-if ( is_super_admin( $displayed_user_id ) ) {
-	$pgroup = bp_get_current_profile_group_id();
-	$account_type = bp_get_profile_field_data( 'field=Account Type&user_id=' . bp_displayed_user_id() );
-} else {
-	$account_type = bp_get_profile_field_data( 'field=Account Type' );
-	$exclude_groups = openlab_get_exclude_groups_for_account_type( $account_type );
-}
-
-$display_name = bp_get_profile_field_data( 'field=Name' );
-
-$profile_args = array();
-
-if ( isset( $pgroup ) ) {
-	$profile_args['profile_group_id'] = $pgroup;
-}
-
-if ( isset( $exclude_groups ) ) {
-	$profile_args['exclude_groups'] = $exclude_groups;
-}
-
-$display_name_shown = isset( $pgroup ) && 1 == $pgroup;
 $field_ids = array( 1 );
 ?>
+
 <?php echo openlab_submenu_markup(); ?>
 
 
 
 <form action="" method="post" id="profile-edit-form" class="standard-form form-panel">
 
-	<?php if ( bp_has_profile( $profile_args ) ) : ?>
+	<?php if ( bp_has_profile() ) : ?>
 
 		<?php do_action( 'bp_before_profile_field_content' ) ?>
 
-		<?php if ( is_super_admin( $displayed_user_id ) ) : ?>
-			<ul class="button-nav">
-
-				<?php bp_profile_group_tabs(); ?>
-
-			</ul>
-		<?php endif; ?>
+		<?php /* @todo Make sure these only show if there's more than one group for current user. */ ?>
+		<ul class="button-nav">
+			<?php bp_profile_group_tabs(); ?>
+		</ul>
 
 		<div class="clear"></div>
 
@@ -50,15 +26,6 @@ $field_ids = array( 1 );
 			<div class="panel-body">
 
 				<?php do_action( 'template_notices' ); ?>
-
-				<?php if ( ! $display_name_shown ) { ?>
-					<div class="editfield field_1 field_name alt form-group">
-						<label for="field_1">Display Name (required)</label>
-						<input class="form-control" type="text" value="<?php echo $display_name; ?>" id="field_1" name="field_1">
-						<p class="description"></p>
-					</div>
-					<?php $display_name_shown = true ?>
-				<?php } ?>
 
 				<?php while ( bp_profile_groups() ) : bp_the_profile_group(); ?>
 
@@ -89,14 +56,10 @@ $field_ids = array( 1 );
 
 							<?php
 							if ( 'selectbox' == bp_get_the_profile_field_type() ) :
-								$style = '';
-								if ( bp_get_the_profile_field_name() == 'Account Type' && ! is_super_admin( $displayed_user_id ) || $account_type ) {
-									//$style="style='display:none;'";
-								}
 								?>
 
 								<label <?php echo $style; ?> for="<?php bp_the_profile_field_input_name() ?>"><?php bp_the_profile_field_name() ?> <?php if ( bp_get_the_profile_field_is_required() ) : ?><?php _e( '(required)', 'buddypress' ) ?><?php endif; ?></label>
-								<select class="form-control" <?php echo $style; ?> name="<?php bp_the_profile_field_input_name() ?>" id="<?php bp_the_profile_field_input_name() ?>">
+								<select class="form-control" name="<?php bp_the_profile_field_input_name() ?>" id="<?php bp_the_profile_field_input_name() ?>">
 									<?php bp_the_profile_field_options() ?>
 								</select>
 
