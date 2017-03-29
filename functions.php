@@ -269,3 +269,41 @@ function openlab_profile_field_input_attributes() {
 		return ' ' . implode( ' ', $attributes ) . ' ';
 	}
 }
+
+/**
+ * On saving settings, save our additional fields
+ */
+function openlab_addl_settings_fields() {
+	global $bp;
+
+	$fname = isset( $_POST['fname'] ) ? $_POST['fname'] : '';
+	$lname = isset( $_POST['lname'] ) ? $_POST['lname'] : '';
+	$account_type = isset( $_POST['account_type'] ) ? $_POST['account_type'] : '';
+
+	$user_id = bp_displayed_user_id();
+
+	// Don't let this continue if a password error was recorded
+	if ( isset( $bp->template_message_type ) && 'error' == $bp->template_message_type && 'No changes were made to your account.' != $bp->template_message ) {
+		return;
+	}
+
+	if ( empty( $fname ) || empty( $lname ) ) {
+		bp_core_add_message( 'First Name and Last Name are required fields', 'error' );
+	} else {
+		// @todo This whole thing needs dealing with.
+		xprofile_set_field_data( 'First Name', bp_displayed_user_id(), $fname );
+		xprofile_set_field_data( 'Last Name', bp_displayed_user_id(), $lname );
+
+		bp_core_add_message( __( 'Your settings have been saved.', 'buddypress' ), 'success' );
+	}
+
+	if ( ! empty( $account_type ) ) {
+		$selectable_types = cboxol_get_selectable_member_types_for_user( $user_id );
+		if ( in_array( $account_type, $selectable_types ) ) {
+			bp_set_member_type( $user_id, $account_type );
+		}
+	}
+
+	bp_core_redirect( trailingslashit( bp_displayed_user_domain() . bp_get_settings_slug() . '/general' ) );
+}
+add_action( 'bp_core_general_settings_after_save', 'openlab_addl_settings_fields' );

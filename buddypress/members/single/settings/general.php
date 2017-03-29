@@ -37,12 +37,23 @@ do_action('bp_before_member_settings_template');
             <label for="pwd">Current Password</label>
             <input class="form-control" type="password" name="pwd" id="pwd" size="16" value="" class="settings-input small" />
 
-            <?php
-            $account_type = openlab_get_displayed_user_account_type();
-            $include_acct_type = in_array($account_type, array('Student', 'Alumni')) ? ' account type, ' : ' ';
-            ?>
+	    <?php
+	    $selectable_types = cboxol_get_selectable_member_types_for_user( bp_displayed_user_id() );
+	    $current_type = bp_get_member_type( bp_displayed_user_id() );
 
-            <p class="description">Required to change<?php echo $include_acct_type ?>current password, first name, or last name. <a class="underline" href="<?php echo site_url(add_query_arg(array('action' => 'lostpassword'), 'wp-login.php'), 'login'); ?>" title="<?php _e('Password Lost and Found', 'buddypress'); ?>"><?php _e('Lost your password?', 'buddypress'); ?></a></p>
+	    $selectable_types_plus_current = array_merge( array( $current_type ), $selectable_types );
+	    $selectable_type_objects = array_map( 'cboxol_get_member_type', $selectable_types_plus_current );
+	    ?>
+
+	    <p class="description">
+		    <?php if ( $selectable_types ) : ?>
+			    <?php esc_html_e( 'Required to change account type, current password, first name, or last name.' ); ?>
+		    <?php else : ?>
+			    <?php esc_html_e( 'Required to change current password, first name, or last name.' ); ?>
+		    <?php endif; ?>
+
+		    <a class="underline" href="<?php echo site_url( add_query_arg( array( 'action' => 'lostpassword' ), 'wp-login.php' ), 'login' ); ?>" title="<?php _e( 'Password Lost and Found', 'openlab-theme' ); ?>"><?php _e( 'Lost your password?', 'openlab-theme' ); ?></a>
+	    </p>
         </div>
 
         <div class="form-group settings-section change-pw-section">
@@ -63,15 +74,16 @@ do_action('bp_before_member_settings_template');
             <input class="form-control" type="text" name="lname" id="lname" value="<?php echo bp_get_profile_field_data(array('field' => 'Last Name')) ?>" />
         </div>
 
-        <?php if (in_array($account_type, array('Student', 'Alumni'))) : ?>
+	<?php if ( $selectable_types ) : ?>
             <div class="form-group settings-section account-type-section">
                 <label for="account_type">Account Type</label>
                 <select class="form-control" name="account_type">
-                    <option value="Student" <?php selected('Student', $account_type) ?>>Student</option>
-                    <option value="Alumni" <?php selected('Alumni', $account_type) ?>>Alumni</option>
-                </select>
+			<?php foreach ( $selectable_type_objects as $selectable_type ) : ?>
+				<option value="<?php echo esc_attr( $selectable_type->get_slug() ); ?>" <?php selected( $current_type, $selectable_type->get_slug() ) ?>><?php echo esc_html( $selectable_type->get_label( 'singular' ) ); ?></option>
+			<?php endforeach; ?>
+		</select>
             </div>
-        <?php endif ?>
+	<?php endif; ?>
 
             </div>
         </div>

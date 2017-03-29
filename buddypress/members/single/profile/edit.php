@@ -8,8 +8,6 @@ $field_ids = array( 1 );
 
 <?php echo openlab_submenu_markup(); ?>
 
-
-
 <form action="" method="post" id="profile-edit-form" class="standard-form form-panel">
 
 	<?php if ( bp_has_profile() ) : ?>
