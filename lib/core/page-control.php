@@ -7,6 +7,8 @@
 /**
  * Create a custom page
  *
+ * @todo This should not be done automatically in this way.
+ *
  * @param type $slug
  * @param type $title
  * @return type
@@ -16,6 +18,7 @@ function openlab_custom_page( $slug, $title, $parent_obj = null ) {
 	$post_id = -1;
 	$author_id = 1;
 	$check_path = $slug;
+	$parent_id = 0;
 
 	if ( $parent_obj && ! empty( $parent_obj ) ) {
 		$ancestor_path = array();
