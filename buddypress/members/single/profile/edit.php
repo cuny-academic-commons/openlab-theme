@@ -1,3 +1,5 @@
+<?php /* @todo Is this template override required? See openlab_submenu_markup() call */ ?>
+
 <?php do_action( 'bp_before_profile_edit_content' ) ?>
 
 <?php
