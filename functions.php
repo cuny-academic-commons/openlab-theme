@@ -8,8 +8,6 @@ if ( ! defined( 'CSS_DEBUG' ) ) {
 add_action( 'widgets_init', 'openlab_register_sidebars' );
 
 // Install widgets.
-add_action( 'widgets_init', 'openlab_maybe_install', 100 );
-
 add_action( 'after_switch_theme', 'openlab_maybe_install' );
 
 function openlab_core_setup() {
@@ -36,10 +34,10 @@ function openlab_maybe_install() {
 	if ( ! CBox_Widget_Setter::is_sidebar_populated( 'home-main' ) ) {
 		$group_types = cboxol_get_group_types();
 		foreach ( $group_types as $group_type ) {
-			var_dump( CBox_Widget_Setter::set_widget( array(
+			CBox_Widget_Setter::set_widget( array(
 				'id_base'    => 'openlab_group_type_' . $group_type->get_slug(),
 				'sidebar_id' => 'home-main',
-			) ) );
+			) );
 		}
 	}
 
