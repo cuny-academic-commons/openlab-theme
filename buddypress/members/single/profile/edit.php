@@ -2,13 +2,6 @@
 
 <?php
 $displayed_user_id = bp_displayed_user_id();
-if ( is_super_admin( $displayed_user_id ) ) {
-	$pgroup = bp_get_current_profile_group_id();
-	$account_type = bp_get_profile_field_data( 'field=Account Type&user_id=' . bp_displayed_user_id() );
-} else {
-	$account_type = bp_get_profile_field_data( 'field=Account Type' );
-	$exclude_groups = openlab_get_exclude_groups_for_account_type( $account_type );
-}
 
 $display_name = bp_get_profile_field_data( 'field=Name' );
 
@@ -16,10 +9,6 @@ $profile_args = array();
 
 if ( isset( $pgroup ) ) {
 	$profile_args['profile_group_id'] = $pgroup;
-}
-
-if ( isset( $exclude_groups ) ) {
-	$profile_args['exclude_groups'] = $exclude_groups;
 }
 
 $display_name_shown = isset( $pgroup ) && 1 == $pgroup;
@@ -51,15 +40,6 @@ $field_ids = array( 1 );
 
 				<?php do_action( 'template_notices' ); ?>
 
-				<?php if ( ! $display_name_shown ) { ?>
-					<div class="editfield field_1 field_name alt form-group">
-						<label for="field_1">Display Name (required)</label>
-						<input class="form-control" type="text" value="<?php echo $display_name; ?>" id="field_1" name="field_1">
-						<p class="description"></p>
-					</div>
-					<?php $display_name_shown = true ?>
-				<?php } ?>
-
 				<?php while ( bp_profile_groups() ) : bp_the_profile_group(); ?>
 
 					<?php while ( bp_profile_fields() ) : bp_the_profile_field(); ?>
@@ -89,13 +69,9 @@ $field_ids = array( 1 );
 
 							<?php
 							if ( 'selectbox' == bp_get_the_profile_field_type() ) :
-								$style = '';
-								if ( bp_get_the_profile_field_name() == 'Account Type' && ! is_super_admin( $displayed_user_id ) || $account_type ) {
-									//$style="style='display:none;'";
-								}
 								?>
 
-								<label <?php echo $style; ?> for="<?php bp_the_profile_field_input_name() ?>"><?php bp_the_profile_field_name() ?> <?php if ( bp_get_the_profile_field_is_required() ) : ?><?php _e( '(required)', 'buddypress' ) ?><?php endif; ?></label>
+								<label for="<?php bp_the_profile_field_input_name() ?>"><?php bp_the_profile_field_name() ?> <?php if ( bp_get_the_profile_field_is_required() ) : ?><?php _e( '(required)', 'buddypress' ) ?><?php endif; ?></label>
 								<select class="form-control" <?php echo $style; ?> name="<?php bp_the_profile_field_input_name() ?>" id="<?php bp_the_profile_field_input_name() ?>">
 									<?php bp_the_profile_field_options() ?>
 								</select>
@@ -166,6 +142,22 @@ $field_ids = array( 1 );
 					<?php endwhile; ?>
 
 				<?php endwhile; ?>
+
+				<?php
+				/* @todo Move to the plugin so that it works outside of this theme */
+				$selectable_types = cboxol_get_selectable_member_types_for_user( bp_displayed_user_id() );
+				$current_type = bp_get_member_type( bp_displayed_user_id() );
+				array_unshift( $selectable_types, $current_type );
+				$selectable_types = array_map( 'cboxol_get_member_type', $selectable_types );
+				?>
+				<?php if ( $selectable_types ) : ?>
+					<label for="member-type"><?php esc_html_e( 'Member Type', 'openlab' ); ?></label>
+					<select id="member-type" name="member-type" class="form-control">
+						<?php foreach ( $selectable_types as $selectable_type ) : ?>
+							<option value="<?php echo esc_attr( $selectable_type->get_slug() ); ?>" <?php selected( $current_type, $selectable_type->get_slug() ); ?>><?php echo esc_html( $selectable_type->get_label( 'singular' ) ); ?></option>
+						<?php endforeach; ?>
+					</select>
+				<?php endif; ?>
 
 			</div><!--panel-body-->
 		</div>

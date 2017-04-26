@@ -4,6 +4,9 @@ if ( ! defined( 'CSS_DEBUG' ) ) {
 	define( 'CSS_DEBUG', false );
 }
 
+// Register sidebars.
+add_action( 'widgets_init', 'openlab_register_sidebars' );
+
 function openlab_core_setup() {
 	add_theme_support( 'post-thumbnails' );
 	global $content_width;
@@ -42,6 +45,7 @@ require_once( STYLESHEETPATH . '/lib/page-funcs.php' );
 require_once( STYLESHEETPATH . '/lib/sidebar-funcs.php' );
 require_once( STYLESHEETPATH . '/lib/plugin-hooks.php' );
 require_once( STYLESHEETPATH . '/lib/theme-hooks.php' );
+require_once( STYLESHEETPATH . '/lib/widgets.php' );
 
 function openlab_load_bp_dependencies() {
 	require_once( STYLESHEETPATH . '/lib/buddypress.php' );
@@ -139,34 +143,26 @@ add_action( 'wp_enqueue_scripts', 'openlab_load_scripts_high_priority', 999 );
 // front page slider
 add_image_size( 'front-page-slider', 735, 295, true );
 
-// custom widgets for OpenLab
-function cuny_widgets_init() {
-	// add widget for Rotating Post Gallery Widget - will be placed on the homepage
-	register_sidebar(array(
-		'name' => __( 'Rotating Post Gallery Widdget', 'cuny' ),
-		'description' => __( 'This is the widget for holding the Rotating Post Gallery Widget', 'cuny' ),
-		'id' => 'pgw-gallery',
-		'before_widget' => '<div id="pgw-gallery">',
-		'after_widget' => '</div>',
-	));
-	// add widget for the Featured Widget - will be placed on the homepage under "In the Spotlight"
-	register_sidebar(array(
-		'name' => __( 'Featured Widget', 'cuny' ),
-		'description' => __( 'This is the widget for holding the Featured Widget', 'cuny' ),
-		'id' => 'cac-featured',
-		'before_widget' => '<div id="cac-featured">',
-		'after_widget' => '</div>',
-	));
-}
+/**
+ * Register sidebar widget areas.
+ *
+ * @since 1.0.0
+ */
+function openlab_register_sidebars() {
 
-add_action( 'widgets_init', 'cuny_widgets_init' );
+	// Home sidebar.
+	register_sidebar( array(
+		'name' => __( 'Home Sidebar', 'openlab-theme' ),
+		'description' => __( 'The sidebar at the left side of the home page.', 'openlab-theme' ),
+		'id' => 'home-sidebar',
+	) );
 
-function cuny_o_e_class( $num ) {
-	return 0 === $num % 2 ? ' even' : ' odd';
-}
-
-function cuny_third_end_class( $num ) {
-	return 0 === $num % 3 ? ' last' : '';
+	// Home main (group type columns).
+	register_sidebar( array(
+		'name' => __( 'Home Main', 'openlab-theme' ),
+		'description' => __( 'The main section of the home page. Generally used for group type widgets.', 'openlab-theme' ),
+		'id' => 'home-main',
+	) );
 }
 
 /**

@@ -530,7 +530,7 @@ function cuny_student_profile() {
 					<ul id="member-list" class="inline-element-list">
 
 						<?php foreach ( $friend_ids as $friend_id ) { ?>
-							
+
 							<li class="inline-element">
 								<a href="<?php echo bp_core_get_user_domain( $friend_id ) ?>">
 									<img class="img-responsive" src ="<?php echo bp_core_fetch_avatar( array( 'item_id' => $friend_id, 'object' => 'member', 'type' => 'full', 'html' => false ) ) ?>" alt="<?php echo bp_core_get_user_displayname( $friend_id ); ?>"/>
@@ -794,8 +794,7 @@ function cuny_member_profile_header() {
 			</div><!-- #item-meta -->
 
 			<div class="profile-fields">
-				<?php $exclude_groups = openlab_get_exclude_groups_for_account_type( $account_type ) ?>
-				<?php if ( bp_has_profile( array( 'exclude_groups' => $exclude_groups ) ) ) : ?>
+				<?php if ( bp_has_profile() ) : ?>
 					<div class="info-panel panel panel-default no-margin no-margin-top">
 						<div class="profile-fields table-div">
 
@@ -885,13 +884,14 @@ function openlab_custom_add_friend_button( $button ) {
 add_filter( 'bp_get_add_friend_button', 'openlab_custom_add_friend_button' );
 
 function openlab_member_header() {
-	$this_user_id = isset( $site_members_template->member->id ) ? $site_members_template->member->id : bp_displayed_user_id();
+
+	$account_type = cboxol_get_user_member_type_label( bp_displayed_user_id() );
+
 	?>
-	<?php $account_type = xprofile_get_field_data( 'Account Type', $this_user_id ); ?>
 
 	<h1 class="entry-title profile-title clearfix">
 		<span class="profile-name"><?php bp_displayed_user_fullname() ?>&rsquo;s Profile</span>
-		<span class="profile-type pull-right hidden-xs"><?php echo $account_type ?></span>
+		<span class="profile-type pull-right hidden-xs"><?php echo esc_html( $account_type ) ?></span>
 		<button data-target="#sidebar-mobile" class="mobile-toggle direct-toggle pull-right visible-xs" type="button">
 			<span class="sr-only">Toggle navigation</span>
 			<span class="icon-bar"></span>
@@ -905,7 +905,7 @@ function openlab_member_header() {
 		</div>
 	<?php endif; ?>
 	<div class="clearfix visible-xs">
-		<span class="profile-type pull-left"><?php echo $account_type ?></span>
+		<span class="profile-type pull-left"><?php echo esc_html( $account_type ) ?></span>
 		<div class="info-line pull-right"><span class="timestamp info-line-timestamp"><span class="fa fa-undo" aria-hidden="true"></span> <?php bp_last_activity( bp_displayed_user_id() ) ?></span></div>
 	</div>
 	<?php
