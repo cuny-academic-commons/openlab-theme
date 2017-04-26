@@ -323,8 +323,19 @@ function openlab_group_archive() {
 function openlab_groups_pagination_links() {
 	global $groups_template;
 
+	$base = add_query_arg( array(
+		'grpage' => '%#%',
+		'num' => $groups_template->pag_num,
+		'sortby' => $groups_template->sort_by,
+		'order' => $groups_template->order,
+	) );
+
+	if ( isset( $_GET['search'] ) ) {
+		$base = add_query_arg( 's', urldecode( wp_unslash( $_GET['search'] ) ), $base );
+	}
+
 	$pagination = paginate_links(array(
-		'base' => add_query_arg( array( 'grpage' => '%#%', 'num' => $groups_template->pag_num, 's' => $search_terms, 'sortby' => $groups_template->sort_by, 'order' => $groups_template->order ) ),
+		'base' => $base,
 		'format' => '',
 		'total' => ceil( (int) $groups_template->total_group_count / (int) $groups_template->pag_num ),
 		'current' => $groups_template->pag_page,
