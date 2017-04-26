@@ -8,10 +8,10 @@
 
 // custom menu locations for OpenLab
 register_nav_menus(array(
-	'main' => __( 'Main Menu', 'cuny' ),
-	'aboutmenu' => __( 'About Menu', 'cuny' ),
-	'helpmenu' => __( 'Help Menu', 'cuny' ),
-	'helpmenusec' => __( 'Help Menu Secondary', 'cuny' ),
+	'main' => __( 'Main Menu', 'openlab-theme' ),
+	'aboutmenu' => __( 'About Menu', 'openlab-theme' ),
+	'helpmenu' => __( 'Help Menu', 'openlab-theme' ),
+	'helpmenusec' => __( 'Help Menu Secondary', 'openlab-theme' ),
 ));
 
 /**
