@@ -28,14 +28,14 @@
 				</td>
 				<td width="21%">
 					<strong><?php bp_message_is_active_notice() ?></strong>
-					<span class="activity"><?php _e("Sent:", "buddypress"); ?> <?php bp_message_notice_post_date() ?></span>
+					<span class="activity"><?php _e( 'Sent:', 'buddypress' ); ?> <?php bp_message_notice_post_date() ?></span>
 				</td>
 
 				<?php do_action( 'bp_notices_list_item' ) ?>
 
 				<td width="10%">
 					<a class="button" href="<?php bp_message_activate_deactivate_link() ?>" class="confirm"><?php bp_message_activate_deactivate_text() ?></a>
-					<a class="button" href="<?php bp_message_notice_delete_link() ?>" class="confirm" title="<?php _e( "Delete Message", "buddypress" ); ?>">x</a>
+					<a class="button" href="<?php bp_message_notice_delete_link() ?>" class="confirm" title="<?php _e( 'Delete Message', 'buddypress' ); ?>">x</a>
 				</td>
 			</tr>
 		<?php endwhile; ?>
@@ -43,7 +43,7 @@
 
 	<?php do_action( 'bp_after_notices' ) ?>
 
-<?php else: ?>
+<?php else : ?>
 
 	<div id="message" class="info">
 		<p><?php _e( 'Sorry, no notices were found.', 'buddypress' ); ?></p>

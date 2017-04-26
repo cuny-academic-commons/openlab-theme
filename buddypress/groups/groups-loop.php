@@ -11,7 +11,7 @@ global $bp;
 
 // Set up the bp_has_groups() args: per_page, page, search_terms
 $group_args = array(
-	'per_page' => 12
+	'per_page' => 12,
 );
 
 // @todo Passing around slug plural 'courses' is ugly when interfacing with existing OL functions
@@ -22,11 +22,11 @@ if ( isset( $_GET['type'] ) ) {
 }
 
 // @todo
-if ( !empty( $search_terms_raw ) ) {
+if ( ! empty( $search_terms_raw ) ) {
 	$group_args['search_terms'] = $search_terms_raw;
 }
 
-if ( !empty( $_GET['group_sequence'] ) ) {
+if ( ! empty( $_GET['group_sequence'] ) ) {
 	$group_args['type'] = $_GET['group_sequence'];
 }
 ?>
@@ -40,7 +40,7 @@ if ( !empty( $_GET['group_sequence'] ) ) {
 		}
 		?>
 
-            <div class="group-count col-sm-5 pull-right"><?php cuny_groups_pagination_count(ucwords($group_type) . 's'); ?></div>
+			<div class="group-count col-sm-5 pull-right"><?php cuny_groups_pagination_count( ucwords( $group_type ) . 's' ); ?></div>
 </div>
 	<div id="group-list" class="item-list group-list row">
 		<?php
@@ -48,58 +48,58 @@ if ( !empty( $_GET['group_sequence'] ) ) {
 		while ( bp_groups() ) : bp_the_group();
 			$group_id = bp_get_group_id(); ?>
 			<div class="group-item col-xs-12">
-                    <div class="group-item-wrapper">
-                        <div class="row">
+					<div class="group-item-wrapper">
+						<div class="row">
 				<div class="item-avatar alignleft col-xs-6">
-                                <a href="<?php bp_group_permalink() ?>"><img class="img-responsive" src ="<?php echo bp_core_fetch_avatar(array('item_id' => $group_id, 'object' => 'group', 'type' => 'full', 'html' => false)) ?>" alt="<?php echo $group->name; ?>"/></a>
-                            </div>
+								<a href="<?php bp_group_permalink() ?>"><img class="img-responsive" src ="<?php echo bp_core_fetch_avatar( array( 'item_id' => $group_id, 'object' => 'group', 'type' => 'full', 'html' => false ) ) ?>" alt="<?php echo $group->name; ?>"/></a>
+							</div>
 				<div class="item col-xs-18">
-                                    <div class="item-content-wrapper">
-                                            <h2 class="item-title">
-                                                <a class="no-deco truncate-on-the-fly hyphenate" href="<?php bp_group_permalink() ?>" data-basevalue="<?php echo ($group_type == 'course' ? 50 : 65 ) ?>" data-minvalue="20" data-basewidth="290"><?php bp_group_name() ?></a>
-                                                <span class="original-copy hidden"><?php bp_group_name() ?></span>
-                                            </h2>
-                                            <?php
-                                            //course group type
-                                            if ($group_type == 'course'):
-                                                ?>
+									<div class="item-content-wrapper">
+											<h2 class="item-title">
+												<a class="no-deco truncate-on-the-fly hyphenate" href="<?php bp_group_permalink() ?>" data-basevalue="<?php echo ($group_type == 'course' ? 50 : 65 ) ?>" data-minvalue="20" data-basewidth="290"><?php bp_group_name() ?></a>
+												<span class="original-copy hidden"><?php bp_group_name() ?></span>
+											</h2>
+											<?php
+											//course group type
+											if ( $group_type == 'course' ) :
+												?>
 
-                                                <div class="info-line uppercase">
-                                                    <?php echo openlab_output_course_info_line($group_id); ?>
-                                                </div>
-                                            <?php elseif ($group_type == 'portfolio'): ?>
+												<div class="info-line uppercase">
+													<?php echo openlab_output_course_info_line( $group_id ); ?>
+												</div>
+											<?php elseif ( $group_type == 'portfolio' ) :  ?>
 
-                                                <div class="info-line"><?php echo bp_core_get_userlink(openlab_get_user_id_from_portfolio_group_id(bp_get_group_id())); ?></div>
+												<div class="info-line"><?php echo bp_core_get_userlink( openlab_get_user_id_from_portfolio_group_id( bp_get_group_id() ) ); ?></div>
 
-                                            <?php endif; ?>
-                                                <div class="description-line">
-                                                    <p class="truncate-on-the-fly" data-link="<?php echo bp_get_group_permalink() ?>" data-basevalue="105" data-basewidth="290"><?php echo bp_get_group_description_excerpt() ?></p>
-                                                    <p class="original-copy hidden"><?php echo bp_get_group_description_excerpt() ?></p>
-                                                </div>
-                                    </div>
+											<?php endif; ?>
+												<div class="description-line">
+													<p class="truncate-on-the-fly" data-link="<?php echo bp_get_group_permalink() ?>" data-basevalue="105" data-basewidth="290"><?php echo bp_get_group_description_excerpt() ?></p>
+													<p class="original-copy hidden"><?php echo bp_get_group_description_excerpt() ?></p>
+												</div>
+									</div>
 				</div>
 
-                        </div>
-                    </div>
-                        </div>
-            <?php $count++ ?>
+						</div>
+					</div>
+						</div>
+			<?php $count++ ?>
 		<?php endwhile; ?>
-        </div>
-        <script type="text/javascript">
-            (function($){
-              $('.item-content-wrapper p').css('opacity','0');
-            })(jQuery);
-        </script>
+		</div>
+		<script type="text/javascript">
+			(function($){
+			  $('.item-content-wrapper p').css('opacity','0');
+			})(jQuery);
+		</script>
 
 		<div class="pagination-links" id="group-dir-pag-top">
 			<?php echo openlab_groups_pagination_links() ?>
 		</div>
-<?php else: ?>
+<?php else : ?>
 <div class="row">
-	<?php $group_type = $filters['wds_group_type'].'s'; ?>
+	<?php $group_type = $filters['wds_group_type'] . 's'; ?>
 	  	<?php
-		if (openlab_is_my_profile()) {
-			echo openlab_submenu_markup('groups', $filters['wds_group_type'], false);
+		if ( openlab_is_my_profile() ) {
+			echo openlab_submenu_markup( 'groups', $filters['wds_group_type'], false );
 		}
 		?>
 </div>

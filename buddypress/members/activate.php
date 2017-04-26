@@ -6,18 +6,18 @@
 		<?php do_action( 'bp_before_activation_page' ) ?>
 
 		<div class="page row" id="activate-page">
-                    
-                    <div class="col-md-24">
-                    
-                    <div class="panel panel-default">
+					
+					<div class="col-md-24">
+					
+					<div class="panel panel-default">
 
 			<?php if ( bp_account_was_activated() ) : ?>
 
 				<div class="panel-heading"><?php _e( 'Account Activated', 'buddypress' ) ?></div>
-                                <div class="panel-body">
-                                
-                                <?php do_action( 'template_notices' ) ?>
-                                
+								<div class="panel-body">
+								
+								<?php do_action( 'template_notices' ) ?>
+								
 				<?php do_action( 'bp_before_activate_content' ) ?>
 
 				<?php if ( isset( $_GET['e'] ) ) : ?>
@@ -25,12 +25,12 @@
 				<?php else : ?>
 					<p class="bp-template-notice updated no-margin no-margin-bottom"><?php _e( 'Your account was activated successfully! You can now log in with the username and password you provided when you signed up.', 'buddypress' ) ?></p>
 				<?php endif; ?>
-                                </div>
+								</div>
 
 			<?php else : ?>
 
 				<div class="panel-heading"><?php _e( 'Activate your Account', 'buddypress' ) ?></div>
-                                <div class="panel-body">
+								<div class="panel-body">
 				<?php do_action( 'bp_before_activate_content' ) ?>
 
 				<p><?php _e( 'Please provide a valid activation key.', 'buddypress' ) ?></p>
@@ -45,15 +45,15 @@
 					</p>
 
 				</form>
-                                </div>
+								</div>
 
 			<?php endif; ?>
 
 			<?php do_action( 'bp_after_activate_content' ) ?>
-                                
-                    </div>
-                        
-                    </div>
+								
+					</div>
+						
+					</div>
 
 		</div><!-- .page -->
 

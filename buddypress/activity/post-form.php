@@ -16,7 +16,7 @@
 
 	<h5>
 		<?php if ( bp_is_group() ) : ?>
-			<?php printf( __( "What's new in %s, %s?", 'buddypress' ), bp_get_group_name(), bp_get_user_firstname() ) ?>
+			<?php printf( __( "What's new in %1$s, %1$s?", 'buddypress' ), bp_get_group_name(), bp_get_user_firstname() ) ?>
 		<?php else : ?>
 			<?php printf( __( "What's new %s?", 'buddypress' ), bp_get_user_firstname() ) ?>
 		<?php endif; ?>
@@ -32,7 +32,7 @@
 				<span class="ajax-loader"></span> &nbsp;
 				<input type="submit" name="aw-whats-new-submit" id="aw-whats-new-submit" value="<?php _e( 'Post Update', 'buddypress' ) ?>" />
 			</div>
-			<?php if ( function_exists('bp_has_groups') && !bp_is_my_profile() && !bp_is_group() ) : ?>
+			<?php if ( function_exists( 'bp_has_groups' ) && ! bp_is_my_profile() && ! bp_is_group() ) : ?>
 				<div id="whats-new-post-in-box">
 					<?php _e( 'Post in', 'buddypress' ) ?>:
 

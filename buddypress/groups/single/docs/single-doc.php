@@ -38,4 +38,3 @@
 	<p><?php printf( __( '<a href="%1$s">View all Docs in this group</a> or <a href="%2$s">create a new Doc</a>.', 'bp-docs' ), bp_docs_get_item_docs_link(), bp_docs_get_item_docs_link() . 'create' ) ?></p>
 
 <?php endif; ?>
-
