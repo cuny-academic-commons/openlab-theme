@@ -312,7 +312,7 @@ function openlab_group_archive() {
 		</div>
 		<div id="group-list" class="item-list row">
 			<div class="widget-error query-no-results col-sm-24">
-				<p class="bold"><?php _e( 'There are no ' . $group_type . 's to display.', 'buddypress' ) ?></p>
+				<p class="bold"><?php _e( 'There are no items to display.', 'openlab-theme' ) ?></p>
 			</div>
 		</div>
 
