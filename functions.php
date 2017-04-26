@@ -71,7 +71,7 @@ function openlab_create_default_nav_menu() {
 			array(
 				'menu-item-title' => $group_type->get_label( 'plural' ),
 				'menu-item-classes' => 'group-type ' . $group_type->get_slug(),
-				'menu-item-url' => bp_get_members_directory_permalink( $group_type->get_slug() ),
+				'menu-item-url' => bp_get_group_type_directory_permalink( $group_type->get_slug() ),
 				'menu-item-status' => 'publish',
 			)
 		);
