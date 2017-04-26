@@ -31,6 +31,7 @@ function openlab_maybe_install() {
 
 	require dirname( __FILE__ ) . '/lib/cbox-widget-setter.php';
 
+	// Group Type widgets.
 	if ( ! CBox_Widget_Setter::is_sidebar_populated( 'home-main' ) ) {
 		$group_types = cboxol_get_group_types();
 		foreach ( $group_types as $group_type ) {
@@ -41,7 +42,44 @@ function openlab_maybe_install() {
 		}
 	}
 
+	// Nav menu.
+	openlab_create_default_nav_menu();
+
 	update_option( 'openlab_theme_installed', time() );
+}
+
+function openlab_create_default_nav_menu() {
+	$menu_name = wp_slash( __( 'Main Menu', 'cbox-openlab-core' ) );
+	$menu_id = wp_create_nav_menu( $menu_name );
+
+	wp_update_nav_menu_item(
+		$menu_id,
+		0,
+		array(
+			'menu-item-title' => __( 'People', 'openlab-theme' ),
+			'menu-item-classes' => 'home',
+			'menu-item-url' => bp_get_members_directory_permalink(),
+			'menu-item-status' => 'publish',
+		)
+	);
+
+	$group_types = cboxol_get_group_types();
+	foreach ( $group_types as $group_type ) {
+		wp_update_nav_menu_item(
+			$menu_id,
+			0,
+			array(
+				'menu-item-title' => $group_type->get_label( 'plural' ),
+				'menu-item-classes' => 'group-type ' . $group_type->get_slug(),
+				'menu-item-url' => bp_get_members_directory_permalink( $group_type->get_slug() ),
+				'menu-item-status' => 'publish',
+			)
+		);
+	}
+
+	$locations = get_theme_mod( 'nav_menu_locations' );
+	$locations['main'] = $menu_id;
+	set_theme_mod( 'nav_menu_locations', $locations );
 }
 
 /*
