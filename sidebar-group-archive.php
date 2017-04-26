@@ -1,7 +1,7 @@
 <?php
 global $bp, $wp_query;
 $post_obj = $wp_query->get_queried_object();
-$group_type = openlab_page_slug_to_grouptype();
+$group_type = bp_get_current_group_directory_type();
 $group_slug = $group_type . 's';
 
 //conditional for people archive sidebar

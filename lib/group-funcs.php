@@ -135,9 +135,8 @@ function openlab_group_archive() {
 		return;
 	}
 
-	// geting the grouptype by slug - the archive pages are curently WP pages and don't have a specific grouptype associated with them - this function uses the curent page slug to assign a grouptype
-	// @to-do - get the archive page in the right spot to function correctly within the BP framework
-	$group_type = openlab_page_slug_to_grouptype();
+	$group_type = bp_get_current_group_directory_type();
+	$type_object = cboxol_get_group_type( $group_type );
 
 	$sequence_type = '';
 	if ( ! empty( $_GET['group_sequence'] ) ) {
@@ -185,12 +184,7 @@ function openlab_group_archive() {
 	}
 
 	// Set up filters
-	$meta_query = array(
-		array(
-			'key' => 'wds_group_type',
-			'value' => $group_type,
-		),
-	);
+	$meta_query = array();
 
 	if ( ! empty( $school ) && 'school_all' != strtolower( $school ) ) {
 		$meta_query[] = array(
@@ -1182,7 +1176,7 @@ function openlab_current_directory_filters() {
 	if ( is_page( 'people' ) ) {
 		$current_view = 'people';
 	} else {
-		$current_view = openlab_get_current_group_type();
+		$current_view = bp_get_current_group_directory_type();
 	}
 
 	switch ( $current_view ) {

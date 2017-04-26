@@ -242,8 +242,6 @@ function cuny_home_square( \CBOX\OL\GroupType $type ) {
 				while ( bp_groups() ) : bp_the_group();
 					$group = $groups_template->group;
 
-					// Showing descriptions for now. http://openlab.citytech.cuny.edu/redmine/issues/291
-					// $activity = !empty( $group_activity_items[$group->id] ) ? $group_activity_items[$group->id] : stripslashes( $group->description );
 					$activity = stripslashes( $group->description );
 					echo '<div class="box-1 row-' . $i . ' activity-item type-' . esc_attr( $type->get_slug() ) . '">';
 					?>

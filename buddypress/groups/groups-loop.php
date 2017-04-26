@@ -9,29 +9,17 @@
 // Set up the group meta filters
 global $bp;
 
-$filters = array();
-if ( bp_is_user_groups() ) {
-	if ( isset( $_GET['type'] ) ) {
-		$filters['wds_group_type'] = $_GET['type'];
-	}
+// Set up the bp_has_groups() args: per_page, page, search_terms
+$group_args = array(
+	'per_page' => 12
+);
 
-	// Set up the bp_has_groups() args: per_page, page, search_terms
-	$group_args = array(
-		'per_page' => 12
-	);
-
+// @todo Passing around slug plural 'courses' is ugly when interfacing with existing OL functions
+if ( isset( $_GET['type'] ) ) {
+	$group_type = wp_unslash( $_GET['type'] );
 } else {
-	//geting the grouptype by slug - the archive pages are curently WP pages and don't have a specific grouptype associated with them - this function uses the curent page slug to assign a grouptype
-	$filters['wds_group_type'] = openlab_page_slug_to_grouptype();
-
-	$group_args = array(
-	'per_page'		=> 12,
-	'show_hidden'	=> true,
-	'user_id'		=> $bp->loggedin_user->id
-	);
+	$group_type = 'courses';
 }
-
-$meta_filter = new BP_Groups_Meta_Filter( $filters );
 
 // @todo
 if ( !empty( $search_terms_raw ) ) {
@@ -44,12 +32,11 @@ if ( !empty( $_GET['group_sequence'] ) ) {
 ?>
 
 <?php if ( bp_has_groups( $group_args ) ) : ?>
-<?php $group_type = $filters['wds_group_type']; ?>
 <div id="openlab-main-content"></div>
 <div class="row">
 	  	<?php
-		if (openlab_is_my_profile()) {
-			echo openlab_submenu_markup('groups', $filters['wds_group_type'],false);
+		if ( openlab_is_my_profile() ) {
+			echo openlab_submenu_markup( 'groups', $group_type, false );
 		}
 		?>
 
@@ -121,5 +108,3 @@ if ( !empty( $_GET['group_sequence'] ) ) {
 	</div>
 
 <?php endif; ?>
-
-<?php $meta_filter->remove_filters(); ?>
