@@ -200,19 +200,9 @@ function cuny_whos_online() {
 function cuny_home_square( $type ) {
 	global $wpdb, $bp;
 
-	$cached = get_transient( 'openlab_home_square_' . $type );
-	if ( $cached ) {
-		echo $cached;
-		return;
-	}
-
 	if ( ! bp_is_active( 'groups' ) ) {
 		return;
 	}
-
-	$meta_filter = new BP_Groups_Meta_Filter(array(
-		'wds_group_type' => $type,
-	));
 
 	$i = 1;
 
@@ -221,6 +211,7 @@ function cuny_home_square( $type ) {
 		'type' => 'active',
 		'user_id' => 0,
 		'show_hidden' => false,
+		'group_type' => $type,
 	);
 
 	if ( bp_has_groups( $groups_args ) ) :
@@ -239,7 +230,6 @@ function cuny_home_square( $type ) {
 
 		ob_start();
 		?>
-
 
 		<div class="col-sm-6 activity-list <?php echo $type; ?>-list">
 			<div class="activity-wrapper">
@@ -284,11 +274,7 @@ function cuny_home_square( $type ) {
 
 	$html = ob_get_clean();
 
-	set_transient( 'openlab_home_square_' . $type, $html, 5 * 60 );
-
 	echo $html;
-
-	$meta_filter->remove_filters();
 }
 
 /**

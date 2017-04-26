@@ -17,7 +17,7 @@ class OpenLab_Group_Type_Widget extends WP_Widget {
 	}
 
 	public function widget( $args, $instance ) {
-		var_dump( $this->group_type->get_name() );
+		cuny_home_square( $this->group_type->get_slug() );
 	}
 
 	public function form( $instance ) {}

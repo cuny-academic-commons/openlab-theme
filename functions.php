@@ -162,6 +162,8 @@ function openlab_register_sidebars() {
 		'name' => __( 'Home Main', 'openlab-theme' ),
 		'description' => __( 'The main section of the home page. Generally used for group type widgets.', 'openlab-theme' ),
 		'id' => 'home-main',
+	//	'before_widget' => '<div class="col-sm-6 activity-list">',
+	//	'after_widget' => '</div>',
 	) );
 }
 
