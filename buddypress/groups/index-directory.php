@@ -1,6 +1,4 @@
 <?php
-/* Template Name: Group Archive */
-/* * begin layout* */
 get_header();
 
 $type = bp_get_current_group_directory_type();
@@ -23,4 +21,3 @@ $type_object = cboxol_get_group_type( $type );
 
 <?php
 get_footer();
-/**end layout**/
