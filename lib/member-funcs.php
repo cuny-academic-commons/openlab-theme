@@ -496,6 +496,10 @@ function openlab_get_groups_of_user( $args = array() ) {
 function cuny_student_profile() {
 	global $site_members_template, $user_ID, $bp;
 
+	$group_types = cboxol_get_group_types( array(
+		'exclude_portfolio' => true,
+	) );
+
 	do_action( 'bp_before_member_home_content' );
 	?>
 
@@ -506,9 +510,9 @@ function cuny_student_profile() {
 
 	<div id="member-item-body" class="row">
 
-		<?php echo cuny_profile_activty_block( 'course', 'My Courses', '', 25 ); ?>
-		<?php echo cuny_profile_activty_block( 'project', 'My Projects', ' last', 25 ); ?>
-		<?php echo cuny_profile_activty_block( 'club', 'My Clubs', ' last', 25 ); ?>
+		<?php foreach ( $group_types as $group_type ) : ?>
+			<?php echo openlab_profile_group_type_activity_block( $group_type ); ?>
+		<?php endforeach; ?>
 
 		<script type='text/javascript'>(function ($) {
 				$('.activity-list').css('visibility', 'hidden');
@@ -560,157 +564,85 @@ function cuny_student_profile() {
 	<?php
 }
 
-function cuny_profile_activty_block( $type, $title, $last, $desc_length = 135 ) {
+function openlab_profile_group_type_activity_block( \CBOX\OL\GroupType $type ) {
 	global $wpdb, $bp;
 
-	// echo $type."<hr>";
-	$ids = '9999999';
-	$groups_found = array();
-	if ( $type != 'blog' ) {
-		$get_group_args = array(
-			'user_id' => bp_displayed_user_id(),
-			'show_hidden' => false,
-			'active_status' => 'all',
-			'group_type' => $type,
-			'get_activity' => false,
-		);
-		$groups = openlab_get_groups_of_user( $get_group_args );
+	$group_args = array(
+		'user_id' => bp_displayed_user_id(),
+		'show_hidden' => false,
+		'group_type' => $type->get_slug(),
+		'per_page' => 20,
+	);
 
-		// echo $ids;
-		if ( ! empty( $groups['group_ids_sql'] ) && bp_has_groups( 'include=' . $groups['group_ids_sql'] . '&per_page=20' ) ) :
-			// if ( bp_has_groups( 'include='.$ids.'&per_page=3&max=3' ) ) :
+	$title = $type->get_label( 'plural' );
+
+	if ( bp_has_groups( $group_args ) ) : ?>
+		<div id="<?php echo esc_attr( $type->get_slug() ) ?>-activity-stream" class="<?php echo esc_attr( $type->get_slug() ) ?>-list activity-list item-list col-sm-8 col-xs-12">
+			<?php
+			// @todo make this link work
+			if ( $bp->is_item_admin || $bp->is_item_mod ) :
+				$href = bp_get_root_domain() . '/my-' . $type->get_slug() . 's';
+			else :
+				$href = bp_displayed_user_domain() . 'groups/?type=' . $type->get_slug();
+			endif;
 			?>
-			<div id="<?php echo $type ?>-activity-stream" class="<?php echo $type; ?>-list activity-list item-list<?php echo $last ?> col-sm-8 col-xs-12">
-				<?php
-				if ( $bp->is_item_admin || $bp->is_item_mod ) :
-					$href = bp_get_root_domain() . '/my-' . $type . 's';
-				else :
-					$href = $bp->displayed_user->domain . 'groups/?type=' . $type;
-				endif;
-				?>
-				<h2 class="title activity-title"><a class="no-deco" href="<?php echo $href ?>"><?php echo $title; ?><span class="fa fa-chevron-circle-right font-size font-18" aria-hidden="true"></span></a></h2>
-				<?php $x = 0; ?>
-				<?php while ( bp_groups() ) : bp_the_group(); ?>
+			<?php /* @todo font awesome is loaded from openlab-toolbar.php */ ?>
+			<h2 class="title activity-title"><a class="no-deco" href="<?php echo $href ?>"><?php echo esc_html( $title ) ?><span class="fa fa-chevron-circle-right font-size font-18" aria-hidden="true"></span></a></h2>
+			<?php $x = 0; ?>
+			<?php while ( bp_groups() ) : bp_the_group(); ?>
 
-					<div class="panel panel-default">
-						<div class="panel-body">
-							<div class="row">
+				<div class="panel panel-default">
+					<div class="panel-body">
+						<div class="row">
+							<div class="activity-avatar col-sm-10 col-xs-8">
+								<a href="<?php bp_group_permalink() ?>"><img class="img-responsive" src ="<?php echo bp_core_fetch_avatar( array( 'item_id' => bp_get_group_id(), 'object' => 'group', 'type' => 'full', 'html' => false ) ) ?>" alt="<?php echo bp_get_group_name(); ?>"/></a>
+							</div>
 
-								<div class="activity-avatar col-sm-10 col-xs-8">
-									<a href="<?php bp_group_permalink() ?>"><img class="img-responsive" src ="<?php echo bp_core_fetch_avatar( array( 'item_id' => bp_get_group_id(), 'object' => 'group', 'type' => 'full', 'html' => false ) ) ?>" alt="<?php echo bp_get_group_name(); ?>"/></a>
-								</div>
+							<div class="activity-content truncate-combo col-sm-14 col-xs-16">
 
-								<div class="activity-content truncate-combo col-sm-14 col-xs-16">
+								<p class="overflow-hidden h6">
+									<a class="font-size font-14 no-deco truncate-name truncate-on-the-fly hyphenate" href="<?php bp_group_permalink() ?>" data-basevalue="34" data-minvalue="20" data-basewidth="143" data-srprovider="true"><?php echo bp_get_group_name(); ?></a>
+									<span class="original-copy hidden"><?php echo bp_get_group_name() ?></span>
+								</p>
 
-									<p class="overflow-hidden h6">
-										<a class="font-size font-14 no-deco truncate-name truncate-on-the-fly hyphenate" href="<?php bp_group_permalink() ?>" data-basevalue="34" data-minvalue="20" data-basewidth="143" data-srprovider="true"><?php echo bp_get_group_name(); ?></a>
-										<span class="original-copy hidden"><?php echo bp_get_group_name() ?></span>
-									</p>
-
-									<?php $activity = strip_tags( bp_get_group_description() ); ?>
-									<div class="truncate-wrapper overflow-hidden">
-										<p class="truncate-on-the-fly hyphenate" data-link="<?php echo bp_get_group_permalink() ?>" data-includename="<?php echo bp_get_group_name(); ?>" data-basevalue="65" data-basewidth="143"><?php echo $activity ?></p>
-										<p class="original-copy hidden"><?php echo $activity ?></p>
-									</div>
-
+								<?php $activity = strip_tags( bp_get_group_description() ); ?>
+								<div class="truncate-wrapper overflow-hidden">
+									<p class="truncate-on-the-fly hyphenate" data-link="<?php echo bp_get_group_permalink() ?>" data-includename="<?php echo bp_get_group_name(); ?>" data-basevalue="65" data-basewidth="143"><?php echo $activity ?></p>
+									<p class="original-copy hidden"><?php echo $activity ?></p>
 								</div>
 
 							</div>
 
 						</div>
-					</div>
 
-					<?php /* Increment */ ?>
-					<?php $x += 1; ?>
-
-					<?php /* Only show 5 items max */ ?>
-					<?php
-					if ( $x == 5 ) {
-						break;
-					}
-					?>
-
-				<?php endwhile; ?>
-
-			</div>
-		<?php else : ?>
-			<div id="<?php echo $type ?>-activity-stream" class="<?php echo $type; ?>-list activity-list item-list<?php echo $last ?> col-sm-8 col-xs-12">
-				<h4><?php echo $title ?></h4>
-
-				<div class="panel panel-default">
-					<div class="panel-body">
-						<p>
-							<?php
-							if ( $type != 'course' ) {
-								if ( $bp->loggedin_user->id == $bp->displayed_user->id ) {
-									?>
-									You aren't participating in any <?php echo $type; ?>s on the OpenLab yet. Why not <a href="<?php echo site_url(); ?>/groups/create/step/group-details/?type=<?php echo $type; ?>&new=true">create a <?php echo $type; ?></a>?
-									<?php
-								} else {
-									echo $bp->displayed_user->fullname;
-									?>
-									hasn't created or joined any <?php echo $type ?>s yet.
-									<?php
-								}
-							} else {
-								if ( $bp->loggedin_user->id == $bp->displayed_user->id ) {
-									?>
-									You haven't created any courses yet.
-									<?php
-								} else {
-									echo $bp->displayed_user->fullname;
-									?>
-									hasn't joined any <?php echo $type ?>s yet.
-									<?php
-								}
-							}
-							?>
-						</p>
 					</div>
 				</div>
-			</div>
-		<?php endif; ?>
-		<?php
-	} else {
-		// BLOGS
-		global $bp, $wpdb;
 
-		// bp_has_blogs() doesn't let us narrow our options enough
-		// Get all group blog ids, so we can exclude them
-		$gblogs = $wpdb->get_col( $wpdb->prepare( "SELECT DISTINCT meta_value FROM {$bp->groups->table_name_groupmeta} WHERE meta_key = 'wds_bp_group_site_id'" ) );
+				<?php /* Increment */ ?>
+				<?php $x += 1; ?>
 
-		$gblogs = implode( ',', $gblogs );
+				<?php /* Only show 5 items max */ ?>
+				<?php
+				if ( $x == 5 ) {
+					break;
+				}
+				?>
 
-		$blogs_query = $wpdb->prepare("
-			SELECT b.blog_id, b.user_id as admin_user_id, u.user_email as admin_user_email, wb.domain, wb.path, bm.meta_value as last_activity, bm2.meta_value as name
-			FROM {$bp->blogs->table_name} b, {$bp->blogs->table_name_blogmeta} bm, {$bp->blogs->table_name_blogmeta} bm2, {$wpdb->base_prefix}blogs wb, {$wpdb->users} u
-			WHERE b.blog_id = wb.blog_id AND b.user_id = u.ID AND b.blog_id = bm.blog_id AND b.blog_id = bm2.blog_id AND b.user_id = {$bp->displayed_user->id} AND wb.archived = '0' AND wb.spam = 0 AND wb.mature = 0 AND wb.deleted = 0 AND wb.public = 1 AND bm.meta_key = 'last_activity' AND bm2.meta_key = 'name' AND b.blog_id NOT IN ({$gblogs}) LIMIT 3");
+			<?php endwhile; ?>
 
-		$myblogs = $wpdb->get_results( $blogs_query );
-		?>
-
-
-
-		<div id="<?php echo $type ?>-activity-stream" class="<?php echo $type; ?>-list activity-list item-list<?php echo $last ?>">
-			<h4><?php echo $title ?></h4>
-
-			<?php if ( ! empty( $myblogs ) ) : ?>
-				<?php foreach ( (array) $myblogs as $myblog ) : ?>
-					<li>
-						<a href="http://<?php echo trailingslashit( $myblog->domain . $myblog->path ) ?>"><?php echo $myblog->name ?></a>
-					</li>
-				<?php endforeach ?>
-			<?php else : ?>
-				<?php if ( bp_is_my_profile() ) : ?>
-					You haven't created or joined any sites yet.
-				<?php else : ?>
-					<?php echo $bp->displayed_user->fullname ?> hasn't created or joined any sites yet.
-				<?php endif ?>
-
-			<?php endif ?>
 		</div>
-		<?php
-	}
+	<?php else : ?>
+		<div id="<?php echo esc_attr( $type->get_slug() ) ?>-activity-stream" class="<?php echo esc_attr( $type->get_slug() ) ?>-list activity-list item-list col-sm-8 col-xs-12">
+			<h4><?php echo esc_html( $title ) ?></h4>
+
+			<div class="panel panel-default">
+				<div class="panel-body">
+					<p><?php esc_html_e( 'None found.', 'openlab-theme' ); ?></p>
+				</div>
+			</div>
+		</div>
+	<?php endif; ?>
+	<?php
 }
 
 function cuny_member_profile_header() {
