@@ -172,6 +172,7 @@ function openlab_member_sidebar_menu( $mobile = false ) {
 					<?php endif; ?>
 				<?php endif; ?>
 
+				<?php /* @todo the target for these links doesn't yet exist */ ?>
 				<?php foreach ( $group_types as $group_type ) : ?>
 					<?php if ( $group_type->get_is_portfolio() ) continue ?>
 					<li class="sq-bullet <?php if ( is_page( 'my-courses' ) || openlab_is_create_group( $group_type->get_slug() ) ) : ?>selected-page<?php endif ?> mol-courses my-<?php echo esc_attr( $group_type->get_slug() ) ?>"><a href="<?php echo bp_get_root_domain() ?>/my-courses/"><?php echo esc_html( $group_type->get_label( 'my_groups' ) ) ?></a></li>
