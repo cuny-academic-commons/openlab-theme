@@ -138,7 +138,9 @@ function openlab_member_sidebar_menu( $mobile = false ) {
 		$classes = 'hidden-xs';
 	}
 
-	$group_types = cboxol_get_group_types();
+	$group_types = cboxol_get_group_types( array(
+		'exclude_portfolio' => true,
+	) );
 
 	// @todo standalone function
 	$portfolios_are_active = false;
@@ -147,6 +149,11 @@ function openlab_member_sidebar_menu( $mobile = false ) {
 			$portfolios_are_active = true;
 			break;
 		}
+	}
+
+	$current_group_type = null;
+	if ( ! empty( $_GET['group_type'] ) ) {
+		$current_group_type = wp_unslash( urldecode( $_GET['group_type'] ) );
 	}
 
 	if ( is_user_logged_in() && openlab_is_my_profile() ) :
@@ -174,8 +181,17 @@ function openlab_member_sidebar_menu( $mobile = false ) {
 
 				<?php /* @todo the target for these links doesn't yet exist */ ?>
 				<?php foreach ( $group_types as $group_type ) : ?>
-					<?php if ( $group_type->get_is_portfolio() ) continue ?>
-					<li class="sq-bullet <?php if ( is_page( 'my-courses' ) || openlab_is_create_group( $group_type->get_slug() ) ) : ?>selected-page<?php endif ?> mol-courses my-<?php echo esc_attr( $group_type->get_slug() ) ?>"><a href="<?php echo bp_get_root_domain() ?>/my-courses/"><?php echo esc_html( $group_type->get_label( 'my_groups' ) ) ?></a></li>
+					<?php
+					$selected = '';
+					if (
+						( bp_is_user_groups() && $group_type->get_slug() === $current_group_type )
+						||
+						openlab_is_create_group( $group_type->get_slug() )
+					) {
+						$selected = 'selected-page';
+					}
+					?>
+					<li class="sq-bullet <?php echo $selected ?> mol-courses my-<?php echo esc_attr( $group_type->get_slug() ) ?>"><a href="<?php echo openlab_get_user_group_type_directory_url( $group_type ) ?>"><?php echo esc_html( $group_type->get_label( 'my_groups' ) ) ?></a></li>
 				<?php endforeach; ?>
 
 				<?php /* Get a friend request count */ ?>
