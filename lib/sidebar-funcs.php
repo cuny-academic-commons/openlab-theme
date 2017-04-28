@@ -227,20 +227,22 @@ function openlab_member_sidebar_menu( $mobile = false ) {
 
 				<li class="sq-bullet <?php if ( bp_is_user_activity() ) : ?>selected-page<?php endif ?> mol-profile"><a href="<?php echo $dud ?>/">Profile</a></li>
 
-				<?php if ( openlab_user_has_portfolio( bp_displayed_user_id() ) && ( ! openlab_group_is_hidden( openlab_get_user_portfolio_id() ) || openlab_is_my_profile() || groups_is_user_member( bp_loggedin_user_id(), openlab_get_user_portfolio_id() ) ) ) : ?>
+				<?php if ( $portfolios_are_active ) : ?>
+					<?php if ( openlab_user_has_portfolio( bp_displayed_user_id() ) && ( ! openlab_group_is_hidden( openlab_get_user_portfolio_id() ) || openlab_is_my_profile() || groups_is_user_member( bp_loggedin_user_id(), openlab_get_user_portfolio_id() ) ) ) : ?>
 
-					<li id="portfolios-groups-li<?php echo ($mobile ? '-mobile' : '') ?>" class="visible-xs mobile-anchor-link"><a href="#portfolio-sidebar-inline-widget" id="portfolios<?php echo ($mobile ? '-mobile' : '') ?>"><?php echo (xprofile_get_field_data( 'Account Type', bp_displayed_user_id() ) == 'Student' ? 'ePortfolio' : 'Portfolio') ?></a></li>
+						<li id="portfolios-groups-li<?php echo ($mobile ? '-mobile' : '') ?>" class="visible-xs mobile-anchor-link"><a href="#portfolio-sidebar-inline-widget" id="portfolios<?php echo ($mobile ? '-mobile' : '') ?>"><?php echo (xprofile_get_field_data( 'Account Type', bp_displayed_user_id() ) == 'Student' ? 'ePortfolio' : 'Portfolio') ?></a></li>
 
+					<?php endif; ?>
 				<?php endif; ?>
 
 				<?php /* Current page highlighting requires the GET param */ ?>
 				<?php $current_group_view = isset( $_GET['type'] ) ? $_GET['type'] : ''; ?>
 
-				<li class="sq-bullet <?php if ( bp_is_user_groups() && 'course' == $current_group_view ) : ?>selected-page<?php endif ?> mol-courses"><a href="<?php echo $dud . bp_get_groups_slug() ?>/?type=course">Courses</a></li>
+				<?php foreach ( $group_types as $group_type ) : ?>
+					<?php if ( $group_type->get_is_portfolio() ) continue ?>
 
-				<li class="sq-bullet <?php if ( bp_is_user_groups() && 'project' == $current_group_view ) : ?>selected-page<?php endif ?> mol-projects"><a href="<?php echo $dud . bp_get_groups_slug() ?>/?type=project">Projects</a></li>
-
-				<li class="sq-bullet <?php if ( bp_is_user_groups() && 'club' == $current_group_view ) : ?>selected-page<?php endif ?> mol-club"><a href="<?php echo $dud . bp_get_groups_slug() ?>/?type=club">Clubs</a></li>
+					<li class="sq-bullet <?php if ( bp_is_user_groups() && $group_type->get_slug() === $current_group_view ) : ?>selected-page<?php endif ?> mol-courses"><a href="<?php echo $dud . bp_get_groups_slug() ?>/?type=<?php echo esc_attr( $group_type->get_slug() ) ?>"><?php echo esc_html( $group_type->get_label( 'plural' ) ); ?></a></li>
+				<?php endforeach; ?>
 
 				<li class="sq-bullet <?php if ( bp_is_user_friends() ) : ?>selected-page<?php endif ?> mol-friends"><a href="<?php echo $dud . bp_get_friends_slug() ?>/">Friends</a></li>
 
