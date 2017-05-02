@@ -816,6 +816,7 @@ function openlab_group_profile_activity_list() {
 								<div class="recent-posts">
 									<h2 class="title activity-title"><a class="no-deco" href="<?php site_url(); ?>/groups/<?php echo $group_slug; ?>/forum/">Recent Discussions<span class="fa fa-chevron-circle-right" aria-hidden="true"></span></a></h2>
 									<?php
+									$forum_id = null;
 									$forum_ids = bbp_get_group_forum_ids( bp_get_current_group_id() );
 
 									// Get the first forum ID
