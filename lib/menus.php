@@ -661,10 +661,9 @@ function openlab_filter_subnav_home( $subnav_item ) {
 	global $bp;
 
 	$displayed_user_id = bp_is_user() ? bp_displayed_user_id() : bp_loggedin_user_id();
-	$group_label = openlab_get_group_type_label( 'case=upper' );
-	$new_label = '<span class="inline-visible-xs">' . $group_label . '</span> Profile';
 
-	$new_item = str_replace( 'Home', $new_label, $subnav_item );
+	// Intentionally use the 'buddypress' text domain.
+	$new_item = str_replace( __( 'Home', 'buddypress' ), esc_html__( 'Profile', 'cbox-openlab-core' ), $subnav_item );
 
 	// update "current" class to "current-menu-item" to unify site identification of current menu page
 	$new_item = str_replace( 'current selected', 'current-menu-item', $new_item );
@@ -677,7 +676,7 @@ function openlab_filter_subnav_home( $subnav_item ) {
 	$site_link = '';
 
 	if ( ! empty( $group_site_settings['site_url'] ) && $group_site_settings['is_visible'] ) {
-		$site_link = '<li id="site-groups-li" class="visible-xs"><a href="' . trailingslashit( esc_attr( $group_site_settings['site_url'] ) ) . '" id="site">' . $group_label . ' Site</a></li>';
+		$site_link = '<li id="site-groups-li" class="visible-xs"><a href="' . trailingslashit( esc_attr( $group_site_settings['site_url'] ) ) . '" id="site">' . esc_html__( 'Site', 'cbox-openlab-core' ) . '</a></li>';
 
 		if ( $group_site_settings['is_local'] && ((openlab_is_portfolio() && openlab_is_my_portfolio()) || ( ! openlab_is_portfolio() && groups_is_user_member( bp_loggedin_user_id(), bp_get_current_group_id() )) || $bp->is_item_admin || is_super_admin()) ) {
 
