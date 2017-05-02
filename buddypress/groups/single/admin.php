@@ -1,33 +1,30 @@
 <?php
 global $bp;
 
-$group_type = groups_get_groupmeta( $bp->groups->current_group->id, 'wds_group_type' );
+$group_type = cboxol_get_group_group_type( bp_get_current_group_id() );
 
-$group_label_uc = openlab_get_group_type_label( 'case=upper' );
 ?>
 
 <?php //the following switches out the membership menu for the regular admin menu on membership-based admin pages  ?>
 
 <div class="row"><div class="col-md-24">
-		<div class="submenu">
+	<div class="submenu">
+		<?php if ( bp_is_group_membership_request() || bp_is_action_variable( 'manage-members', 0 ) || bp_is_action_variable( 'notifications', 0 ) ) :  ?>
+			<?php do_action( 'bp_before_group_members_content' ) ?>
 
-			<?php if ( $bp->action_variables[0] == 'membership-requests' || $bp->action_variables[0] == 'manage-members' || $bp->action_variables[0] == 'notifications' ) :  ?>
-				<?php do_action( 'bp_before_group_members_content' ) ?>
+			<ul class="nav nav-inline">
+				<?php openlab_group_membership_tabs(); ?>
+			</ul>
 
-				<ul class="nav nav-inline">
-					<?php openlab_group_membership_tabs(); ?>
-				</ul>
+		<?php else : ?>
 
-			<?php else : ?>
-
-				<div class="submenu-text pull-left bold"><?php echo $group_label_uc ?> Settings:</div>
-				<ul class="nav nav-inline">
-					<?php openlab_group_admin_tabs(); ?>
-				</ul>
-			<?php endif; ?>
-
-		</div><!-- .item-list-tabs -->
-	</div></div>
+			<div class="submenu-text pull-left bold"><?php esc_html_e( 'Settings:', 'openlab-theme' ) ?></div>
+			<ul class="nav nav-inline">
+				<?php openlab_group_admin_tabs(); ?>
+			</ul>
+		<?php endif; ?>
+	</div><!-- .submenu -->
+</div></div>
 
 <form action="<?php bp_group_admin_form_action() ?>" name="group-settings-form" id="group-settings-form" class="standard-form form-panel" method="post" enctype="multipart/form-data">
 
@@ -41,25 +38,25 @@ $group_label_uc = openlab_get_group_type_label( 'case=upper' );
 			<?php do_action( 'template_notices' ) ?>
 
 			<div class="panel panel-default">
-				<div class="panel-heading"><?php echo $group_label_uc; ?> Details</div>
+				<div class="panel-heading"><?php esc_html_e( 'Details', 'openlab-theme' ) ?></div>
 				<div class="panel-body">
 
 					<?php do_action( 'bp_before_group_details_admin' ); ?>
 
-					<label for="group-name"><?php echo $group_label_uc . ' Name' ?> (required)</label>
+					<label for="group-name"><?php esc_html_e( 'Name', 'openlab-theme' ) ?> <?php esc_html_e( '(required)', 'openlab-theme' ) ?></label>
 					<input class="form-control" type="text" name="group-name" id="group-name" value="<?php bp_group_name() ?>" />
 
-					<label for="group-desc"><?php echo $group_label_uc . ' Description' ?> (required)</label>
+					<label for="group-desc"><?php esc_html_e( 'Description', 'openlab-theme' ) ?> <?php esc_html_e( '(required)', 'openlab-theme' ) ?></label>
 					<textarea class="form-control" name="group-desc" id="group-desc"><?php bp_group_description_editable() ?></textarea>
 
 					<?php do_action( 'groups_custom_group_fields_editable' ) ?>
 
 					<?php if ( ! openlab_is_portfolio() ) : ?>
 						<div class="notify-settings">
-							<p class="ol-tooltip notify-members"><?php _e( 'Notify group members of changes via email', 'buddypress' ); ?></p>
+							<p class="ol-tooltip notify-members"><?php _e( 'Notify group members of changes via email', 'openlab-theme' ); ?></p>
 							<div class="radio">
-								<label><input type="radio" name="group-notify-members" value="1" /> <?php _e( 'Yes', 'buddypress' ); ?></label>
-								<label><input type="radio" name="group-notify-members" value="0" checked="checked" /> <?php _e( 'No', 'buddypress' ); ?></label>
+								<label><input type="radio" name="group-notify-members" value="1" /> <?php _e( 'Yes', 'openlab-theme' ); ?></label>
+								<label><input type="radio" name="group-notify-members" value="0" checked="checked" /> <?php _e( 'No', 'openlab-theme' ); ?></label>
 							</div>
 						</div>
 
@@ -74,7 +71,7 @@ $group_label_uc = openlab_get_group_type_label( 'case=upper' );
 
 			<?php do_action( 'bp_after_group_details_admin' ); ?>
 
-			<p><input class="btn btn-primary" type="submit" value="<?php _e( 'Save Changes', 'buddypress' ) ?> &#xf138;" id="save" name="save" /></p>
+			<p><input class="btn btn-primary" type="submit" value="<?php _e( 'Save Changes', 'openlab-theme' ) ?> &#xf138;" id="save" name="save" /></p>
 			<?php wp_nonce_field( 'groups_edit_group_details' ) ?>
 		<?php endif; ?>
 
@@ -88,11 +85,11 @@ $group_label_uc = openlab_get_group_type_label( 'case=upper' );
 			<?php if ( function_exists( 'bbpress' ) && ! openlab_is_portfolio() ) : ?>
 				<?php $forum_enabled = openlab_is_forum_enabled_for_group() ?>
 				<div class="panel panel-default">
-					<div class="panel-heading">Discussion Settings</div>
+					<div class="panel-heading"><?php esc_html_e( 'Discussion Settings', 'openlab-theme' ) ?></div>
 					<div class="panel-body">
-						<p id="discussion-settings-tag">These settings enable or disable the discussion forum on your <?php echo $group_label_uc ?> profile.</p>
+						<p id="discussion-settings-tag"><?php esc_html_e( 'These settings enable or disable the discussion forum on your Profile.', 'openlab-theme' ) ?></p>
 						<div class="checkbox">
-							<label><input type="checkbox" name="openlab-edit-group-forum" id="group-show-forum" value="1"<?php checked( $forum_enabled ) ?> /> <?php _e( 'Enable discussions forum', 'buddypress' ) ?></label>
+							<label><input type="checkbox" name="openlab-edit-group-forum" id="group-show-forum" value="1"<?php checked( $forum_enabled ) ?> /> <?php _e( 'Enable discussions forum', 'openlab-theme' ) ?></label>
 						</div>
 					</div>
 				</div>
@@ -111,8 +108,8 @@ $group_label_uc = openlab_get_group_type_label( 'case=upper' );
 						<div class="row">
 							<div class="col-sm-23 col-sm-offset-1">
 								<div class="radio no-margin no-margin-all spaced-list">
-									<label class="regular"><input type="radio" name="openlab-bpeo-event-create-access" value="members" <?php checked( 'members', $event_create_access ) ?> /> <?php _e( 'Any group member may connect events to this group', 'buddypress' ) ?></label>
-									<label class="regular"><input type="radio" name="openlab-bpeo-event-create-access" value="admin" <?php checked( 'admin', $event_create_access ) ?> /> <?php _e( 'Only administrators and moderators may connect events to this group', 'buddypress' ) ?></label>
+									<label class="regular"><input type="radio" name="openlab-bpeo-event-create-access" value="members" <?php checked( 'members', $event_create_access ) ?> /> <?php _e( 'Any group member may connect events to this group', 'openlab-theme' ) ?></label>
+									<label class="regular"><input type="radio" name="openlab-bpeo-event-create-access" value="admin" <?php checked( 'admin', $event_create_access ) ?> /> <?php _e( 'Only administrators and moderators may connect events to this group', 'openlab-theme' ) ?></label>
 								</div>
 							</div>
 						</div>
@@ -125,7 +122,7 @@ $group_label_uc = openlab_get_group_type_label( 'case=upper' );
 			<div class="panel panel-default">
 				<div class="panel-heading">Related Links List Settings</div>
 				<div class="panel-body">
-					<p>These settings enable or disable the related groups list display on your <?php echo $group_label_uc; ?> profile.</p>
+					<p><?php esc_html_e( 'These settings enable or disable the related groups list display on your Profile.', 'openlab-theme' ) ?></p>
 					<?php $related_links_list_enable = groups_get_groupmeta( bp_get_current_group_id(), 'openlab_related_links_list_enable' ); ?>
 	<?php $related_links_list_heading = groups_get_groupmeta( bp_get_current_group_id(), 'openlab_related_links_list_heading' ); ?>
 	<?php $related_links_list = openlab_get_group_related_links( bp_get_current_group_id(), 'edit' ); ?>
@@ -204,21 +201,21 @@ $group_label_uc = openlab_get_group_type_label( 'case=upper' );
 							</div>
 							<div class="col-sm-16">
 
-								<p class="italics"><?php _e( 'Upload an image to use as an avatar for this ' . bp_get_group_type() . '. The image will be shown on the main ' . bp_get_group_type() . ' page, and in search results.', 'buddypress' ) ?></p>
+								<p class="italics"><?php esc_html_e( 'Upload an image to use as an avatar for this group. The image will be shown on the Profile and in search results.', 'openlab-theme' ) ?></p>
 
 								<p id="avatar-upload">
 								<div class="form-group form-inline">
 									<div class="form-control type-file-wrapper">
 										<input type="file" name="file" id="file" />
 									</div>
-									<input class="btn btn-primary top-align" type="submit" name="upload" id="upload" value="<?php _e( 'Upload Image', 'buddypress' ) ?>" />
+									<input class="btn btn-primary top-align" type="submit" name="upload" id="upload" value="<?php _e( 'Upload Image', 'openlab-theme' ) ?>" />
 									<input type="hidden" name="action" id="action" value="bp_avatar_upload" />
 								</div>
 								</p>
 
 								<?php if ( bp_get_user_has_avatar() ) : ?>
-									<p class="italics"><?php _e( "If you'd like to remove the existing avatar but not upload a new one, please use the delete avatar button.", 'buddypress' ) ?></p>
-									<a class="btn btn-primary no-deco" href="<?php echo bp_get_group_avatar_delete_link() ?>" title="<?php _e( 'Delete Avatar', 'buddypress' ) ?>"><?php _e( 'Delete Avatar', 'buddypress' ) ?></a>
+									<p class="italics"><?php _e( "If you'd like to remove the existing avatar but not upload a new one, please use the delete avatar button.", 'openlab-theme' ) ?></p>
+									<a class="btn btn-primary no-deco" href="<?php echo bp_get_group_avatar_delete_link() ?>" title="<?php _e( 'Delete Avatar', 'openlab-theme' ) ?>"><?php _e( 'Delete Avatar', 'openlab-theme' ) ?></a>
 								<?php endif; ?>
 
 		<?php wp_nonce_field( 'bp_avatar_upload' ) ?>
@@ -235,13 +232,13 @@ $group_label_uc = openlab_get_group_type_label( 'case=upper' );
 					<div class="panel-heading">Crop Avatar</div>
 					<div class="panel-body">
 
-						<img src="<?php bp_avatar_to_crop() ?>" id="avatar-to-crop" class="avatar" alt="<?php _e( 'Avatar to crop', 'buddypress' ) ?>" />
+						<img src="<?php bp_avatar_to_crop() ?>" id="avatar-to-crop" class="avatar" alt="<?php _e( 'Avatar to crop', 'openlab-theme' ) ?>" />
 
 						<div id="avatar-crop-pane">
-							<img src="<?php bp_avatar_to_crop() ?>" id="avatar-crop-preview" class="avatar" alt="<?php _e( 'Avatar preview', 'buddypress' ) ?>" />
+							<img src="<?php bp_avatar_to_crop() ?>" id="avatar-crop-preview" class="avatar" alt="<?php _e( 'Avatar preview', 'openlab-theme' ) ?>" />
 						</div>
 
-						<input class="btn btn-primary" type="submit" name="avatar-crop-submit" id="avatar-crop-submit" value="<?php _e( 'Crop Image', 'buddypress' ) ?>" />
+						<input class="btn btn-primary" type="submit" name="avatar-crop-submit" id="avatar-crop-submit" value="<?php _e( 'Crop Image', 'openlab-theme' ) ?>" />
 
 						<input type="hidden" name="image_src" id="image_src" value="<?php bp_avatar_to_crop_src() ?>" />
 						<input type="hidden" id="x" name="x" />
@@ -265,7 +262,7 @@ $group_label_uc = openlab_get_group_type_label( 'case=upper' );
 	<?php do_action( 'template_notices' ) ?>
 
 			<div class="bp-widget">
-				<h4><?php _e( 'Administrators', 'buddypress' ); ?></h4>
+				<h4><?php _e( 'Administrators', 'openlab-theme' ); ?></h4>
 
 	<?php if ( bp_has_members( '&include=' . bp_group_admin_ids() ) ) : ?>
 
@@ -284,7 +281,7 @@ $group_label_uc = openlab_get_group_type_label( 'case=upper' );
 											</p>
 			<?php if ( count( bp_group_admin_ids( false, 'array' ) ) > 1 ) : ?>
 												<ul class="group-member-actions">
-													<li><a class="confirm admin-demote-to-member admins" href="<?php bp_group_member_demote_link( bp_get_member_user_id() ); ?>"><?php _e( 'Demote to Member', 'buddypress' ); ?></a></li>
+													<li><a class="confirm admin-demote-to-member admins" href="<?php bp_group_member_demote_link( bp_get_member_user_id() ); ?>"><?php _e( 'Demote to Member', 'openlab-theme' ); ?></a></li>
 												</ul>
 			<?php endif; ?>
 										</div>
@@ -301,7 +298,7 @@ $group_label_uc = openlab_get_group_type_label( 'case=upper' );
 
 	<?php if ( bp_group_has_moderators() ) : ?>
 				<div class="bp-widget">
-					<h4><?php _e( 'Moderators', 'buddypress' ); ?></h4>
+					<h4><?php _e( 'Moderators', 'openlab-theme' ); ?></h4>
 
 						<?php if ( bp_has_members( '&include=' . bp_group_mod_ids() ) ) : ?>
 						<div id="group-manage-moderators-members" class="item-list single-line inline-element-list row group-manage-members group-list">
@@ -319,8 +316,8 @@ $group_label_uc = openlab_get_group_type_label( 'case=upper' );
 												</p>
 
 												<ul class="group-member-actions">
-													<li><a href="<?php bp_group_member_promote_admin_link( array( 'user_id' => bp_get_member_user_id() ) ); ?>" class="confirm mod-promote-to-admin" title="<?php _e( 'Promote to Admin', 'buddypress' ); ?>"><?php _e( 'Promote to Admin', 'buddypress' ); ?></a></li>
-													<li><a class="confirm mod-demote-to-member" href="<?php bp_group_member_demote_link( bp_get_member_user_id() ); ?>"><?php _e( 'Demote to Member', 'buddypress' ); ?></a></li>
+													<li><a href="<?php bp_group_member_promote_admin_link( array( 'user_id' => bp_get_member_user_id() ) ); ?>" class="confirm mod-promote-to-admin" title="<?php _e( 'Promote to Admin', 'openlab-theme' ); ?>"><?php _e( 'Promote to Admin', 'openlab-theme' ); ?></a></li>
+													<li><a class="confirm mod-demote-to-member" href="<?php bp_group_member_demote_link( bp_get_member_user_id() ); ?>"><?php _e( 'Demote to Member', 'openlab-theme' ); ?></a></li>
 												</ul>
 											</div>
 										</div>
@@ -336,7 +333,7 @@ $group_label_uc = openlab_get_group_type_label( 'case=upper' );
 
 
 			<div class="bp-widget">
-				<h4><?php _e( 'Members', 'buddypress' ); ?></h4>
+				<h4><?php _e( 'Members', 'openlab-theme' ); ?></h4>
 
 				<?php if ( bp_group_has_members( 'per_page=15&exclude_banned=false' ) ) : ?>
 
@@ -364,7 +361,7 @@ $group_label_uc = openlab_get_group_type_label( 'case=upper' );
 									<div class="row info-row">
 										<div class="col-md-9 col-xs-7">
 											<a href="<?php bp_member_permalink(); ?>"><img class="img-responsive" src ="<?php echo bp_core_fetch_avatar( array( 'item_id' => bp_get_member_user_id(), 'object' => 'member', 'type' => 'full', 'html' => false ) ) ?>" alt="Profile picture of <?php echo bp_get_member_name(); ?>"/></a>
-											<span class="italics"><?php if ( bp_get_group_member_is_banned() ) { _e( '(banned)', 'buddypress' );} ?></span>
+											<span class="italics"><?php if ( bp_get_group_member_is_banned() ) { _e( '(banned)', 'openlab-theme' );} ?></span>
 										</div>
 										<div class="col-md-15 col-xs-17">
 											<p class="h5">
@@ -374,17 +371,17 @@ $group_label_uc = openlab_get_group_type_label( 'case=upper' );
 											<ul class="group-member-actions">
 			<?php if ( bp_get_group_member_is_banned() ) : ?>
 
-													<li><a href="<?php bp_group_member_unban_link(); ?>" class="confirm member-unban" title="<?php _e( 'Unban this member', 'buddypress' ); ?>"><?php _e( 'Remove Ban', 'buddypress' ); ?></a></li>
+													<li><a href="<?php bp_group_member_unban_link(); ?>" class="confirm member-unban" title="<?php _e( 'Unban this member', 'openlab-theme' ); ?>"><?php _e( 'Remove Ban', 'openlab-theme' ); ?></a></li>
 
 			<?php else : ?>
 
-													<li><a href="<?php bp_group_member_ban_link(); ?>" class="confirm member-ban" title="<?php _e( 'Kick and ban this member', 'buddypress' ); ?>"><?php _e( 'Kick &amp; Ban', 'buddypress' ); ?></a></li>
-													<li><a href="<?php bp_group_member_promote_mod_link(); ?>" class="confirm member-promote-to-mod" title="<?php _e( 'Promote to Mod', 'buddypress' ); ?>"><?php _e( 'Promote to Mod', 'buddypress' ); ?></a></li>
-													<li><a href="<?php bp_group_member_promote_admin_link(); ?>" class="confirm member-promote-to-admin" title="<?php _e( 'Promote to Admin', 'buddypress' ); ?>"><?php _e( 'Promote to Admin', 'buddypress' ); ?></a></li>
+													<li><a href="<?php bp_group_member_ban_link(); ?>" class="confirm member-ban" title="<?php _e( 'Kick and ban this member', 'openlab-theme' ); ?>"><?php _e( 'Kick &amp; Ban', 'openlab-theme' ); ?></a></li>
+													<li><a href="<?php bp_group_member_promote_mod_link(); ?>" class="confirm member-promote-to-mod" title="<?php _e( 'Promote to Mod', 'openlab-theme' ); ?>"><?php _e( 'Promote to Mod', 'openlab-theme' ); ?></a></li>
+													<li><a href="<?php bp_group_member_promote_admin_link(); ?>" class="confirm member-promote-to-admin" title="<?php _e( 'Promote to Admin', 'openlab-theme' ); ?>"><?php _e( 'Promote to Admin', 'openlab-theme' ); ?></a></li>
 
 			<?php endif; ?>
 
-												<li><a href="<?php bp_group_member_remove_link(); ?>" class="confirm" title="<?php _e( 'Remove this member', 'buddypress' ); ?>"><?php _e( 'Remove from group', 'buddypress' ); ?></a></li>
+												<li><a href="<?php bp_group_member_remove_link(); ?>" class="confirm" title="<?php _e( 'Remove this member', 'openlab-theme' ); ?>"><?php _e( 'Remove from group', 'openlab-theme' ); ?></a></li>
 
 											</ul>
 
@@ -400,7 +397,7 @@ $group_label_uc = openlab_get_group_type_label( 'case=upper' );
 	<?php else : ?>
 
 					<div id="message" class="info">
-						<p class="bold"><?php _e( 'This group has no members.', 'buddypress' ); ?></p>
+						<p class="bold"><?php _e( 'This group has no members.', 'openlab-theme' ); ?></p>
 					</div>
 
 	<?php endif; ?>
@@ -435,8 +432,8 @@ $group_label_uc = openlab_get_group_type_label( 'case=upper' );
 										</h4>
 
 										<ul class="group-member-actions">
-											<li><a href="<?php bp_group_request_accept_link() ?>"><?php _e( 'Accept', 'buddypress' ); ?></a></li>
-											<li><a href="<?php bp_group_request_reject_link() ?>"><?php _e( 'Reject', 'buddypress' ); ?></a></li>
+											<li><a href="<?php bp_group_request_accept_link() ?>"><?php _e( 'Accept', 'openlab-theme' ); ?></a></li>
+											<li><a href="<?php bp_group_request_reject_link() ?>"><?php _e( 'Reject', 'openlab-theme' ); ?></a></li>
 										</ul>
 									</div>
 								</div>
@@ -449,7 +446,7 @@ $group_label_uc = openlab_get_group_type_label( 'case=upper' );
 	<?php else : ?>
 
 				<div id="message" class="info">
-					<p><?php _e( 'There are no pending membership requests.', 'buddypress' ); ?></p>
+					<p><?php _e( 'There are no pending membership requests.', 'openlab-theme' ); ?></p>
 				</div>
 
 			<?php endif; ?>
@@ -466,7 +463,7 @@ $group_label_uc = openlab_get_group_type_label( 'case=upper' );
 	<?php do_action( 'template_notices' ); ?>
 
 			<div id="message" class="bp-template-notice error margin-bottom">
-				<p><?php printf( 'WARNING: Deleting this %s will completely remove ALL content associated with it. There is no way back, please be careful with this option.', openlab_get_group_type() ); ?></p>
+				<p><?php esc_html_e( 'WARNING: Deleting this item will completely remove ALL content associated with it. There is no way back, please be careful with this option.', 'openlab-theme' ); ?></p>
 			</div>
 
 			<div class="checkbox no-margin no-margin-bottom">
@@ -476,23 +473,14 @@ $group_label_uc = openlab_get_group_type_label( 'case=upper' );
 								} else {
 									document.getElementById('delete-group-button').disabled = 'disabled';
 								}" />
-	<?php printf( 'I understand the consequences of deleting this %s.', openlab_get_group_type() ); ?>
+					<?php esc_html_e( 'I understand the consequences of deletion.', 'openlab-theme' ); ?>
 				</label>
 			</div>
 
 			<?php do_action( 'bp_after_group_delete_admin' ); ?>
 
-			<?php
-			$account_type = xprofile_get_field_data( 'Account Type', $bp->loggedin_user->id );
-			if ( $account_type == 'Student' && openlab_get_group_type() == 'portfolio' ) {
-				$group_type = 'ePortfolio';
-			} else {
-				$group_type = openlab_get_group_type();
-			}
-			?>
-
 			<div class="submit">
-				<input class="btn btn-primary btn-margin btn-margin-top" type="submit" disabled="disabled" value="<?php _e( 'Delete ' . $group_type, 'buddypress' ) ?> &#xf138;" id="delete-group-button" name="delete-group-button" />
+				<input class="btn btn-primary btn-margin btn-margin-top" type="submit" disabled="disabled" value="<?php _e( 'Delete', 'openlab-theme' ) ?> &#xf138;" id="delete-group-button" name="delete-group-button" />
 			</div>
 
 			<input type="hidden" name="group-id" id="group-id" value="<?php bp_group_id() ?>" />
