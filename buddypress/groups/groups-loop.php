@@ -14,12 +14,12 @@ $group_args = array(
 	'per_page' => 12,
 );
 
-// @todo Passing around slug plural 'courses' is ugly when interfacing with existing OL functions
-if ( isset( $_GET['type'] ) ) {
-	$group_type = wp_unslash( $_GET['type'] );
-} else {
-	$group_type = 'courses';
+$group_type_slug = bp_get_current_group_directory_type();
+if ( ! $group_type_slug && ! empty( $_GET['group_type'] ) ) {
+	$group_type_slug = wp_unslash( urldecode( $_GET['group_type'] ) );
 }
+
+$group_type = cboxol_get_group_type( $group_type_slug );
 
 // @todo
 if ( ! empty( $search_terms_raw ) ) {
@@ -32,16 +32,18 @@ if ( ! empty( $_GET['group_sequence'] ) ) {
 ?>
 
 <?php if ( bp_has_groups( $group_args ) ) : ?>
-<div id="openlab-main-content"></div>
-<div class="row">
-	  	<?php
+	<div id="openlab-main-content"></div>
+
+	<div class="row">
+		<?php
 		if ( openlab_is_my_profile() ) {
 			echo openlab_submenu_markup( 'groups', $group_type, false );
 		}
 		?>
 
-			<div class="group-count col-sm-5 pull-right"><?php cuny_groups_pagination_count( ucwords( $group_type ) . 's' ); ?></div>
-</div>
+		<div class="group-count col-sm-5 pull-right"><?php cuny_groups_pagination_count(); ?></div>
+	</div>
+
 	<div id="group-list" class="item-list group-list row">
 		<?php
 		$count = 1;
@@ -96,10 +98,9 @@ if ( ! empty( $_GET['group_sequence'] ) ) {
 		</div>
 <?php else : ?>
 <div class="row">
-	<?php $group_type = $filters['wds_group_type'] . 's'; ?>
 	  	<?php
 		if ( openlab_is_my_profile() ) {
-			echo openlab_submenu_markup( 'groups', $filters['wds_group_type'], false );
+			echo openlab_submenu_markup( 'groups', $group_type, false );
 		}
 		?>
 </div>

@@ -5,12 +5,6 @@
 <div class="col-sm-18">
 
 	<?php
-	// re-direct to courses page if user does not have permissions for course creation page
-	$account_type = xprofile_get_field_data( 'Account Type', get_current_user_id() );
-	$group_type = isset( $_GET['type'] ) ? $_GET['type'] : 'club';
-	if ( 'course' === $group_type && ! is_super_admin() && $account_type != 'Faculty' ) {
-		wp_redirect( home_url( 'courses' ) );
-	}
 
 	global $bp;
 
@@ -27,10 +21,8 @@
 	// Set a group label. The (e)Portfolio logic means we have to do an extra step
 	if ( 'portfolio' == $group_type ) {
 		$group_label = openlab_get_portfolio_label( 'case=upper&user_id=' . bp_loggedin_user_id() );
-		$page_title = 'Create ' . openlab_get_portfolio_label( 'case=upper&leading_a=1&user_id=' . bp_loggedin_user_id() );
 	} else {
 		$group_label = $group_type;
-		$page_title = 'Create a ' . ucwords( $group_type );
 	}
 
 	$group_id_to_clone = 0;
@@ -92,7 +84,7 @@
 										Clone an Existing Course</label>
 
 									<?php $user_groups = openlab_get_courses_owned_by_user( get_current_user_id() ) ?>
-									
+
 									<label class="sr-only" for="group-to-clone">Choose a Course</label>
 									<select class="form-control" id="group-to-clone" name="group-to-clone">
 										<option value="" <?php selected( $group_id_to_clone, 0 ) ?>>- choose a course -</option>

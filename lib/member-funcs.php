@@ -365,8 +365,13 @@ function openlab_group_status_message( $group = null ) {
 		$group = & $groups_template->group;
 	}
 
-	$group_label = openlab_get_group_type_label( 'group_id=' . $group->id . '&case=upper' );
+	$group_label = '';
+	$group_type = cboxol_get_group_group_type( $group->id );
+	if ( ! is_wp_error( $group_type ) ) {
+		$group_label = $group_type->get_label( 'plural' );
+	}
 
+	/* @todo
 	$site_id = openlab_get_site_id_by_group_id( $group->id );
 	$site_url = openlab_get_group_site_url( $group->id );
 
@@ -381,6 +386,7 @@ function openlab_group_status_message( $group = null ) {
 	}
 
 	$site_status = (float) $site_status;
+	*/
 
 	$message = '';
 

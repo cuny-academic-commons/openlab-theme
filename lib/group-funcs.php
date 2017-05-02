@@ -256,7 +256,7 @@ function openlab_group_archive() {
 			<div class="current-group-filters current-portfolio-filters col-lg-19 col-md-18 col-sm-16">
 				<?php openlab_current_directory_filters(); ?>
 			</div>
-			<div class="group-count col-lg-5 col-md-6 col-sm-8"><?php cuny_groups_pagination_count( ucwords( $group_type ) . 's' ); ?></div>
+			<div class="group-count col-lg-5 col-md-6 col-sm-8"><?php cuny_groups_pagination_count(); ?></div>
 		</div>
 		<div id="group-list" class="item-list group-list row">
 			<?php
@@ -428,7 +428,7 @@ function openlab_group_post_count( $filters, $group_args ) {
 }
 
 // a variation on bp_groups_pagination_count() to match design
-function cuny_groups_pagination_count( $group_name ) {
+function cuny_groups_pagination_count() {
 	global $bp, $groups_template;
 
 	$start_num = intval( ( $groups_template->pag_page - 1 ) * $groups_template->pag_num ) + 1;
@@ -436,7 +436,8 @@ function cuny_groups_pagination_count( $group_name ) {
 	$to_num = bp_core_number_format( ( $start_num + ( $groups_template->pag_num - 1 ) > $groups_template->total_group_count ) ? $groups_template->total_group_count : $start_num + ( $groups_template->pag_num - 1 ) );
 	$total = bp_core_number_format( $groups_template->total_group_count );
 
-	echo sprintf( __( '%1$s to %2$s (of %3$s ' . $group_name . ')', 'buddypress' ), $from_num, $to_num, $total );
+	/* @todo Proper localization with _n() */
+	echo sprintf( __( '%1$s to %2$s (of %3$s total)', 'openlab-theme' ), $from_num, $to_num, $total );
 }
 
 /**

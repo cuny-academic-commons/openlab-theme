@@ -386,14 +386,18 @@ function openlab_profile_settings_submenu() {
 	return openlab_submenu_gen( $menu_list, true );
 }
 
-// sub-menus for my-<groups> pages
-function openlab_my_groups_submenu( $group ) {
+/**
+ * Markup for Groups submenu.
+ *
+ * @param \CBOX\OL\GroupType $group_type Group type object.
+ * @return string
+ */
+function openlab_my_groups_submenu( \CBOX\OL\GroupType $group_type ) {
 	global $bp;
 	$menu_out = array();
 	$menu_list = array();
 
-	$group_link = $bp->root_domain . '/my-' . $group . 's/';
-	$create_link = bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/create/step/group-details/?type=' . $group . '&new=true';
+	$create_link = bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/create/step/group-details/?group_type=' . $group_type->get_slug() . '&new=true';
 	$no_link = 'no-link';
 
 	$span_start = '<span class="bold">';
@@ -402,36 +406,18 @@ function openlab_my_groups_submenu( $group ) {
 	// get account type to see if they're faculty
 	$faculty = xprofile_get_field_data( 'Account Type', get_current_user_id() );
 
-	$submenu_text = 'My ' . ucfirst( $group ) . 's';
+	$submenu_text = $group_type->get_label( 'my_groups' );
 
-	// if the current user is faculty or a super admin, they can create a course, otherwise no dice
-	if ( $group == 'course' ) {
-
-		// determines if there are any courses - if not, only show "create"
-		$filters['wds_group_type'] = openlab_page_slug_to_grouptype();
-
-		if ( is_super_admin( get_current_user_id() ) || $faculty == 'Faculty' ) {
-			// have to add extra conditional in here for submenus on editing pages
-			if ( $step_name == '' ) {
-				$menu_list = array(
-					$create_link => 'Create / Clone a ' . ucfirst( $group ),
-				);
-			} else {
-
-				$submenu_text = 'Create / Clone a ';
-
-				$menu_list = array(
-					$no_link => $step_name,
-				);
-			}
-		}
-	} else {
-		// have to add extra conditional in here for submenus on editing pages
-		if ( $step_name == '' ) {
+	if ( $group_type->get_is_course() ) {
+		if ( cboxol_user_can_create_courses( bp_loggedin_user_id() ) ) {
 			$menu_list = array(
-				$create_link => 'Create a ' . ucfirst( $group ),
+				$create_link => __( 'Create / Clone', 'openlab-theme' ),
 			);
 		}
+	} else {
+		$menu_list = array(
+			$create_link => __( 'Create New', 'openlab-theme' ),
+		);
 	}
 
 	$menu_out['menu'] = openlab_submenu_gen( $menu_list );
