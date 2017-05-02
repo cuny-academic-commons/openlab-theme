@@ -388,6 +388,8 @@ function openlab_group_status_message( $group = null ) {
 	$site_status = (float) $site_status;
 	*/
 
+	$site_status = 0;
+
 	$message = '';
 
 	switch ( $site_status ) {
