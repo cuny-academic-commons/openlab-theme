@@ -601,28 +601,22 @@ function openlab_get_privacy_icon() {
 }
 
 function cuny_group_single() {
-	?>
-	<?php
-	$group_type = openlab_get_group_type( bp_get_current_group_id() );
-	?>
+	$group_type = cboxol_get_group_group_type( bp_get_current_group_id() );
+	$group_slug = bp_get_group_slug();
 
-	<?php $group_slug = bp_get_group_slug(); ?>
-
-	<?php
 	// group page vars
 	global $bp, $wpdb;
 	$group_id = $bp->groups->current_group->id;
 	$group_name = $bp->groups->current_group->name;
 	$group_description = $bp->groups->current_group->description;
-	$group_type = openlab_get_group_type( bp_get_current_group_id() );
 	$section = groups_get_groupmeta( $group_id, 'wds_section_code' );
 	$html = groups_get_groupmeta( $group_id, 'wds_course_html' );
 	?>
 
 	<?php if ( bp_is_group_home() ) : ?>
-		<div id="<?php echo $group_type; ?>-header" class="group-header row">
+		<div id="<?php echo esc_attr( $group_type->get_slug() ); ?>-header" class="group-header row">
 
-			<div id="<?php echo $group_type; ?>-header-avatar" class="alignleft group-header-avatar col-sm-8 col-xs-12">
+			<div id="<?php echo esc_attr( $group_type->get_slug() ); ?>-header-avatar" class="alignleft group-header-avatar col-sm-8 col-xs-12">
 				<div class="padded-img darker">
 					<img class="img-responsive" src ="<?php echo bp_core_fetch_avatar( array( 'item_id' => $group_id, 'object' => 'group', 'type' => 'full', 'html' => false ) ) ?>" alt="<?php echo esc_attr( $group_name ); ?>"/>
 				</div>
@@ -638,15 +632,16 @@ function cuny_group_single() {
 					</div>
 				<?php endif; ?>
 				<?php openlab_render_message(); ?>
-		</div><!-- #<?php echo $group_type; ?>-header-avatar -->
+		</div><!-- #<?php echo esc_html( $group_type->get_slug() ) ?>-header-avatar -->
 
-			<div id="<?php echo $group_type; ?>-header-content" class="col-sm-16 col-xs-24 alignleft group-header-content group-<?php echo $group_id; ?>">
+			<div id="<?php echo esc_attr( $group_type->get_slug() ); ?>-header-content" class="col-sm-16 col-xs-24 alignleft group-header-content group-<?php echo $group_id; ?>">
 
 				<?php do_action( 'bp_before_group_header_meta' ) ?>
 
-				<?php if ( $group_type == 'course' ) : ?>
+				<?php if ( $group_type->is_course() ) : ?>
 					<div class="info-panel panel panel-default no-margin no-margin-top">
 						<?php
+						/* @todo */
 						$wds_course_code = groups_get_groupmeta( $group_id, 'wds_course_code' );
 						$wds_semester = groups_get_groupmeta( $group_id, 'wds_semester' );
 						$wds_year = groups_get_groupmeta( $group_id, 'wds_year' );
@@ -702,6 +697,7 @@ function cuny_group_single() {
 							</div>
 
 							<?php
+							/* @todo */
 							$wds_school = openlab_generate_school_name( $group_id );
 							$wds_departments = openlab_generate_department_name( $group_id );
 							?>
@@ -734,11 +730,11 @@ function cuny_group_single() {
 							<?php endif; ?>
 
 							<div class="table-row row">
-								<div class="bold col-sm-7"><?php echo ucfirst( $group_type ); ?> Description</div>
+								<div class="bold col-sm-7"><?php esc_html_e( 'Description', 'openlab-theme' ); ?></div>
 								<div class="col-sm-17 row-content"><?php bp_group_description() ?></div>
 							</div>
 
-							<?php if ( $group_type == 'portfolio' ) : ?>
+							<?php if ( $group_type->is_portfolio() ) : ?>
 
 								<div class="table-row row">
 									<div class="bold col-sm-7">Member Profile</div>
@@ -755,7 +751,7 @@ function cuny_group_single() {
 
 			<?php do_action( 'bp_after_group_header' ) ?>
 
-																																																																			</div><!--<?php echo $group_type; ?>-header -->
+		</div><!--<?php echo esc_html( $group_type->get_slug() ); ?>-header -->
 
 	<?php endif; ?>
 
