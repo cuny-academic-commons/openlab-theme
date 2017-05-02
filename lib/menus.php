@@ -690,7 +690,6 @@ add_filter( 'bp_get_options_nav_home', 'openlab_filter_subnav_home' );
 
 function openlab_filter_subnav_admin( $subnav_item ) {
 	global $bp;
-	$group_label = openlab_get_group_type_label( 'case=upper' );
 	$new_item = $subnav_item;
 	// this is to stop the course settings menu item from getting a current class on membership pages
 	if ( bp_action_variable( 0 ) ) {
