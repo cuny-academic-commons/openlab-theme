@@ -656,7 +656,6 @@ function openlab_submenu_gen( $items, $timestamp = false ) {
  * bp_get_options_nav filtering
  */
 // submenu nav renaming
-add_filter( 'bp_get_options_nav_home', 'openlab_filter_subnav_home' );
 
 function openlab_filter_subnav_home( $subnav_item ) {
 	global $bp;
@@ -688,8 +687,7 @@ function openlab_filter_subnav_home( $subnav_item ) {
 
 	return $new_item . $site_link;
 }
-
-add_filter( 'bp_get_options_nav_admin', 'openlab_filter_subnav_admin' );
+add_filter( 'bp_get_options_nav_home', 'openlab_filter_subnav_home' );
 
 function openlab_filter_subnav_admin( $subnav_item ) {
 	global $bp;
@@ -707,8 +705,7 @@ function openlab_filter_subnav_admin( $subnav_item ) {
 
 	return $new_item;
 }
-
-add_filter( 'bp_get_options_nav_members', 'openlab_filter_subnav_members' );
+add_filter( 'bp_get_options_nav_admin', 'openlab_filter_subnav_admin' );
 
 function openlab_filter_subnav_members( $subnav_item ) {
 	global $bp;
@@ -749,8 +746,7 @@ function openlab_filter_subnav_members( $subnav_item ) {
 
 	return $new_item;
 }
-
-add_filter( 'bp_get_options_nav_nav-docs', 'openlab_filter_subnav_docs' );
+add_filter( 'bp_get_options_nav_members', 'openlab_filter_subnav_members' );
 
 function openlab_filter_subnav_docs( $subnav_item ) {
 	global $bp;
@@ -801,6 +797,7 @@ function openlab_filter_subnav_docs( $subnav_item ) {
 
 	return $new_item;
 }
+add_filter( 'bp_get_options_nav_nav-docs', 'openlab_filter_subnav_docs' );
 
 /**
  * Modify the Documents subnav item in group contexts.
