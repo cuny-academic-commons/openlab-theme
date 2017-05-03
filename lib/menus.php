@@ -80,7 +80,7 @@ add_filter( 'wp_nav_menu_objects', 'openlab_wp_menu_customizations', 11, 2 );
  * Hooked to bp_screens at 1 because apparently BP is broken??
  */
 function openlab_modify_options_nav() {
-	if ( bp_is_group() && openlab_is_portfolio() && ! bp_is_group_create() ) {
+	if ( bp_is_group() && cboxol_is_portfolio() && ! bp_is_group_create() ) {
 		buddypress()->groups->nav->edit_nav(array(
 			'name' => 'Profile',
 		), 'home', bp_get_current_group_slug());
@@ -103,9 +103,7 @@ function openlab_modify_options_nav() {
 		buddypress()->groups->nav->edit_nav(array(
 			'position' => 15,
 		), 'admin', bp_get_current_group_slug());
-	}
 
-	if ( bp_is_group() ) {
 		$nav_items = buddypress()->groups->nav->get_secondary( array( 'parent_slug' => bp_get_current_group_slug() ) );
 		foreach ( $nav_items as $nav_item ) {
 
@@ -683,7 +681,7 @@ function openlab_filter_subnav_home( $subnav_item ) {
 	if ( ! empty( $group_site_settings['site_url'] ) && $group_site_settings['is_visible'] ) {
 		$site_link = '<li id="site-groups-li" class="visible-xs"><a href="' . trailingslashit( esc_attr( $group_site_settings['site_url'] ) ) . '" id="site">' . esc_html__( 'Site', 'cbox-openlab-core' ) . '</a></li>';
 
-		if ( $group_site_settings['is_local'] && ((openlab_is_portfolio() && openlab_is_my_portfolio()) || ( ! openlab_is_portfolio() && groups_is_user_member( bp_loggedin_user_id(), bp_get_current_group_id() )) || $bp->is_item_admin || is_super_admin()) ) {
+		if ( $group_site_settings['is_local'] && ((cboxol_is_portfolio() && openlab_is_my_portfolio()) || ( ! openlab_is_portfolio() && groups_is_user_member( bp_loggedin_user_id(), bp_get_current_group_id() )) || $bp->is_item_admin || is_super_admin()) ) {
 
 			$site_link .= '<li id="site-admin-groups-li" class="visible-xs"><a href="' . trailingslashit( esc_attr( $group_site_settings['site_url'] ) ) . 'wp-admin/" id="site-admin">Site Dashboard</a></li>';
 		}
@@ -755,7 +753,7 @@ function openlab_filter_subnav_docs( $subnav_item ) {
 	global $bp;
 
 	// no docs if we're on the portfolio page
-	if ( openlab_is_portfolio() ) {
+	if ( cboxol_is_portfolio() ) {
 		return '';
 	}
 
@@ -807,7 +805,7 @@ add_filter( 'bp_get_options_nav_nav-docs', 'openlab_filter_subnav_docs' );
  */
 function openlab_filter_subnav_nav_group_documents( $subnav_item ) {
 	// no files if we're on the portfolio page
-	if ( openlab_is_portfolio() ) {
+	if ( cboxol_is_portfolio() ) {
 		return '';
 	} else {
 		// update "current" class to "current-menu-item" to unify site identification of current menu page
@@ -975,7 +973,7 @@ function openlab_group_admin_tabs( $group = false ) {
 	// Portfolio tabs look different from other groups
 	?>
 	<!--
-	<?php if ( openlab_is_portfolio() ) : ?>
+	<?php if ( cboxol_is_portfolio() ) : ?>
 		<?php if ( $bp->is_item_admin || $bp->is_item_mod ) { ?>
 			--><li<?php if ( 'edit-details' == $current_tab || empty( $current_tab ) ) : ?> class="current-menu-item"<?php endif; ?>><a href="<?php echo bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug ?>/admin/edit-details">Edit Profile</a></li><!--
 		<?php } ?>
