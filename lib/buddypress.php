@@ -1,7 +1,7 @@
 <?php
 
 // Enqueue BP-dependent scripts.
-add_action( 'wp_enqueue_scripts', 'openlab_bp_load_scripts' );
+add_action( 'wp_enqueue_scripts', 'openlab_bp_enqueue_scripts' );
 
 // BP-specific breadcrumb overrides.
 add_filter( 'openlab_page_crumb', 'openlab_page_crumb_overrides', 10, 2 );

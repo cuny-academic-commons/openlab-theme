@@ -108,10 +108,7 @@ require_once( STYLESHEETPATH . '/lib/plugin-hooks.php' );
 require_once( STYLESHEETPATH . '/lib/theme-hooks.php' );
 require_once( STYLESHEETPATH . '/lib/widgets.php' );
 
-function openlab_load_bp_dependencies() {
-	require_once( STYLESHEETPATH . '/lib/buddypress.php' );
-}
-add_action( 'bp_loaded', 'openlab_load_bp_dependencies' );
+require_once( STYLESHEETPATH . '/lib/buddypress.php' );
 
 function openlab_load_scripts() {
 	$stylesheet_dir_uri = get_stylesheet_directory_uri();
