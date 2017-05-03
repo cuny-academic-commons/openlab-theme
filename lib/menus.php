@@ -426,41 +426,46 @@ function openlab_my_groups_submenu( \CBOX\OL\GroupType $group_type ) {
 	return $menu_out;
 }
 
-function openlab_create_group_menu( $grouptype ) {
+/**
+ * Get the group creation menu corresponding to a group type.
+ *
+ * @param \CBOX\OL\GroupType $group_type
+ */
+function openlab_create_group_menu( \CBOX\OL\GroupType $group_type ) {
 	global $bp;
 
-	// get group step
-	$current_step = isset( $bp->groups->current_create_step ) ? $bp->groups->current_create_step : '';
-	$step_name = '';
-
-	switch ( $current_step ) {
-		case 'group-details':
-			$step_name = 'Step One: Profile';
+	switch ( bp_get_groups_current_create_step() ) {
+		case 'group-settings' :
+			$step_name = __( 'Step Two: Privacy Settings', 'openlab-theme' );
 			break;
-		case 'group-settings':
-			$step_name = 'Step Two: Privacy Settings';
-			break;
-		case 'group-avatar':
-			$step_name = 'Step Three: Avatar';
+		case 'group-avatar' :
+			$step_name = __( 'Step Three: Avatar', 'openlab-theme' );
 			break;
 		case 'invite-anyone' :
-			$step_name = 'Step Four: Invite Members';
+			$step_name = __( 'Step Four: Invite Members', 'openlab-theme' );
+			break;
+		case 'group-details' :
+		default:
+			$step_name = __( 'Step One: Profile', 'openlab-theme' );
 			break;
 	}
 
-	if ( $grouptype == 'course' ) {
-		$title = 'Create/Clone a Course: ';
+	if ( $group_type->get_can_be_cloned() ) {
+		$title = __( 'Create/Clone', 'openlab-theme' );
 	} else {
-		$title = 'Create a ' . ucfirst( $grouptype ) . ': ';
+		$title = __( 'Create', 'openlab-theme' );
 	}
 
+	$title = esc_html( $title );
+	$step_name = esc_html( $step_name );
+
 	$menu_mup = <<<HTML
-            <div class="submenu create-group-submenu">
-                <div class="submenu-text pull-left bold"><h2>{$title}</h2></div>
-                <ul class="nav nav-inline">
-                    <li class="submenu-item item-create-clone-a-course current-menu-item bold">{$step_name}</li>
-                </ul>
-            </div>
+		<div class="submenu create-group-submenu">
+			<div class="submenu-text pull-left bold"><h2>{$title}</h2></div>
+			<ul class="nav nav-inline">
+			<li class="submenu-item item-create-clone-a-course current-menu-item bold">{$step_name}</li>
+			</ul>
+		</div>
 HTML;
 
 	return $menu_mup;
