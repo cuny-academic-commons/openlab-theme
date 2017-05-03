@@ -155,40 +155,41 @@
 
 				<?php do_action( 'bp_before_group_avatar_creation_step' ); ?>
 
-<?php if ( ! bp_get_avatar_admin_step() || 'upload-image' == bp_get_avatar_admin_step() ) : ?>
+				<?php if ( ! bp_get_avatar_admin_step() || 'upload-image' == bp_get_avatar_admin_step() ) : ?>
 
 					<div class="panel panel-default">
-					<div class="panel-heading">Upload Avatar</div>
-				<div class="panel-body">
-					<div class="row">
-						<div class="col-sm-8">
-							<div id="avatar-wrapper">
-								<?php bp_new_group_avatar() ?>
+						<div class="panel-heading"><?php esc_html_e( 'Upload Avatar', 'openlab-theme' ); ?></div>
+
+						<div class="panel-body">
+							<div class="row">
+								<div class="col-sm-8">
+									<div id="avatar-wrapper">
+										<?php bp_new_group_avatar() ?>
+									</div>
+								</div>
+								<div class="col-sm-16">
+
+									<p class="italics"><?php esc_html_e( 'Upload an image to use as an avatar for this group. The image will be shown on the group Profile page, and in search results.', 'openlab-theme' ) ?></p>
+
+									<p id="avatar-upload">
+										<div class="form-group form-inline">
+												<div class="form-control type-file-wrapper">
+													<input type="file" name="file" id="file" />
+												</div>
+												<input class="btn btn-primary top-align" type="submit" name="upload" id="upload" value="<?php _e( 'Upload Image', 'buddypress' ) ?>" />
+												<input type="hidden" name="action" id="action" value="bp_avatar_upload" />
+										</div>
+									</p>
+
+									<p class="italics"><?php esc_html_e( 'To skip the avatar upload process, click the "Next Step" button.', 'openlab-theme' ); ?></p>
+								</div>
 							</div>
 						</div>
-						<div class="col-sm-16">
-
-							<p class="italics"><?php _e( 'Upload an image to use as an avatar for this ' . $group_type . '. The image will be shown on the main ' . $group_type . ' page, and in search results.', 'buddypress' ) ?></p>
-
-							<p id="avatar-upload">
-								<div class="form-group form-inline">
-										<div class="form-control type-file-wrapper">
-											<input type="file" name="file" id="file" />
-										</div>
-										<input class="btn btn-primary top-align" type="submit" name="upload" id="upload" value="<?php _e( 'Upload Image', 'buddypress' ) ?>" />
-										<input type="hidden" name="action" id="action" value="bp_avatar_upload" />
-								</div>
-							</p>
-
-							<p class="italics">To skip the avatar upload process, click the "Next Step" button.</p>
-						</div>
-					</div>
-			</div>
 					</div>
 
 					<?php endif; ?>
 
-	<?php if ( 'crop-image' == bp_get_avatar_admin_step() ) : ?>
+					<?php if ( 'crop-image' == bp_get_avatar_admin_step() ) : ?>
 
 						<div class="panel panel-default">
 						<div class="panel-heading">Crop Avatar</div>
@@ -225,51 +226,53 @@
 
 					<?php do_action( 'bp_before_group_invites_creation_step' ); ?>
 
-	<?php if ( function_exists( 'bp_get_total_friend_count' ) && bp_get_total_friend_count( bp_loggedin_user_id() ) ) : ?>
+				<?php if ( function_exists( 'bp_get_total_friend_count' ) && bp_get_total_friend_count( bp_loggedin_user_id() ) ) : ?>
 						<div class="left-menu">
 							<div id="invite-list">
 								<ul>
-		<?php bp_new_group_invite_friend_list() ?>
+									<?php bp_new_group_invite_friend_list() ?>
 								</ul>
 
-		<?php wp_nonce_field( 'groups_invite_uninvite_user', '_wpnonce_invite_uninvite_user' ); ?>
+								<?php wp_nonce_field( 'groups_invite_uninvite_user', '_wpnonce_invite_uninvite_user' ); ?>
 							</div>
 						</div><!-- .left-menu -->
 
 						<div class="main-column">
 
 							<div id="message" class="info">
-								<p><?php _e( 'Select people to invite from your friends list.', 'buddypress' ); ?></p>
+								<p><?php _e( 'Select people to invite from your friends list.', 'openlab-theme' ); ?></p>
 							</div>
 
 								<?php /* The ID 'friend-list' is important for AJAX support. */ ?>
 							<ul id="friend-list" class="item-list">
 								<?php if ( bp_group_has_invites() ) : ?>
-			<?php while ( bp_group_invites() ) : bp_group_the_invite(); ?>
+									<?php while ( bp_group_invites() ) : bp_group_the_invite(); ?>
 
 										<li id="<?php bp_group_invite_item_id() ?>">
-				<?php bp_group_invite_user_avatar() ?>
+											<?php bp_group_invite_user_avatar() ?>
 
 											<h4><?php bp_group_invite_user_link() ?></h4>
 											<span class="activity"><?php bp_group_invite_user_last_active() ?></span>
 
 											<div class="action">
-												<a class="remove" href="<?php bp_group_invite_user_remove_invite_url() ?>" id="<?php bp_group_invite_item_id() ?>"><?php _e( 'Remove Invite', 'buddypress' ) ?></a>
+												<a class="remove" href="<?php bp_group_invite_user_remove_invite_url() ?>" id="<?php bp_group_invite_item_id() ?>"><?php _e( 'Remove Invite', 'openlab-theme' ) ?></a>
 											</div>
 										</li>
 
 									<?php endwhile; ?>
 
 									<?php wp_nonce_field( 'groups_send_invites', '_wpnonce_send_invites' ) ?>
-		<?php endif; ?>
+								<?php endif; ?>
 							</ul>
 
 						</div><!-- .main-column -->
 
-	<?php else : ?>
+					<?php else : ?>
+
 						<div id="message" class="info">
-							<p><?php _e( 'Once you have built up friend connections you will be able to invite others to your ' . $group_type . '. You can send invites any time in the future by selecting the "Send Invites" option when viewing your new ' . $group_type . '.', 'buddypress' ); ?></p>
+							<p><?php esc_html_e( 'Once you have built up friend connections you will be able to invite others. You can send invites any time in the future by selecting the "Send Invites" option when viewing the group Profile.', 'openlab-theme' ); ?></p>
 						</div>
+
 					<?php endif; ?>
 
 					<?php wp_nonce_field( 'groups_create_save_group-invites' ) ?>
