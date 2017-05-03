@@ -361,11 +361,15 @@ jQuery(document).ready(function($){
 	} );
 
 	// Schools/Departments are required fields for Courses.
+	// @todo this must be made dynamic
 	$gc_submit.on( 'mouseover focus', function() {
 		if ( 'course' == new_group_type ) {
 			var school_tech = document.getElementById( 'school_tech' );
 			var is_school_selected = $( '.school-inputs input:checked' ).length > 0;
-			school_tech.setCustomValidity( is_school_selected ? '' : 'You must select a School.' );
+
+			if ( null !== school_tech ) {
+				school_tech.setCustomValidity( is_school_selected ? '' : 'You must select a School.' );
+			}
 
 			if ( is_school_selected ) {
 				var is_department_selected = $( '.departments input:checked' ).length > 0;
@@ -429,7 +433,7 @@ jQuery(document).ready(function($){
 			return false;
 		}
 
-		$.post( '/wp-admin/admin-ajax.php', // Forward-compatibility with ajaxurl in BP 1.6
+		$.post( ajaxurl, // Forward-compatibility with ajaxurl in BP 1.6
 			{
 				action: 'openlab_validate_groupblog_url_handler',
 				'path': domain
