@@ -29,7 +29,7 @@
 			<?php endif; ?>
 
 			<?php if ( is_user_logged_in() ) : ?>
-				<?php if ( !bp_get_activity_is_favorite() ) : ?>
+				<?php if ( ! bp_get_activity_is_favorite() ) : ?>
 					<a href="<?php bp_activity_favorite_link() ?>" class="fav" title="<?php _e( 'Mark as Favorite', 'buddypress' ) ?>"><?php _e( 'Favorite', 'buddypress' ) ?></a>
 				<?php else : ?>
 					<a href="<?php bp_activity_unfavorite_link() ?>" class="unfav" title="<?php _e( 'Remove Favorite', 'buddypress' ) ?>"><?php _e( 'Remove Favorite', 'buddypress' ) ?></a>
@@ -73,4 +73,3 @@
 </li>
 
 <?php do_action( 'bp_after_activity_entry' ) ?>
-

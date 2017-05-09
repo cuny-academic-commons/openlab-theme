@@ -19,7 +19,7 @@
 		<div class="main-column">
 
 			<div id="message" class="info">
-				<p><?php _e('Select people to invite from your friends list.', 'buddypress'); ?></p>
+				<p><?php _e( 'Select people to invite from your friends list.', 'buddypress' ); ?></p>
 			</div>
 
 			<?php do_action( 'bp_before_group_send_invites_list' ) ?>
@@ -60,7 +60,7 @@
 			<input type="submit" name="submit" id="submit" value="<?php _e( 'Send Invites', 'buddypress' ) ?>" />
 		</div>
 
-		<?php wp_nonce_field( 'groups_send_invites', '_wpnonce_send_invites') ?>
+		<?php wp_nonce_field( 'groups_send_invites', '_wpnonce_send_invites' ) ?>
 
 		<?php /* This is important, don't forget it */ ?>
 		<input type="hidden" name="group_id" id="group_id" value="<?php bp_group_id() ?>" />

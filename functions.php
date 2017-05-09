@@ -4,6 +4,12 @@ if ( ! defined( 'CSS_DEBUG' ) ) {
 	define( 'CSS_DEBUG', false );
 }
 
+// Register sidebars.
+add_action( 'widgets_init', 'openlab_register_sidebars' );
+
+// Install widgets.
+add_action( 'after_switch_theme', 'openlab_maybe_install' );
+
 function openlab_core_setup() {
 	add_theme_support( 'post-thumbnails' );
 	global $content_width;
@@ -17,6 +23,64 @@ function openlab_core_setup() {
 
 // test
 add_action( 'after_setup_theme', 'openlab_core_setup' );
+
+function openlab_maybe_install() {
+	if ( get_option( 'openlab_theme_installed' ) ) {
+		return;
+	}
+
+	require dirname( __FILE__ ) . '/lib/cbox-widget-setter.php';
+
+	// Group Type widgets.
+	if ( ! CBox_Widget_Setter::is_sidebar_populated( 'home-main' ) ) {
+		$group_types = cboxol_get_group_types();
+		foreach ( $group_types as $group_type ) {
+			CBox_Widget_Setter::set_widget( array(
+				'id_base'    => 'openlab_group_type_' . $group_type->get_slug(),
+				'sidebar_id' => 'home-main',
+			) );
+		}
+	}
+
+	// Nav menu.
+	openlab_create_default_nav_menu();
+
+	update_option( 'openlab_theme_installed', time() );
+}
+
+function openlab_create_default_nav_menu() {
+	$menu_name = wp_slash( __( 'Main Menu', 'cbox-openlab-core' ) );
+	$menu_id = wp_create_nav_menu( $menu_name );
+
+	wp_update_nav_menu_item(
+		$menu_id,
+		0,
+		array(
+			'menu-item-title' => __( 'People', 'openlab-theme' ),
+			'menu-item-classes' => 'home',
+			'menu-item-url' => bp_get_members_directory_permalink(),
+			'menu-item-status' => 'publish',
+		)
+	);
+
+	$group_types = cboxol_get_group_types();
+	foreach ( $group_types as $group_type ) {
+		wp_update_nav_menu_item(
+			$menu_id,
+			0,
+			array(
+				'menu-item-title' => $group_type->get_label( 'plural' ),
+				'menu-item-classes' => 'group-type ' . $group_type->get_slug(),
+				'menu-item-url' => bp_get_group_type_directory_permalink( $group_type->get_slug() ),
+				'menu-item-status' => 'publish',
+			)
+		);
+	}
+
+	$locations = get_theme_mod( 'nav_menu_locations' );
+	$locations['main'] = $menu_id;
+	set_theme_mod( 'nav_menu_locations', $locations );
+}
 
 /*
  * creating a library to organize functions* */
@@ -42,11 +106,9 @@ require_once( STYLESHEETPATH . '/lib/page-funcs.php' );
 require_once( STYLESHEETPATH . '/lib/sidebar-funcs.php' );
 require_once( STYLESHEETPATH . '/lib/plugin-hooks.php' );
 require_once( STYLESHEETPATH . '/lib/theme-hooks.php' );
+require_once( STYLESHEETPATH . '/lib/widgets.php' );
 
-function openlab_load_bp_dependencies() {
-	require_once( STYLESHEETPATH . '/lib/buddypress.php' );
-}
-add_action( 'bp_loaded', 'openlab_load_bp_dependencies' );
+require_once( STYLESHEETPATH . '/lib/buddypress.php' );
 
 function openlab_load_scripts() {
 	$stylesheet_dir_uri = get_stylesheet_directory_uri();
@@ -139,34 +201,28 @@ add_action( 'wp_enqueue_scripts', 'openlab_load_scripts_high_priority', 999 );
 // front page slider
 add_image_size( 'front-page-slider', 735, 295, true );
 
-// custom widgets for OpenLab
-function cuny_widgets_init() {
-	// add widget for Rotating Post Gallery Widget - will be placed on the homepage
-	register_sidebar(array(
-		'name' => __( 'Rotating Post Gallery Widdget', 'cuny' ),
-		'description' => __( 'This is the widget for holding the Rotating Post Gallery Widget', 'cuny' ),
-		'id' => 'pgw-gallery',
-		'before_widget' => '<div id="pgw-gallery">',
-		'after_widget' => '</div>',
-	));
-	// add widget for the Featured Widget - will be placed on the homepage under "In the Spotlight"
-	register_sidebar(array(
-		'name' => __( 'Featured Widget', 'cuny' ),
-		'description' => __( 'This is the widget for holding the Featured Widget', 'cuny' ),
-		'id' => 'cac-featured',
-		'before_widget' => '<div id="cac-featured">',
-		'after_widget' => '</div>',
-	));
-}
+/**
+ * Register sidebar widget areas.
+ *
+ * @since 1.0.0
+ */
+function openlab_register_sidebars() {
 
-add_action( 'widgets_init', 'cuny_widgets_init' );
+	// Home sidebar.
+	register_sidebar( array(
+		'name' => __( 'Home Sidebar', 'openlab-theme' ),
+		'description' => __( 'The sidebar at the left side of the home page.', 'openlab-theme' ),
+		'id' => 'home-sidebar',
+	) );
 
-function cuny_o_e_class( $num ) {
-	return 0 === $num % 2 ? ' even' : ' odd';
-}
-
-function cuny_third_end_class( $num ) {
-	return 0 === $num % 3 ? ' last' : '';
+	// Home main (group type columns).
+	register_sidebar( array(
+		'name' => __( 'Home Main', 'openlab-theme' ),
+		'description' => __( 'The main section of the home page. Generally used for group type widgets.', 'openlab-theme' ),
+		'id' => 'home-main',
+	//	'before_widget' => '<div class="col-sm-6 activity-list">',
+	//	'after_widget' => '</div>',
+	) );
 }
 
 /**
@@ -271,39 +327,19 @@ function openlab_profile_field_input_attributes() {
 }
 
 /**
- * On saving settings, save our additional fields
+ * Get the URL for the group type directory for a user.
+ *
+ * @param \CBOX\OL\GroupType $group_type Group type object.
+ * @param int                $user_id    Optional. Defaults to displayed user.
+ * @return string
  */
-function openlab_addl_settings_fields() {
-	global $bp;
-
-	$fname = isset( $_POST['fname'] ) ? $_POST['fname'] : '';
-	$lname = isset( $_POST['lname'] ) ? $_POST['lname'] : '';
-	$account_type = isset( $_POST['account_type'] ) ? $_POST['account_type'] : '';
-
-	$user_id = bp_displayed_user_id();
-
-	// Don't let this continue if a password error was recorded
-	if ( isset( $bp->template_message_type ) && 'error' == $bp->template_message_type && 'No changes were made to your account.' != $bp->template_message ) {
-		return;
+function openlab_get_user_group_type_directory_url( \CBOX\OL\GroupType $group_type, $user_id = null ) {
+	if ( ! $user_id ) {
+		$user_id = bp_displayed_user_id();
 	}
 
-	if ( empty( $fname ) || empty( $lname ) ) {
-		bp_core_add_message( 'First Name and Last Name are required fields', 'error' );
-	} else {
-		// @todo This whole thing needs dealing with.
-		xprofile_set_field_data( 'First Name', bp_displayed_user_id(), $fname );
-		xprofile_set_field_data( 'Last Name', bp_displayed_user_id(), $lname );
+	$url = bp_core_get_user_domain( $user_id ) . bp_get_groups_slug() . '/';
+	$url = add_query_arg( 'group_type', $group_type->get_slug(), $url );
 
-		bp_core_add_message( __( 'Your settings have been saved.', 'buddypress' ), 'success' );
-	}
-
-	if ( ! empty( $account_type ) ) {
-		$selectable_types = cboxol_get_selectable_member_types_for_user( $user_id );
-		if ( in_array( $account_type, $selectable_types ) ) {
-			bp_set_member_type( $user_id, $account_type );
-		}
-	}
-
-	bp_core_redirect( trailingslashit( bp_displayed_user_domain() . bp_get_settings_slug() . '/general' ) );
+	return $url;
 }
-add_action( 'bp_core_general_settings_after_save', 'openlab_addl_settings_fields' );

@@ -3,14 +3,14 @@
 	<div id="content">
 		<div id="openlab-main-content" class="padder">
 
-			<?php if ( !is_user_logged_in() ) : ?>
+			<?php if ( ! is_user_logged_in() ) : ?>
 				<h3><?php _e( 'Site Activity', 'buddypress' ) ?></h3>
 			<?php endif; ?>
 
 			<?php do_action( 'bp_before_directory_activity_content' ) ?>
 
 			<?php if ( is_user_logged_in() ) : ?>
-				<?php bp_get_template_part( 'activity/post-form.php'); ?>
+				<?php bp_get_template_part( 'activity/post-form.php' ); ?>
 			<?php endif; ?>
 
 			<?php do_action( 'template_notices' ) ?>

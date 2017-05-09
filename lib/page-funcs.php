@@ -195,24 +195,16 @@ function cuny_whos_online() {
 }
 
 /**
- * 	Home page latest group columns
+ * Get the markup for a Group Type widget.
+ *
+ * @param \CBOX\OL\GroupType $type Group Type object.
  */
-function cuny_home_square( $type ) {
+function cuny_home_square( \CBOX\OL\GroupType $type ) {
 	global $wpdb, $bp;
-
-	$cached = get_transient( 'openlab_home_square_' . $type );
-	if ( $cached ) {
-		echo $cached;
-		return;
-	}
 
 	if ( ! bp_is_active( 'groups' ) ) {
 		return;
 	}
-
-	$meta_filter = new BP_Groups_Meta_Filter(array(
-		'wds_group_type' => $type,
-	));
 
 	$i = 1;
 
@@ -221,6 +213,7 @@ function cuny_home_square( $type ) {
 		'type' => 'active',
 		'user_id' => 0,
 		'show_hidden' => false,
+		'group_type' => $type->get_slug(),
 	);
 
 	if ( bp_has_groups( $groups_args ) ) :
@@ -240,20 +233,17 @@ function cuny_home_square( $type ) {
 		ob_start();
 		?>
 
-
-		<div class="col-sm-6 activity-list <?php echo $type; ?>-list">
+		<div class="col-sm-6 activity-list <?php echo $type->get_slug(); ?>-list">
 			<div class="activity-wrapper">
 				<div class="title-wrapper">
-					<h2 class="title activity-title"><a class="no-deco" href="<?php echo site_url() . '/' . strtolower( $type ); ?>s"><?php echo ucfirst( $type ); ?>s<span class="fa fa-chevron-circle-right" aria-hidden="true"></span></a></h2>
+					<h2 class="title activity-title"><a class="no-deco" href="<?php echo bp_get_group_type_directory_permalink( $type->get_slug() ); ?>"><?php echo esc_html( $type->get_label( 'plural' ) ); ?><span class="fa fa-chevron-circle-right" aria-hidden="true"></span></a></h2>
 				</div><!--title-wrapper-->
 				<?php
 				while ( bp_groups() ) : bp_the_group();
 					$group = $groups_template->group;
 
-					// Showing descriptions for now. http://openlab.citytech.cuny.edu/redmine/issues/291
-					// $activity = !empty( $group_activity_items[$group->id] ) ? $group_activity_items[$group->id] : stripslashes( $group->description );
 					$activity = stripslashes( $group->description );
-					echo '<div class="box-1 row-' . $i . ' activity-item type-' . $type . '">';
+					echo '<div class="box-1 row-' . $i . ' activity-item type-' . esc_attr( $type->get_slug() ) . '">';
 					?>
 					<div class="item-avatar">
 						<a href="<?php bp_group_permalink() ?>"><img class="img-responsive" src ="<?php echo bp_core_fetch_avatar( array( 'item_id' => $group->id, 'object' => 'group', 'type' => 'full', 'html' => false ) ) ?>" alt="<?php echo $group->name; ?>"/></a>
@@ -284,11 +274,7 @@ function cuny_home_square( $type ) {
 
 	$html = ob_get_clean();
 
-	set_transient( 'openlab_home_square_' . $type, $html, 5 * 60 );
-
 	echo $html;
-
-	$meta_filter->remove_filters();
 }
 
 /**

@@ -216,7 +216,9 @@ function openlab_group_creation_categories() {
 	$group_term_ids = array();
 
 	if ( ! empty( $group_id ) ) {
-		$group_terms = bpcgc_get_group_selected_terms( $group_id );
+		if ( function_exists( 'bpcgc_get_group_selected_terms' ) ) {
+			$group_terms = bpcgc_get_group_selected_terms( $group_id );
+		}
 
 		if ( ! empty( $group_terms ) ) {
 			$group_term_ids = wp_list_pluck( $group_terms, 'term_id' );

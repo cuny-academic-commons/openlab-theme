@@ -8,10 +8,10 @@
 
 // custom menu locations for OpenLab
 register_nav_menus(array(
-	'main' => __( 'Main Menu', 'cuny' ),
-	'aboutmenu' => __( 'About Menu', 'cuny' ),
-	'helpmenu' => __( 'Help Menu', 'cuny' ),
-	'helpmenusec' => __( 'Help Menu Secondary', 'cuny' ),
+	'main' => __( 'Main Menu', 'openlab-theme' ),
+	'aboutmenu' => __( 'About Menu', 'openlab-theme' ),
+	'helpmenu' => __( 'Help Menu', 'openlab-theme' ),
+	'helpmenusec' => __( 'Help Menu Secondary', 'openlab-theme' ),
 ));
 
 /**
@@ -80,7 +80,7 @@ add_filter( 'wp_nav_menu_objects', 'openlab_wp_menu_customizations', 11, 2 );
  * Hooked to bp_screens at 1 because apparently BP is broken??
  */
 function openlab_modify_options_nav() {
-	if ( bp_is_group() && openlab_is_portfolio() && ! bp_is_group_create() ) {
+	if ( bp_is_group() && cboxol_is_portfolio() && ! bp_is_group_create() ) {
 		buddypress()->groups->nav->edit_nav(array(
 			'name' => 'Profile',
 		), 'home', bp_get_current_group_slug());
@@ -103,9 +103,7 @@ function openlab_modify_options_nav() {
 		buddypress()->groups->nav->edit_nav(array(
 			'position' => 15,
 		), 'admin', bp_get_current_group_slug());
-	}
 
-	if ( bp_is_group() ) {
 		$nav_items = buddypress()->groups->nav->get_secondary( array( 'parent_slug' => bp_get_current_group_slug() ) );
 		foreach ( $nav_items as $nav_item ) {
 
@@ -386,14 +384,18 @@ function openlab_profile_settings_submenu() {
 	return openlab_submenu_gen( $menu_list, true );
 }
 
-// sub-menus for my-<groups> pages
-function openlab_my_groups_submenu( $group ) {
+/**
+ * Markup for Groups submenu.
+ *
+ * @param \CBOX\OL\GroupType $group_type Group type object.
+ * @return string
+ */
+function openlab_my_groups_submenu( \CBOX\OL\GroupType $group_type ) {
 	global $bp;
 	$menu_out = array();
 	$menu_list = array();
 
-	$group_link = $bp->root_domain . '/my-' . $group . 's/';
-	$create_link = bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/create/step/group-details/?type=' . $group . '&new=true';
+	$create_link = bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/create/step/group-details/?group_type=' . $group_type->get_slug() . '&new=true';
 	$no_link = 'no-link';
 
 	$span_start = '<span class="bold">';
@@ -402,36 +404,18 @@ function openlab_my_groups_submenu( $group ) {
 	// get account type to see if they're faculty
 	$faculty = xprofile_get_field_data( 'Account Type', get_current_user_id() );
 
-	$submenu_text = 'My ' . ucfirst( $group ) . 's';
+	$submenu_text = $group_type->get_label( 'my_groups' );
 
-	// if the current user is faculty or a super admin, they can create a course, otherwise no dice
-	if ( $group == 'course' ) {
-
-		// determines if there are any courses - if not, only show "create"
-		$filters['wds_group_type'] = openlab_page_slug_to_grouptype();
-
-		if ( is_super_admin( get_current_user_id() ) || $faculty == 'Faculty' ) {
-			// have to add extra conditional in here for submenus on editing pages
-			if ( $step_name == '' ) {
-				$menu_list = array(
-					$create_link => 'Create / Clone a ' . ucfirst( $group ),
-				);
-			} else {
-
-				$submenu_text = 'Create / Clone a ';
-
-				$menu_list = array(
-					$no_link => $step_name,
-				);
-			}
-		}
-	} else {
-		// have to add extra conditional in here for submenus on editing pages
-		if ( $step_name == '' ) {
+	if ( $group_type->get_is_course() ) {
+		if ( cboxol_user_can_create_courses( bp_loggedin_user_id() ) ) {
 			$menu_list = array(
-				$create_link => 'Create a ' . ucfirst( $group ),
+				$create_link => __( 'Create / Clone', 'openlab-theme' ),
 			);
 		}
+	} else {
+		$menu_list = array(
+			$create_link => __( 'Create New', 'openlab-theme' ),
+		);
 	}
 
 	$menu_out['menu'] = openlab_submenu_gen( $menu_list );
@@ -440,41 +424,46 @@ function openlab_my_groups_submenu( $group ) {
 	return $menu_out;
 }
 
-function openlab_create_group_menu( $grouptype ) {
+/**
+ * Get the group creation menu corresponding to a group type.
+ *
+ * @param \CBOX\OL\GroupType $group_type
+ */
+function openlab_create_group_menu( \CBOX\OL\GroupType $group_type ) {
 	global $bp;
 
-	// get group step
-	$current_step = isset( $bp->groups->current_create_step ) ? $bp->groups->current_create_step : '';
-	$step_name = '';
-
-	switch ( $current_step ) {
-		case 'group-details':
-			$step_name = 'Step One: Profile';
+	switch ( bp_get_groups_current_create_step() ) {
+		case 'group-settings' :
+			$step_name = __( 'Step Two: Privacy Settings', 'openlab-theme' );
 			break;
-		case 'group-settings':
-			$step_name = 'Step Two: Privacy Settings';
-			break;
-		case 'group-avatar':
-			$step_name = 'Step Three: Avatar';
+		case 'group-avatar' :
+			$step_name = __( 'Step Three: Avatar', 'openlab-theme' );
 			break;
 		case 'invite-anyone' :
-			$step_name = 'Step Four: Invite Members';
+			$step_name = __( 'Step Four: Invite Members', 'openlab-theme' );
+			break;
+		case 'group-details' :
+		default:
+			$step_name = __( 'Step One: Profile', 'openlab-theme' );
 			break;
 	}
 
-	if ( $grouptype == 'course' ) {
-		$title = 'Create/Clone a Course: ';
+	if ( $group_type->get_can_be_cloned() ) {
+		$title = __( 'Create/Clone', 'openlab-theme' );
 	} else {
-		$title = 'Create a ' . ucfirst( $grouptype ) . ': ';
+		$title = __( 'Create', 'openlab-theme' );
 	}
 
+	$title = esc_html( $title );
+	$step_name = esc_html( $step_name );
+
 	$menu_mup = <<<HTML
-            <div class="submenu create-group-submenu">
-                <div class="submenu-text pull-left bold"><h2>{$title}</h2></div>
-                <ul class="nav nav-inline">
-                    <li class="submenu-item item-create-clone-a-course current-menu-item bold">{$step_name}</li>
-                </ul>
-            </div>
+		<div class="submenu create-group-submenu">
+			<div class="submenu-text pull-left bold"><h2>{$title}</h2></div>
+			<ul class="nav nav-inline">
+			<li class="submenu-item item-create-clone-a-course current-menu-item bold">{$step_name}</li>
+			</ul>
+		</div>
 HTML;
 
 	return $menu_mup;
@@ -670,16 +659,14 @@ function openlab_submenu_gen( $items, $timestamp = false ) {
  * bp_get_options_nav filtering
  */
 // submenu nav renaming
-add_filter( 'bp_get_options_nav_home', 'openlab_filter_subnav_home' );
 
 function openlab_filter_subnav_home( $subnav_item ) {
 	global $bp;
 
 	$displayed_user_id = bp_is_user() ? bp_displayed_user_id() : bp_loggedin_user_id();
-	$group_label = openlab_get_group_type_label( 'case=upper' );
-	$new_label = '<span class="inline-visible-xs">' . $group_label . '</span> Profile';
 
-	$new_item = str_replace( 'Home', $new_label, $subnav_item );
+	// Intentionally use the 'buddypress' text domain.
+	$new_item = str_replace( __( 'Home', 'buddypress' ), esc_html__( 'Profile', 'cbox-openlab-core' ), $subnav_item );
 
 	// update "current" class to "current-menu-item" to unify site identification of current menu page
 	$new_item = str_replace( 'current selected', 'current-menu-item', $new_item );
@@ -692,9 +679,9 @@ function openlab_filter_subnav_home( $subnav_item ) {
 	$site_link = '';
 
 	if ( ! empty( $group_site_settings['site_url'] ) && $group_site_settings['is_visible'] ) {
-		$site_link = '<li id="site-groups-li" class="visible-xs"><a href="' . trailingslashit( esc_attr( $group_site_settings['site_url'] ) ) . '" id="site">' . $group_label . ' Site</a></li>';
+		$site_link = '<li id="site-groups-li" class="visible-xs"><a href="' . trailingslashit( esc_attr( $group_site_settings['site_url'] ) ) . '" id="site">' . esc_html__( 'Site', 'cbox-openlab-core' ) . '</a></li>';
 
-		if ( $group_site_settings['is_local'] && ((openlab_is_portfolio() && openlab_is_my_portfolio()) || ( ! openlab_is_portfolio() && groups_is_user_member( bp_loggedin_user_id(), bp_get_current_group_id() )) || $bp->is_item_admin || is_super_admin()) ) {
+		if ( $group_site_settings['is_local'] && ((cboxol_is_portfolio() && openlab_is_my_portfolio()) || ( ! openlab_is_portfolio() && groups_is_user_member( bp_loggedin_user_id(), bp_get_current_group_id() )) || $bp->is_item_admin || is_super_admin()) ) {
 
 			$site_link .= '<li id="site-admin-groups-li" class="visible-xs"><a href="' . trailingslashit( esc_attr( $group_site_settings['site_url'] ) ) . 'wp-admin/" id="site-admin">Site Dashboard</a></li>';
 		}
@@ -702,12 +689,10 @@ function openlab_filter_subnav_home( $subnav_item ) {
 
 	return $new_item . $site_link;
 }
-
-add_filter( 'bp_get_options_nav_admin', 'openlab_filter_subnav_admin' );
+add_filter( 'bp_get_options_nav_home', 'openlab_filter_subnav_home' );
 
 function openlab_filter_subnav_admin( $subnav_item ) {
 	global $bp;
-	$group_label = openlab_get_group_type_label( 'case=upper' );
 	$new_item = $subnav_item;
 	// this is to stop the course settings menu item from getting a current class on membership pages
 	if ( bp_action_variable( 0 ) ) {
@@ -721,8 +706,7 @@ function openlab_filter_subnav_admin( $subnav_item ) {
 
 	return $new_item;
 }
-
-add_filter( 'bp_get_options_nav_members', 'openlab_filter_subnav_members' );
+add_filter( 'bp_get_options_nav_admin', 'openlab_filter_subnav_admin' );
 
 function openlab_filter_subnav_members( $subnav_item ) {
 	global $bp;
@@ -763,14 +747,13 @@ function openlab_filter_subnav_members( $subnav_item ) {
 
 	return $new_item;
 }
-
-add_filter( 'bp_get_options_nav_nav-docs', 'openlab_filter_subnav_docs' );
+add_filter( 'bp_get_options_nav_members', 'openlab_filter_subnav_members' );
 
 function openlab_filter_subnav_docs( $subnav_item ) {
 	global $bp;
 
 	// no docs if we're on the portfolio page
-	if ( openlab_is_portfolio() ) {
+	if ( cboxol_is_portfolio() ) {
 		return '';
 	}
 
@@ -815,13 +798,14 @@ function openlab_filter_subnav_docs( $subnav_item ) {
 
 	return $new_item;
 }
+add_filter( 'bp_get_options_nav_nav-docs', 'openlab_filter_subnav_docs' );
 
 /**
  * Modify the Documents subnav item in group contexts.
  */
 function openlab_filter_subnav_nav_group_documents( $subnav_item ) {
 	// no files if we're on the portfolio page
-	if ( openlab_is_portfolio() ) {
+	if ( cboxol_is_portfolio() ) {
 		return '';
 	} else {
 		// update "current" class to "current-menu-item" to unify site identification of current menu page
@@ -989,7 +973,7 @@ function openlab_group_admin_tabs( $group = false ) {
 	// Portfolio tabs look different from other groups
 	?>
 	<!--
-	<?php if ( openlab_is_portfolio() ) : ?>
+	<?php if ( cboxol_is_portfolio() ) : ?>
 		<?php if ( $bp->is_item_admin || $bp->is_item_mod ) { ?>
 			--><li<?php if ( 'edit-details' == $current_tab || empty( $current_tab ) ) : ?> class="current-menu-item"<?php endif; ?>><a href="<?php echo bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug ?>/admin/edit-details">Edit Profile</a></li><!--
 		<?php } ?>
@@ -1153,7 +1137,18 @@ function openlab_is_create_group( $group_type ) {
 
 	$steps = array( 'group-details', 'group-settings', 'group-avatar', 'invite-anyone' );
 
-	if ( openlab_get_group_type() == $group_type && in_array( $current_step, $steps ) && bp_current_action() == 'create' ) {
+	$group_id = bp_get_current_group_id();
+	if ( ! $group_id ) {
+		$group_id = bp_get_new_group_id();
+	}
+
+	if ( $group_id ) {
+		$current_group_type = cboxol_get_group_group_type( bp_get_current_group_id() );
+	} elseif ( isset( $_GET['group_type'] ) ) {
+		$current_group_type = cboxol_get_group_type( wp_unslash( urldecode( $_GET['group_type'] ) ) );
+	}
+
+	if ( ! is_wp_error( $current_group_type ) && $current_group_type->get_slug() == $group_type && in_array( $current_step, $steps ) && bp_current_action() == 'create' ) {
 		$return = true;
 	}
 

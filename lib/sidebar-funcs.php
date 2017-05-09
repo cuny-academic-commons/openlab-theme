@@ -138,6 +138,17 @@ function openlab_member_sidebar_menu( $mobile = false ) {
 		$classes = 'hidden-xs';
 	}
 
+	$group_types = cboxol_get_group_types( array(
+		'exclude_portfolio' => true,
+	) );
+
+	$portfolio_group_type = cboxol_get_portfolio_group_type();
+
+	$current_group_type = null;
+	if ( ! empty( $_GET['group_type'] ) ) {
+		$current_group_type = wp_unslash( urldecode( $_GET['group_type'] ) );
+	}
+
 	if ( is_user_logged_in() && openlab_is_my_profile() ) :
 		?>
 
@@ -149,21 +160,31 @@ function openlab_member_sidebar_menu( $mobile = false ) {
 
 				<li class="sq-bullet <?php if ( bp_is_user_settings() ) : ?>selected-page<?php endif ?> mol-settings my-settings"><a href="<?php echo $dud . bp_get_settings_slug() ?>/">My Settings</a></li>
 
-				<?php if ( openlab_user_has_portfolio( bp_displayed_user_id() ) && ( ! openlab_group_is_hidden( openlab_get_user_portfolio_id() ) || openlab_is_my_profile() || groups_is_user_member( bp_loggedin_user_id(), openlab_get_user_portfolio_id() ) ) ) : ?>
+				<?php if ( $portfolio_group_type ) : ?>
+					<?php if ( openlab_user_has_portfolio( bp_displayed_user_id() ) && ( ! openlab_group_is_hidden( openlab_get_user_portfolio_id() ) || openlab_is_my_profile() || groups_is_user_member( bp_loggedin_user_id(), openlab_get_user_portfolio_id() ) ) ) : ?>
 
-					<li id="portfolios-groups-li<?php echo ($mobile ? '-mobile' : '') ?>" class="visible-xs mobile-anchor-link"><a href="#portfolio-sidebar-inline-widget" id="portfolios<?php echo ($mobile ? '-mobile' : '') ?>">My <?php echo (xprofile_get_field_data( 'Account Type', bp_displayed_user_id() ) == 'Student' ? 'ePortfolio' : 'Portfolio') ?></a></li>
+						<li id="portfolios-groups-li<?php echo ( $mobile ? '-mobile' : '' ) ?>" class="visible-xs mobile-anchor-link"><a href="#portfolio-sidebar-inline-widget" id="portfolios<?php echo ( $mobile ? '-mobile' : '' ) ?>"><?php echo esc_html( $portfolio_group_type->get_label( 'my_portfolio' ) ) ?></a></li>
 
-				<?php else : ?>
+					<?php else : ?>
 
-					<li id="portfolios-groups-li<?php echo ($mobile ? '-mobile' : '') ?>" class="visible-xs mobile-anchor-link"><a href="#portfolio-sidebar-inline-widget" id="portfolios<?php echo ($mobile ? '-mobile' : '') ?>">Create <?php echo (xprofile_get_field_data( 'Account Type', bp_displayed_user_id() ) == 'Student' ? 'ePortfolio' : 'Portfolio') ?></a></li>
+						<li id="portfolios-groups-li<?php echo ( $mobile ? '-mobile' : '' ) ?>" class="visible-xs mobile-anchor-link"><a href="#portfolio-sidebar-inline-widget" id="portfolios<?php echo ( $mobile ? '-mobile' : '' ) ?>"><?php echo esc_html( $portfolio_group_type->get_label( 'create_item' ) ) ?></a></li>
 
+					<?php endif; ?>
 				<?php endif; ?>
 
-				<li class="sq-bullet <?php if ( is_page( 'my-courses' ) || openlab_is_create_group( 'course' ) ) : ?>selected-page<?php endif ?> mol-courses my-courses"><a href="<?php echo bp_get_root_domain() ?>/my-courses/">My Courses</a></li>
-
-				<li class="sq-bullet <?php if ( is_page( 'my-projects' ) || openlab_is_create_group( 'project' ) ) : ?>selected-page<?php endif ?> mol-projects my-projects"><a href="<?php echo bp_get_root_domain() ?>/my-projects/">My Projects</a></li>
-
-				<li class="sq-bullet <?php if ( is_page( 'my-clubs' ) || openlab_is_create_group( 'club' ) ) : ?>selected-page<?php endif ?> mol-clubs my-clubs"><a href="<?php echo bp_get_root_domain() ?>/my-clubs/">My Clubs</a></li>
+				<?php foreach ( $group_types as $group_type ) : ?>
+					<?php
+					$selected = '';
+					if (
+						( bp_is_user_groups() && $group_type->get_slug() === $current_group_type )
+						||
+						openlab_is_create_group( $group_type->get_slug() )
+					) {
+						$selected = 'selected-page';
+					}
+					?>
+					<li class="sq-bullet <?php echo $selected ?> mol-courses my-<?php echo esc_attr( $group_type->get_slug() ) ?>"><a href="<?php echo openlab_get_user_group_type_directory_url( $group_type ) ?>"><?php echo esc_html( $group_type->get_label( 'my_groups' ) ) ?></a></li>
+				<?php endforeach; ?>
 
 				<?php /* Get a friend request count */ ?>
 				<?php if ( bp_is_active( 'friends' ) ) : ?>
@@ -214,20 +235,17 @@ function openlab_member_sidebar_menu( $mobile = false ) {
 
 				<li class="sq-bullet <?php if ( bp_is_user_activity() ) : ?>selected-page<?php endif ?> mol-profile"><a href="<?php echo $dud ?>/">Profile</a></li>
 
-				<?php if ( openlab_user_has_portfolio( bp_displayed_user_id() ) && ( ! openlab_group_is_hidden( openlab_get_user_portfolio_id() ) || openlab_is_my_profile() || groups_is_user_member( bp_loggedin_user_id(), openlab_get_user_portfolio_id() ) ) ) : ?>
+				<?php if ( $portfolio_group_type ) : ?>
+					<?php if ( openlab_user_has_portfolio( bp_displayed_user_id() ) && ( ! openlab_group_is_hidden( openlab_get_user_portfolio_id() ) || openlab_is_my_profile() || groups_is_user_member( bp_loggedin_user_id(), openlab_get_user_portfolio_id() ) ) ) : ?>
 
-					<li id="portfolios-groups-li<?php echo ($mobile ? '-mobile' : '') ?>" class="visible-xs mobile-anchor-link"><a href="#portfolio-sidebar-inline-widget" id="portfolios<?php echo ($mobile ? '-mobile' : '') ?>"><?php echo (xprofile_get_field_data( 'Account Type', bp_displayed_user_id() ) == 'Student' ? 'ePortfolio' : 'Portfolio') ?></a></li>
+						<li id="portfolios-groups-li<?php echo ( $mobile ? '-mobile' : '' ) ?>" class="visible-xs mobile-anchor-link"><a href="#portfolio-sidebar-inline-widget" id="portfolios<?php echo ( $mobile ? '-mobile' : '' ) ?>"><?php echo esc_html( $portfolio_group_type->get_label( 'single' ) ) ?></a></li>
 
+					<?php endif; ?>
 				<?php endif; ?>
 
-				<?php /* Current page highlighting requires the GET param */ ?>
-				<?php $current_group_view = isset( $_GET['type'] ) ? $_GET['type'] : ''; ?>
-
-				<li class="sq-bullet <?php if ( bp_is_user_groups() && 'course' == $current_group_view ) : ?>selected-page<?php endif ?> mol-courses"><a href="<?php echo $dud . bp_get_groups_slug() ?>/?type=course">Courses</a></li>
-
-				<li class="sq-bullet <?php if ( bp_is_user_groups() && 'project' == $current_group_view ) : ?>selected-page<?php endif ?> mol-projects"><a href="<?php echo $dud . bp_get_groups_slug() ?>/?type=project">Projects</a></li>
-
-				<li class="sq-bullet <?php if ( bp_is_user_groups() && 'club' == $current_group_view ) : ?>selected-page<?php endif ?> mol-club"><a href="<?php echo $dud . bp_get_groups_slug() ?>/?type=club">Clubs</a></li>
+				<?php foreach ( $group_types as $group_type ) : ?>
+					<li class="sq-bullet <?php if ( bp_is_user_groups() && $group_type->get_slug() === $current_group_type ) : ?>selected-page<?php endif ?> mol-courses"><a href="<?php echo openlab_get_user_group_type_directory_url( $group_type, bp_displayed_user_id() ) ?>"><?php echo esc_html( $group_type->get_label( 'plural' ) ); ?></a></li>
+				<?php endforeach; ?>
 
 				<li class="sq-bullet <?php if ( bp_is_user_friends() ) : ?>selected-page<?php endif ?> mol-friends"><a href="<?php echo $dud . bp_get_friends_slug() ?>/">Friends</a></li>
 

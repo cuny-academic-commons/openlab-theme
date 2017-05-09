@@ -3,6 +3,17 @@
 <?php do_action( 'bp_before_profile_edit_content' ) ?>
 
 <?php
+$displayed_user_id = bp_displayed_user_id();
+
+$display_name = bp_get_profile_field_data( 'field=Name' );
+
+$profile_args = array();
+
+if ( isset( $pgroup ) ) {
+	$profile_args['profile_group_id'] = $pgroup;
+}
+
+$display_name_shown = isset( $pgroup ) && 1 == $pgroup;
 $field_ids = array( 1 );
 ?>
 
@@ -58,8 +69,8 @@ $field_ids = array( 1 );
 							if ( 'selectbox' == bp_get_the_profile_field_type() ) :
 								?>
 
-								<label <?php echo $style; ?> for="<?php bp_the_profile_field_input_name() ?>"><?php bp_the_profile_field_name() ?> <?php if ( bp_get_the_profile_field_is_required() ) : ?><?php _e( '(required)', 'buddypress' ) ?><?php endif; ?></label>
-								<select class="form-control" name="<?php bp_the_profile_field_input_name() ?>" id="<?php bp_the_profile_field_input_name() ?>">
+								<label for="<?php bp_the_profile_field_input_name() ?>"><?php bp_the_profile_field_name() ?> <?php if ( bp_get_the_profile_field_is_required() ) : ?><?php _e( '(required)', 'buddypress' ) ?><?php endif; ?></label>
+								<select class="form-control" <?php echo $style; ?> name="<?php bp_the_profile_field_input_name() ?>" id="<?php bp_the_profile_field_input_name() ?>">
 									<?php bp_the_profile_field_options() ?>
 								</select>
 
@@ -129,6 +140,22 @@ $field_ids = array( 1 );
 					<?php endwhile; ?>
 
 				<?php endwhile; ?>
+
+				<?php
+				/* @todo Move to the plugin so that it works outside of this theme */
+				$selectable_types = cboxol_get_selectable_member_types_for_user( bp_displayed_user_id() );
+				$current_type = bp_get_member_type( bp_displayed_user_id() );
+				array_unshift( $selectable_types, $current_type );
+				$selectable_types = array_map( 'cboxol_get_member_type', $selectable_types );
+				?>
+				<?php if ( $selectable_types ) : ?>
+					<label for="member-type"><?php esc_html_e( 'Member Type', 'openlab' ); ?></label>
+					<select id="member-type" name="member-type" class="form-control">
+						<?php foreach ( $selectable_types as $selectable_type ) : ?>
+							<option value="<?php echo esc_attr( $selectable_type->get_slug() ); ?>" <?php selected( $current_type, $selectable_type->get_slug() ); ?>><?php echo esc_html( $selectable_type->get_label( 'singular' ) ); ?></option>
+						<?php endforeach; ?>
+					</select>
+				<?php endif; ?>
 
 			</div><!--panel-body-->
 		</div>

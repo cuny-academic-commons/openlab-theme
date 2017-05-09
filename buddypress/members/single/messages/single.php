@@ -8,7 +8,7 @@
 
 		<p id="message-recipients">
 			<span class="highlight">
-				<?php printf( __('Sent between %s and %s', 'buddypress'), bp_get_the_thread_recipients(), '<a href="' . bp_get_loggedin_user_link() . '" title="' . bp_get_loggedin_user_fullname() . '">' . bp_get_loggedin_user_fullname() . '</a>' ) ?>
+				<?php printf( __( 'Sent between %1$s and %1$s', 'buddypress' ), bp_get_the_thread_recipients(), '<a href="' . bp_get_loggedin_user_link() . '" title="' . bp_get_loggedin_user_fullname() . '">' . bp_get_loggedin_user_fullname() . '</a>' ) ?>
 			</span>
 		</p>
 
@@ -17,8 +17,8 @@
 		<?php while ( bp_thread_messages() ) : bp_thread_the_message(); ?>
 
 			<div class="message-box panel panel-default">
-                            
-                            <div class="panel-body">
+							
+							<div class="panel-body">
 
 				<div class="message-metadata">
 
@@ -55,7 +55,7 @@
 
 			<div class="message-box panel panel-default">
 
-                            <div class="panel-heading semibold">
+							<div class="panel-heading semibold">
 				<div class="message-metadata">
 
 					<?php do_action( 'bp_before_message_meta' ) ?>
@@ -69,9 +69,9 @@
 					<?php do_action( 'bp_after_message_meta' ) ?>
 
 				</div><!-- .message-metadata -->
-                            </div>
+							</div>
 
-                            <div class="panel-body">
+							<div class="panel-body">
 				<div class="message-content">
 
 					<?php do_action( 'bp_before_message_reply_box' ) ?>
@@ -89,7 +89,7 @@
 					<?php wp_nonce_field( 'messages_send_message', 'send_message_nonce' ) ?>
 
 				</div><!-- .message-content -->
-                            </div>
+							</div>
 
 			</div><!-- .message-box -->
 

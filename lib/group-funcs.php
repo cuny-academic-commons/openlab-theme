@@ -28,19 +28,6 @@ add_filter( 'template_include', 'openlab_mygroups_template_loader' );
 function openlab_group_privacy_settings( $group_type ) {
 	global $bp;
 
-	$group_type_name = $group_type;
-	$group_type_name_uc = ucfirst( $group_type );
-
-	if ( 'portfolio' === $group_type ) {
-		$group_type_name = openlab_get_portfolio_label(array(
-			'group_id' => bp_get_current_group_id(),
-		));
-		$group_type_name_uc = openlab_get_portfolio_label(array(
-			'group_id' => bp_get_current_group_id(),
-			'case' => 'upper',
-		));
-	}
-
 	// If this is a cloned group/site, fetch the clone source's details
 	$clone_source_group_status = $clone_source_blog_status = '';
 	if ( bp_is_group_create() ) {
@@ -56,15 +43,16 @@ function openlab_group_privacy_settings( $group_type ) {
 		}
 	}
 	?>
+
 	<div class="panel panel-default">
-		<div class="panel-heading semibold"><?php _e( 'Privacy Settings', 'buddypress' ); ?><?php if ( $bp->current_action == 'admin' || $bp->current_action == 'create' || openlab_is_portfolio() ) : ?>: <?php echo $group_type_name_uc ?> Profile<?php endif; ?></div>
+		<div class="panel-heading semibold"><?php esc_html_e( 'Privacy Settings', 'openlab-theme' ); ?></div>
 
 		<div class="radio group-profile panel-body">
 
-			<?php if ( $bp->current_action == 'create' ) : ?>
-				<p id="privacy-settings-tag-b"><?php _e( 'These settings affect how others view your ' . $group_type_name . ' Profile. You may change these settings later in the course Profile Settings.', 'buddypress' ); ?></p>
+			<?php if ( bp_is_group_create() ) : ?>
+				<p id="privacy-settings-tag-b"><?php esc_html_e( 'These settings affect how others view your group\'s Profile.', 'openlab-theme' ); ?> <?php esc_html_e( 'You may change these settings later in the group\'s Profile Settings.', 'openlab-theme' ); ?></p>
 			<?php else : ?>
-				<p class="privacy-settings-tag-c"><?php _e( 'These settings affect how others view your ' . $group_type_name_uc . ' Profile.' ) ?></p>
+				<p class="privacy-settings-tag-c"><?php esc_html_e( 'These settings affect how others view your group\'s Profile.', 'openlab-theme' ); ?></p>
 			<?php endif; ?>
 
 			<?php
@@ -75,28 +63,25 @@ function openlab_group_privacy_settings( $group_type ) {
 			?>
 			<div class="row">
 				<div class="col-sm-23 col-sm-offset-1">
-					<label><input type="radio" name="group-status" value="public" <?php checked( 'public', $new_group_status ) ?> />
-						This is a public <?php echo $group_type_name_uc ?></label>
+					<label><input type="radio" name="group-status" value="public" <?php checked( 'public', $new_group_status ) ?> /><?php esc_html_e( 'Public', 'openlab-theme' ); ?></label>
 					<ul>
-						<li>This <?php echo $group_type_name_uc ?> Profile and related content and activity will be visible to the public.</li>
-						<li><?php _e( 'This ' . $group_type_name_uc . ' will be listed in the ' . $group_type_name_uc . 's directory, search results, and may be displayed on the OpenLab home page.', 'buddypress' ) ?></li>
-						<li><?php _e( 'Any OpenLab member may join this ' . $group_type_name_uc . '.', 'buddypress' ) ?></li>
+						<li><?php esc_html_e( 'Profile and related content and activity will be visible to the public.', 'openlab-theme' ); ?></li>
+						<li><?php printf( esc_html__( 'Will be listed in the "%s" directory, in search results, and may be displayed on the home page.', 'openlab-theme' ), esc_html( $group_type->get_label( 'plural' ) ) ); ?></li>
+						<li><?php _e( 'Any site member may join this group.', 'openlab-theme' ); ?></li>
 					</ul>
 
-					<label><input type="radio" name="group-status" value="private" <?php checked( 'private', $new_group_status ) ?> />
-						<?php _e( 'This is a private ' . $group_type_name_uc, 'buddypress' ) ?></label>
+					<label><input type="radio" name="group-status" value="private" <?php checked( 'private', $new_group_status ) ?> /><?php esc_html_e( 'Private', 'openlab-theme' ) ?></label>
 					<ul>
-						<li><?php _e( 'This ' . $group_type_name_uc . ' Profile and related content and activity will only be visible to members of the group.', 'buddypress' ) ?></li>
-						<li><?php _e( 'This ' . $group_type_name_uc . ' will be listed in the ' . $group_type_name_uc . ' directory, search results, and may be displayed on the OpenLab home page.', 'buddypress' ) ?></li>
-						<li><?php _e( 'Only OpenLab members who request membership and are accepted may join this ' . $group_type_name_uc . '.', 'buddypress' ) ?></li>
+						<li><?php esc_html_e( 'Profile and related content and activity will only be visible to members of the group.', 'buddypress' ) ?></li>
+						<li><?php printf( esc_html__( 'Will be listed in the "%s" directory, in search results, and may be displayed on the home page.', 'openlab-theme' ), esc_html( $group_type->get_label( 'plural' ) ) ); ?></li>
+						<li><?php esc_html_e( 'Only site members who request membership and are accepted may join this group.', 'openlab-theme' ) ?></li>
 					</ul>
 
-					<label><input type="radio" name="group-status" value="hidden" <?php checked( 'hidden', $new_group_status ) ?> />
-						<?php _e( 'This is a hidden ' . $group_type_name_uc, 'buddypress' ) ?></label>
+					<label><input type="radio" name="group-status" value="hidden" <?php checked( 'hidden', $new_group_status ) ?> /><?php esc_html_e( 'Hidden', 'openlab-theme' ) ?></label>
 					<ul>
-						<li><?php _e( 'This ' . $group_type_name_uc . ' Profile, related content and activity will only be visible only to members of the ' . $group_type_name_uc . '.', 'buddypress' ) ?></li>
-						<li><?php _e( 'This ' . $group_type_name_uc . ' Profile will NOT be listed in the ' . $group_type_name_uc . ' directory, search results, or OpenLab home page.', 'buddypress' ) ?></li>
-						<li><?php _e( 'Only OpenLab members who are invited may join this ' . $group_type_name_uc . '.', 'buddypress' ) ?></li>
+						<li><?php esc_html_e( 'Profile, related content, and activity will only be visible only to members of the group.', 'openlab-theme' ) ?></li>
+						<li><?php printf( esc_html__( 'Will NOT be listed in the "%s" directory, in search results, or on the home page.', 'openlab-theme' ), esc_html( $group_type->get_label( 'plural' ) ) ); ?></li>
+						<li><?php esc_html_e( 'Only site members who are invited may join this group.', 'openlab-theme' ) ?></li>
 					</ul>
 				</div>
 			</div>
@@ -107,9 +92,9 @@ function openlab_group_privacy_settings( $group_type ) {
 
 	<?php if ( $site_id = openlab_get_site_id_by_group_id() ) : ?>
 		<div class="panel panel-default">
-			<div class="panel-heading semibold"><?php _e( $group_type_name_uc . ' Site' ) ?></div>
+			<div class="panel-heading semibold"><?php esc_html_e( 'Associated Site', 'openlab-theme' ) ?></div>
 			<div class="panel-body">
-				<p class="privacy-settings-tag-c"><?php _e( 'These settings affect how others view your ' . $group_type_name_uc . ' Site.' ) ?></p>
+				<p class="privacy-settings-tag-c"><?php esc_html_e( 'These settings affect how others view your associated site.', 'openlab-theme' ) ?></p>
 				<?php openlab_site_privacy_settings_markup( $site_id ) ?>
 			</div>
 		</div>
@@ -117,7 +102,7 @@ function openlab_group_privacy_settings( $group_type ) {
 
 	<?php if ( $bp->current_action == 'admin' ) : ?>
 		<?php do_action( 'bp_after_group_settings_admin' ); ?>
-		<p><input class="btn btn-primary" type="submit" value="<?php _e( 'Save Changes', 'buddypress' ) ?> &#xf138;" id="save" name="save" /></p>
+		<p><input class="btn btn-primary" type="submit" value="<?php esc_html_e( 'Save Changes', 'openlab-theme' ) ?> &#xf138;" id="save" name="save" /></p>
 		<?php wp_nonce_field( 'groups_edit_group_settings' ); ?>
 	<?php elseif ( $bp->current_action == 'create' ) : ?>
 		<?php wp_nonce_field( 'groups_create_save_group-settings' ) ?>
@@ -135,9 +120,8 @@ function openlab_group_archive() {
 		return;
 	}
 
-	// geting the grouptype by slug - the archive pages are curently WP pages and don't have a specific grouptype associated with them - this function uses the curent page slug to assign a grouptype
-	// @to-do - get the archive page in the right spot to function correctly within the BP framework
-	$group_type = openlab_page_slug_to_grouptype();
+	$group_type = bp_get_current_group_directory_type();
+	$type_object = cboxol_get_group_type( $group_type );
 
 	$sequence_type = '';
 	if ( ! empty( $_GET['group_sequence'] ) ) {
@@ -185,12 +169,7 @@ function openlab_group_archive() {
 	}
 
 	// Set up filters
-	$meta_query = array(
-		array(
-			'key' => 'wds_group_type',
-			'value' => $group_type,
-		),
-	);
+	$meta_query = array();
 
 	if ( ! empty( $school ) && 'school_all' != strtolower( $school ) ) {
 		$meta_query[] = array(
@@ -262,7 +241,7 @@ function openlab_group_archive() {
 			<div class="current-group-filters current-portfolio-filters col-lg-19 col-md-18 col-sm-16">
 				<?php openlab_current_directory_filters(); ?>
 			</div>
-			<div class="group-count col-lg-5 col-md-6 col-sm-8"><?php cuny_groups_pagination_count( ucwords( $group_type ) . 's' ); ?></div>
+			<div class="group-count col-lg-5 col-md-6 col-sm-8"><?php cuny_groups_pagination_count(); ?></div>
 		</div>
 		<div id="group-list" class="item-list group-list row">
 			<?php
@@ -318,7 +297,7 @@ function openlab_group_archive() {
 		</div>
 		<div id="group-list" class="item-list row">
 			<div class="widget-error query-no-results col-sm-24">
-				<p class="bold"><?php _e( 'There are no ' . $group_type . 's to display.', 'buddypress' ) ?></p>
+				<p class="bold"><?php _e( 'There are no items to display.', 'openlab-theme' ) ?></p>
 			</div>
 		</div>
 
@@ -329,8 +308,19 @@ function openlab_group_archive() {
 function openlab_groups_pagination_links() {
 	global $groups_template;
 
+	$base = add_query_arg( array(
+		'grpage' => '%#%',
+		'num' => $groups_template->pag_num,
+		'sortby' => $groups_template->sort_by,
+		'order' => $groups_template->order,
+	) );
+
+	if ( isset( $_GET['search'] ) ) {
+		$base = add_query_arg( 's', urldecode( wp_unslash( $_GET['search'] ) ), $base );
+	}
+
 	$pagination = paginate_links(array(
-		'base' => add_query_arg( array( 'grpage' => '%#%', 'num' => $groups_template->pag_num, 's' => $search_terms, 'sortby' => $groups_template->sort_by, 'order' => $groups_template->order ) ),
+		'base' => $base,
 		'format' => '',
 		'total' => ceil( (int) $groups_template->total_group_count / (int) $groups_template->pag_num ),
 		'current' => $groups_template->pag_page,
@@ -405,25 +395,8 @@ function openlab_return_course_list( $school, $department ) {
 	return $list;
 }
 
-function openlab_group_post_count( $filters, $group_args ) {
-
-	$post_count = 0;
-
-	$meta_filter = new BP_Groups_Meta_Filter( $filters );
-	if ( bp_has_groups( $group_args ) ) :
-
-		while ( bp_groups() ) : bp_the_group();
-			$post_count++;
-		endwhile;
-
-	endif;
-	$meta_filter->remove_filters();
-
-	return $post_count;
-}
-
 // a variation on bp_groups_pagination_count() to match design
-function cuny_groups_pagination_count( $group_name ) {
+function cuny_groups_pagination_count() {
 	global $bp, $groups_template;
 
 	$start_num = intval( ( $groups_template->pag_page - 1 ) * $groups_template->pag_num ) + 1;
@@ -431,7 +404,8 @@ function cuny_groups_pagination_count( $group_name ) {
 	$to_num = bp_core_number_format( ( $start_num + ( $groups_template->pag_num - 1 ) > $groups_template->total_group_count ) ? $groups_template->total_group_count : $start_num + ( $groups_template->pag_num - 1 ) );
 	$total = bp_core_number_format( $groups_template->total_group_count );
 
-	echo sprintf( __( '%1$s to %2$s (of %3$s ' . $group_name . ')', 'buddypress' ), $from_num, $to_num, $total );
+	/* @todo Proper localization with _n() */
+	echo sprintf( __( '%1$s to %2$s (of %3$s total)', 'openlab-theme' ), $from_num, $to_num, $total );
 }
 
 /**
@@ -493,51 +467,50 @@ function openlab_site_privacy_settings_markup( $site_id = 0 ) {
 
 	$blog_name = get_blog_option( $site_id, 'blogname' );
 	$blog_public = get_blog_option( $site_id, 'blog_public' );
-	$group_type = openlab_get_current_group_type( 'case=upper' );
 	?>
 
 	<div class="radio group-site">
 
 		<h5><?php _e( 'Public', 'buddypress' ) ?></h5>
-		<p id="search-setting-note" class="italics note">Note: These options will NOT block access to your site. It is up to search engines to honor your request.</p>
+		<p id="search-setting-note" class="italics note"><?php esc_html_e( 'Note: These options will NOT block access to your site. It is up to search engines to honor your request.', 'openlab-theme' ); ?></p>
 		<div class="row">
 			<div class="col-sm-23 col-sm-offset-1">
-				<p><label for="blog-private1"><input id="blog-private1" type="radio" name="blog_public" value="1" <?php checked( '1', $blog_public ); ?> /><?php _e( 'Allow search engines to index this site. Your site will show up in web search results.' ); ?></label></p>
+				<p><label for="blog-private1"><input id="blog-private1" type="radio" name="blog_public" value="1" <?php checked( '1', $blog_public ); ?> /><?php _e( 'Allow search engines to index this site. Your site will show up in web search results.', 'openlab-theme' ); ?></label></p>
 
-				<p><label for="blog-private0"><input id="blog-private0" type="radio" name="blog_public" value="0" <?php checked( '0', $blog_public ); ?> /><?php _e( 'Ask search engines not to index this site. Your site should not show up in web search results.' ); ?></label></p>
+				<p><label for="blog-private0"><input id="blog-private0" type="radio" name="blog_public" value="0" <?php checked( '0', $blog_public ); ?> /><?php _e( 'Ask search engines not to index this site. Your site should not show up in web search results.', 'openlab-theme' ); ?></label></p>
 			</div>
 		</div>
 
-		<?php if ( ! openlab_is_portfolio() && ( ! isset( $_GET['type'] ) || 'portfolio' != $_GET['type'] ) ) : ?>
+		<?php if ( ! cboxol_is_portfolio() && ( ! isset( $_GET['group_type'] ) || 'portfolio' != $_GET['group_type'] ) ) : ?>
 
-			<h5><?php _e( 'Private', 'buddypress' ) ?></h5>
+			<h5><?php esc_html_e( 'Private', 'openlab-theme' ) ?></h5>
 			<div class="row">
 				<div class="col-sm-23 col-sm-offset-1">
-					<p><label for="blog-private-1"><input id="blog-private-1" type="radio" name="blog_public" value="-1" <?php checked( '-1', $blog_public ); ?>><?php _e( 'I would like my site to be visible only to registered users of City Tech OpenLab.', 'buddypress' ); ?></label></p>
+					<p><label for="blog-private-1"><input id="blog-private-1" type="radio" name="blog_public" value="-1" <?php checked( '-1', $blog_public ); ?>><?php esc_html_e( 'I would like my site to be visible only to members of the network.', 'openlab-theme' ); ?></label></p>
 
-					<p><label for="blog-private-2"><input id="blog-private-2" type="radio" name="blog_public" value="-2" <?php checked( '-2', $blog_public ); ?>><?php _e( 'I would like my site to be visible to registered users of this ' . ucfirst( $group_type ) . '.' ); ?></label></p>
+					<p><label for="blog-private-2"><input id="blog-private-2" type="radio" name="blog_public" value="-2" <?php checked( '-2', $blog_public ); ?>><?php esc_html_e( 'I would like my site to be visible to users with a role on the Site.', 'openlab-theme' ); ?></label></p>
 				</div>
 			</div>
 
-			<h5><?php _e( 'Hidden', 'buddypress' ) ?></h5>
+			<h5><?php esc_html_e( 'Hidden', 'openlab-theme' ) ?></h5>
 			<div class="row">
 				<div class="col-sm-23 col-sm-offset-1">
-					<p><label for="blog-private-3"><input id="blog-private-3" type="radio" name="blog_public" value="-3" <?php checked( '-3', $blog_public ); ?>><?php _e( 'I would like my site to be visible only to site administrators.' ); ?></label></p>
+					<p><label for="blog-private-3"><input id="blog-private-3" type="radio" name="blog_public" value="-3" <?php checked( '-3', $blog_public ); ?>><?php esc_html_e( 'I would like my site to be visible only to site administrators.' ); ?></label></p>
 				</div>
 			</div>
 
 		<?php else : ?>
 
 			<?php /* Portfolios */ ?>
-			<h5>Private</h5>
+			<h5><?php esc_html_e( 'Private', 'openlab-theme' ); ?></h5>
 			<div class="row">
 				<div class="col-sm-23 col-sm-offset-1">
-					<p><label for="blog-private-1"><input id="blog-private-1" type="radio" name="blog_public" value="-1" <?php checked( '-1', $blog_public ); ?>><?php _e( 'I would like my site to be visible only to registered users of City Tech OpenLab.', 'buddypress' ); ?></label></p>
+					<p><label for="blog-private-1"><input id="blog-private-1" type="radio" name="blog_public" value="-1" <?php checked( '-1', $blog_public ); ?>><?php esc_html_e( 'I would like my site to be visible only to registered users of the network.', 'openlab-theme' ); ?></label></p>
 
-					<p><label for="blog-private-2"><input id="blog-private-2" type="radio" name="blog_public" value="-2" <?php checked( '-2', $blog_public ); ?>>I would like my site to be visible only to registered users that I have granted access.</label></p>
-					<p class="description private-portfolio-gloss italics note">Note: If you would like non-City Tech users to view your private site, you will need to make your site public.</p>
+					<p><label for="blog-private-2"><input id="blog-private-2" type="radio" name="blog_public" value="-2" <?php checked( '-2', $blog_public ); ?>><?php esc_html_e( 'I would like my site to be visible only to registered users that I have granted access.', 'openlab-theme' ); ?></label></p>
+					<p class="description private-portfolio-gloss italics note"><?php esc_html_e( 'Note: If you would like your site to be visible to people who are not members of this network, you will need to make your site public.', 'openlab-theme' ); ?></p>
 
-					<p><label for="blog-private-3"><input id="blog-private-3" type="radio" name="blog_public" value="-3" <?php checked( '-3', $blog_public ); ?>>I would like my site to be visible only to me.</label></p>
+					<p><label for="blog-private-3"><input id="blog-private-3" type="radio" name="blog_public" value="-3" <?php checked( '-3', $blog_public ); ?>><?php esc_html_e( 'I would like my site to be visible only to me.', 'openlab-theme' ); ?></label></p>
 				</div>
 			</div>
 
@@ -595,28 +568,22 @@ function openlab_get_privacy_icon() {
 }
 
 function cuny_group_single() {
-	?>
-	<?php
-	$group_type = openlab_get_group_type( bp_get_current_group_id() );
-	?>
+	$group_type = cboxol_get_group_group_type( bp_get_current_group_id() );
+	$group_slug = bp_get_group_slug();
 
-	<?php $group_slug = bp_get_group_slug(); ?>
-
-	<?php
 	// group page vars
 	global $bp, $wpdb;
 	$group_id = $bp->groups->current_group->id;
 	$group_name = $bp->groups->current_group->name;
 	$group_description = $bp->groups->current_group->description;
-	$group_type = openlab_get_group_type( bp_get_current_group_id() );
 	$section = groups_get_groupmeta( $group_id, 'wds_section_code' );
 	$html = groups_get_groupmeta( $group_id, 'wds_course_html' );
 	?>
 
 	<?php if ( bp_is_group_home() ) : ?>
-		<div id="<?php echo $group_type; ?>-header" class="group-header row">
+		<div id="<?php echo esc_attr( $group_type->get_slug() ); ?>-header" class="group-header row">
 
-			<div id="<?php echo $group_type; ?>-header-avatar" class="alignleft group-header-avatar col-sm-8 col-xs-12">
+			<div id="<?php echo esc_attr( $group_type->get_slug() ); ?>-header-avatar" class="alignleft group-header-avatar col-sm-8 col-xs-12">
 				<div class="padded-img darker">
 					<img class="img-responsive" src ="<?php echo bp_core_fetch_avatar( array( 'item_id' => $group_id, 'object' => 'group', 'type' => 'full', 'html' => false ) ) ?>" alt="<?php echo esc_attr( $group_name ); ?>"/>
 				</div>
@@ -632,15 +599,16 @@ function cuny_group_single() {
 					</div>
 				<?php endif; ?>
 				<?php openlab_render_message(); ?>
-		</div><!-- #<?php echo $group_type; ?>-header-avatar -->
+		</div><!-- #<?php echo esc_html( $group_type->get_slug() ) ?>-header-avatar -->
 
-			<div id="<?php echo $group_type; ?>-header-content" class="col-sm-16 col-xs-24 alignleft group-header-content group-<?php echo $group_id; ?>">
+			<div id="<?php echo esc_attr( $group_type->get_slug() ); ?>-header-content" class="col-sm-16 col-xs-24 alignleft group-header-content group-<?php echo $group_id; ?>">
 
 				<?php do_action( 'bp_before_group_header_meta' ) ?>
 
-				<?php if ( $group_type == 'course' ) : ?>
+				<?php if ( $group_type->is_course() ) : ?>
 					<div class="info-panel panel panel-default no-margin no-margin-top">
 						<?php
+						/* @todo */
 						$wds_course_code = groups_get_groupmeta( $group_id, 'wds_course_code' );
 						$wds_semester = groups_get_groupmeta( $group_id, 'wds_semester' );
 						$wds_year = groups_get_groupmeta( $group_id, 'wds_year' );
@@ -696,6 +664,7 @@ function cuny_group_single() {
 							</div>
 
 							<?php
+							/* @todo */
 							$wds_school = openlab_generate_school_name( $group_id );
 							$wds_departments = openlab_generate_department_name( $group_id );
 							?>
@@ -728,11 +697,11 @@ function cuny_group_single() {
 							<?php endif; ?>
 
 							<div class="table-row row">
-								<div class="bold col-sm-7"><?php echo ucfirst( $group_type ); ?> Description</div>
+								<div class="bold col-sm-7"><?php esc_html_e( 'Description', 'openlab-theme' ); ?></div>
 								<div class="col-sm-17 row-content"><?php bp_group_description() ?></div>
 							</div>
 
-							<?php if ( $group_type == 'portfolio' ) : ?>
+							<?php if ( $group_type->is_portfolio() ) : ?>
 
 								<div class="table-row row">
 									<div class="bold col-sm-7">Member Profile</div>
@@ -749,7 +718,7 @@ function cuny_group_single() {
 
 			<?php do_action( 'bp_after_group_header' ) ?>
 
-																																																																			</div><!--<?php echo $group_type; ?>-header -->
+		</div><!--<?php echo esc_html( $group_type->get_slug() ); ?>-header -->
 
 	<?php endif; ?>
 
@@ -814,6 +783,7 @@ function openlab_group_profile_activity_list() {
 								<div class="recent-posts">
 									<h2 class="title activity-title"><a class="no-deco" href="<?php site_url(); ?>/groups/<?php echo $group_slug; ?>/forum/">Recent Discussions<span class="fa fa-chevron-circle-right" aria-hidden="true"></span></a></h2>
 									<?php
+									$forum_id = null;
 									$forum_ids = bbp_get_group_forum_ids( bp_get_current_group_id() );
 
 									// Get the first forum ID
@@ -1182,7 +1152,7 @@ function openlab_current_directory_filters() {
 	if ( is_page( 'people' ) ) {
 		$current_view = 'people';
 	} else {
-		$current_view = openlab_get_current_group_type();
+		$current_view = bp_get_current_group_directory_type();
 	}
 
 	switch ( $current_view ) {

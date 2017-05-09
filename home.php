@@ -21,30 +21,31 @@ get_header();
 </div>
 <div class="row row-home-bottom">
 	<div id="home-left" class="col-sm-8">
-		<?php dynamic_sidebar( 'cac-featured' ) ?>
+		<?php dynamic_sidebar( 'home-sidebar' ) ?>
+	</div>
+	<?php /*
+	<div id="home-left" class="col-sm-8">
 
 		<div class="box-1 left-box">
 			<h2 class="title uppercase clearfix"><i id="refreshActivity" class="fa fa-refresh pull-right" aria-hidden="true"></i>What's Happening On OpenLab?</h2>
 			<div id="whatsHappening" class="left-block-content whats-happening-wrapper">
-		<?php /* This will be a widget area
                 <?php echo openlab_whats_happening(); ?>
-		*/ ?>
 			</div>
 		</div>
 
 		<div class="box-1 left-box" id="whos-online">
 			<h2 class="title uppercase">Who's Online?</h2>
-		<?php /* This will be a widget area
-            <?php cuny_whos_online(); ?>
-	    */ ?>
+		    <?php cuny_whos_online(); ?>
 		</div>
 
-	<?php /* This will be a widget area
-        <?php cuny_home_new_members(); ?>
-	*/ ?>
+		<?php cuny_home_new_members(); ?>
 	</div>
+	*/ ?>
 	<div id="home-right" class="col-sm-16">
 		<div id="home-group-list-wrapper" class="row">
+
+		<?php dynamic_sidebar( 'home-main' ) ?>
+
 	<?php /* These will be widget areas
             <?php cuny_home_square('course'); ?>
             <?php cuny_home_square('project'); ?>
