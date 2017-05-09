@@ -1137,7 +1137,18 @@ function openlab_is_create_group( $group_type ) {
 
 	$steps = array( 'group-details', 'group-settings', 'group-avatar', 'invite-anyone' );
 
-	if ( openlab_get_group_type() == $group_type && in_array( $current_step, $steps ) && bp_current_action() == 'create' ) {
+	$group_id = bp_get_current_group_id();
+	if ( ! $group_id ) {
+		$group_id = bp_get_new_group_id();
+	}
+
+	if ( $group_id ) {
+		$current_group_type = cboxol_get_group_group_type( bp_get_current_group_id() );
+	} elseif ( isset( $_GET['group_type'] ) ) {
+		$current_group_type = cboxol_get_group_type( wp_unslash( urldecode( $_GET['group_type'] ) ) );
+	}
+
+	if ( ! is_wp_error( $current_group_type ) && $current_group_type->get_slug() == $group_type && in_array( $current_step, $steps ) && bp_current_action() == 'create' ) {
 		$return = true;
 	}
 
