@@ -8,7 +8,7 @@ if ( ! defined( 'CSS_DEBUG' ) ) {
 add_action( 'widgets_init', 'openlab_register_sidebars' );
 
 // Install widgets.
-add_action( 'after_switch_theme', 'openlab_maybe_install' );
+add_action( 'after_switch_theme', 'openlab_maybe_install', 5 );
 
 function openlab_core_setup() {
 	add_theme_support( 'post-thumbnails' );
@@ -46,6 +46,7 @@ function openlab_maybe_install() {
 	openlab_create_default_nav_menu();
 
 	update_option( 'openlab_theme_installed', time() );
+	remove_action( 'after_switch_theme', '_wp_sidebars_changed' );
 }
 
 function openlab_create_default_nav_menu() {

@@ -97,6 +97,8 @@ class CBox_Widget_Setter {
 	 * Moves all active widgets from a given sidebar into the inactive array
 	 */
 	public static function clear_sidebar( $sidebar_id, $delete_to = 'inactive' ) {
+		global $_wp_sidebars_widgets, $sidebars_widgets;
+
 		$sidebars = wp_get_sidebars_widgets();
 		if ( ! isset( $sidebars[ $sidebar_id ] ) ) {
 			return new WP_Error( 'sidebar_does_not_exist', 'Sidebar does not exist' );
@@ -107,6 +109,8 @@ class CBox_Widget_Setter {
 		}
 
 		$sidebars[ $sidebar_id ] = array();
+		$_wp_sidebars_widgets[ $sidebar_id ] = array();
+		$sidebars_widgets[ $sidebar_id ] = array();
 		wp_set_sidebars_widgets( $sidebars );
 	}
 
