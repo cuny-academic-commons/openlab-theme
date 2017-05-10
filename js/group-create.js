@@ -328,7 +328,7 @@ jQuery(document).ready(function($){
 	} );
 
 	/* "Set up a site" toggle */
-	var setuptoggle = $('input[name="wds_website_check"]');
+	var setuptoggle = $('input[name="set-up-site-toggle"]');
 	$(setuptoggle).on( 'click', function(){ showHideAll(); } );
 	if ( $(setuptoggle).is(':checked') ) {
 		showHideAll();

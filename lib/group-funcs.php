@@ -1680,7 +1680,7 @@ function openlab_group_site_markup() {
 							<?php $show_website = 'none' ?>
 							<div class="form-field form-required">
 								<div scope='row' class="site-details-query">
-									<label><input type="checkbox" id="wds_website_check" name="wds_website_check" value="yes" /> <?php esc_html_e( 'Set up a site?', 'openlab-theme' ); ?></label>
+									<label><input type="checkbox" id="set-up-site-toggle" name="set-up-site-toggle" value="yes" /> <?php esc_html_e( 'Set up a site?', 'openlab-theme' ); ?></label>
 								</div>
 							</div>
 						<?php else : ?>
@@ -1762,7 +1762,7 @@ function openlab_group_site_markup() {
 						<?php
 						// Exclude blogs already used as groupblogs
 						global $wpdb, $bp;
-						$current_groupblogs = $wpdb->get_col( "SELECT meta_value FROM {$bp->groups->table_name_groupmeta} WHERE meta_key = 'wds_bp_group_site_id'" );
+						$current_groupblogs = $wpdb->get_col( "SELECT meta_value FROM {$bp->groups->table_name_groupmeta} WHERE meta_key = 'cboxol_group_site_id'" );
 
 						foreach ( $user_blogs as $ubid => $ub ) {
 							if ( in_array( $ub->userblog_id, $current_groupblogs ) ) {

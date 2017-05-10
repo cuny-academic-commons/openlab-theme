@@ -54,9 +54,9 @@ function openlab_clone_create_form_catcher() {
 				groups_update_groupmeta( $new_group_id, 'clone_source_group_id', $clone_source_group_id );
 				openlab_clone_course_group( $new_group_id, $clone_source_group_id );
 
-				if ( isset( $_POST['new_or_old'] ) && ( 'clone' === $_POST['new_or_old'] ) && isset( $_POST['blog-id-to-clone'] ) && isset( $_POST['wds_website_check'] ) ) {
-					$clone_source_blog_id = groups_get_groupmeta( $clone_source_group_id, 'wds_bp_group_site_id' );
-					groups_update_groupmeta( $new_group_id, 'clone_source_blog_id', $clone_source_blog_id );
+				if ( isset( $_POST['new_or_old'] ) && ( 'clone' === $_POST['new_or_old'] ) && isset( $_POST['blog-id-to-clone'] ) && isset( $_POST['set-up-site-toggle'] ) ) {
+					$clone_source_blog_id = cboxol_get_group_site_id( $clone_source_group_id );
+					cboxol_set_group_site_id( $new_group_id, $clone_source_blog_id );
 
 					// @todo validation
 					$clone_destination_path = friendly_url( stripslashes( $_POST['clone-destination-path'] ) );
@@ -142,7 +142,7 @@ function openlab_group_clone_details( $group_id ) {
 		$retval['section_code'] = groups_get_groupmeta( $group_id, 'wds_section_code' );
 		$retval['additional_description'] = groups_get_groupmeta( $group_id, 'wds_course_html' );
 
-		$retval['site_id'] = groups_get_groupmeta( $group_id, 'wds_bp_group_site_id' );
+		$retval['site_id'] = cboxol_get_group_site_id( $group_id );
 		$retval['site_url'] = get_blog_option( $retval['site_id'], 'home' );
 		$retval['site_path'] = str_replace( bp_get_root_domain(), '', $retval['site_url'] );
 	}
@@ -579,7 +579,7 @@ class Openlab_Clone_Course_Site {
 			$this->site_id = $site_id;
 
 			// Associate site with the group in groupmeta
-			groups_update_groupmeta( $this->group_id, 'wds_bp_group_site_id', $this->site_id );
+			cboxol_set_group_site_id( $this->group_id, $this->site_id );
 		}
 	}
 
