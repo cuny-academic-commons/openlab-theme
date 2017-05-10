@@ -130,6 +130,8 @@
 					</div>
 				</div>
 
+				<?php openlab_group_site_markup(); ?>
+
 				<?php do_action( 'bp_after_group_details_creation_step' ) ?>
 
 				<?php wp_nonce_field( 'groups_create_save_group-details' ) ?>
