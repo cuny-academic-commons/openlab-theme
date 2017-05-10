@@ -1,8 +1,6 @@
 /**
  * This is the JavaScript related to group creation. It's loaded only during the group creation
  * process.
- *
- * Added by Boone 7/7/12. Don't remove me during remediation.
  */
 
 function showHide(id) {
@@ -22,7 +20,7 @@ jQuery(document).ready(function($){
 	var form,
 		form_type,
 		form_validated = false,
-		new_group_type = $( '#new-group-type' ).val(),
+		new_group_type = CBOXOL_Group_Create.new_group_type,
 		$body = $( 'body' ),
 		$gc_submit = $( '#group-creation-create' ),
 		$required_fields;
@@ -297,10 +295,7 @@ jQuery(document).ready(function($){
 	// setup
 	new_old_switch( 'new' );
 
-	/* Clone setup */
-	var group_type = $.urlParam( 'type' );
-
-	if ( 'course' === group_type ) {
+	if ( CBOXOL_Group_Create.is_course ) {
 		var $create_or_clone, create_or_clone, group_id_to_clone, new_create_or_clone;
 
 		$create_or_clone = $('input[name="create-or-clone"]');
@@ -339,7 +334,7 @@ jQuery(document).ready(function($){
 		showHideAll();
 	};
 
-	if ( 'course' === group_type && ! $(setuptoggle).is( ':checked' ) ) {
+	if ( CBOXOL_Group_Create.enable_site_by_default && ! $(setuptoggle).is( ':checked' ) ) {
 		$(setuptoggle).trigger('click');
 	}
 
@@ -363,7 +358,7 @@ jQuery(document).ready(function($){
 	// Schools/Departments are required fields for Courses.
 	// @todo this must be made dynamic
 	$gc_submit.on( 'mouseover focus', function() {
-		if ( 'course' == new_group_type ) {
+		if ( CBOXOL_Group_Create.is_course ) {
 			var school_tech = document.getElementById( 'school_tech' );
 			var is_school_selected = $( '.school-inputs input:checked' ).length > 0;
 
