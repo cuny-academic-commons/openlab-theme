@@ -1853,6 +1853,8 @@ function openlab_group_admin_js_data( \CBOX\OL\GroupType $group_type ) {
 	<?php
 }
 
+/** Group Contact / Additional Faculty ***************************************/
+
 /**
  * Render the "Group Contact" field when creating/editing a project or club.
  */
