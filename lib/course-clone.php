@@ -679,7 +679,7 @@ class Openlab_Clone_Course_Site {
 		$source_site_url = get_blog_option( $this->source_site_id, 'home' );
 		$dest_site_url = get_option( 'home' );
 
-				// Copy over attachments. Whee!
+		// Copy over attachments. Whee!
 		$upload_dir = wp_upload_dir();
 		$this->copyr( str_replace( $this->site_id, $this->source_site_id, $upload_dir['basedir'] ), $upload_dir['basedir'] );
 
