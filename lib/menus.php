@@ -1130,12 +1130,12 @@ function openlab_forum_tabs() {
 
 function openlab_is_create_group( $group_type ) {
 	global $bp;
+
+	if ( ! bp_is_group_create() ) {
+		return false;
+	}
+
 	$return = null;
-
-	// get group step
-	$current_step = isset( $bp->groups->current_create_step ) ? $bp->groups->current_create_step : '';
-
-	$steps = array( 'group-details', 'group-settings', 'group-avatar', 'invite-anyone' );
 
 	$group_id = bp_get_current_group_id();
 	if ( ! $group_id ) {
@@ -1144,16 +1144,12 @@ function openlab_is_create_group( $group_type ) {
 
 	$current_group_type = null;
 	if ( $group_id ) {
-		$current_group_type = cboxol_get_group_group_type( bp_get_current_group_id() );
+		$current_group_type = cboxol_get_group_group_type( $group_id );
 	} elseif ( isset( $_GET['group_type'] ) ) {
 		$current_group_type = cboxol_get_group_type( wp_unslash( urldecode( $_GET['group_type'] ) ) );
 	}
 
-	if ( $current_group_type && ! is_wp_error( $current_group_type ) && $current_group_type->get_slug() == $group_type && in_array( $current_step, $steps ) && bp_current_action() == 'create' ) {
-		$return = true;
-	}
-
-	return $return;
+	return $current_group_type && ! is_wp_error( $current_group_type ) && $group_type === $current_group_type->get_slug();
 }
 
 function openlab_get_group_profile_mobile_anchor_links() {
