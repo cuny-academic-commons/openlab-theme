@@ -1023,7 +1023,7 @@ add_filter( 'bp_get_group_join_button', 'openlab_custom_group_buttons' );
  * does *save* the correct level )
  */
 function openlab_default_subscription_settings_form() {
-	if ( openlab_is_portfolio() || ( isset( $_GET['type'] ) && 'portfolio' == $_GET['type'] ) ) {
+	if ( cboxol_is_portfolio() || ( isset( $_GET['type'] ) && 'portfolio' == $_GET['type'] ) ) {
 		return;
 	}
 	?>
@@ -1400,7 +1400,7 @@ function openlab_bp_group_site_pages() {
 
 	if ( ! empty( $group_site_settings['site_url'] ) && $group_site_settings['is_visible'] ) {
 
-		if ( openlab_is_portfolio() ) {
+		if ( cboxol_is_portfolio() ) {
 			?>
 
 			<?php /* Abstract the displayed user id, so that this function works properly on my-* pages */ ?>
@@ -1450,7 +1450,7 @@ function openlab_bp_group_site_pages() {
 
 			</div>
 			<?php
-} // openlab_is_portfolio()
+} // cboxol_is_portfolio()
 	} // !empty( $group_site_settings['site_url'] )
 }
 

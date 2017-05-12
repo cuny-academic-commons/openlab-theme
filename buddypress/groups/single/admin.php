@@ -51,7 +51,7 @@ $group_type = cboxol_get_group_group_type( bp_get_current_group_id() );
 
 					<?php do_action( 'groups_custom_group_fields_editable' ) ?>
 
-					<?php if ( ! openlab_is_portfolio() ) : ?>
+					<?php if ( ! cboxol_is_portfolio() ) : ?>
 						<div class="notify-settings">
 							<p class="ol-tooltip notify-members"><?php _e( 'Notify group members of changes via email', 'openlab-theme' ); ?></p>
 							<div class="radio">
@@ -82,7 +82,7 @@ $group_type = cboxol_get_group_group_type( bp_get_current_group_id() );
 
 			<?php do_action( 'template_notices' ) ?>
 
-			<?php if ( function_exists( 'bbpress' ) && ! openlab_is_portfolio() ) : ?>
+			<?php if ( function_exists( 'bbpress' ) && ! cboxol_is_portfolio() ) : ?>
 				<?php $forum_enabled = openlab_is_forum_enabled_for_group() ?>
 				<div class="panel panel-default">
 					<div class="panel-heading"><?php esc_html_e( 'Discussion Settings', 'openlab-theme' ) ?></div>
@@ -96,7 +96,7 @@ $group_type = cboxol_get_group_group_type( bp_get_current_group_id() );
 
 			<?php endif; ?>
 
-			<?php if ( function_exists( 'eo_get_event_fullcalendar' ) && ! openlab_is_portfolio() ) : ?>
+			<?php if ( function_exists( 'eo_get_event_fullcalendar' ) && ! cboxol_is_portfolio() ) : ?>
 				<?php $event_create_access = groups_get_groupmeta( bp_get_current_group_id(), 'openlab_bpeo_event_create_access' ); ?>
 				<?php if ( ! $event_create_access ) {
 					$event_create_access = 'admin';
@@ -152,7 +152,7 @@ $group_type = cboxol_get_group_group_type( bp_get_current_group_id() );
 				</div>
 			</div>
 
-	<?php if ( ! openlab_is_portfolio() ) : ?>
+	<?php if ( ! cboxol_is_portfolio() ) : ?>
 				<div class="panel panel-default">
 					<div class="panel-heading">Portfolio List Settings</div>
 					<div class="panel-body">
