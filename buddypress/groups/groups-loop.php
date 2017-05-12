@@ -53,7 +53,7 @@ if ( ! empty( $_GET['group_sequence'] ) ) {
 					<div class="group-item-wrapper">
 						<div class="row">
 				<div class="item-avatar alignleft col-xs-6">
-								<a href="<?php bp_group_permalink() ?>"><img class="img-responsive" src ="<?php echo bp_core_fetch_avatar( array( 'item_id' => $group_id, 'object' => 'group', 'type' => 'full', 'html' => false ) ) ?>" alt="<?php echo $group->name; ?>"/></a>
+								<a href="<?php bp_group_permalink() ?>"><img class="img-responsive" src ="<?php echo bp_core_fetch_avatar( array( 'item_id' => $group_id, 'object' => 'group', 'type' => 'full', 'html' => false ) ) ?>" alt="<?php bp_group_name() ?>"/></a>
 							</div>
 				<div class="item col-xs-18">
 									<div class="item-content-wrapper">
