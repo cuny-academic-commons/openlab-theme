@@ -1590,19 +1590,8 @@ function openlab_get_group_activity_events_feed() {
 function openlab_group_site_markup() {
 	global $wpdb, $bp, $current_site, $base;
 
-	$the_group_id = 0;
-	if ( bp_is_group() && ! bp_is_group_create() ) {
-		$the_group_id = bp_get_current_group_id();
-	}
-
-	$group_type = null;
-	if ( $the_group_id ) {
-		$group_type = cboxol_get_group_group_type( $the_group_id );
-	} elseif ( isset( $_GET['group_type'] ) ) {
-		$group_type = cboxol_get_group_type( wp_unslash( urldecode( $_GET['group_type'] ) ) );
-	}
-
-	if ( ! $group_type || is_wp_error( $group_type ) ) {
+	$group_type = cboxol_get_edited_group_group_type();
+	if ( is_wp_error( $group_type ) || ! $group_type->get_is_course() ) {
 		return;
 	}
 
