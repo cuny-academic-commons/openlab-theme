@@ -3,6 +3,7 @@ global $bp;
 
 $group_type = cboxol_get_group_group_type( bp_get_current_group_id() );
 
+openlab_group_admin_js_data( $group_type );
 ?>
 
 <?php //the following switches out the membership menu for the regular admin menu on membership-based admin pages  ?>

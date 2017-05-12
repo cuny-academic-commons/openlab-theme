@@ -27,15 +27,7 @@
 		$group_id_to_clone = intval( $_GET['clone'] );
 	}
 
-	$js_data = array(
-		'new_group_type' => $group_type->get_slug(),
-		'is_course' => $group_type->get_is_course(),
-		'enable_site_by_default' => $group_type->get_enable_site_by_default(),
-	);
-
-	?>
-
-	<script type="text/javascript">var CBOXOL_Group_Create = <?php echo json_encode( $js_data ); ?></script>
+	openlab_group_admin_js_data( $group_type ); ?>
 
 	<?php /* @todo this can't translate */ ?>
 	<h1 class="entry-title mol-title"><?php bp_loggedin_user_fullname() ?>'s Profile</h1>

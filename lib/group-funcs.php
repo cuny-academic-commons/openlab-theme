@@ -1824,3 +1824,22 @@ function openlab_group_site_markup() {
 	</div>
 	<?php
 }
+
+/**
+ * Outputs data required for group admin/create JS.
+ *
+ * @param \CBOX\OL\GroupType $group_type Group type object.
+ */
+function openlab_group_admin_js_data( \CBOX\OL\GroupType $group_type ) {
+	$js_data = array(
+		'new_group_type' => $group_type->get_slug(),
+		'is_course' => $group_type->get_is_course(),
+		'enable_site_by_default' => $group_type->get_enable_site_by_default(),
+	);
+
+	?>
+
+	<script type="text/javascript">var CBOXOL_Group_Create = <?php echo json_encode( $js_data ); ?></script>
+
+	<?php
+}
