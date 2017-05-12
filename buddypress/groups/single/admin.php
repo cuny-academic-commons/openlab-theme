@@ -68,6 +68,7 @@ $group_type = cboxol_get_group_group_type( bp_get_current_group_id() );
 				</div>
 			</div>
 
+			<?php openlab_group_site_markup(); ?>
 
 			<?php do_action( 'bp_after_group_details_admin' ); ?>
 
