@@ -69,9 +69,9 @@ openlab_group_admin_js_data( $group_type );
 				</div>
 			</div>
 
-			<?php openlab_group_site_markup(); ?>
-
 			<?php do_action( 'bp_after_group_details_admin' ); ?>
+
+			<?php openlab_group_site_markup(); ?>
 
 			<p><input class="btn btn-primary" type="submit" value="<?php _e( 'Save Changes', 'openlab-theme' ) ?> &#xf138;" id="save" name="save" /></p>
 			<?php wp_nonce_field( 'groups_edit_group_details' ) ?>
