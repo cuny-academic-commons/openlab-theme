@@ -299,21 +299,25 @@ jQuery(document).ready(function($){
 		var $create_or_clone, create_or_clone, group_id_to_clone, new_create_or_clone;
 
 		$create_or_clone = $('input[name="create-or-clone"]');
-		create_or_clone = $create_or_clone.val();
-		group_id_to_clone = $.urlParam( 'clone' );
 
-		if ( group_id_to_clone ) {
-			// Clone ID passed to URL
-			toggle_clone_options( 'on' );
-		} else {
-			// No clone ID passed to URL
-			toggle_clone_options( 'create' == create_or_clone ? 'off' : 'on' );
+		// If not found, then the group already has an associated site - nothing to do.
+		if ( $create_or_clone.length ) {
+			create_or_clone = $create_or_clone.val();
+			group_id_to_clone = $.urlParam( 'clone' );
+
+			if ( group_id_to_clone ) {
+				// Clone ID passed to URL
+				toggle_clone_options( 'on' );
+			} else {
+				// No clone ID passed to URL
+				toggle_clone_options( 'create' == create_or_clone ? 'off' : 'on' );
+			}
+
+			$create_or_clone.on( 'change', function() {
+				new_create_or_clone = 'create' == $(this).val() ? 'off' : 'on';
+				toggle_clone_options( new_create_or_clone );
+			} );
 		}
-
-		$create_or_clone.on( 'change', function() {
-			new_create_or_clone = 'create' == $(this).val() ? 'off' : 'on';
-			toggle_clone_options( new_create_or_clone );
-		} );
 	}
 
 	// Switching between groups to clone
