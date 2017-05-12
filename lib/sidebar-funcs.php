@@ -79,29 +79,24 @@ function openlab_bp_mobile_sidebar( $type ) {
  */
 function openlab_group_sidebar( $mobile = false ) {
 
-	if ( bp_has_groups() ) : while ( bp_groups() ) : bp_the_group();
-			?>
-			<div class="sidebar-widget sidebar-widget-wrapper" id="portfolio-sidebar-widget">
-				<h2 class="sidebar-header group-single top-sidebar-header">
-					<?php echo ucwords( groups_get_groupmeta( bp_get_group_id(), 'wds_group_type' ) ) . ' Materials'; ?>
-				</h2>
-				<div class="wrapper-block">
-					<?php openlab_bp_group_site_pages(); ?>
-				</div>
-				<div id="sidebar-menu-wrapper" class="sidebar-menu-wrapper wrapper-block">
-					<div id="item-buttons" class="profile-nav sidebar-block clearfix">
-						<ul class="sidebar-nav clearfix">
-							<?php bp_get_options_nav(); ?>
-							<?php echo openlab_get_group_profile_mobile_anchor_links(); ?>
-						</ul>
-					</div><!-- #item-buttons -->
-				</div>
-				<?php do_action( 'bp_group_options_nav' ) ?>
-				<?php echo openlab_get_group_activity_events_feed(); ?>
+	if ( bp_has_groups() ) : while ( bp_groups() ) : bp_the_group(); ?>
+		<div class="sidebar-widget sidebar-widget-wrapper" id="portfolio-sidebar-widget">
+			<h2 class="sidebar-header group-single top-sidebar-header">&nbsp;</h2>
+			<div class="wrapper-block">
+				<?php openlab_bp_group_site_pages(); ?>
 			</div>
-			<?php
-		endwhile;
-	endif;
+			<div id="sidebar-menu-wrapper" class="sidebar-menu-wrapper wrapper-block">
+				<div id="item-buttons" class="profile-nav sidebar-block clearfix">
+					<ul class="sidebar-nav clearfix">
+						<?php bp_get_options_nav(); ?>
+						<?php echo openlab_get_group_profile_mobile_anchor_links(); ?>
+					</ul>
+				</div><!-- #item-buttons -->
+			</div>
+			<?php do_action( 'bp_group_options_nav' ) ?>
+			<?php echo openlab_get_group_activity_events_feed(); ?>
+		</div>
+	<?php endwhile; endif;
 }
 
 /**
