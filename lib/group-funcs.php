@@ -1958,3 +1958,50 @@ function openlab_group_contact_autocomplete_cb() {
 	die();
 }
 add_action( 'wp_ajax_openlab_group_contact_autocomplete', 'openlab_group_contact_autocomplete_cb' );
+
+/**
+ * Process the saving of group contacts.
+ */
+function openlab_group_contact_save( $group ) {
+	$nonce = '';
+
+	if ( isset( $_POST['_ol_group_contact_nonce'] ) ) {
+		$nonce = urldecode( $_POST['_ol_group_contact_nonce'] );
+	}
+
+	if ( ! wp_verify_nonce( $nonce, 'openlab_group_contact_autocomplete' ) ) {
+		return;
+	}
+
+	// Admins only.
+	if ( ! groups_is_user_admin( bp_loggedin_user_id(), $group->id ) ) {
+		return;
+	}
+
+	// Give preference to JS-saved items.
+	$group_contact = isset( $_POST['group-contact-js'] ) ? $_POST['group-contact-js'] : null;
+	if ( null === $group_contact ) {
+		$group_contact = $_POST['group-contact'];
+	}
+
+	// Delete all existing items.
+	$existing = groups_get_groupmeta( $group->id, 'group_contact', false );
+	foreach ( $existing as $e ) {
+		groups_delete_groupmeta( $group->id, 'group_contact', $e );
+	}
+
+	foreach ( (array) $group_contact as $nicename ) {
+		$f = get_user_by( 'slug', stripslashes( $nicename ) );
+
+		if ( ! $f ) {
+			continue;
+		}
+
+		if ( ! groups_is_user_member( $f->ID, $group->id ) ) {
+			continue;
+		}
+
+		groups_add_groupmeta( $group->id, 'group_contact', $f->ID );
+	}
+}
+add_action( 'groups_group_after_save', 'openlab_group_contact_save' );
