@@ -576,8 +576,7 @@ function cuny_group_single() {
 	$group_id = $bp->groups->current_group->id;
 	$group_name = $bp->groups->current_group->name;
 	$group_description = $bp->groups->current_group->description;
-	$section = groups_get_groupmeta( $group_id, 'wds_section_code' );
-	$html = groups_get_groupmeta( $group_id, 'wds_course_html' );
+	$html = groups_get_groupmeta( $group_id, 'cboxol_additional_desc_html' );
 	?>
 
 	<?php if ( bp_is_group_home() ) : ?>
@@ -605,13 +604,14 @@ function cuny_group_single() {
 
 				<?php do_action( 'bp_before_group_header_meta' ) ?>
 
-				<?php if ( $group_type->is_course() ) : ?>
+				<?php if ( $group_type->get_is_course() ) : ?>
 					<div class="info-panel panel panel-default no-margin no-margin-top">
 						<?php
 						/* @todo */
-						$wds_course_code = groups_get_groupmeta( $group_id, 'wds_course_code' );
-						$wds_semester = groups_get_groupmeta( $group_id, 'wds_semester' );
-						$wds_year = groups_get_groupmeta( $group_id, 'wds_year' );
+						$course_code = groups_get_groupmeta( $group_id, 'cboxol_course_code' );
+						$section_code = groups_get_groupmeta( $group_id, 'cboxol_course_code' );
+						$semester = groups_get_groupmeta( $group_id, 'cboxol_term' );
+						$year = groups_get_groupmeta( $group_id, 'cboxol_year' );
 						$wds_departments = groups_get_groupmeta( $group_id, 'wds_departments' );
 						?>
 						<div class="table-div">
@@ -638,12 +638,16 @@ function cuny_group_single() {
 								<div class="col-sm-17 row-content"><?php echo $wds_departments; ?></div>
 							</div>
 							<div class="table-row row">
-								<div class="bold col-sm-7">Course Code</div>
-								<div class="col-sm-17 row-content"><?php echo $wds_course_code; ?></div>
+								<div class="bold col-sm-7"><?php echo esc_html( $group_type->get_label( 'course_code' ) ); ?></div>
+								<div class="col-sm-17 row-content"><?php echo esc_html( $course_code ); ?></div>
+							</div>
+							<div class="table-row row">
+								<div class="bold col-sm-7"><?php echo esc_html( $group_type->get_label( 'section_code' ) ); ?></div>
+								<div class="col-sm-17 row-content"><?php echo esc_html( $section_code ); ?></div>
 							</div>
 							<div class="table-row row">
 								<div class="bold col-sm-7">Semester / Year</div>
-								<div class="col-sm-17 row-content"><?php echo $wds_semester; ?> <?php echo $wds_year; ?></div>
+								<div class="col-sm-17 row-content"><?php echo $semester; ?> <?php echo $year; ?></div>
 							</div>
 							<div class="table-row row">
 								<div class="bold col-sm-7">Course Description</div>
@@ -1854,17 +1858,15 @@ function openlab_group_admin_js_data( \CBOX\OL\GroupType $group_type ) {
  */
 function openlab_group_contact_field() {
 	// Don't show on courses or portfolios.
-	// @todo Specific cap for group types?
 	$group_id = 0;
-	$group_type = null;
 	if ( bp_is_group() ) {
 		$group_id = bp_get_current_group_id();
-		$group_type = cboxol_get_group_group_type( $group_id );
-	} elseif ( bp_is_group_create() && isset( $_GET['group_type'] ) ) {
-		$group_type = cboxol_get_group_type( wp_unslash( urldecode( $_GET['group_type'] ) ) );
 	}
 
-	if ( ! $group_type || is_wp_error( $group_type ) || $group_type->is_portfolio() || $group_type->is_course() ) {
+	$group_type = cboxol_get_edited_group_group_type();
+
+	// @todo supports additional faculty
+	if ( is_wp_error( $group_type ) || ! $group_type->get_supports_group_contact() ) {
 		return;
 	}
 
@@ -1970,6 +1972,19 @@ add_action( 'wp_ajax_openlab_group_contact_autocomplete', 'openlab_group_contact
 function openlab_group_contact_save( $group ) {
 	$nonce = '';
 
+	// @todo Courses
+	$group_id = 0;
+	if ( bp_is_group() ) {
+		$group_id = bp_get_current_group_id();
+	}
+
+	$group_type = cboxol_get_edited_group_group_type();
+
+	// @todo supports additional faculty
+	if ( is_wp_error( $group_type ) || ! $group_type->get_supports_group_contact() ) {
+		return;
+	}
+
 	if ( isset( $_POST['_ol_group_contact_nonce'] ) ) {
 		$nonce = urldecode( $_POST['_ol_group_contact_nonce'] );
 	}
@@ -1985,7 +2000,7 @@ function openlab_group_contact_save( $group ) {
 
 	// Give preference to JS-saved items.
 	$group_contact = isset( $_POST['group-contact-js'] ) ? $_POST['group-contact-js'] : null;
-	if ( null === $group_contact ) {
+	if ( null === $group_contact && isset( $_POST['group-contact'] ) ) {
 		$group_contact = $_POST['group-contact'];
 	}
 
@@ -2010,3 +2025,106 @@ function openlab_group_contact_save( $group ) {
 	}
 }
 add_action( 'groups_group_after_save', 'openlab_group_contact_save' );
+
+/**
+ * Markup for the Course Information section when editing/creating a course.
+ */
+function openlab_course_information_edit_panel() {
+	$group_type = cboxol_get_edited_group_group_type();
+	if ( is_wp_error( $group_type ) || ! $group_type->get_supports_course_information() ) {
+		return;
+	}
+
+	$group_id = bp_get_current_group_id();
+	$course_code = groups_get_groupmeta( $group_id, 'cboxol_course_code' );
+	$section_code = groups_get_groupmeta( $group_id, 'cboxol_section_code' );
+	$term = groups_get_groupmeta( $group_id, 'cboxol_term' );
+	$year = groups_get_groupmeta( $group_id, 'cboxol_year' );
+	$additional_desc_html = groups_get_groupmeta( $group_id, 'cboxol_additional_desc_html' );
+
+	?>
+
+	<div class="panel panel-default">
+		<div class="panel-heading"><?php echo esc_html( $group_type->get_label( 'course_information' ) ); ?></div>
+		<div class="panel-body"><table>
+
+			<tr><td colspan="2"><p class="ol-tooltip"><?php echo esc_html( $group_type->get_label( 'course_information_description' ) ); ?></p></td></tr>
+
+			<tr class="additional-field course-code-field">
+				<td class="additional-field-label"><label class="passive" for="course-code"><?php echo esc_html( $group_type->get_label( 'course_code' ) ); ?></label></td>
+				<td><input class="form-control" type="text" id="course-code" name="course-code" value="<?php echo esc_attr( $course_code ); ?>" /></td>
+			</tr>
+
+			<tr class="additional-field section-code-field">
+				<td class="additional-field-label"><label class="passive" for="section-code"><?php echo esc_html( $group_type->get_label( 'section_code' ) ); ?></label></td>
+				<td><input class="form-control" type="text" id="section-code" name="section-code" value="<?php echo esc_attr( $section_code ); ?>" /></td>
+			</tr>
+
+			<?php /*
+			<tr class="additional-field semester-field">
+	<td class="additional-field-label"><label class="passive" for="wds_semester">Semester:</label></td>
+	<td><select class="form-control" id="wds_semester" name="wds_semester">
+	<option value="">--select one--
+
+	$checked = $Spring = $Summer = $Fall = $Winter = '';
+
+	if ( $wds_semester == 'Spring' ) {
+		$Spring = 'selected';
+	} elseif ( $wds_semester == 'Summer' ) {
+		$Summer = 'selected';
+	} elseif ( $wds_semester == 'Fall' ) {
+		$Fall = 'selected';
+	} elseif ( $wds_semester == 'Winter' ) {
+		$Winter = 'selected';
+	}
+
+	<option value="Spring" ' . $Spring . '>Spring
+	<option value="Summer" ' . $Summer . '>Summer
+	<option value="Fall" ' . $Fall . '>Fall
+	<option value="Winter" ' . $Winter . '>Winter
+	</select></td>
+	</tr>
+
+	<tr class="additional-field year-field">
+	<td class="additional-field-label"><label class="passive" for="wds_year">Year:</label></td>
+	<td><input class="form-control" type="text" id="wds_year" name="wds_year" value="' . $wds_year . '"></td>
+	</tr>
+
+	*/ ?>
+			<tr class="additional-field additional-description-field">
+				<td colspan="2" class="additional-field-label"><label class="passive" for="additional-desc-html"><?php esc_html_e( 'Additional Description/HTML:', 'openlab-theme' ); ?></label></td></tr>
+				<tr><td colspan="2"><textarea class="form-control" name="additional-desc-html" id="additional-desc-html"><?php echo esc_textarea( $additional_desc_html ); ?></textarea></td></tr>
+				</tr>
+		</table></div>
+
+		<?php wp_nonce_field( 'openlab_course_information', '_ol_course_information_nonce', false ); ?>
+	</div><!--.panel-->
+	<?php
+}
+add_action( 'bp_after_group_details_creation_step', 'openlab_course_information_edit_panel', 8 );
+add_action( 'bp_after_group_details_admin', 'openlab_course_information_edit_panel', 8 );
+
+/**
+ * Save Course Information.
+ *
+ * @param BP_Groups_Group $group
+ */
+function openlab_course_information_save( BP_Groups_Group $group ) {
+	if ( ! isset( $_POST['_ol_course_information_nonce'] ) || ! wp_verify_nonce( $_POST['_ol_course_information_nonce'], 'openlab_course_information' ) ) {
+		return;
+	}
+
+	$metas = array(
+		'course-code' => 'cboxol_course_code',
+		'section-code' => 'cboxol_section_code',
+		'additional-desc-html' => 'cboxol_additional_desc_html',
+	);
+
+	foreach ( $metas as $post_key => $meta_key ) {
+		if ( isset( $_POST[ $post_key ] ) ) {
+			$value = wp_unslash( $_POST[ $post_key ] );
+			groups_update_groupmeta( $group->id, $meta_key, $value );
+		}
+	}
+}
+add_action( 'groups_group_after_save', 'openlab_course_information_save' );
