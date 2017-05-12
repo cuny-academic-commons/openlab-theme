@@ -1591,8 +1591,13 @@ function openlab_group_site_markup() {
 	global $wpdb, $bp, $current_site, $base;
 
 	$group_type = cboxol_get_edited_group_group_type();
-	if ( is_wp_error( $group_type ) || ! $group_type->get_is_course() ) {
+	if ( is_wp_error( $group_type ) ) {
 		return;
+	}
+
+	$the_group_id = null;
+	if ( bp_is_group() ) {
+		$the_group_id = bp_get_current_group_id();
 	}
 
 	// @todo Do this some other way.
