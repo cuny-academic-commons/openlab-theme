@@ -1843,3 +1843,118 @@ function openlab_group_admin_js_data( \CBOX\OL\GroupType $group_type ) {
 
 	<?php
 }
+
+/**
+ * Render the "Group Contact" field when creating/editing a project or club.
+ */
+function openlab_group_contact_field() {
+	// Don't show on courses or portfolios.
+	// @todo Specific cap for group types?
+	$group_id = 0;
+	$group_type = null;
+	if ( bp_is_group() ) {
+		$group_id = bp_get_current_group_id();
+		$group_type = cboxol_get_group_group_type( $group_id );
+	} elseif ( bp_is_group_create() && isset( $_GET['group_type'] ) ) {
+		$group_type = cboxol_get_group_type( wp_unslash( urldecode( $_GET['group_type'] ) ) );
+	}
+
+	if ( ! $group_type || is_wp_error( $group_type ) || $group_type->is_portfolio() || $group_type->is_course() ) {
+		return;
+	}
+
+	// Enqueue JS and CSS.
+	wp_enqueue_script( 'openlab-group-contact', get_stylesheet_directory_uri() . '/js/group-contact.js', array( 'jquery-ui-autocomplete' ) );
+	wp_enqueue_style( 'openlab-group-contact', get_stylesheet_directory_uri() . '/css/group-contact.css' );
+
+	$existing_contacts = array();
+	if ( $group_id ) {
+		$existing_contacts = groups_get_groupmeta( $group_id, 'group_contact', false );
+		if ( ! is_array( $existing_contacts ) ) {
+			$existing_contacts = array( bp_loggedin_user_id() );
+		}
+	} else {
+		$existing_contacts[] = bp_loggedin_user_id();
+	}
+
+	$existing_contacts_data = array();
+	foreach ( $existing_contacts as $uid ) {
+		$u = new WP_User( $uid );
+		$existing_contacts_data[] = array(
+			'label' => sprintf( '%s (%s)', esc_html( bp_core_get_user_displayname( $uid ) ), esc_html( $u->user_nicename ) ),
+			'value' => esc_attr( $u->user_nicename ),
+		);
+	}
+
+	wp_localize_script( 'openlab-group-contact', 'OL_Group_Contact_Existing', $existing_contacts_data );
+
+	?>
+
+	<div id="group-contact-admin" class="panel panel-default">
+		<div class="panel-heading"><label for="group-contact-autocomplete"><?php esc_html_e( 'Group Contact', 'openlab-theme' ); ?></label></div>
+
+		<div class="panel-body">
+			<p><?php esc_html_e( 'By default, you are the Group Contact. You may add or remove Contacts once your group has more members.', 'openlab-theme' ); ?></p>
+
+			<label for="group-contact-autocomplete"><?php esc_html_e( 'Group Contact', 'openlab-theme' ); ?></label>
+			<input class="hide-if-no-js form-control" type="textbox" id="group-contact-autocomplete" value="" <?php disabled( bp_is_group_create() ); ?> />
+			<?php wp_nonce_field( 'openlab_group_contact_autocomplete', '_ol_group_contact_nonce', false ) ?>
+			<input type="hidden" name="group-contact-group-id" id="group-contact-group-id" value="<?php echo intval( $group_id ); ?>" />
+
+			<ul id="group-contact-list" class="inline-element-list"></ul>
+
+			<label class="sr-only hide-if-js" for="group-contacts"><?php esc_html_e( 'Group Contacts', 'openlab-theme' ); ?></label>
+			<input class="hide-if-js" type="textbox" name="group-contacts" id="group-contacts" value="<?php echo esc_attr( implode( ', ', $existing_contacts ) ) ?>" />
+
+		</div>
+	</div>
+
+	<?php
+}
+add_action( 'bp_after_group_details_creation_step', 'openlab_group_contact_field', 5 );
+add_action( 'bp_after_group_details_admin', 'openlab_group_contact_field', 5 );
+
+/**
+ * AJAX handler for group contact autocomplete.
+ */
+function openlab_group_contact_autocomplete_cb() {
+	global $wpdb;
+
+	$nonce = $term = '';
+
+	if ( isset( $_GET['nonce'] ) ) {
+		$nonce = urldecode( $_GET['nonce'] );
+	}
+
+	if ( ! wp_verify_nonce( $nonce, 'openlab_group_contact_autocomplete' ) ) {
+		die( json_encode( -1 ) );
+	}
+
+	$group_id = isset( $_GET['group_id'] ) ? (int) $_GET['group_id'] : 0;
+	if ( ! $group_id ) {
+		die( json_encode( -1 ) );
+	}
+
+	if ( isset( $_GET['term'] ) ) {
+		$term = urldecode( $_GET['term'] );
+	}
+
+	$q = new BP_Group_Member_Query( array(
+		'group_id' => $group_id,
+		'search_terms' => $term,
+		'type' => 'alphabetical',
+		'group_role' => array( 'member', 'mod', 'admin' ),
+	) );
+
+	$retval = array();
+	foreach ( $q->results as $u ) {
+		$retval[] = array(
+			'label' => sprintf( '%s (%s)', esc_html( $u->fullname ), esc_html( $u->user_nicename ) ),
+			'value' => esc_attr( $u->user_nicename ),
+		);
+	}
+
+	echo json_encode( $retval );
+	die();
+}
+add_action( 'wp_ajax_openlab_group_contact_autocomplete', 'openlab_group_contact_autocomplete_cb' );
