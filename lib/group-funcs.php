@@ -794,7 +794,7 @@ function openlab_group_profile_activity_list() {
 						<div class="col-sm-12">
 							<div class="recent-discussions">
 								<div class="recent-posts">
-									<h2 class="title activity-title"><a class="no-deco" href="<?php site_url(); ?>/groups/<?php echo $group_slug; ?>/forum/">Recent Discussions<span class="fa fa-chevron-circle-right" aria-hidden="true"></span></a></h2>
+									<h2 class="title activity-title"><a class="no-deco" href="<?php site_url(); ?>/groups/<?php echo $group_slug; ?>/forum/"><?php esc_html_e( 'Recent Discussions', 'openlab-theme' ); ?><span class="fa fa-chevron-circle-right" aria-hidden="true"></span></a></h2>
 									<?php
 									$forum_id = null;
 									$forum_ids = bbp_get_group_forum_ids( bp_get_current_group_id() );
@@ -838,7 +838,7 @@ function openlab_group_profile_activity_list() {
 						<div class="col-sm-12">
 							<div id="recent-docs">
 								<div class="recent-posts">
-									<h2 class="title activity-title"><a class="no-deco" href="<?php site_url(); ?>/groups/<?php echo $group_slug; ?>/docs/">Recent Docs<span class="fa fa-chevron-circle-right" aria-hidden="true"></span></a></h2>
+									<h2 class="title activity-title"><a class="no-deco" href="<?php site_url(); ?>/groups/<?php echo $group_slug; ?>/docs/"><?php esc_html_e( 'Recent Docs', 'openlab-theme' ); ?><span class="fa fa-chevron-circle-right" aria-hidden="true"></span></a></h2>
 									<?php
 									$docs_arg = array(
 										'posts_per_page' => '3',
