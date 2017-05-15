@@ -330,7 +330,7 @@ function openlab_members_sidebar_blocks( $mobile_hide = false ) {
 			<div class="sidebar-block<?php echo $block_classes ?>">
 				<ul class="sidebar-sublinks portfolio-sublinks inline-element-list">
 					<li>
-						<a class="bold" href="<?php openlab_portfolio_creation_url() ?>"><?php echo esc_html( $portfolio_group_type->get_label( 'create_item' ) ); ?></a>
+						<a class="bold" href="<?php openlab_portfolio_creation_url() ?>">+ <?php echo esc_html( $portfolio_group_type->get_label( 'create_item' ) ); ?></a>
 					</li>
 				</ul>
 			</div>
