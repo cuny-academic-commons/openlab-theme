@@ -210,6 +210,7 @@ add_filter( 'tiny_mce_before_init', 'openlab_mce_buttons', 10, 2 );
 function openlab_group_creation_categories() {
 	$cats_out = '';
 
+	// @todo Fix this for group_type once group category implementation is complete.
 	$group_type = filter_input( INPUT_GET, 'type' );
 
 	$group_id = bp_get_new_group_id() ? bp_get_new_group_id() : bp_get_current_group_id();

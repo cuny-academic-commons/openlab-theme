@@ -984,8 +984,8 @@ function cuny_send_invite_fac_only( $subnav_item ) {
  * @see http://openlab.citytech.cuny.edu/redmine/issues/397
  */
 function openlab_previous_step_type( $url ) {
-	if ( ! empty( $_GET['type'] ) ) {
-		$url = add_query_arg( 'type', $_GET['type'], $url );
+	if ( ! empty( $_GET['group_type'] ) ) {
+		$url = add_query_arg( 'group_type', $_GET['group_type'], $url );
 	}
 
 	return $url;
@@ -1036,7 +1036,8 @@ add_filter( 'bp_get_group_join_button', 'openlab_custom_group_buttons' );
  * does *save* the correct level )
  */
 function openlab_default_subscription_settings_form() {
-	if ( cboxol_is_portfolio() || ( isset( $_GET['type'] ) && 'portfolio' == $_GET['type'] ) ) {
+	$portfolio_group_type = cboxol_get_portfolio_group_type();
+	if ( cboxol_is_portfolio() || ( bp_is_group_create() && isset( $_GET['group_type'] ) && $portfolio_group_type->get_slug() === $_GET['type'] ) ) {
 		return;
 	}
 	?>
