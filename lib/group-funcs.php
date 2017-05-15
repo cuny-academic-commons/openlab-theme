@@ -1750,25 +1750,28 @@ function openlab_group_site_markup() {
 
 				<div id="wds-website" class="form-field form-required" style="display:<?php echo $show_website; ?>">
 					<div id="noo_new_options">
-                                <div id="noo_new_options-div" class="row">
-                                    <div class="radio col-sm-6">
-                                        <label>
-                                            <input type="radio" class="noo_radio" name="new_or_old" id="new_or_old_new" value="new" />
-                                            Create a new site:</label>
-                                    </div>
-					<div class="col-sm-5 site-label">
-						<?php
-						$suggested_path = $group_type == 'portfolio' ? openlab_suggest_portfolio_path() : '';
-						echo $current_site->domain . $current_site->path
-						?>
-					</div>
-                                        <div class="col-sm-13">
-						<input id="new-site-domain" class="form-control domain-validate" size="40" name="blog[domain]" type="text" title="<?php _e( 'Domain' ) ?>" value="<?php echo $suggested_path ?>" />
-					</div>
-                                </div>
-
+						<div id="noo_new_options-div" class="row">
+							<div class="radio col-sm-6">
+								<label>
+									<input type="radio" class="noo_radio" name="new_or_old" id="new_or_old_new" value="new" />
+									<?php esc_html_e( 'Create a new site:', 'openlab-theme' ); ?>
+								</label>
 							</div>
-						</div>
+
+							<div class="col-sm-5 site-label">
+								<?php
+								$suggested_path = $group_type->get_is_portfolio() ? openlab_suggest_portfolio_path() : '';
+								// @todo Subdomains
+								echo $current_site->domain . $current_site->path
+								?>
+							</div>
+
+							<div class="col-sm-13">
+								<input id="new-site-domain" class="form-control domain-validate" size="40" name="blog[domain]" type="text" title="<?php esc_html_e( 'Domain', 'openlab-theme' ) ?>" value="<?php echo esc_html( $suggested_path ) ?>" />
+							</div>
+						</div><!-- #noo_new_options-div -->
+					</div><!-- #noo_new_options -->
+				</div><!-- #wds-website -->
 
 						<?php /* Existing blogs - only display if some are available */ ?>
 						<?php
@@ -1778,7 +1781,7 @@ function openlab_group_site_markup() {
 
 						foreach ( $user_blogs as $ubid => $ub ) {
 							if ( in_array( $ub->userblog_id, $current_groupblogs ) ) {
-                                unset( $user_blogs[$ubid] );
+								unset( $user_blogs[ $ubid ] );
 							}
 						}
 						$user_blogs = array_values( $user_blogs );
@@ -1787,43 +1790,43 @@ function openlab_group_site_markup() {
 						<?php if ( ! empty( $user_blogs ) ) : ?>
 							<div id="wds-website-existing" class="form-field form-required" style="display:<?php echo $show_website; ?>">
 
-                                <div id="noo_old_options">
-                                    <div class="row">
-                                        <div class="radio col-sm-6">
-                                            <label>
-                                                <input type="radio" class="noo_radio" id="new_or_old_old" name="new_or_old" value="old" />
-                                                Use an existing site:</label>
-                                        </div>
-                                        <div class="col-sm-18">
-                                            <label class="sr-only" for="groupblog-blogid">Choose a site</label>
-                                            <select class="form-control" name="groupblog-blogid" id="groupblog-blogid">
-                                                <option value="0">- Choose a site -</option>
-                                                <?php foreach ( (array) $user_blogs as $user_blog) : ?>
-                                                    <option value="<?php echo $user_blog->userblog_id; ?>"><?php echo $user_blog->blogname; ?></option>
-                                                <?php endforeach ?>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
+								<div id="noo_old_options">
+									<div class="row">
+										<div class="radio col-sm-6">
+											<label>
+												<input type="radio" class="noo_radio" id="new_or_old_old" name="new_or_old" value="old" />
+												Use an existing site:</label>
+										</div>
+										<div class="col-sm-18">
+											<label class="sr-only" for="groupblog-blogid">Choose a site</label>
+											<select class="form-control" name="groupblog-blogid" id="groupblog-blogid">
+												<option value="0">- Choose a site -</option>
+												<?php foreach ( (array) $user_blogs as $user_blog ) : ?>
+													<option value="<?php echo $user_blog->userblog_id; ?>"><?php echo $user_blog->blogname; ?></option>
+												<?php endforeach ?>
+											</select>
+										</div>
+									</div>
+								</div>
 							</div>
 						<?php endif ?>
 
 						<div id="wds-website-external" class="form-field form-required" style="display:<?php echo $show_website; ?>">
 
 							<div id="noo_external_options">
-                                <div class="form-group row">
-                                    <div class="radio col-sm-6">
-                                        <label>
-                                            <input type="radio" class="noo_radio" id="new_or_old_external" name="new_or_old" value="external" />
-                                            Use an external site:
-                                        </label>
-                                    </div>
-                                    <div class="col-sm-18">
-                                        <label class="sr-only" for="external-site-url">Input external site URL</label>
-                                        <input class="form-control pull-left" type="text" name="external-site-url" id="external-site-url" placeholder="http://" />
-                                        <a class="btn btn-primary no-deco top-align pull-right" id="find-feeds" href="#" display="none">Check<span class="sr-only"> external site for Post and Comment feeds</span></a>
-                                    </div>
-                                </div>
+								<div class="form-group row">
+									<div class="radio col-sm-6">
+										<label>
+											<input type="radio" class="noo_radio" id="new_or_old_external" name="new_or_old" value="external" />
+											Use an external site:
+										</label>
+									</div>
+									<div class="col-sm-18">
+										<label class="sr-only" for="external-site-url">Input external site URL</label>
+										<input class="form-control pull-left" type="text" name="external-site-url" id="external-site-url" placeholder="http://" />
+										<a class="btn btn-primary no-deco top-align pull-right" id="find-feeds" href="#" display="none">Check<span class="sr-only"> external site for Post and Comment feeds</span></a>
+									</div>
+								</div>
 							</div>
 						</div>
 						<div id="check-note-wrapper" style="display:<?php echo $show_website; ?>"><div colspan="2"><p id="check-note" class="italics disabled-opt"><?php esc_html_e( 'Note: Please click the Check button to search for Post and Comment feeds for your external site. Doing so will push new activity to the Profile page. If no feeds are detected, you may type in the Post and Comment feed URLs directly or just leave blank.', 'cbox-openlab-core' ) ?></p></div></div>
@@ -2066,35 +2069,35 @@ function openlab_course_information_edit_panel() {
 
 			<?php /*
 			<tr class="additional-field semester-field">
-	<td class="additional-field-label"><label class="passive" for="wds_semester">Semester:</label></td>
-	<td><select class="form-control" id="wds_semester" name="wds_semester">
-	<option value="">--select one--
+			<td class="additional-field-label"><label class="passive" for="wds_semester">Semester:</label></td>
+			<td><select class="form-control" id="wds_semester" name="wds_semester">
+			<option value="">--select one--
 
-	$checked = $Spring = $Summer = $Fall = $Winter = '';
+			$checked = $Spring = $Summer = $Fall = $Winter = '';
 
-	if ( $wds_semester == 'Spring' ) {
-		$Spring = 'selected';
-	} elseif ( $wds_semester == 'Summer' ) {
-		$Summer = 'selected';
-	} elseif ( $wds_semester == 'Fall' ) {
-		$Fall = 'selected';
-	} elseif ( $wds_semester == 'Winter' ) {
-		$Winter = 'selected';
-	}
+			if ( $wds_semester == 'Spring' ) {
+			$Spring = 'selected';
+			} elseif ( $wds_semester == 'Summer' ) {
+			$Summer = 'selected';
+			} elseif ( $wds_semester == 'Fall' ) {
+			$Fall = 'selected';
+			} elseif ( $wds_semester == 'Winter' ) {
+			$Winter = 'selected';
+			}
 
-	<option value="Spring" ' . $Spring . '>Spring
-	<option value="Summer" ' . $Summer . '>Summer
-	<option value="Fall" ' . $Fall . '>Fall
-	<option value="Winter" ' . $Winter . '>Winter
-	</select></td>
-	</tr>
+			<option value="Spring" ' . $Spring . '>Spring
+			<option value="Summer" ' . $Summer . '>Summer
+			<option value="Fall" ' . $Fall . '>Fall
+			<option value="Winter" ' . $Winter . '>Winter
+			</select></td>
+			</tr>
 
-	<tr class="additional-field year-field">
-	<td class="additional-field-label"><label class="passive" for="wds_year">Year:</label></td>
-	<td><input class="form-control" type="text" id="wds_year" name="wds_year" value="' . $wds_year . '"></td>
-	</tr>
+			<tr class="additional-field year-field">
+			<td class="additional-field-label"><label class="passive" for="wds_year">Year:</label></td>
+			<td><input class="form-control" type="text" id="wds_year" name="wds_year" value="' . $wds_year . '"></td>
+			</tr>
 
-	*/ ?>
+			*/ ?>
 			<tr class="additional-field additional-description-field">
 				<td colspan="2" class="additional-field-label"><label class="passive" for="additional-desc-html"><?php esc_html_e( 'Additional Description/HTML:', 'openlab-theme' ); ?></label></td></tr>
 				<tr><td colspan="2"><textarea class="form-control" name="additional-desc-html" id="additional-desc-html"><?php echo esc_textarea( $additional_desc_html ); ?></textarea></td></tr>
