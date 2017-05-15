@@ -114,7 +114,7 @@
 								<li><?php esc_html_e( 'Jane Smith\'s Portfolio (Example)', 'openlab-theme' ); ?></li>
 							</ul>
 
-							<input class="form-control" size="80" type="text" name="group-name" id="group-name" value="<?php bp_new_group_name() ?>" required />
+							<input class="form-control" size="80" type="text" name="group-name" id="group-name" value="<?php echo esc_attr( bp_get_new_group_name() ) ?>" required />
 
 						<?php else : ?>
 							<p class="ol-tooltip"><?php esc_html_e( 'Please choose your Name carefully. A clear Name will make it easier for others to find your group. We recommend keeping the Name under 50 characters.', 'openlab-theme' ); ?></p>
