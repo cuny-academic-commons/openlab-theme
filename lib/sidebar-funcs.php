@@ -257,6 +257,8 @@ function openlab_member_sidebar_menu( $mobile = false ) {
  */
 function openlab_members_sidebar_blocks( $mobile_hide = false ) {
 
+	$portfolio_group_type = cboxol_get_portfolio_group_type();
+
 	$block_classes = '';
 
 	if ( $mobile_hide ) {
@@ -269,6 +271,15 @@ function openlab_members_sidebar_blocks( $mobile_hide = false ) {
 	<?php else : ?>
 		<h2 class="sidebar-header top-sidebar-header hidden-xs">Member Profile</h2>
 	<?php endif; ?>
+
+	<?php
+
+	// Everything after this point is related to Portfolios.
+	if ( ! $portfolio_group_type ) {
+		return;
+	}
+
+	?>
 
 	<?php if ( openlab_user_has_portfolio( bp_displayed_user_id() ) && ( ! openlab_group_is_hidden( openlab_get_user_portfolio_id() ) || openlab_is_my_profile() || groups_is_user_member( bp_loggedin_user_id(), openlab_get_user_portfolio_id() ) ) ) : ?>
 
@@ -289,8 +300,12 @@ function openlab_members_sidebar_blocks( $mobile_hide = false ) {
 
 				<li class="portfolio-profile-link bold">
 					<a class="bold no-deco" href="<?php openlab_user_portfolio_url() ?>">
-						<?php echo (is_user_logged_in() && openlab_is_my_profile() ? 'My ' : 'Visit '); ?>
-						<?php openlab_portfolio_label( 'user_id=' . $displayed_user_id . '&case=upper' ); ?> Site <span class="fa fa-chevron-circle-right cyan-circle" aria-hidden="true"></span>
+						<?php if ( openlab_is_my_profile() ) : ?>
+							<?php echo esc_html( $portfolio_group_type->get_label( 'my_portfolio_site' ) ); ?>
+						<?php else : ?>
+							<?php echo esc_html( $portfolio_group_type->get_label( 'visit_portfolio_site' ) ); ?>
+						<?php endif; ?>
+						&nbsp;<span class="fa fa-chevron-circle-right cyan-circle" aria-hidden="true"></span>
 					</a>
 				</li>
 
@@ -309,14 +324,13 @@ function openlab_members_sidebar_blocks( $mobile_hide = false ) {
 		<div class="sidebar-widget" id="portfolio-sidebar-widget">
 
 			<?php if ( is_user_logged_in() && openlab_is_my_profile() ) : ?>
-				<h2 class="sidebar-header top-sidebar-header visible-xs">My <?php echo (xprofile_get_field_data( 'Account Type', bp_displayed_user_id() ) == 'Student' ? 'ePortfolio' : 'Portfolio') ?></h2>
+				<h2 class="sidebar-header top-sidebar-header visible-xs">My <?php echo esc_html( $portfolio_group_type->get_label( 'my_portfolio' ) ); ?></h2>
 			<?php endif; ?>
 
 			<div class="sidebar-block<?php echo $block_classes ?>">
 				<ul class="sidebar-sublinks portfolio-sublinks inline-element-list">
 					<li>
-						<?php $displayed_user_id = bp_is_user() ? bp_displayed_user_id() : bp_loggedin_user_id(); ?>
-						<a class="bold" href="<?php openlab_portfolio_creation_url() ?>">+ Create <?php openlab_portfolio_label( 'leading_a=1&case=upper&user_id=' . $displayed_user_id ) ?></a>
+						<a class="bold" href="<?php openlab_portfolio_creation_url() ?>"><?php echo esc_html( $portfolio_group_type->get_label( 'create_item' ) ); ?></a>
 					</li>
 				</ul>
 			</div>
