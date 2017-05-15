@@ -603,15 +603,6 @@ function openlab_submenu_gen( $items, $timestamp = false ) {
 		} elseif ( $page_identify == 'invite-new-members' && $title == 'Invite New Members' ) {
 			// special case just for Invite New Members page
 			$item_classes .= ' current-menu-item';
-		} elseif ( $page_identify == 'my-groups' ) {
-			// special case for my-<groups> pages
-			if ( isset( $_GET['type'] ) ) {
-				$type = $_GET['type'];
-				$type_title = 'My ' . ucfirst( str_replace( '-', ' ', $type ) ) . 's';
-				if ( $title == $type_title ) {
-					$item_classes .= ' current-menu-item';
-				}
-			}
 		}
 
 		// checks to see if this is the last item or first item
