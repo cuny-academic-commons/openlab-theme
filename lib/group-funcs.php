@@ -1415,6 +1415,9 @@ function openlab_bp_group_site_pages() {
 	if ( ! empty( $group_site_settings['site_url'] ) && $group_site_settings['is_visible'] ) {
 
 		if ( cboxol_is_portfolio() ) {
+
+			$portfolio_group_type = cboxol_get_portfolio_group_type();
+
 			?>
 
 			<?php /* Abstract the displayed user id, so that this function works properly on my-* pages */ ?>
@@ -1429,12 +1432,12 @@ function openlab_bp_group_site_pages() {
 				<?php if ( openlab_is_my_portfolio() || is_super_admin() ) : ?>
 					<ul class="sidebar-sublinks portfolio-sublinks inline-element-list">
 						<li class="portfolio-site-link bold">
-							<a class="bold no-deco" href="<?php echo esc_url( $group_site_settings['site_url'] ) ?>">Visit <?php echo openlab_get_group_type_label( 'group_id=' . $group_id . '&case=upper' ); ?> Site <span class="fa fa-chevron-circle-right cyan-circle" aria-hidden="true"></span></a>
+							<a class="bold no-deco" href="<?php echo esc_url( $group_site_settings['site_url'] ) ?>"><?php echo esc_html( $portfolio_group_type->get_label( 'visit_portfolio_site' ) ); ?><span class="fa fa-chevron-circle-right cyan-circle" aria-hidden="true"></span></a>
 						</li>
 
 						<?php if ( openlab_user_portfolio_site_is_local( $displayed_user_id ) ) : ?>
 							<li class="portfolio-dashboard-link">
-								<a class="line-height height-200 font-size font-13" href="<?php openlab_user_portfolio_url( $displayed_user_id ) ?>/wp-admin">Site Dashboard</a>
+								<a class="line-height height-200 font-size font-13" href="<?php openlab_user_portfolio_url( $displayed_user_id ) ?>/wp-admin"><?php esc_html_e( 'Site Dashboard', 'openlab-theme' ); ?></a>
 							</li>
 						<?php endif ?>
 					</ul>
@@ -1442,7 +1445,7 @@ function openlab_bp_group_site_pages() {
 
 					<ul class="sidebar-sublinks portfolio-sublinks inline-element-list">
 						<li class="portfolio-site-link">
-							<a class="bold no-deco" href="<?php echo trailingslashit( esc_attr( $group_site_settings['site_url'] ) ); ?>">Visit <?php echo openlab_get_group_type_label( 'group_id=' . $group_id . '&case=upper' ); ?> Site <span class="fa fa-chevron-circle-right cyan-circle" aria-hidden="true"></span></a>
+							<a class="bold no-deco" href="<?php echo trailingslashit( esc_attr( $group_site_settings['site_url'] ) ); ?>"><?php echo esc_html( $portfolio_group_type->get_label( 'visit_portfolio_site' ) ); ?><span class="fa fa-chevron-circle-right cyan-circle" aria-hidden="true"></span></a>
 						</li>
 					</ul>
 
@@ -1457,7 +1460,7 @@ function openlab_bp_group_site_pages() {
 					</li>
 					<?php if ( $group_site_settings['is_local'] && ($bp->is_item_admin || is_super_admin() || groups_is_user_member( bp_loggedin_user_id(), bp_get_current_group_id() )) ) : ?>
 						<li class="portfolio-dashboard-link">
-							<?php echo '<a class="line-height height-200 font-size font-13" href="' . esc_attr( trailingslashit( $group_site_settings['site_url'] ) ) . 'wp-admin/">Site Dashboard</a>'; ?>
+							<?php echo '<a class="line-height height-200 font-size font-13" href="' . esc_attr( trailingslashit( $group_site_settings['site_url'] ) ) . 'wp-admin/">' . esc_html__( 'Site Dashboard', 'openlab-theme' ) . '</a>'; ?>
 						</li>
 					<?php endif; ?>
 				</ul>
