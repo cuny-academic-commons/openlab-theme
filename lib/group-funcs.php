@@ -609,7 +609,7 @@ function cuny_group_single() {
 						<?php
 						/* @todo */
 						$course_code = groups_get_groupmeta( $group_id, 'cboxol_course_code' );
-						$section_code = groups_get_groupmeta( $group_id, 'cboxol_course_code' );
+						$section_code = groups_get_groupmeta( $group_id, 'cboxol_section_code' );
 						$semester = groups_get_groupmeta( $group_id, 'cboxol_term' );
 						$year = groups_get_groupmeta( $group_id, 'cboxol_year' );
 						$wds_departments = groups_get_groupmeta( $group_id, 'wds_departments' );
