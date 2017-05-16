@@ -774,7 +774,7 @@ function openlab_group_profile_activity_list() {
 		$first_class = 'first';
 		?>
 		<?php $group_slug = bp_get_group_slug(); ?>
-		<?php $group_type = openlab_get_group_type( bp_get_current_group_id() ); ?>
+		<?php $group_type = cboxol_get_group_group_type( bp_get_current_group_id() ); ?>
 
 		<?php
 		$group = groups_get_current_group();
@@ -782,14 +782,14 @@ function openlab_group_profile_activity_list() {
 
 		<?php if ( bp_is_group_home() ) { ?>
 
-			<?php if ( bp_get_group_status() == 'public' || ((bp_get_group_status() == 'hidden' || bp_get_group_status() == 'private') && (bp_is_item_admin() || bp_group_is_member())) ) : ?>
+			<?php if ( bp_get_group_status() == 'public' || ( ( bp_get_group_status() == 'hidden' || bp_get_group_status() == 'private' ) && ( bp_is_item_admin() || bp_group_is_member() ) ) ) : ?>
 				<?php
 				if ( wds_site_can_be_viewed() ) {
 					openlab_show_site_posts_and_comments();
 				}
 				?>
 
-				<?php if ( $group_type != 'portfolio' ) : ?>
+				<?php if ( ! $group_type->get_is_portfolio() ) : ?>
 					<div class="row group-activity-overview">
 						<div class="col-sm-12">
 							<div class="recent-discussions">
@@ -1606,11 +1606,6 @@ function openlab_group_site_markup() {
 	$the_group_id = null;
 	if ( bp_is_group() ) {
 		$the_group_id = bp_get_current_group_id();
-	}
-
-	// @todo Do this some other way.
-	if ( 'group' == $group_type ) {
-		$type = isset( $_COOKIE['wds_bp_group_type'] ) ? $_COOKIE['wds_bp_group_type'] : '';
 	}
 
 	$group_school = groups_get_groupmeta( $the_group_id, 'wds_group_school' );
