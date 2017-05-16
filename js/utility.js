@@ -807,7 +807,8 @@
 
         // Reindex new Add button and bind click event
         $add_new_related_link = $('#add-new-related-link');
-        $add_new_related_link.on('click', function () {
+        $add_new_related_link.on('click', function ( e ) {
+	    e.preventDefault();
             create_new_related_link_field();
         });
     }
