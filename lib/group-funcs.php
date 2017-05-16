@@ -714,10 +714,10 @@ function cuny_group_single() {
 								<div class="col-sm-17 row-content"><?php bp_group_description() ?></div>
 							</div>
 
-							<?php if ( $group_type->is_portfolio() ) : ?>
+							<?php if ( $group_type->get_is_portfolio() ) : ?>
 
 								<div class="table-row row">
-									<div class="bold col-sm-7">Member Profile</div>
+									<div class="bold col-sm-7"><?php esc_html_e( 'Member Profile', 'openlab-theme' ); ?></div>
 									<div class="col-sm-17 row-content"><?php echo bp_core_get_userlink( openlab_get_user_id_from_portfolio_group_id( bp_get_group_id() ) ); ?></div>
 								</div>
 
