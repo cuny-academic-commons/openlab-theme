@@ -154,14 +154,14 @@ openlab_group_admin_js_data( $group_type );
 				</div>
 			</div>
 
-	<?php if ( ! cboxol_is_portfolio() ) : ?>
+			<?php if ( ! cboxol_is_portfolio() && cboxol_get_portfolio_group_type() ) : ?>
 				<div class="panel panel-default">
 					<div class="panel-heading">Portfolio List Settings</div>
 					<div class="panel-body">
 						<p id="portfolio-list-settings-tag">These settings enable or disable the member portfolio list display on your Course profile.</p>
 
-		<?php $portfolio_list_enabled = openlab_portfolio_list_enabled_for_group() ?>
-		<?php $portfolio_list_heading = openlab_portfolio_list_group_heading() ?>
+						<?php $portfolio_list_enabled = openlab_portfolio_list_enabled_for_group() ?>
+						<?php $portfolio_list_heading = openlab_portfolio_list_group_heading() ?>
 						<div class="checkbox">
 							<label><input type="checkbox" name="group-show-portfolio-list" id="group-show-portfolio-list" value="1" <?php checked( $portfolio_list_enabled ) ?> /> Enable portfolio list</label>
 						</div>
