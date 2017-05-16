@@ -1156,13 +1156,15 @@ function openlab_get_group_profile_mobile_anchor_links() {
 	$related_links = openlab_get_group_related_links( $group_id );
 	if ( ! empty( $related_links ) ) {
 
-		$links .= '<li id="related-links-groups-li" class="visible-xs mobile-anchor-link"><a href="#group-related-links-sidebar-widget" id="related-links">Related Sites</a></li>';
+		$heading = groups_get_groupmeta( $group_id, 'openlab_related_links_list_heading' );
+		$links .= '<li id="related-links-groups-li" class="visible-xs mobile-anchor-link"><a href="#group-related-links-sidebar-widget" id="related-links">' . esc_html( $heading ) . '</a></li>';
 	}
 
-	$portfolio_data = openlab_get_group_member_portfolios( $group_id );
-	if ( ! empty( $portfolio_data ) && openlab_portfolio_list_enabled_for_group() ) {
-
-		$links .= '<li id="portfolios-groups-li" class="visible-xs mobile-anchor-link"><a href="#group-member-portfolio-sidebar-widget" id="portfolios">Portfolios</a></li>';
+	if ( openlab_portfolio_list_enabled_for_group() ) {
+		$portfolio_data = openlab_get_group_member_portfolios( $group_id );
+		if ( ! empty( $portfolio_data ) ) {
+			$links .= '<li id="portfolios-groups-li" class="visible-xs mobile-anchor-link"><a href="#group-member-portfolio-sidebar-widget" id="portfolios">' . esc_html( openlab_portfolio_list_group_heading() ) . '</a></li>';
+		}
 	}
 
 	return $links;
