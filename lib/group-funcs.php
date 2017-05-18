@@ -534,13 +534,13 @@ function openlab_group_profile_header() {
 		</button></h1>
 	<?php if ( bp_is_group_home() || (bp_is_group_admin_page() && ! $bp->is_item_admin) ) : ?>
 		<div class="clearfix">
-			<?php if ( $group_type != 'portfolio' ) : ?>
+			<?php if ( ! $group_type->get_is_portfolio() ) : ?>
 				<div class="info-line pull-right"><span class="timestamp info-line-timestamp"><span class="fa fa-undo" aria-hidden="true"></span> <?php printf( __( 'active %s', 'buddypress' ), bp_get_group_last_active() ) ?></span></div>
 			<?php endif; ?>
 		</div>
 	<?php elseif ( bp_is_group_home() ) : ?>
 		<div class="clearfix visible-xs">
-			<?php if ( $group_type != 'portfolio' ) : ?>
+			<?php if ( ! $group_type->get_is_portfolio() ) : ?>
 				<div class="info-line pull-right"><span class="timestamp info-line-timestamp"><span class="fa fa-undo" aria-hidden="true"></span> <?php printf( __( 'active %s', 'buddypress' ), bp_get_group_last_active() ) ?></span></div>
 			<?php endif; ?>
 		</div>
