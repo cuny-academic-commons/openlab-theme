@@ -580,12 +580,7 @@ function openlab_profile_group_type_activity_block( \CBOX\OL\GroupType $type ) {
 	if ( bp_has_groups( $group_args ) ) : ?>
 		<div id="<?php echo esc_attr( $type->get_slug() ) ?>-activity-stream" class="<?php echo esc_attr( $type->get_slug() ) ?>-list activity-list item-list col-sm-8 col-xs-12">
 			<?php
-			// @todo make this link work
-			if ( $bp->is_item_admin || $bp->is_item_mod ) :
-				$href = bp_get_root_domain() . '/my-' . $type->get_slug() . 's';
-			else :
-				$href = bp_displayed_user_domain() . 'groups/?type=' . $type->get_slug();
-			endif;
+			$href = add_query_arg( 'group_type', $type->get_slug(), bp_displayed_user_domain() . 'groups/' );
 			?>
 			<?php /* @todo font awesome is loaded from openlab-toolbar.php */ ?>
 			<h2 class="title activity-title"><a class="no-deco" href="<?php echo $href ?>"><?php echo esc_html( $title ) ?><span class="fa fa-chevron-circle-right font-size font-18" aria-hidden="true"></span></a></h2>
