@@ -521,9 +521,11 @@ function openlab_site_privacy_settings_markup( $site_id = 0 ) {
 
 function openlab_group_profile_header() {
 	global $bp;
-	$group_type = groups_get_groupmeta( $bp->groups->current_group->id, 'wds_group_type' );
+	$group_type = cboxol_get_group_group_type( bp_get_current_group_id() );
+
 	?>
 	<h1 class="entry-title group-title clearfix"><span class="profile-name hyphenate"><?php echo bp_group_name(); ?></span>
+		<span class="profile-type pull-right hidden-xs"><?php echo esc_html( $group_type->get_label( 'singular' ) ); ?></span>
 		<button data-target="#sidebar-menu-wrapper" data-backgroundonly="true" class="mobile-toggle direct-toggle pull-right visible-xs" type="button">
 			<span class="sr-only">Toggle navigation</span>
 			<span class="icon-bar"></span>
