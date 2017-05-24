@@ -37,14 +37,14 @@ module.exports = function (grunt) {
                     optimization: 2
                 },
                 files: {
-                    "style.css": "style.less", // destination file and source file
-                    "../../mu-plugins/css/openlab-toolbar.css": "../../mu-plugins/css/openlab-toolbar.less"
+                    "style.css": "style.less" // destination file and source file
+//                    "../../mu-plugins/css/openlab-toolbar.css": "../../mu-plugins/css/openlab-toolbar.less"
                 }
             }
         },
         watch: {
             styles: {
-                files: ['*.less', '../../mu-plugins/css/*.less'], // which files to watch
+                files: ['*.less'/*, '../../mu-plugins/css/*.less'*/], // which files to watch
                 tasks: ['less'],
                 options: {
                     nospawn: true
