@@ -303,85 +303,99 @@ function openlab_registration_page() {
 	do_action( 'bp_before_register_page' );
 
 	$ajaxurl = bp_core_ajax_url();
+	$site_name = bp_get_option( 'blogname' );
+
+	$limited_email_domains_message = '';
+	$limited_email_domains = get_site_option( 'limited_email_domains' );
+	if ( $limited_email_domains ) {
+		$led = array();
+		foreach ( $limited_email_domains as $d ) {
+			$led[] = sprintf( '<span class="limited-email-domain">' . esc_html( $d ) . '</span>' );
+		}
+		$limited_email_domains_message = sprintf(
+			esc_html__( 'Allowed email domains: %s', 'openlab-theme' ),
+			implode( ', ', $led )
+		);
+	}
+
 	?>
 
 	<div class="page" id="register-page">
 
 		<div id="openlab-main-content"></div>
 
-		<h1 class="entry-title"><?php _e( 'Create an Account', 'buddypress' ) ?></h1>
+		<h1 class="entry-title"><?php _e( 'Create an Account', 'openlab-theme' ) ?></h1>
 
 		<form action="" name="signup_form" id="signup_form" class="standard-form form-panel" method="post" enctype="multipart/form-data" data-parsley-trigger="blur">
 
 			<?php if ( 'request-details' == bp_get_current_signup_step() ) : ?>
 
 				<div class="panel panel-default">
-					<div class="panel-heading semibold">Account Details</div>
+					<div class="panel-heading semibold"><?php esc_html_e( 'Account Details', 'openlab-theme' ); ?></div>
 					<div class="panel-body">
 
 						<?php do_action( 'template_notices' ) ?>
 
-						<p><?php _e( 'Registering for the City Tech OpenLab is easy. Just fill in the fields below and we\'ll get a new account set up for you in no time.', 'buddypress' ) ?></p>
+						<p><?php printf( esc_html__( 'Registering for %s is easy. Just fill in the fields below and we\'ll get a new account set up for you in no time.', 'openlab-theme' ), esc_html( $site_name ) ); ?></p>
+
 						<p>Because the OpenLab is a space for collaboration between members of the City Tech community, a City Tech email address is required to use the site.</p>
 						<?php do_action( 'bp_before_account_details_fields' ) ?>
 
 						<div class="register-section" id="basic-details-section">
 
-							<?php /*                             * *** Basic Account Details ***** */ ?>
+							<div class="form-group">
+								<label class="control-label" for="signup_username"><?php esc_html_e( 'Username', 'openlab-theme' ) ?> <?php esc_html_e( '(required)', 'openlab-theme' ) ?> <?php esc_html_e( '(lowercase & no special characters)', 'openlab-theme' ); ?></label>
+								<?php do_action( 'bp_signup_username_errors' ) ?>
+								<input
+									class="form-control"
+									type="text"
+									name="signup_username"
+									id="signup_username"
+									value="<?php bp_signup_username_value() ?>"
+									data-parsley-lowercase
+									data-parsley-nospecialchars
+									data-parsley-required
+									data-parsley-minlength="4"
+									data-parsley-remote="<?php echo add_query_arg( array(
+										'action' => 'openlab_unique_login_check',
+										'login' => '{value}',
+									), $ajaxurl ); ?>"
+									data-parsley-remote-message="<?php echo esc_attr( 'That username is already taken.', 'openlab-theme' ); ?>"
+								/>
+							</div>
 
-			    <div class="form-group">
-				    <label class="control-label" for="signup_username"><?php _e( 'Username', 'buddypress' ) ?> <?php _e( '(required)', 'buddypress' ) ?> (lowercase & no special characters)</label>
-				    <?php do_action( 'bp_signup_username_errors' ) ?>
-				    <input
-					class="form-control"
-					type="text"
-					name="signup_username"
-					id="signup_username"
-					value="<?php bp_signup_username_value() ?>"
-					data-parsley-lowercase
-					data-parsley-nospecialchars
-					data-parsley-required
-					data-parsley-minlength="4"
-					data-parsley-remote="<?php echo add_query_arg( array(
-						'action' => 'openlab_unique_login_check',
-						'login' => '{value}',
-					), $ajaxurl ); ?>"
-					data-parsley-remote-message="That username is already taken."
-				    />
-			    </div>
+							<div class="form-group">
+								<label class="control-label" for="signup_email"><?php esc_html_e( 'Email Address (required)', 'openlab-theme' ); ?> <?php if ( $limited_email_domains_message ) : ?><div class="email-requirements"><?php echo $limited_email_domains_message; ?></div><?php endif; ?></label>
+								<?php do_action( 'bp_signup_email_errors' ) ?>
+								<input
+								class="form-control"
+								type="text"
+								name="signup_email"
+								id="signup_email"
+								value="<?php echo openlab_post_value( 'signup_email' ) ?>"
+								data-parsley-trigger="blur"
+								data-parsley-required
+								data-parsley-type="email"
+								data-parsley-group="email"
+								data-parsley-iff="#signup_email_confirm"
+								data-parsley-iff-message=""
+								/>
 
-			    <div class="form-group">
-				    <label class="control-label" for="signup_email"><?php _e( 'Email Address (required) <div class="email-requirements">Please use your City Tech email address to register</div>', 'buddypress' ) ?> </label>
-				    <?php do_action( 'bp_signup_email_errors' ) ?>
-				    <input
-					class="form-control"
-					type="text"
-					name="signup_email"
-					id="signup_email"
-					value="<?php echo openlab_post_value( 'signup_email' ) ?>"
-					data-parsley-trigger="blur"
-					data-parsley-required
-					data-parsley-type="email"
-					data-parsley-group="email"
-					data-parsley-iff="#signup_email_confirm"
-					data-parsley-iff-message=""
-				    />
-
-				    <label class="control-label" for="signup_email_confirm">Confirm Email Address (required)</label>
-				    <input
-					class="form-control"
-					type="text"
-					name="signup_email_confirm"
-					id="signup_email_confirm"
-					value="<?php echo openlab_post_value( 'signup_email_confirm' ) ?>"
-					data-parsley-trigger="blur"
-					data-parsley-required
-					data-parsley-type="email"
-					data-parsley-iff="#signup_email"
-					data-parsley-iff-message="Email addresses must match."
-					data-parsley-group="email"
-				    />
-			    </div>
+								<label class="control-label" for="signup_email_confirm">Confirm Email Address (required)</label>
+								<input
+								class="form-control"
+								type="text"
+								name="signup_email_confirm"
+								id="signup_email_confirm"
+								value="<?php echo openlab_post_value( 'signup_email_confirm' ) ?>"
+								data-parsley-trigger="blur"
+								data-parsley-required
+								data-parsley-type="email"
+								data-parsley-iff="#signup_email"
+								data-parsley-iff-message="Email addresses must match."
+								data-parsley-group="email"
+								/>
+							</div>
 
 			    <div data-parsley-children-should-match class="form-group">
 				    <label class="control-label" for="signup_password"><?php _e( 'Choose a Password', 'buddypress' ) ?> <?php _e( '(required)', 'buddypress' ) ?></label>
@@ -456,13 +470,14 @@ function openlab_registration_page() {
 				<?php do_action( 'bp_before_registration_submit_buttons' ) ?>
 
 				<p class="sign-up-terms">
+					<?php /* @todo What to do about this? */ ?>
 					By clicking "Complete Sign Up", I agree to the <a class="underline" href="<?php echo home_url( 'about/terms-of-service' ) ?>" target="_blank">OpenLab Terms of Use</a> and <a class="underline" href="http://cuny.edu/website/privacy.html" target="_blank">Privacy Policy</a>.
 				</p>
 
 				<p id="submitSrMessage" class="sr-only submit-alert" aria-live="polite"></p>
 
 				<div class="submit">
-					<input type="submit" name="signup_submit" id="signup_submit" class="btn btn-primary btn-disabled" value="<?php _e( 'Complete Sign Up', 'buddypress' ) ?>" />
+					<input type="submit" name="signup_submit" id="signup_submit" class="btn btn-primary btn-disabled" value="<?php _e( 'Please Complete Required Fields', 'buddypress' ) ?>" />
 				</div>
 
 				<?php do_action( 'bp_after_registration_submit_buttons' ) ?>

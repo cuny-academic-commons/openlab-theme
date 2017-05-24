@@ -26,8 +26,15 @@ function openlab_bp_enqueue_scripts() {
 		wp_enqueue_script( 'openlab-registration', get_stylesheet_directory_uri() . '/js/register.js', array( 'jquery', 'parsley' ) );
 
 		wp_localize_script('openlab-registration', 'OLReg', array(
-			'post_data' => $_POST,
 			'account_type_field' => xprofile_get_field_id_from_name( 'Account Type ' ),
+			'limited_email_domains' => get_site_option( 'limited_email_domains' ),
+			'post_data' => $_POST,
+			'strings' => array(
+				'dashChecking' => esc_html__( '&mdash; Checking', 'openlab-theme' ),
+				'dashOK' => esc_html__( '&mdash; OK!', 'openlab-theme' ),
+				'completeSignUp' => esc_html__( 'Complete Sign Up', 'openlab-theme' ),
+				'enterEmailAddressToContinue' => esc_html__( 'Enter Email Address to Continue', 'openlab-theme' ),
+			),
 		) );
 	}
 }
