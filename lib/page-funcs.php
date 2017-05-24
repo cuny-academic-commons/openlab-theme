@@ -338,7 +338,6 @@ function openlab_registration_page() {
 
 						<p><?php printf( esc_html__( 'Registering for %s is easy. Just fill in the fields below and we\'ll get a new account set up for you in no time.', 'openlab-theme' ), esc_html( $site_name ) ); ?></p>
 
-						<p>Because the OpenLab is a space for collaboration between members of the City Tech community, a City Tech email address is required to use the site.</p>
 						<?php do_action( 'bp_before_account_details_fields' ) ?>
 
 						<div class="register-section" id="basic-details-section">
@@ -351,7 +350,7 @@ function openlab_registration_page() {
 									type="text"
 									name="signup_username"
 									id="signup_username"
-									value="<?php bp_signup_username_value() ?>"
+									value="<?php esc_attr( bp_signup_username_value() ) ?>"
 									data-parsley-lowercase
 									data-parsley-nospecialchars
 									data-parsley-required
@@ -360,7 +359,7 @@ function openlab_registration_page() {
 										'action' => 'openlab_unique_login_check',
 										'login' => '{value}',
 									), $ajaxurl ); ?>"
-									data-parsley-remote-message="<?php echo esc_attr( 'That username is already taken.', 'openlab-theme' ); ?>"
+									data-parsley-remote-message="<?php esc_attr_e( 'That username is already taken.', 'openlab-theme' ); ?>"
 								/>
 							</div>
 
@@ -368,70 +367,70 @@ function openlab_registration_page() {
 								<label class="control-label" for="signup_email"><?php esc_html_e( 'Email Address (required)', 'openlab-theme' ); ?> <?php if ( $limited_email_domains_message ) : ?><div class="email-requirements"><?php echo $limited_email_domains_message; ?></div><?php endif; ?></label>
 								<?php do_action( 'bp_signup_email_errors' ) ?>
 								<input
-								class="form-control"
-								type="text"
-								name="signup_email"
-								id="signup_email"
-								value="<?php echo openlab_post_value( 'signup_email' ) ?>"
-								data-parsley-trigger="blur"
-								data-parsley-required
-								data-parsley-type="email"
-								data-parsley-group="email"
-								data-parsley-iff="#signup_email_confirm"
-								data-parsley-iff-message=""
+									class="form-control"
+									type="text"
+									name="signup_email"
+									id="signup_email"
+									value="<?php echo esc_attr( openlab_post_value( 'signup_email' ) ) ?>"
+									data-parsley-trigger="blur"
+									data-parsley-required
+									data-parsley-type="email"
+									data-parsley-group="email"
+									data-parsley-iff="#signup_email_confirm"
+									data-parsley-iff-message=""
 								/>
 
-								<label class="control-label" for="signup_email_confirm">Confirm Email Address (required)</label>
+								<label class="control-label" for="signup_email_confirm"><?php esc_html_e( 'Confirm Email Address (required)', 'openlab-theme' ); ?></label>
 								<input
 								class="form-control"
 								type="text"
 								name="signup_email_confirm"
 								id="signup_email_confirm"
-								value="<?php echo openlab_post_value( 'signup_email_confirm' ) ?>"
+								value="<?php echo esc_attr( openlab_post_value( 'signup_email_confirm' ) ); ?>"
 								data-parsley-trigger="blur"
 								data-parsley-required
 								data-parsley-type="email"
 								data-parsley-iff="#signup_email"
-								data-parsley-iff-message="Email addresses must match."
+								data-parsley-iff-message="<?php esc_attr_e( 'Email addresses must match.', 'openlab-theme' ); ?>"
 								data-parsley-group="email"
 								/>
 							</div>
 
-			    <div data-parsley-children-should-match class="form-group">
-				    <label class="control-label" for="signup_password"><?php _e( 'Choose a Password', 'buddypress' ) ?> <?php _e( '(required)', 'buddypress' ) ?></label>
-				    <?php do_action( 'bp_signup_password_errors' ) ?>
-				    <div class="password-field">
-					    <input
-						class="form-control"
-						type="password"
-						name="signup_password"
-						id="signup_password"
-						value=""
-						data-parsley-trigger="blur"
-						data-parsley-required
-						data-parsley-group="password"
-						data-parsley-iff="#signup_password_confirm"
-						data-parsley-iff-message=""
-					    />
+							<div data-parsley-children-should-match class="form-group">
+								<label class="control-label" for="signup_password"><?php _e( 'Choose a Password', 'openlab-theme' ) ?> <?php _e( '(required)', 'openlab-theme' ) ?></label>
+								<?php do_action( 'bp_signup_password_errors' ) ?>
+								<div class="password-field">
+									<input
+										class="form-control"
+										type="password"
+										name="signup_password"
+										id="signup_password"
+										value=""
+										data-parsley-trigger="blur"
+										data-parsley-required
+										data-parsley-group="password"
+										data-parsley-iff="#signup_password_confirm"
+										data-parsley-iff-message=""
+									/>
 
-					    <div id="password-strength-notice" class="password-strength-notice"></div>
-				    </div>
+									<div id="password-strength-notice" class="password-strength-notice"></div>
+								</div>
 
-				    <label class="control-label" for="signup_password_confirm"><?php _e( 'Confirm Password', 'buddypress' ) ?> <?php _e( '(required)', 'buddypress' ) ?></label>
-				    <?php do_action( 'bp_signup_password_confirm_errors' ) ?>
-				    <input
-					class="form-control password-field"
-					type="password"
-					name="signup_password_confirm"
-					id="signup_password_confirm"
-					value=""
-					data-parsley-trigger="blur"
-					data-parsley-required
-					data-parsley-group="password"
-					data-parsley-iff="#signup_password"
-					data-parsley-iff-message="Passwords must match."
-				    />
-			    </div>
+								<label class="control-label" for="signup_password_confirm"><?php _e( 'Confirm Password', 'openlab-theme' ) ?> <?php _e( '(required)', 'openlab-theme' ) ?></label>
+								<?php do_action( 'bp_signup_password_confirm_errors' ) ?>
+								<input
+									class="form-control password-field"
+									type="password"
+									name="signup_password_confirm"
+									id="signup_password_confirm"
+									value=""
+									data-parsley-trigger="blur"
+									data-parsley-required
+									data-parsley-group="password"
+									data-parsley-iff="#signup_password"
+									data-parsley-iff-message="<?php esc_attr_e( 'Passwords must match.', 'openlab-theme' ); ?>"
+								/>
+							</div>
 
 						</div><!-- #basic-details-section -->
 					</div>
@@ -439,19 +438,17 @@ function openlab_registration_page() {
 
 				<?php do_action( 'bp_after_account_details_fields' ) ?>
 
-				<?php /*                 * *** Extra Profile Details ***** */ ?>
-
 				<?php if ( bp_is_active( 'xprofile' ) ) : ?>
 
 					<div class="panel panel-default">
-						<div class="panel-heading semibold">Public Profile Details</div>
+						<div class="panel-heading semibold"><?php esc_html_e( 'Public Profile Details', 'openlab-theme' ); ?></div>
 						<div class="panel-body">
 
 							<?php do_action( 'bp_before_signup_profile_fields' ) ?>
 
 							<div class="register-section" id="profile-details-section">
 
-								<p>Your responses in the form fields below will be displayed on your profile page, which is open to the public. You can always add, edit, or remove information at a later date.</p>
+								<p><?php esc_html_e( 'Your responses in the form fields below will be displayed on your profile page, which is open to the public. You can always add, edit, or remove information at a later date.', 'openlab-theme' ); ?></p>
 
 								<?php /* todo
 								<?php echo wds_get_register_fields( 'Base' ); ?>
