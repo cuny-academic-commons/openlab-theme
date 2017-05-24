@@ -103,3 +103,19 @@ function openlab_ajax_help_post_autocomplete() {
 }
 
 add_action( 'wp_ajax_openlab_ajax_help_post_autocomplete', 'openlab_ajax_help_post_autocomplete' );
+
+/**
+ * Get profile fields corresponding to Account Type submitted AJAX.
+ */
+function openlab_ajax_profile_fields() {
+	$markup = '';
+	if ( ! isset( $_POST['account_type'] ) ) {
+		wp_send_json_success( $markup );
+	}
+
+	$account_type = wp_unslash( $_POST['account_type'] );
+
+	$markup = openlab_get_register_fields( $account_type );
+	wp_send_json_success( $markup );
+}
+add_action( 'wp_ajax_nopriv_openlab_profile_fields', 'openlab_ajax_profile_fields' );

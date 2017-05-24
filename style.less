@@ -254,6 +254,9 @@ input[type="submit"]{
 }
 .form-control{
     margin-bottom: 15px;
+    &.half-width {
+	width: 45%;
+    }
     &.parsley-error {
         margin-bottom: 0;
     }
@@ -820,6 +823,21 @@ body{
             background: @yellow;
             border-color: @yellow;
         }
+    }
+    .account-type-select-ui {
+	.col-md-24, .col-md-12 {
+		padding-left: 0;
+	}
+	.form-control::-moz-placeholder {
+	  color: #f00;
+	  opacity: 1;
+	}
+	.form-control:-ms-input-placeholder {
+	  color: #f00;
+	}
+	.form-control::-webkit-input-placeholder {
+	  color: #f00;
+	}
     }
     .panel-body{
         .bp-template-notice{

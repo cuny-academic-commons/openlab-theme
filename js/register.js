@@ -174,9 +174,11 @@ jQuery(document).ready(function() {
                 });
     });
 
-    var $account_type_field = $('#field_' + OLReg.account_type_field);
+    var $account_type_field = $( '#account-type' );
+    var $account_type_signup_code_field = $( '#account-type-signup-code' );
 
     // Ensure that the account type field is set properly from the post
+	// @todo
     $account_type_field.val(OLReg.post_data.field_7);
     $account_type_field.children('option').each(function () {
         if (OLReg.post_data.field_7 == $(this).val()) {
@@ -191,18 +193,22 @@ jQuery(document).ready(function() {
 
     //load register account type
     function load_account_type_fields() {
-        var default_type = '';
+
+		var requiresSignupCode = false;
+		var selectedAccountType = $account_type_field.find( ':selected' );
+		if ( selectedAccountType.length > 0 ) {
+			requiresSignupCode = selectedAccountType.data( 'requires-signup-code' ) > 0;
+		}
+
+		if ( requiresSignupCode ) {
+			$account_type_signup_code_field.show();
+		} else {
+			$account_type_signup_code_field.hide();
+		}
+
         var selected_account_type = $account_type_field.val();
 
         if (document.getElementById('signup_submit')) {
-            if (selected_account_type !== "") {
-                $('#signup_submit').removeClass('btn-disabled');
-                $('#signup_submit').val( OLReg.strings.completeSignUp );
-            } else {
-                $('#signup_submit').addClass('btn-disabled');
-                $('#signup_submit').val( OLReg.strings.enterEmailAddressToContinue );
-            }
-
             $('#signup_submit').on('click',function(e){
 
                 var thisElem = $(this);
@@ -217,13 +223,13 @@ jQuery(document).ready(function() {
 
             $.ajax(ajaxurl, {
                 data: {
-                    action: 'wds_load_account_type',
-                    account_type: selected_account_type,
+                    action: 'openlab_profile_fields',
+                    account_type: $account_type_field.val(),
                     post_data: OLReg.post_data
                 },
                 method: 'POST',
                 success: function (response) {
-                    $('#wds-account-type').html(response);
+                    $( '#openlab-profile-fields' ).html(response.data);
                     load_error_messages();
                 }
             });

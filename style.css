@@ -7288,6 +7288,9 @@ input[type="submit"] {
 .form-control {
   margin-bottom: 15px;
 }
+.form-control.half-width {
+  width: 45%;
+}
 .form-control.parsley-error {
   margin-bottom: 0;
 }
@@ -7810,6 +7813,20 @@ body #register-page .error {
   margin-top: 5px;
   background: #f7e700;
   border-color: #f7e700;
+}
+body .account-type-select-ui .col-md-24,
+body .account-type-select-ui .col-md-12 {
+  padding-left: 0;
+}
+body .account-type-select-ui .form-control::-moz-placeholder {
+  color: #f00;
+  opacity: 1;
+}
+body .account-type-select-ui .form-control:-ms-input-placeholder {
+  color: #f00;
+}
+body .account-type-select-ui .form-control::-webkit-input-placeholder {
+  color: #f00;
 }
 body .panel-body .bp-template-notice {
   margin-top: 0;

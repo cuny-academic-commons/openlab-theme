@@ -927,3 +927,149 @@ function openlab_trim_message_subject( $subject ) {
 }
 
 add_filter( 'bp_get_message_thread_subject', 'openlab_trim_message_subject' );
+
+/**
+ * Get profile field markup for registration.
+ */
+function openlab_get_register_fields( $account_type = '', $post_data = array() ) {
+    // Fake it until you make it
+    if (!empty($post_data)) {
+        foreach ($post_data as $pdk => $pdv) {
+            $_POST[$pdk] = $pdv;
+        }
+    }
+
+	$return="";
+	if ( function_exists( 'bp_has_profile' ) ) :
+	if ( bp_has_profile( array( 'member_type' => $account_type ) ) ) : while ( bp_profile_groups() ) : bp_the_profile_group();
+		while ( bp_profile_fields() ) : bp_the_profile_field();
+
+			$return .= '<div class="editfield form-group">';
+			if ( 'textbox' == bp_get_the_profile_field_type() ) :
+				$return.='<label class="control-label" for="'.bp_get_the_profile_field_input_name().'">'.bp_get_the_profile_field_name();
+
+				if ( bp_get_the_profile_field_is_required() ) {
+					$return .= ' ' . __( '(required)', 'openlab-theme' );
+				}
+
+				$return.='</label>';
+
+				$return .= '<input
+						class="form-control"
+						type="text"
+						name="' . bp_get_the_profile_field_input_name() . '"
+						id="' . bp_get_the_profile_field_input_name() . '"
+						value="' . bp_get_the_profile_field_edit_value() . '"
+						' . openlab_profile_field_input_attributes() . '
+						/>';
+			endif;
+			if ( 'textarea' == bp_get_the_profile_field_type() ) :
+				$return.='<label for="'.bp_get_the_profile_field_input_name().'">'.bp_get_the_profile_field_name();
+				if ( bp_get_the_profile_field_is_required() ) :
+					$return.=' (required)';
+				endif;
+				$return.='</label>';
+				$return.='<textarea class="form-control" rows="5" cols="40" name="'.bp_get_the_profile_field_input_name().'" id="'.bp_get_the_profile_field_input_name().'">'.bp_get_the_profile_field_edit_value();
+				$return.='</textarea>';
+			endif;
+			if ( 'selectbox' == bp_get_the_profile_field_type() ) :
+				$return.='<label class="control-label" for="'.bp_get_the_profile_field_input_name().'">'.bp_get_the_profile_field_name();
+				if ( bp_get_the_profile_field_is_required() ) :
+					$return.=' (required)';
+				endif;
+				$return.='</label>';
+				//WDS ADDED $$$
+
+				$onchange = '';
+
+				$return .= '<select
+						class="form-control"
+						name="' . bp_get_the_profile_field_input_name() . '"
+						id="' . bp_get_the_profile_field_input_name() . '" '.
+						$onchange .
+						openlab_profile_field_input_attributes() .
+						' >';
+					 if ( 'Account Type' == bp_get_the_profile_field_name() ) {
+						$return .= '<option selected="selected" value=""> ---- </option>';
+					 }
+					 $return.=bp_get_the_profile_field_options();
+				$return.='</select>';
+
+			endif;
+			if ( 'multiselectbox' == bp_get_the_profile_field_type() ) :
+				$return.='<label for="'.bp_get_the_profile_field_input_name().'">'.bp_get_the_profile_field_name();
+				if ( bp_get_the_profile_field_is_required() ) :
+					$return.=' (required)';
+				endif;
+				$return.='</label>';
+				$return.='<select class="form-control" name="'.bp_get_the_profile_field_input_name().'" id="'.bp_get_the_profile_field_input_name().'" multiple="multiple">';
+					$return.=bp_get_the_profile_field_options();
+				$return.='</select>';
+			endif;
+			if ( 'radio' == bp_get_the_profile_field_type() ) :
+				$return.='<div class="radio">';
+				$return.='<span class="label">'.bp_get_the_profile_field_name();
+				if ( bp_get_the_profile_field_is_required() ) :
+					$return.=' (required)';
+				endif;
+				$return.='</span>';
+				$return.=bp_get_the_profile_field_options();
+				if ( !bp_get_the_profile_field_is_required() ) :
+					//$return.='<a class="clear-value" href="javascript:clear( \''.bp_get_the_profile_field_input_name().'\' );">'._e( 'Clear', 'buddypress' ).'</a>';
+				endif;
+				$return.='</div>';
+			endif;
+			if ( 'checkbox' == bp_get_the_profile_field_type() ) :
+				$return.='<div class="checkbox">';
+				$return.='<span class="label">'.bp_get_the_profile_field_name();
+				if ( bp_get_the_profile_field_is_required() ) :
+					$return.=' (required)';
+				endif;
+				$return.='</span>';
+				$return.=bp_get_the_profile_field_options();
+				$return.='</div>';
+			endif;
+			if ( 'datebox' == bp_get_the_profile_field_type() ) :
+				$return.='<div class="datebox">';
+				$return.='<label for="'.bp_get_the_profile_field_input_name().'_day">'.bp_get_the_profile_field_name();
+				if ( bp_get_the_profile_field_is_required() ) :
+					$return.=' (required)';
+				endif;
+				$return.='</label>';
+				$return.='<select name="'.bp_get_the_profile_field_input_name().'_day" id="'.bp_get_the_profile_field_input_name().'_day">';
+					$return.=bp_get_the_profile_field_options( 'type=day' );
+				$return.='</select>';
+				$return.='<select name="'.bp_get_the_profile_field_input_name().'_month" id="'.bp_get_the_profile_field_input_name().'_month">';
+					$return.=bp_get_the_profile_field_options( 'type=month' );
+				$return.='</select>';
+				$return.='<select name="'.bp_get_the_profile_field_input_name().'_year" id="'.bp_get_the_profile_field_input_name().'_year">';
+					$return.=bp_get_the_profile_field_options( 'type=year' );
+				$return.='</select>';
+				$return.='</div>';
+			endif;
+			$return.=do_action( 'bp_custom_profile_edit_fields' );
+			$return.='<p class="description">'.bp_get_the_profile_field_description().'</p>';
+			$return.='</div>';
+		endwhile;
+
+		/**
+		 * Left over from WDS, we need to hardcode 3,7,241 in some cases.
+		 * @todo Investigate
+		 */
+		$profile_field_ids = bp_get_the_profile_group_field_ids();
+
+		$pfids_a = explode( ',', $profile_field_ids );
+		if ( !in_array( 1, $pfids_a ) ) {
+			$pfids_a[] = 1;
+			$profile_field_ids = implode( ',', $pfids_a );
+		}
+
+		if ( isset( $group_id ) && 1 != $group_id ) {
+			$profile_field_ids = '3,7,241,' . $profile_field_ids;
+		}
+
+		$return .= '<input type="hidden" name="signup_profile_field_ids" id="signup_profile_field_ids" value="3,7,241,' . $profile_field_ids . '" />';
+
+		endwhile; endif; endif;
+		return $return;
+}
