@@ -66,18 +66,18 @@ jQuery(document).ready(function() {
 	var inputBlacklist = [
 		'signup_username',
 		'field_1',   // Display Name
-		'field_241', // First Name
-		'field_3'    // Last Name
 	];
 
 	$password_strength_notice = $( '#password-strength-notice' );
 	$( 'body' ).on( 'keyup', '#signup_password', function( e ) {
 		var blacklistValues = [];
 		for ( var i = 0; i < inputBlacklist.length; i++ ) {
-			var fieldValue = document.getElementById( inputBlacklist[ i ] ).value;
-			if ( 4 <= fieldValue.length ) {
-				// Exclude short items. See password-strength-meter.js.
-				blacklistValues.push( fieldValue );
+			var blacklistField = document.getElementById( inputBlacklist[ i ] );
+			if ( blacklistField ) {
+				if ( 4 <= blacklistField.value.length ) {
+					// Exclude short items. See password-strength-meter.js.
+					blacklistValues.push( blacklistField.value );
+				}
 			}
 		}
 
