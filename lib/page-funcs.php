@@ -454,6 +454,7 @@ function openlab_registration_page() {
 
 								<?php /* @todo Abstract selector? */ ?>
 								<div class="editfield form-group account-type-select-ui">
+									<?php do_action( 'bp_account_type_errors' ) ?>
 									<label class="control-label" for="account-type"><?php esc_html_e( 'Account Type', 'openlab-theme' ); ?> <?php esc_html_e( '(required)', 'openlab-theme' ); ?></label>
 									<div class="col-md-24">
 										<div class="col-md-12">
