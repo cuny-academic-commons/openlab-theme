@@ -109,6 +109,7 @@ require_once( STYLESHEETPATH . '/lib/plugin-hooks.php' );
 require_once( STYLESHEETPATH . '/lib/theme-hooks.php' );
 require_once( STYLESHEETPATH . '/lib/widgets.php' );
 
+require_once( STYLESHEETPATH . '/lib/customizer.php' );
 require_once( STYLESHEETPATH . '/lib/buddypress.php' );
 
 function openlab_load_scripts() {
