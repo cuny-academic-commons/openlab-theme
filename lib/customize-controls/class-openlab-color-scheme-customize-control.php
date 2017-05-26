@@ -9,13 +9,6 @@ class OpenLab_Color_Scheme_Customize_Control extends WP_Customize_Control {
 
 		$name = '_customize-radio-' . $this->id;
 
-		if ( ! empty( $this->label ) ) : ?>
-			<span class="customize-control-title"><?php echo esc_html( $this->label ); ?></span>
-		<?php endif;
-		if ( ! empty( $this->description ) ) : ?>
-			<span class="description customize-control-description"><?php echo $this->description ; ?></span>
-		<?php endif;
-
 		foreach ( $this->choices as $value => $label ) :
 			?>
 			<label class="color-scheme-<?php echo esc_attr( $value ); ?>">
