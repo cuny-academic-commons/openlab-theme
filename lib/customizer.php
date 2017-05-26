@@ -42,7 +42,7 @@ function openlab_customizer_setup( $wp_customize ) {
 
 	$wp_customize->add_setting( 'openlab_logo', array(
 		'type' => 'theme_mod',
-		'sanitize_callback' => 'intval',
+		'sanitize_callback' => 'openlab_sanitize_customizer_setting_intval',
 	) );
 
 	$wp_customize->add_control(
@@ -75,8 +75,31 @@ function openlab_customizer_setup( $wp_customize ) {
 		'render_callback'     => 'openlab_get_logo_html',
 		'container_inclusive' => true,
 	) );
+
+	// Home Page
+	$wp_customize->add_panel( 'openlab_home_page', array(
+		'title' => __( 'Home Page', 'openlab-theme' ),
+	) );
+
+	global $wp_registered_sidebars;
+	$openlab_sidebars = array( 'home-main', 'home-sidebar' );
+	foreach ( $openlab_sidebars as $sidebar_id ) {
+		$sid = 'sidebar-widgets-' . $sidebar_id;
+		$section = $wp_customize->get_section( $sid );
+
+		if ( ! $section ) {
+			_b( 'no' );
+			continue;
+		}
+
+		$c = clone( $section );
+		$wp_customize->remove_section( $id );
+
+		$c->panel = 'openlab_home_page';
+		$wp_customize->add_section( $c );
+	}
 }
-add_action( 'customize_register', 'openlab_customizer_setup', 15 );
+add_action( 'customize_register', 'openlab_customizer_setup', 200 );
 
 function openlab_sanitize_customizer_setting_color_scheme( $setting ) {
 	$settings = array( 'blue', 'gold', 'red', 'default' );
@@ -84,4 +107,11 @@ function openlab_sanitize_customizer_setting_color_scheme( $setting ) {
 		$setting = 'default';
 	}
 	return $setting;
+}
+
+/**
+ * Can't pass directly to intval() because Customizer passes more than one param.
+ */
+function openlab_sanitize_customizer_setting_intval( $setting ) {
+	return intval( $setting );
 }
