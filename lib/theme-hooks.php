@@ -58,19 +58,51 @@ HTML;
 
 add_filter( 'the_content', 'openlab_custom_the_content' );
 
+function openlab_get_logo_html() {
+
+	$custom_logo_id = get_theme_mod( 'openlab_logo' );
+
+	if ( $custom_logo_id ) {
+		$logo_html = sprintf( '<a href="%1$s" class="custom-logo-link" rel="home" itemprop="url">%2$s</a>',
+			esc_url( home_url( '/' ) ),
+			wp_get_attachment_image( $custom_logo_id, 'full', false, array(
+				'class'    => 'custom-logo',
+				'itemprop' => 'logo',
+			) )
+		);
+	}
+
+	// If no logo is set but we're in the Customizer, leave a placeholder (needed for the live preview).
+	elseif ( is_customize_preview() ) {
+		$logo_html = sprintf( '<a href="%1$s" class="custom-logo-link" style="display:none;"><img class="custom-logo"/></a>',
+			esc_url( home_url( '/' ) )
+		);
+	} else {
+		$logo_html = sprintf( '<a href="%1$s" class="custom-logo-link">%2$s</a>',
+			esc_url( home_url( '/' ) ),
+			esc_html( get_option( 'blogname' ) )
+		);
+	}
+
+	return $logo_html;
+}
+
 /**
  * OpenLab main menu markup
  *
  * @param type $location
  */
 function openlab_main_menu( $location = 'header' ) {
+
+	$logo_html = openlab_get_logo_html();
+
 	?>
 	<nav class="navbar navbar-default oplb-bs navbar-location-<?php echo $location ?>" role="navigation">
 		<?php do_action( 'openlab_sitewide_header' ); ?>
 		<div class="main-nav-wrapper">
 			<div class="container-fluid">
 				<div class="navbar-header hidden-xs">
-					<header class="menu-title"><a href="<?php echo home_url(); ?>" title="<?php _ex( 'Home', 'Home page banner link title', 'buddypress' ); ?>"><?php echo esc_html( get_bloginfo( 'name', 'display' ) ); ?></a></header>
+					<header class="menu-title"><?php echo $logo_html; ?></header>
 				</div>
 				<div class="navbar-collapse collapse" id="main-nav-<?php echo $location ?>">
 					<?php
