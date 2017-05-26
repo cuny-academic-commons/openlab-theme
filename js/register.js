@@ -150,32 +150,38 @@ jQuery(document).ready(function() {
             $(vcodespan).css('color', '#000');
             $(vcodespan).fadeIn();
         });
-
-        /* Handle email verification server side because there we have the functions for it */
-        $.post(ajaxurl, {
-            action: 'cac_ajax_vcode_check',
-            'code': code
-        },
-                function (response) {
-                    if ('1' == response) {
-                        $(vcodespan).fadeOut(function () {
-                            $(vcodespan).html('&mdash; OK!');
-                            $(vcodespan).css('color', '#000');
-                            $(vcodespan).fadeIn();
-                            $('div#submit')
-                        });
-                    } else {
-                        $(vcodespan).fadeOut(function () {
-                            $(vcodespan).html('&mdash; Required for non-CUNY addresses');
-                            $(vcodespan).css('color', '#f00');
-                            $(vcodespan).fadeIn();
-                        });
-                    }
-                });
-    });
+	});
 
     var $account_type_field = $( '#account-type' );
     var $account_type_signup_code_field = $( '#account-type-signup-code' );
+	var $signup_code_message = $( '#signup-code-message' );
+
+	$account_type_signup_code_field.on( 'blur', function() {
+		$signup_code_message
+			.html( OLReg.strings.dashChecking )
+			.removeClass( 'signup-code-ok', 'signup-code-bad' )
+			.addClass( 'signup-code-checking' );
+
+		$.post( {
+			url: ajaxurl,
+			data: {
+				action: 'cboxol_validate_signup_code',
+				member_type: $account_type_field.val(),
+				code: $account_type_signup_code_field.val()
+			},
+			success: function( response ) {
+				if ( response.success ) {
+					$signup_code_message.html( OLReg.strings.dashOK )
+						.removeClass( 'signup-code-checking', 'signup-code-bad' )
+						.addClass( 'signup-code-ok' );
+				} else {
+					$signup_code_message.html( OLReg.strings.dashInvalidCode )
+						.removeClass( 'signup-code-checking', 'signup-code-ok' )
+						.addClass( 'signup-code-bad' );
+				}
+			}
+		} );
+	} );
 
     // Ensure that the account type field is set properly from the post
 	// @todo

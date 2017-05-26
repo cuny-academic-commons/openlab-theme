@@ -457,7 +457,7 @@ function openlab_registration_page() {
 									<?php do_action( 'bp_account_type_errors' ) ?>
 									<label class="control-label" for="account-type"><?php esc_html_e( 'Account Type', 'openlab-theme' ); ?> <?php esc_html_e( '(required)', 'openlab-theme' ); ?></label>
 									<div class="col-md-24">
-										<div class="col-md-12">
+										<div class="col-md-8">
 											<select name="account-type" class="form-control" id="account-type">
 												<option value=""><?php esc_html_e( '- Select Account Type -', 'openlab-theme' ); ?></option>
 												<?php foreach ( $member_types as $member_type ) : ?>
@@ -466,9 +466,11 @@ function openlab_registration_page() {
 											</select>
 										</div>
 
-										<div class="col-md-12">
+										<div class="col-md-8">
 											<input class="form-control" name="account-type-signup-code" id="account-type-signup-code" placeholder="<?php esc_attr_e( 'Please enter a sign up code', 'openlab-theme' ); ?>" />
 										</div>
+
+										<div class="col-md-8 signup-code-message" id="signup-code-message"></div>
 									</div>
 								</div>
 

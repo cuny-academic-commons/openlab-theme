@@ -30,10 +30,11 @@ function openlab_bp_enqueue_scripts() {
 			'limited_email_domains' => get_site_option( 'limited_email_domains' ),
 			'post_data' => $_POST,
 			'strings' => array(
+				'completeSignUp' => esc_html__( 'Complete Sign Up', 'openlab-theme' ),
 				'dashChecking' => esc_html__( '&mdash; Checking', 'openlab-theme' ),
 				'dashOK' => esc_html__( '&mdash; OK!', 'openlab-theme' ),
-				'completeSignUp' => esc_html__( 'Complete Sign Up', 'openlab-theme' ),
 				'enterEmailAddressToContinue' => esc_html__( 'Enter Email Address to Continue', 'openlab-theme' ),
+				'dashInvalidCode' => esc_html__( '&mdash; Invalid code', 'openlab-theme' ),
 			),
 		) );
 	}

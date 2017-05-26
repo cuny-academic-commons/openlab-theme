@@ -7783,6 +7783,14 @@ body .bbp-template-notice.info {
 body #register-page .password-field {
   position: relative;
 }
+body #register-page .signup-code-message {
+  font-weight: bold;
+  height: 34px;
+  line-height: 34px;
+}
+body #register-page .signup-code-message.signup-code-bad {
+  color: #f00;
+}
 body #register-page .password-strength-notice {
   display: none;
   position: absolute;
