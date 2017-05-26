@@ -246,6 +246,20 @@ jQuery(document).ready(function() {
             $('#' + k).before(v);
         });
     }
+
+	// @todo temp
+	var initValidation = true;
+	updateSubmitButtonStatus();
+	function updateSubmitButtonStatus() {
+		if (initValidation) {
+			$('#signup_submit').removeClass('btn-disabled');
+			$('#signup_submit').val('Complete Sign Up');
+		} else if (!$('#signup_submit').hasClass('btn-disabled')) {
+			$('#signup_submit').addClass('btn-disabled');
+			$('#signup_submit').val('Please Complete Required Fields');
+		}
+
+	}
 });
 
 }(jQuery));
