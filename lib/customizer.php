@@ -6,9 +6,18 @@
 
 function openlab_color_schemes() {
 	return array(
-		'red' => __( 'Red', 'openlab-theme' ),
-		'blue' => __( 'Blue', 'openlab-theme' ),
-		'gold' => __( 'Gold', 'openlab-theme' ),
+		'red' => array(
+			'label' => __( 'Red', 'openlab-theme' ),
+			'icon_color' => '#c32e10',
+		),
+		'blue' => array(
+			'label' => __( 'Blue', 'openlab-theme' ),
+			'icon_color' => '#3170a4',
+		),
+		'gold' => array(
+			'label' => __( 'Gold', 'openlab-theme' ),
+			'icon_color' => '#dab715',
+		),
 	);
 }
 
@@ -51,8 +60,7 @@ function openlab_customizer_setup( $wp_customize ) {
 			$wp_customize,
 			'openlab_color_scheme',
 			array(
-				'label' => 'Foo Color Scheme',
-				'choices' => openlab_color_schemes(),
+				'label' => __( 'Color Scheme', 'openlab-theme' ),
 				'section' => 'openlab_section_color_scheme',
 			)
 		)
