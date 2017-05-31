@@ -8319,46 +8319,46 @@ body form .checkbox-list-container {
   border-radius: 4px;
   padding: 2%;
 }
-.home-page #cac-featured h2 {
+.home-page .widget_cac_featured_content_widget h2 {
   text-transform: uppercase;
   font-weight: 600;
   padding-left: 5px;
 }
-.home-page #cac-featured .cfcw-content {
+.home-page .widget_cac_featured_content_widget .cfcw-content {
   background: #fdf57d;
   border-radius: 4px;
   padding: 5%;
 }
-.home-page #cac-featured .cfcw-content .cfcw-image-wrapper img {
+.home-page .widget_cac_featured_content_widget .cfcw-content .cfcw-image-wrapper img {
   border: 17px solid #ffffff;
   width: 100%;
   max-width: 225px;
   margin: 0 auto;
 }
 @media (max-width: 991px) {
-  .home-page #cac-featured .cfcw-content .cfcw-image-wrapper {
+  .home-page .widget_cac_featured_content_widget .cfcw-content .cfcw-image-wrapper {
     margin-bottom: 21px;
   }
 }
-.home-page #cac-featured .cfcw-content p {
+.home-page .widget_cac_featured_content_widget .cfcw-content p {
   font-weight: 400;
 }
-.home-page #cac-featured .cfcw-content p.cfcw-title {
+.home-page .widget_cac_featured_content_widget .cfcw-content p.cfcw-title {
   font-weight: 600;
 }
-.home-page #cac-featured .cfcw-content p.cfcw-title a {
+.home-page .widget_cac_featured_content_widget .cfcw-content p.cfcw-title a {
   font-size: 18px;
   line-height: 1.25;
   text-decoration: none;
 }
-.home-page #cac-featured .cfcw-content:after {
+.home-page .widget_cac_featured_content_widget .cfcw-content:after {
   clear: both;
   content: " ";
   display: table;
   box-sizing: border-box;
 }
 @media (max-width: 479px) {
-  .home-page #cac-featured [class*="col-"] {
+  .home-page .widget_cac_featured_content_widget [class*="col-"] {
     width: 100%;
   }
 }
