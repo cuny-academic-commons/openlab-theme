@@ -8,7 +8,7 @@ if ( ! defined( 'CSS_DEBUG' ) ) {
 add_action( 'widgets_init', 'openlab_register_sidebars' );
 
 // Install widgets.
-add_action( 'after_switch_theme', 'openlab_maybe_install', 5 );
+add_action( 'admin_init', 'openlab_maybe_install', 5 );
 
 function openlab_core_setup() {
 	add_theme_support( 'post-thumbnails' );
@@ -36,8 +36,12 @@ function openlab_maybe_install() {
 		$group_types = cboxol_get_group_types();
 		foreach ( $group_types as $group_type ) {
 			CBox_Widget_Setter::set_widget( array(
-				'id_base'    => 'openlab_group_type_' . $group_type->get_slug(),
+				'id_base'    => 'openlab_group_type',
 				'sidebar_id' => 'home-main',
+				'settings'   => array(
+					'title' => $group_type->get_label( 'plural' ),
+					'group_type' => $group_type->get_slug(),
+				),
 			) );
 		}
 	}
