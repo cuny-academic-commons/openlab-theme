@@ -46,6 +46,33 @@ function openlab_maybe_install() {
 		}
 	}
 
+	// Home sidebar.
+	if ( ! CBox_Widget_Setter::is_sidebar_populated( 'home-sidebar' ) ) {
+		CBox_Widget_Setter::set_widget( array(
+			'id_base'    => 'cac_featured_content_widget',
+			'sidebar_id' => 'home-sidebar',
+			'settings'   => array(
+				'featured_content_type' => 'resource',
+				'title_element' => 'h2',
+			),
+		) );
+
+		CBox_Widget_Setter::set_widget( array(
+			'id_base'    => 'openlab-whats-happening',
+			'sidebar_id' => 'home-sidebar',
+		) );
+
+		CBox_Widget_Setter::set_widget( array(
+			'id_base'    => 'openlab-whos-online',
+			'sidebar_id' => 'home-sidebar',
+		) );
+
+		CBox_Widget_Setter::set_widget( array(
+			'id_base'    => 'openlab-new-members',
+			'sidebar_id' => 'home-sidebar',
+		) );
+	}
+
 	// Nav menu.
 	openlab_create_default_nav_menu();
 
@@ -56,6 +83,10 @@ function openlab_maybe_install() {
 function openlab_create_default_nav_menu() {
 	$menu_name = wp_slash( __( 'Main Menu', 'cbox-openlab-core' ) );
 	$menu_id = wp_create_nav_menu( $menu_name );
+
+	if ( is_wp_error( $menu_id ) ) {
+		return;
+	}
 
 	wp_update_nav_menu_item(
 		$menu_id,
