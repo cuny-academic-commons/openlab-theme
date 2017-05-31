@@ -98,7 +98,7 @@ function openlab_main_menu( $location = 'header' ) {
 
 	?>
 	<nav class="navbar navbar-default oplb-bs navbar-location-<?php echo $location ?>" role="navigation">
-		<?php do_action( 'openlab_sitewide_header' ); ?>
+		<?php openlab_sitewide_header( $location ); ?>
 		<div class="main-nav-wrapper">
 			<div class="container-fluid">
 				<div class="navbar-header hidden-xs">

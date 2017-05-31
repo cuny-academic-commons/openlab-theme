@@ -1,5 +1,56 @@
 module.exports = function (grunt) {
     require('jit-grunt')(grunt);
+
+	colorSchemes = {
+		blue: {
+			primaryColor: '#3170a4',
+			darkHighlight: '#98d0ff',
+			lightHighlight: '#98d0ff',
+			linkHighlightColor: '#3170a4',
+			coloredBackgroundTextColor: '#fff'
+		},
+		gold: {
+			primaryColor: '#dab715',
+			darkHighlight: '#7a660c',
+			lightHighlight: '#7a660c',
+			linkHighlightColor: '#dab715',
+			coloredBackgroundTextColor: '#333'
+		},
+		red: {
+			primaryColor: '#c42e10',
+			darkHighlight: '#95230c',
+			lightHighlight: '#f7a898',
+			linkHighlightColor: '#c42e10',
+			coloredBackgroundTextColor: '#fff'
+		}
+	};
+
+	var lessTasks = {
+		development: {
+			options: {
+				optimization: 2
+			},
+			files: {
+				"style.css": "style.less"
+			}
+		}
+	}
+
+	var colorSchemePath = '';
+	var colorSchemeTasks = [];
+	for ( color in colorSchemes ) {
+		colorSchemePath = 'css/color-schemes/' + color + '.css';
+		lessTasks[ color ] = {
+			options: {
+				modifyVars: colorSchemes[ color ],
+				optimization: 2
+			},
+			files: {}
+		}
+		lessTasks[ color ].files[ colorSchemePath ] = 'style.less';
+		colorSchemeTasks.push( 'less:' + color );
+	};
+
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
         htmlclean: {
@@ -30,18 +81,7 @@ module.exports = function (grunt) {
                 dest: 'js/dist/vendor.js'
             },
         },
-        less: {
-            development: {
-                options: {
-                    compress: false, //compression seems to be stripping out the stylesheet comments, which we need
-                    optimization: 2
-                },
-                files: {
-                    "style.css": "style.less" // destination file and source file
-//                    "../../mu-plugins/css/openlab-toolbar.css": "../../mu-plugins/css/openlab-toolbar.less"
-                }
-            }
-        },
+        less: lessTasks,
         watch: {
             styles: {
                 files: ['*.less'/*, '../../mu-plugins/css/*.less'*/], // which files to watch
@@ -71,5 +111,9 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-watch');
-    grunt.registerTask('default', ['concat', 'htmlclean', 'less', 'watch']);
+
+	var taskList = ['concat', 'htmlclean', 'watch', 'less'];
+	taskList = taskList.concat( colorSchemeTasks );
+
+    grunt.registerTask('default', colorSchemeTasks);
 };

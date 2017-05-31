@@ -178,6 +178,11 @@ function openlab_load_scripts_high_priority() {
 	$stylesheet_dir_uri = get_stylesheet_directory_uri();
 
 	global $post;
+
+	$color_scheme = get_theme_mod( 'openlab_color_scheme' );
+	if ( ! $color_scheme ) {
+		$color_scheme = 'red';
+	}
 	// less compliation via js so we can check styles in firebug via fireless - local dev only
 	// @to-do: way to enqueue as last item?
 	if ( CSS_DEBUG ) {
@@ -185,7 +190,7 @@ function openlab_load_scripts_high_priority() {
 		wp_enqueue_style( 'main-styles' );
 	} else {
 
-		wp_register_style( 'main-styles', $stylesheet_dir_uri . '/style.css', array(), '1.6.9.5', 'all' );
+		wp_register_style( 'main-styles', $stylesheet_dir_uri . '/css/color-schemes/' . $color_scheme . '.css', array(), '1.6.9.5', 'all' );
 		wp_enqueue_style( 'main-styles' );
 	}
 

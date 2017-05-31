@@ -4,6 +4,14 @@
  * Functionality related to the Customizer.
  */
 
+function openlab_color_schemes() {
+	return array(
+		'red' => __( 'Red', 'openlab-theme' ),
+		'blue' => __( 'Blue', 'openlab-theme' ),
+		'gold' => __( 'Gold', 'openlab-theme' ),
+	);
+}
+
 function openlab_customizer_setup( $wp_customize ) {
 	require get_template_directory() . '/lib/customize-controls/class-openlab-color-scheme-customize-control.php';
 
@@ -13,7 +21,7 @@ function openlab_customizer_setup( $wp_customize ) {
 		'title' => __( 'Color Scheme', 'openlab-theme' ),
 	) );
 
-	$wp_customize->add_setting( 'openlab_setting_color_scheme', array(
+	$wp_customize->add_setting( 'openlab_color_scheme', array(
 		'type' => 'theme_mod',
 		'default' => 'default',
 		'sanitize_callback' => 'openlab_sanitize_customizer_setting_color_scheme',
@@ -22,14 +30,10 @@ function openlab_customizer_setup( $wp_customize ) {
 	$wp_customize->add_control(
 		new OpenLab_Color_Scheme_Customize_Control(
 			$wp_customize,
-			'openlab_setting_color_scheme',
+			'openlab_color_scheme',
 			array(
 				'label' => 'Foo Color Scheme',
-				'choices' => array(
-					'red' => 'Red',
-					'blue' => 'Blue',
-					'gold' => 'Gold',
-				),
+				'choices' => openlab_color_schemes(),
 				'section' => 'openlab_section_color_scheme',
 			)
 		)

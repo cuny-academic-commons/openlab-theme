@@ -13,9 +13,13 @@ Text Domain: openlab
 /**import boostrap overrides**/
 @import "less/variables.less";
 
-/*
-Direct Bootstrap overrides
-*/
+@primaryColor: #c42e10;
+@darkHighlight: #95230c;
+@lightHighlight: #f7a898;
+
+@linkHighlightColor: #c42e10;
+@coloredBackgroundTextColor: #fff;
+
 
 // Headings
 // -------------------------
@@ -45,7 +49,7 @@ a {
     text-decoration: underline;
     &:hover,
         &:focus {
-        color: @aqua;
+        color: @linkHighlightColor;
         text-decoration: underline;
     }
     &.no-deco{
@@ -192,14 +196,15 @@ blockquote {
                 padding: 8px 12px;
             }
             &.current{
-                background: @cyan;
-                border-color: @cyan;
+                background: @primaryColor;
+                border-color: @primaryColor;
+				color: @coloredBackgroundTextColor;
             }
             .fa{
                 font-size: 16px;
             }
             &:hover{
-                color: @cyan;
+                color: @primaryColor;
                 background-color: inherit;
             }
         }
@@ -426,7 +431,7 @@ input[type="submit"]{
                     padding: 21px 15px;
                     &:hover,
                         &:focus {
-                        color: @cyan;
+                        color: @primaryColor;
                     }
                     @media(max-width: @screen-sm-max){
                         font-size: 13px;
@@ -435,8 +440,8 @@ input[type="submit"]{
                 }
                 &.current-menu-item{
                     a{
-                        background: @cyan;
-                        color: @black;
+                        background: @primaryColor;
+                        color: @coloredBackgroundTextColor;
                     }
                 }
                 &:first-child{
@@ -517,13 +522,13 @@ h2.course-title{
     }
     &.cyan-circle{
         font-size: 17px;
-        color: @cyan;
+        color: @link-color;
     }
 }
 a{
     &:hover{
         .cyan-circle{
-            color: @aqua;
+            color: @primaryColor;
         }
     }
 }
@@ -679,7 +684,7 @@ body{
     .activity-title{
         .fa{
             margin-left: 10px;
-            color: @cyan;
+            color: @link-color;
             font-size: floor((@font-size-base * 1.3));
         }
     }
@@ -726,7 +731,7 @@ body{
         position: absolute;
         top: -1000em;
         &:focus{
-            background: @cyan none repeat scroll 0 0;
+            background: @primaryColor none repeat scroll 0 0;
             color: @80gray;
             display: block;
             font-size: 14px;
@@ -770,8 +775,8 @@ body{
             color: @80gray;
         }
         &.updated{
-            background: @cyan;
-            border-color: @cyan;
+            background: @primaryColor;
+            border-color: @primaryColor;
         }
         &.margin-bottom{
             margin-bottom: 17px;
@@ -1065,7 +1070,7 @@ body form{
         }
     }
     .select2-results__option--highlighted[aria-selected] {
-        background: @aqua;
+        background: @primaryColor;
     }
 }
 /**home page**/
@@ -1100,7 +1105,7 @@ body form{
                 color: inherit;
                 font-size: inherit;
                 &:hover{
-                    color: @cyan;
+                    color: @primaryColor;
                 }
             }
             .fa{
@@ -1230,7 +1235,7 @@ body form{
                     float: left;
                 }
                 .camera_pag{
-                    background: @cyan;
+                    background: @primaryColor;
                     width: 4.5%;
                     float: left;
                     height: 100%;
@@ -1750,15 +1755,15 @@ body form{
                 &:hover,
                     &:focus{
                     > a{
-                        background: @cyan;
-                        color: @black;
+                        background: @primaryColor;
+                        color: @coloredBackgroundTextColor;
                     }
                 }
                 &.current-menu-item,
                 &.selected-page{
                     > a{
-                        background: @cyan;
-                        color: @black;
+                        background: @primaryColor;
+                        color: @coloredBackgroundTextColor;
                     }
                 }
                 ul{
@@ -2958,7 +2963,7 @@ input.help-search {
 }
 /**breadcrumbs**/
 #breadcrumb-container{
-    background-color: darken(desaturate(@cyan,1.7%),2.1%);
+    background-color: darken(desaturate(@primaryColor,1.7%),2.1%);
     margin-top: 46px;
     .breadcrumb-wrapper{
         margin: 0 auto;
@@ -3000,14 +3005,14 @@ input.help-search {
             }
         }
         .breadcrumb-prefix-label{
-            background: @aqua;
+            background: @darkHighlight;
             display: inline-block;
             text-align: center;
             width: 86%;
         }
         .fa.fa-caret-right{
             margin: 0 10% 0 0;
-            color: @aqua;
+            color: @darkHighlight;
         }
         @media (max-width: @screen-xs-max){
             font-size: 10px;
@@ -3037,7 +3042,7 @@ input.help-search {
             background: @yellow;
         }
         &.wpcf7-mail-sent-ok{
-            background: @cyan;
+            background: @primaryColor;
         }
     }
     .wpcf7-not-valid-tip{
