@@ -165,25 +165,6 @@ function cuny_home_square( \CBOX\OL\GroupType $type ) {
 }
 
 /**
- * 	openlab_groups_filter_clause()
- */
-function openlab_groups_filter_clause( $sql ) {
-	global $openlab_group_type, $bp;
-
-	// Join to groupmeta table for group type
-	$ex = explode( ' WHERE ', $sql );
-	$ex[0] .= ', ' . $bp->groups->table_name_groupmeta . ' gt';
-	$ex = implode( ' WHERE ', $ex );
-
-	// Add the necessary where clause
-	$ex = explode( ' AND ', $ex );
-	array_splice( $ex, 1, 0, "g.status = 'public' AND gt.group_id = g.id AND gt.meta_key = 'wds_group_type' AND ( gt.meta_value = '" . ucwords( $openlab_group_type ) . "' OR gt.meta_value = '" . strtolower( $openlab_group_type ) . "' )" );
-	$ex = implode( ' AND ', $ex );
-
-	return $ex;
-}
-
-/**
  * 	Registration page layout
  */
 function openlab_registration_page() {
