@@ -82,59 +82,6 @@ function cuny_home_login() {
 }
 
 /**
- * 	Home page new members box
- */
-function cuny_home_new_members() {
-	global $wpdb, $bp;
-	echo '<div id="new-members" class="box-1 left-box last">';
-	echo '<h2 class="title uppercase">New OpenLab Members</h2>';
-	echo '<div class="left-block-content new-members-wrapper">'
-	?>
-	<div id="new-members-top-wrapper">
-		<div id="new-members-text">
-			<p><span class="new-member-navigation pull-right">
-					<button class="prev btn btn-link">
-						<i class="fa fa-chevron-circle-left" aria-hidden="true"></i><span class="sr-only">Previous New Members</span></button>
-					<button class="next btn btn-link" href="#">
-						<i class="fa fa-chevron-circle-right" aria-hidden="true"></i><span class="sr-only">Next New Members</span></button>
-				</span>
-				Browse through and say "Hello!" to the<br />newest members of OpenLab.</p>
-		</div>
-		<div class="clearfloat"></div>
-	</div><!--members-top-wrapper-->
-	<?php
-	if ( bp_has_members( 'type=newest&max=5' ) ) :
-		$avatar_args = array(
-			'type' => 'full',
-			'width' => 121,
-			'height' => 121,
-			'class' => 'avatar',
-			'id' => false,
-			'alt' => __( 'Member avatar', 'buddypress' ),
-		);
-		echo '<div id="home-new-member-wrap"><ul>';
-		while ( bp_members() ) : bp_the_member();
-			$user_id = bp_get_member_user_id();
-			$firstname = xprofile_get_field_data( 'Name', $user_id );
-			?>
-			<li class="home-new-member">
-				<div class="home-new-member-avatar">
-					<a href="<?php bp_member_permalink() ?>"><img class="img-responsive" src ="<?php echo bp_core_fetch_avatar( array( 'item_id' => $user_id, 'object' => 'member', 'type' => 'full', 'html' => false ) ) ?>" alt="<?php echo $firstname ?>"/></a>
-				</div>
-				<div class="home-new-member-info">
-					<h2 class="truncate-on-the-fly load-delay" data-basevalue="16" data-minvalue="11" data-basewidth="164"><?php echo $firstname ?></h2>
-					<span class="original-copy hidden"><?php echo $firstname ?></span>
-					<div class="registered timestamp"><?php bp_member_registered() ?></div>
-				</div>
-			</li>
-			<?php
-		endwhile;
-		echo '</ul></div>';
-	endif;
-	echo '</div></div>';
-}
-
-/**
  * Get the markup for a Group Type widget.
  *
  * @param \CBOX\OL\GroupType $type Group Type object.
