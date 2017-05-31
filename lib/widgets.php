@@ -24,6 +24,9 @@ function openlab_register_widgets() {
 		require_once( $widgets_dir . 'whos-online.php' );
 		register_widget( 'OpenLab_WhosOnline_Widget' );
 
+		require_once( $widgets_dir . 'new-members.php' );
+		register_widget( 'OpenLab_NewMembers_Widget' );
+
 		$group_types = cboxol_get_group_types();
 		if ( $group_types ) {
 			require_once( $widgets_dir . 'group-type.php' );

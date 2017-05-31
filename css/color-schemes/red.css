@@ -8439,48 +8439,48 @@ body form .checkbox-list-container {
 .home-page .widget.whos-online .avatar-block .cuny-member:hover .cuny-member-info {
   display: block;
 }
-.home-page #new-members h2 {
+.home-page .widget.new-members h2 {
   padding-left: 5px;
 }
-.home-page #new-members .new-members-wrapper {
+.home-page .widget.new-members .new-members-wrapper {
   padding: 5% 3% 1%;
 }
-.home-page #new-members .new-members-wrapper .btn {
+.home-page .widget.new-members .new-members-wrapper .btn {
   padding-top: 2px;
 }
-.home-page #new-members .new-members-wrapper .btn .fa {
+.home-page .widget.new-members .new-members-wrapper .btn .fa {
   color: #a3a3a3;
   font-size: 18px;
   line-height: 90%;
 }
-.home-page #new-members .new-members-wrapper .btn .fa:hover {
+.home-page .widget.new-members .new-members-wrapper .btn .fa:hover {
   color: #49cabe;
 }
-.home-page #new-members .new-members-wrapper .btn.prev {
+.home-page .widget.new-members .new-members-wrapper .btn.prev {
   padding-right: 0;
 }
-.home-page #new-members .new-members-wrapper #home-new-member-wrap {
+.home-page .widget.new-members .new-members-wrapper #home-new-member-wrap {
   max-width: 350px;
   position: relative;
   overflow: hidden;
   width: 100%;
 }
-.home-page #new-members .new-members-wrapper #home-new-member-wrap .home-new-member {
+.home-page .widget.new-members .new-members-wrapper #home-new-member-wrap .home-new-member {
   width: 50%;
   height: 245px;
   margin-bottom: 0;
 }
-.home-page #new-members .new-members-wrapper #home-new-member-wrap .home-new-member .home-new-member-avatar,
-.home-page #new-members .new-members-wrapper #home-new-member-wrap .home-new-member .home-new-member-info {
+.home-page .widget.new-members .new-members-wrapper #home-new-member-wrap .home-new-member .home-new-member-avatar,
+.home-page .widget.new-members .new-members-wrapper #home-new-member-wrap .home-new-member .home-new-member-info {
   margin: 0 auto;
   width: 95%;
 }
-.home-page #new-members .new-members-wrapper #home-new-member-wrap .home-new-member .home-new-member-avatar h2,
-.home-page #new-members .new-members-wrapper #home-new-member-wrap .home-new-member .home-new-member-info h2 {
+.home-page .widget.new-members .new-members-wrapper #home-new-member-wrap .home-new-member .home-new-member-avatar h2,
+.home-page .widget.new-members .new-members-wrapper #home-new-member-wrap .home-new-member .home-new-member-info h2 {
   margin: 0;
   padding: 12px 0 2px;
 }
-.home-page #new-members .new-members-wrapper #home-new-member-wrap .home-new-member .timestamp {
+.home-page .widget.new-members .new-members-wrapper #home-new-member-wrap .home-new-member .timestamp {
   font-size: 10px;
   font-weight: 400;
 }
