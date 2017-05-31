@@ -135,66 +135,6 @@ function cuny_home_new_members() {
 }
 
 /**
- * 	Home page Who's Online box
- */
-function cuny_whos_online() {
-	global $wpdb, $bp;
-	$avatar_args = array(
-		'type' => 'full',
-		'width' => 45,
-		'height' => 45,
-		'class' => 'avatar',
-		'id' => false,
-		'alt' => __( 'Member avatar', 'buddypress' ),
-	);
-
-	$rs = wp_cache_get( 'whos_online', 'openlab' );
-	if ( ! $rs ) {
-	    $sql = "SELECT user_id FROM {$bp->activity->table_name} where component = 'members' AND type ='last_activity' and date_recorded >= DATE_SUB( UTC_TIMESTAMP(), INTERVAL 1 HOUR ) order by date_recorded desc limit 20";
-	    $rs = $wpdb->get_col( $sql );
-	    wp_cache_set( 'whos_online', $rs, 'openlab', 5 * 60 );
-	}
-
-	// print_r($rs);
-	$ids = '9999999';
-	foreach ( (array) $rs as $r ) {
-		$ids .= ',' . intval( $r );
-	}
-
-	$x = 0;
-	if ( bp_has_members( 'type=active&include=' . $ids ) ) :
-		$x += 1;
-		?>
-
-		<div class="avatar-block left-block-content clearfix">
-			<?php
-			while ( bp_members() ) : bp_the_member();
-				global $members_template;
-				$member = $members_template->member;
-				?>
-
-				<?php ?>
-				<div class="cuny-member">
-					<div class="item-avatar">
-						<a href="<?php bp_member_permalink() ?>"><img class="img-responsive" src ="<?php echo bp_core_fetch_avatar( array( 'item_id' => $member->ID, 'object' => 'member', 'type' => 'full', 'html' => false ) ) ?>" alt="<?php echo $member->fullname; ?>"/></a>
-					</div>
-					<div class="cuny-member-info">
-						<a href="<?php bp_member_permalink() ?>"><?php bp_member_name() ?></a><br />
-						<?php
-						do_action( 'bp_directory_members_item' );
-						bp_member_profile_data( 'field=Account Type' );
-						?>,
-						<?php bp_member_last_active() ?>
-					</div>
-				</div>
-
-			<?php endwhile; ?>
-		</div>
-		<?php
-	endif;
-}
-
-/**
  * Get the markup for a Group Type widget.
  *
  * @param \CBOX\OL\GroupType $type Group Type object.
