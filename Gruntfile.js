@@ -40,6 +40,7 @@ module.exports = function (grunt) {
 	var colorSchemeTasks = [];
 	for ( color in colorSchemes ) {
 		colorSchemePath = 'css/color-schemes/' + color + '.css';
+		toolbarColorSchemePath = 'css/color-schemes/toolbar-' + color + '.css';
 		lessTasks[ color ] = {
 			options: {
 				modifyVars: colorSchemes[ color ],
@@ -48,6 +49,7 @@ module.exports = function (grunt) {
 			files: {}
 		}
 		lessTasks[ color ].files[ colorSchemePath ] = 'style.less';
+		lessTasks[ color ].files[ toolbarColorSchemePath ] = 'less/openlab-toolbar.less';
 		colorSchemeTasks.push( 'less:' + color );
 	};
 

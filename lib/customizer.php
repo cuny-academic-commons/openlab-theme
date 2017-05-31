@@ -12,6 +12,25 @@ function openlab_color_schemes() {
 	);
 }
 
+function openlab_get_color_scheme() {
+	$switched = false;
+	if ( ! bp_is_root_blog() ) {
+		switch_to_blog( bp_get_root_blog_id() );
+		$switched = true;
+	}
+
+	$color_scheme = get_theme_mod( 'openlab_color_scheme' );
+	if ( ! $color_scheme ) {
+		$color_scheme = 'red';
+	}
+
+	if ( $switched ) {
+		restore_current_blog();
+	}
+
+	return $color_scheme;
+}
+
 function openlab_customizer_setup( $wp_customize ) {
 	require get_template_directory() . '/lib/customize-controls/class-openlab-color-scheme-customize-control.php';
 

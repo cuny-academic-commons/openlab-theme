@@ -179,10 +179,8 @@ function openlab_load_scripts_high_priority() {
 
 	global $post;
 
-	$color_scheme = get_theme_mod( 'openlab_color_scheme' );
-	if ( ! $color_scheme ) {
-		$color_scheme = 'red';
-	}
+	$color_scheme = openlab_get_color_scheme();
+
 	// less compliation via js so we can check styles in firebug via fireless - local dev only
 	// @to-do: way to enqueue as last item?
 	if ( CSS_DEBUG ) {
