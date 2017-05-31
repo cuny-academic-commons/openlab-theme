@@ -218,6 +218,8 @@ function openlab_register_sidebars() {
 		'name' => __( 'Home Sidebar', 'openlab-theme' ),
 		'description' => __( 'The sidebar at the left side of the home page.', 'openlab-theme' ),
 		'id' => 'home-sidebar',
+		'before_widget' => '<div id="%1$s" class="box-1 left-box widget %2$s">',
+		'after_widget' => '</div>',
 	) );
 
 	// Home main (group type columns).

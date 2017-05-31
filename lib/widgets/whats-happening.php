@@ -56,7 +56,7 @@ class OpenLab_WhatsHappening_Widget extends WP_Widget {
 
 		ob_start(); ?>
 
-<div class="box-1 left-box">
+<?php echo $args['before_widget']; ?>
 	<h2 class="title uppercase clearfix"><i id="refreshActivity" class="fa fa-refresh pull-right" aria-hidden="true"></i><?php echo esc_html( $r['title'] ); ?></h2>
 	<div id="whatsHappening" class="left-block-content whats-happening-wrapper">
 		<div class="activity-list item-list inline-element-list sidebar-sublinks">
@@ -95,7 +95,7 @@ class OpenLab_WhatsHappening_Widget extends WP_Widget {
 
 		</div><!-- .activity-list -->
 	</div><!-- #whatsHappening -->
-</div>
+<?php echo $args['after_widget']; ?>
 <?php
 		$whats_happening_out = ob_get_clean();
 
