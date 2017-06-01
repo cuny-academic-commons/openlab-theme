@@ -97,7 +97,15 @@ function openlab_customizer_setup( $wp_customize ) {
 	}
 
 	// Footer
-	// @todo To make this available across sites, will need to do some fancy caching.
+	$footer_section = $wp_customize->get_section( 'sidebar-widgets-footer' );
+	if ( $footer_section ) {
+		$c = clone( $footer_section );
+		$wp_customize->remove_section( $id );
+
+		$c->panel = '';
+		$c->priority = 160;
+		$wp_customize->add_section( $c );
+	}
 }
 add_action( 'customize_register', 'openlab_customizer_setup', 200 );
 

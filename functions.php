@@ -93,7 +93,7 @@ function openlab_maybe_install() {
 			),
 		) );
 
-		$welcome_text = sprintf( __( 'Modify the text of this and other widgets using the <a href="%s">Customizer</a>.', 'openlab-theme' ), '#' );
+		$welcome_text = sprintf( __( 'Modify the text of this and other widgets using the <a href="%s">Customizer</a>.', 'openlab-theme' ), admin_url( 'customize.php?autofocus[section]=sidebar-widgets-footer' ) );
 
 		CBox_Widget_Setter::set_widget( array(
 			'id_base'    => 'text',
