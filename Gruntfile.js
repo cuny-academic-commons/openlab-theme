@@ -76,7 +76,7 @@ module.exports = function (grunt) {
         less: lessTasks,
         watch: {
             styles: {
-                files: ['*.less'/*, '../../mu-plugins/css/*.less'*/], // which files to watch
+                files: ['*.less', 'less/*.less'], // which files to watch
                 tasks: ['less'],
                 options: {
                     nospawn: true
