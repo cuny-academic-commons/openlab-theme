@@ -4,42 +4,9 @@
  * Functionality related to the Customizer.
  */
 
-function openlab_color_schemes() {
-	return array(
-		'red' => array(
-			'label' => __( 'Red', 'openlab-theme' ),
-			'icon_color' => '#c32e10',
-		),
-		'blue' => array(
-			'label' => __( 'Blue', 'openlab-theme' ),
-			'icon_color' => '#3170a4',
-		),
-		'gold' => array(
-			'label' => __( 'Gold', 'openlab-theme' ),
-			'icon_color' => '#dab715',
-		),
-	);
-}
-
-function openlab_get_color_scheme() {
-	$switched = false;
-	if ( ! bp_is_root_blog() ) {
-		switch_to_blog( bp_get_root_blog_id() );
-		$switched = true;
-	}
-
-	$color_scheme = get_theme_mod( 'openlab_color_scheme' );
-	if ( ! $color_scheme ) {
-		$color_scheme = 'red';
-	}
-
-	if ( $switched ) {
-		restore_current_blog();
-	}
-
-	return $color_scheme;
-}
-
+/**
+ * Set up Customizer panels.
+ */
 function openlab_customizer_setup( $wp_customize ) {
 	require get_template_directory() . '/lib/customize-controls/class-openlab-color-scheme-customize-control.php';
 
@@ -119,7 +86,6 @@ function openlab_customizer_setup( $wp_customize ) {
 		$section = $wp_customize->get_section( $sid );
 
 		if ( ! $section ) {
-			_b( 'no' );
 			continue;
 		}
 
@@ -129,9 +95,13 @@ function openlab_customizer_setup( $wp_customize ) {
 		$c->panel = 'openlab_home_page';
 		$wp_customize->add_section( $c );
 	}
+
+	// Footer
+	// @todo To make this available across sites, will need to do some fancy caching.
 }
 add_action( 'customize_register', 'openlab_customizer_setup', 200 );
 
+// @todo
 function openlab_sanitize_customizer_setting_color_scheme( $setting ) {
 	$settings = array( 'blue', 'gold', 'red', 'default' );
 	if ( ! in_array( $setting, $settings, true ) ) {

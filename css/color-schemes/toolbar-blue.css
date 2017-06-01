@@ -7288,9 +7288,9 @@ button.oplb-bs .close {
   }
 }
 .oplb-bs #wpadminbar #wp-toolbar #wp-admin-bar-openlab > .ab-item {
-  background: url('images/openlab_admin_bar_logo.png') #fff no-repeat 44% 58%;
+  background-size: 150px Auto;
   padding: 51px 0 0;
-  width: 127px;
+  width: 150px;
   overflow: hidden;
   height: 0;
 }

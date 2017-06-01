@@ -268,8 +268,15 @@ function openlab_register_sidebars() {
 		'name' => __( 'Home Main', 'openlab-theme' ),
 		'description' => __( 'The main section of the home page. Generally used for group type widgets.', 'openlab-theme' ),
 		'id' => 'home-main',
-	//	'before_widget' => '<div class="col-sm-6 activity-list">',
-	//	'after_widget' => '</div>',
+	) );
+
+	// Sitewide footer.
+	register_sidebar( array(
+		'name' => __( 'Footer', 'openlab-theme' ),
+		'description' => __( 'The footer that appears across the network.', 'openlab-theme' ),
+		'id' => 'footer',
+		'before_widget' => '<div id="%1$s" class="footer-widget %2$s">',
+		'after_widget' => '</div>',
 	) );
 }
 

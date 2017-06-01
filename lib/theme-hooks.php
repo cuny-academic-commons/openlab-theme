@@ -58,35 +58,6 @@ HTML;
 
 add_filter( 'the_content', 'openlab_custom_the_content' );
 
-function openlab_get_logo_html() {
-
-	$custom_logo_id = get_theme_mod( 'openlab_logo' );
-
-	if ( $custom_logo_id ) {
-		$logo_html = sprintf( '<a href="%1$s" class="custom-logo-link" rel="home" itemprop="url">%2$s</a>',
-			esc_url( home_url( '/' ) ),
-			wp_get_attachment_image( $custom_logo_id, 'full', false, array(
-				'class'    => 'custom-logo',
-				'itemprop' => 'logo',
-			) )
-		);
-	}
-
-	// If no logo is set but we're in the Customizer, leave a placeholder (needed for the live preview).
-	elseif ( is_customize_preview() ) {
-		$logo_html = sprintf( '<a href="%1$s" class="custom-logo-link" style="display:none;"><img class="custom-logo"/></a>',
-			esc_url( home_url( '/' ) )
-		);
-	} else {
-		$logo_html = sprintf( '<a href="%1$s" class="custom-logo-link">%2$s</a>',
-			esc_url( home_url( '/' ) ),
-			esc_html( get_option( 'blogname' ) )
-		);
-	}
-
-	return $logo_html;
-}
-
 /**
  * OpenLab main menu markup
  *
