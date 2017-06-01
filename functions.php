@@ -398,3 +398,36 @@ function openlab_get_user_group_type_directory_url( \CBOX\OL\GroupType $group_ty
 
 	return $url;
 }
+
+/**
+ * Fetch the sitewide footer markup, storing in a transient if necessary.
+ */
+function openlab_site_footer() {
+	$footer = get_site_transient( 'cboxol_network_footer' );
+
+	if ( $footer ) {
+		echo $footer;
+	}
+
+	ob_start(); ?>
+
+<div id="openlab-footer" class="oplb-bs page-table-row">
+	<div class="oplb-bs">
+		<div class="footer-wrapper">
+			<div class="container-fluid footer-desktop">
+				<div class="row row-footer">
+					<?php dynamic_sidebar( 'footer' ); ?>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+	<?php
+	$footer = ob_get_contents();
+	ob_end_clean();
+
+	set_site_transient( 'cboxol_network_footer', $footer, DAY_IN_SECONDS );
+
+	echo $footer;
+}

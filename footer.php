@@ -14,15 +14,7 @@
 
                     </div><!--.page-table-row-->
 
-					<div id="openlab-footer" class="oplb-bs page-table-row">
-						<div class="footer-wrapper">
-							<div class="container-fluid footer-desktop">
-								<div class="row row-footer">
-									<?php dynamic_sidebar( 'footer' ); ?>
-								</div>
-							</div>
-						</div>
-					</div>
+					<?php openlab_site_footer(); ?>
 
                     <?php wp_footer(); ?>
 
