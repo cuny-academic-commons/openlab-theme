@@ -25,17 +25,7 @@ module.exports = function (grunt) {
 		}
 	};
 
-	var lessTasks = {
-		development: {
-			options: {
-				optimization: 2
-			},
-			files: {
-				"style.css": "style.less"
-			}
-		}
-	}
-
+	var lessTasks = {}
 	var colorSchemePath = '';
 	var colorSchemeTasks = [];
 	for ( color in colorSchemes ) {
