@@ -79,6 +79,33 @@ function openlab_maybe_install() {
 		) );
 	}
 
+	// Footer sidebar..
+	if ( ! CBox_Widget_Setter::is_sidebar_populated( 'footer' ) ) {
+		$welcome_text = __( 'The footer areas can be used to display general information about your site, such as contact information and links to terms of service.', 'openlab-theme' );
+
+		CBox_Widget_Setter::set_widget( array(
+			'id_base'    => 'text',
+			'sidebar_id' => 'footer',
+			'settings'   => array(
+				'title' => __( 'Footer area 1', 'openlab-theme' ),
+				'text'  => $welcome_text,
+				'filter' => false,
+			),
+		) );
+
+		$welcome_text = sprintf( __( 'Modify the text of this and other widgets using the <a href="%s">Customizer</a>.', 'openlab-theme' ), '#' );
+
+		CBox_Widget_Setter::set_widget( array(
+			'id_base'    => 'text',
+			'sidebar_id' => 'footer',
+			'settings'   => array(
+				'title' => __( 'Footer area 2', 'openlab-theme' ),
+				'text'  => $welcome_text,
+				'filter' => false,
+			),
+		) );
+	}
+
 	// Nav menu.
 	openlab_create_default_nav_menu();
 
