@@ -52,14 +52,18 @@ function openlab_maybe_install() {
 			'id_base'    => 'cac_featured_content_widget',
 			'sidebar_id' => 'home-sidebar',
 			'settings'   => array(
-				'title' => __( 'In The Spotlight', 'openlab-theme' ),
-				'featured_content_type' => 'resource',
-				'title_element' => 'h2',
-				'featured_resource_title' => __( 'Featured Item', 'openlab-theme' ),
-				'featured_resource_link' => home_url(),
+				'crop_length' => 300,
 				'custom_description' => __( 'Use this space to highlight content from around your network.', 'openlab-theme' ),
 				'display_images' => true,
+				'featured_content_type' => 'resource',
+				'featured_resource_title' => __( 'Featured Item', 'openlab-theme' ),
+				'featured_resource_link' => home_url(),
 				'image_url' => bp_core_avatar_default(),
+				'image_height' => 50,
+				'image_width' => 50,
+				'read_more' => '',
+				'title' => __( 'In The Spotlight', 'openlab-theme' ),
+				'title_element' => 'h2',
 			),
 		) );
 
