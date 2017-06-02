@@ -8051,8 +8051,8 @@ body form .checkbox-list-container {
   }
 }
 .home-page .row-home-top .login {
-  background: url('../../images/log_in_background.png') no-repeat 123px -44px #ec6348;
-  border-bottom: 13px solid #ff5959;
+  background: url('../../images/log_in_background.png') no-repeat 123px -44px #3170a4;
+  border-bottom: 13px solid #aa280e;
   float: left;
   width: 32.5%;
   border-radius: 4px 0 0 4px;
@@ -8093,7 +8093,7 @@ body form .checkbox-list-container {
   margin-bottom: 7px;
 }
 .home-page .row-home-top .login .log-box#open-lab-login {
-  border-bottom: 13px solid #e94646;
+  border-bottom: 13px solid #aa280e;
 }
 .home-page .row-home-top .login .log-box#open-lab-login h2,
 .home-page .row-home-top .login .log-box#open-lab-login h1 {

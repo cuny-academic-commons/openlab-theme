@@ -21,7 +21,8 @@ module.exports = function (grunt) {
 			darkHighlight: '#95230c',
 			lightHighlight: '#f7a898',
 			linkHighlightColor: '#c42e10',
-			coloredBackgroundTextColor: '#fff'
+			coloredBackgroundTextColor: '#fff',
+			loginBackgroundColor: '#aa280e'
 		}
 	};
 

@@ -20,6 +20,8 @@ Text Domain: openlab
 @linkHighlightColor: #c42e10;
 @coloredBackgroundTextColor: #fff;
 
+@loginBackgroundColor: #aa280e;
+
 // Headings
 // -------------------------
 h1, .h1{
@@ -1084,8 +1086,8 @@ body form{
             margin-top: 0;
         }
         .login{
-            background: url('../../images/log_in_background.png') no-repeat 123px -44px @orange;
-            border-bottom: 13px solid @magenta;
+            background: url('../../images/log_in_background.png') no-repeat 123px -44px @primaryColor;
+            border-bottom: 13px solid @loginBackgroundColor;
             float: left;
             width: 32.5%;
             border-radius: @border-radius-left;
@@ -1124,7 +1126,7 @@ body form{
                     }
                 }
                 &#open-lab-login{
-                    border-bottom: 13px solid darken(desaturate(@magenta,21%),8%);
+                    border-bottom: 13px solid @loginBackgroundColor;
                     h2, h1{
                         margin: 16px 0 14px;
                     }
