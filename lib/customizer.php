@@ -8,8 +8,6 @@
  * Set up Customizer panels.
  */
 function openlab_customizer_setup( $wp_customize ) {
-	require get_template_directory() . '/lib/customize-controls/class-openlab-color-scheme-customize-control.php';
-
 	// Color Scheme
 	$wp_customize->remove_section( 'colors' );
 	$wp_customize->add_section( 'openlab_section_color_scheme', array(
@@ -18,18 +16,24 @@ function openlab_customizer_setup( $wp_customize ) {
 
 	$wp_customize->add_setting( 'openlab_color_scheme', array(
 		'type' => 'theme_mod',
-		'default' => 'default',
+		'default' => 'blue',
 		'sanitize_callback' => 'openlab_sanitize_customizer_setting_color_scheme',
 	) );
 
+	$color_schemes = openlab_color_schemes();
+	$color_scheme_choices = array();
+	foreach ( $color_schemes as $color_scheme => $color_scheme_data ) {
+		$color_scheme_choices[ $color_scheme ] = $color_scheme_data['label'];
+	}
+
 	$wp_customize->add_control(
-		new OpenLab_Color_Scheme_Customize_Control(
-			$wp_customize,
-			'openlab_color_scheme',
-			array(
-				'label' => __( 'Color Scheme', 'openlab-theme' ),
-				'section' => 'openlab_section_color_scheme',
-			)
+		'openlab_color_scheme',
+		array(
+			'label' => __( 'Color Scheme', 'openlab-theme' ),
+			'section' => 'openlab_section_color_scheme',
+			'type' => 'radio',
+			'choices' => $color_scheme_choices,
+			'default' => 'blue',
 		)
 	);
 
@@ -109,12 +113,53 @@ function openlab_customizer_setup( $wp_customize ) {
 }
 add_action( 'customize_register', 'openlab_customizer_setup', 200 );
 
-// @todo
+function openlab_customizer_styles() {
+	$color_schemes = openlab_color_schemes();
+	?>
+	<style type="text/css">
+		#customize-control-openlab_color_scheme label {
+			display: block;
+			height: 50px;
+		}
+
+		#customize-control-openlab_color_scheme label::before {
+			border: 1px solid #666;
+			border-radius: 50%;
+			content: '';
+			display: block;
+			float: right;
+			height: 25px;
+			margin-right: 20px;
+			margin-top: -4px;
+			width: 25px;
+		}
+
+		<?php foreach ( $color_schemes as $color_scheme => $color_scheme_data ) : ?>
+			<?php printf(
+				"\n" . '#customize-control-openlab_color_scheme label.color-scheme-%s::before {
+					background-color: %s
+				}',
+				esc_attr( $color_scheme ),
+				esc_attr( $color_scheme_data['icon_color'] )
+			); ?>
+		<?php endforeach; ?>
+	</style>
+	<?php
+}
+add_action( 'customize_controls_print_styles', 'openlab_customizer_styles' );
+
+function openlab_customizer_scripts() {
+	wp_enqueue_script( 'openlab-theme-customizer', get_stylesheet_directory_uri() . '/js/customizer.js', array( 'customize-controls' ) );
+}
+add_action( 'customize_controls_enqueue_scripts', 'openlab_customizer_scripts' );
+
 function openlab_sanitize_customizer_setting_color_scheme( $setting ) {
-	$settings = array( 'blue', 'gold', 'red', 'default' );
-	if ( ! in_array( $setting, $settings, true ) ) {
-		$setting = 'default';
+	$color_schemes = openlab_color_schemes();
+
+	if ( ! isset( $color_schemes[ $setting ] ) ) {
+		$setting = 'blue';
 	}
+
 	return $setting;
 }
 
