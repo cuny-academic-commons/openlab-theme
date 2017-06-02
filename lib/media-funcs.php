@@ -46,7 +46,7 @@ function openlab_get_home_slider() {
  * @return type
  */
 function openlab_new_mysteryman() {
-	return get_stylesheet_directory_uri() . '/images/default-avatar.jpg';
+	return get_template_directory_uri() . '/images/default-avatar.jpg';
 }
 
 add_filter( 'bp_core_mysteryman_src', 'openlab_new_mysteryman', 2, 7 );
@@ -60,7 +60,7 @@ add_filter( 'bp_core_mysteryman_src', 'openlab_new_mysteryman', 2, 7 );
  */
 function openlab_default_get_group_avatar( $url, $params ) {
 	if ( strstr( $url, 'default-avatar' ) || strstr( $url, 'wavatar' ) || strstr( $url, 'mystery-group.png' ) ) {
-		$url = get_stylesheet_directory_uri() . '/images/default-avatar.jpg';
+		$url = get_template_directory_uri() . '/images/default-avatar.jpg';
 	}
 
 	return $url;
@@ -70,7 +70,7 @@ add_filter( 'bp_core_fetch_avatar_url', 'openlab_default_get_group_avatar', 10, 
 
 function openlab_default_group_avatar_img( $html ) {
 	$default_avatar = buddypress()->plugin_url . 'bp-core/images/mystery-group.png';
-	return str_replace( $default_avatar, get_stylesheet_directory_uri() . '/images/default-avatar.jpg', $html );
+	return str_replace( $default_avatar, get_template_directory_uri() . '/images/default-avatar.jpg', $html );
 }
 
 add_filter( 'bp_core_fetch_avatar', 'openlab_default_group_avatar_img' );

@@ -149,7 +149,7 @@ function openlab_customizer_styles() {
 add_action( 'customize_controls_print_styles', 'openlab_customizer_styles' );
 
 function openlab_customizer_scripts() {
-	wp_enqueue_script( 'openlab-theme-customizer', get_stylesheet_directory_uri() . '/js/customizer.js', array( 'customize-controls' ) );
+	wp_enqueue_script( 'openlab-theme-customizer', get_template_directory_uri() . '/js/customizer.js', array( 'customize-controls' ) );
 }
 add_action( 'customize_controls_enqueue_scripts', 'openlab_customizer_scripts' );
 

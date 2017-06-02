@@ -125,7 +125,7 @@ add_filter( 'bpeo_get_the_single_event_action_links', 'openlab_control_event_act
  */
 function openlab_add_eventorganiser_custom_template_folder( $stack ) {
 
-	$custom_loc = get_stylesheet_directory() . '/event-organiser';
+	$custom_loc = get_template_directory() . '/event-organiser';
 
 	array_unshift( $stack, $custom_loc );
 

@@ -197,7 +197,7 @@ openlab_group_admin_js_data( $group_type );
 										<?php if ( bp_get_group_avatar() ) :  ?>
 											<img class="img-responsive padded" src ="<?php echo bp_core_fetch_avatar( array( 'item_id' => bp_get_group_id(), 'object' => 'group', 'type' => 'full', 'html' => false ) ) ?>" alt="<?php echo bp_get_group_name(); ?>"/>
 										<?php else : ?>
-											<img class="img-responsive padded" src ="<?php echo get_stylesheet_directory_uri(); ?>/images/avatar_blank.png" alt="avatar-blank"/>
+											<img class="img-responsive padded" src ="<?php echo _directory_uri(); ?>/images/avatar_blank.png" alt="avatar-blank"/>
 		<?php endif; ?>
 
 									</div>

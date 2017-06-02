@@ -88,7 +88,7 @@ function openlab_main_menu( $location = 'header' ) {
 					wp_nav_menu( $args );
 					?>
 					<div class="navbar-right search hidden-xs">
-						<?php do_action( 'openlab_search_bar' ); ?>
+						<?php openlab_mu_site_wide_bp_search( 'desktop', $location ); ?>
 					</div>
 				</div>
 			</div>

@@ -3,9 +3,9 @@
 <?php do_action( 'bp_before_profile_avatar_upload_content' ) ?>
 
 <?php if ( ! (int) bp_get_option( 'bp-disable-avatar-uploads' ) ) : ?>
-	
+
 	<form action="" method="post" id="avatar-upload-form" enctype="multipart/form-data" class="form-inline form-panel">
-			
+
 				<div class="panel panel-default">
 
 		<?php if ( 'upload-image' == bp_get_avatar_admin_step() ) : ?>
@@ -16,12 +16,12 @@
 							<div class="col-sm-8">
 								<div id="avatar-wrapper">
 									<div class="padded-img">
-										<img class="img-responsive padded" src ="<?php echo get_stylesheet_directory_uri(); ?>/images/avatar_blank.png" alt="avatar-blank"/>
+										<img class="img-responsive padded" src ="<?php echo get_template_directory_uri(); ?>/images/avatar_blank.png" alt="avatar-blank"/>
 									</div>
 								</div>
 							</div>
 							<div class="col-sm-16">
-							
+
 								<p class="italics"><?php _e( 'Your avatar will be used on your profile and throughout the site. If there is a Gravatar associated with your account email we will use that, or you can upload an image from your computer. Click below to select a JPG, GIF or PNG format photo from your computer and then click "Upload Image" to proceed.', 'buddypress' ) ?></p>
 
 								<p id="avatar-upload">

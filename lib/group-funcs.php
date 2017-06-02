@@ -1875,8 +1875,8 @@ function openlab_group_contact_field() {
 	}
 
 	// Enqueue JS and CSS.
-	wp_enqueue_script( 'openlab-group-contact', get_stylesheet_directory_uri() . '/js/group-contact.js', array( 'jquery-ui-autocomplete' ) );
-	wp_enqueue_style( 'openlab-group-contact', get_stylesheet_directory_uri() . '/css/group-contact.css' );
+	wp_enqueue_script( 'openlab-group-contact', get_template_directory_uri() . '/js/group-contact.js', array( 'jquery-ui-autocomplete' ) );
+	wp_enqueue_style( 'openlab-group-contact', get_template_directory_uri() . '/css/group-contact.css' );
 
 	$existing_contacts = array();
 	if ( $group_id ) {

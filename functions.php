@@ -158,34 +158,34 @@ function openlab_create_default_nav_menu() {
 /*
  * creating a library to organize functions* */
 /* * core* */
-require_once( STYLESHEETPATH . '/lib/core/page-control.php' );
-require_once( STYLESHEETPATH . '/lib/core/frontend-admin.php' );
-require_once( STYLESHEETPATH . '/lib/core/backend-admin.php' );
+require_once( get_template_directory() . '/lib/core/page-control.php' );
+require_once( get_template_directory() . '/lib/core/frontend-admin.php' );
+require_once( get_template_directory() . '/lib/core/backend-admin.php' );
 
-require_once( STYLESHEETPATH . '/lib/course-clone.php' );
-require_once( STYLESHEETPATH . '/lib/header-funcs.php' );
-require_once( STYLESHEETPATH . '/lib/post-types.php' );
-require_once( STYLESHEETPATH . '/lib/menus.php' );
-require_once( STYLESHEETPATH . '/lib/content-processing.php' );
-require_once( STYLESHEETPATH . '/lib/nav.php' );
-require_once( STYLESHEETPATH . '/lib/breadcrumbs.php' );
-require_once( STYLESHEETPATH . '/lib/shortcodes.php' );
-require_once( STYLESHEETPATH . '/lib/media-funcs.php' );
-require_once( STYLESHEETPATH . '/lib/group-funcs.php' );
-require_once( STYLESHEETPATH . '/lib/ajax-funcs.php' );
-require_once( STYLESHEETPATH . '/lib/help-funcs.php' );
-require_once( STYLESHEETPATH . '/lib/member-funcs.php' );
-require_once( STYLESHEETPATH . '/lib/page-funcs.php' );
-require_once( STYLESHEETPATH . '/lib/sidebar-funcs.php' );
-require_once( STYLESHEETPATH . '/lib/plugin-hooks.php' );
-require_once( STYLESHEETPATH . '/lib/theme-hooks.php' );
-require_once( STYLESHEETPATH . '/lib/widgets.php' );
+require_once( get_template_directory() . '/lib/course-clone.php' );
+require_once( get_template_directory() . '/lib/header-funcs.php' );
+require_once( get_template_directory() . '/lib/post-types.php' );
+require_once( get_template_directory() . '/lib/menus.php' );
+require_once( get_template_directory() . '/lib/content-processing.php' );
+require_once( get_template_directory() . '/lib/nav.php' );
+require_once( get_template_directory() . '/lib/breadcrumbs.php' );
+require_once( get_template_directory() . '/lib/shortcodes.php' );
+require_once( get_template_directory() . '/lib/media-funcs.php' );
+require_once( get_template_directory() . '/lib/group-funcs.php' );
+require_once( get_template_directory() . '/lib/ajax-funcs.php' );
+require_once( get_template_directory() . '/lib/help-funcs.php' );
+require_once( get_template_directory() . '/lib/member-funcs.php' );
+require_once( get_template_directory() . '/lib/page-funcs.php' );
+require_once( get_template_directory() . '/lib/sidebar-funcs.php' );
+require_once( get_template_directory() . '/lib/plugin-hooks.php' );
+require_once( get_template_directory() . '/lib/theme-hooks.php' );
+require_once( get_template_directory() . '/lib/widgets.php' );
 
-require_once( STYLESHEETPATH . '/lib/customizer.php' );
-require_once( STYLESHEETPATH . '/lib/buddypress.php' );
+require_once( get_template_directory() . '/lib/customizer.php' );
+require_once( get_template_directory() . '/lib/buddypress.php' );
 
 function openlab_load_scripts() {
-	$stylesheet_dir_uri = get_stylesheet_directory_uri();
+	$stylesheet_dir_uri = get_template_directory_uri();
 
 	/**
 	 * scripts, additional functionality
@@ -233,7 +233,7 @@ function openlab_load_scripts() {
 add_action( 'wp_enqueue_scripts', 'openlab_load_scripts' );
 
 function openlab_admin_scripts() {
-	wp_register_script( 'utility-admin', get_stylesheet_directory_uri() . '/js/utility.admin.js', array( 'jquery', 'jquery-ui-autocomplete' ), '1.6.9.7', true );
+	wp_register_script( 'utility-admin', get_template_directory_uri() . '/js/utility.admin.js', array( 'jquery', 'jquery-ui-autocomplete' ), '1.6.9.7', true );
 	wp_enqueue_script( 'utility-admin' );
 	wp_localize_script('utility-admin', 'localVars', array(
 		'ajaxurl' => admin_url( 'admin-ajax.php' ),
@@ -247,7 +247,7 @@ add_action( 'admin_enqueue_scripts', 'openlab_admin_scripts' );
  * Giving the main stylesheet the highest priority among stylesheets to make sure it loads last
  */
 function openlab_load_scripts_high_priority() {
-	$stylesheet_dir_uri = get_stylesheet_directory_uri();
+	$stylesheet_dir_uri = get_template_directory_uri();
 
 	global $post;
 

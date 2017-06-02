@@ -8,14 +8,14 @@
  * Invite Anyone
  * See also: openlab/buddypress/members/single/invite-anyone.php for template overrides
  */
-require_once( STYLESHEETPATH . '/lib/plugin-mods/invite-funcs.php' );
+require_once( get_template_directory() . '/lib/plugin-mods/invite-funcs.php' );
 
 /**
  * Event Organiser
  * BuddyPress Event Organiser
  */
 if ( function_exists( 'bpeo_is_action' ) ) {
-	require_once( STYLESHEETPATH . '/lib/plugin-mods/calendar-control.php' );
+	require_once( get_template_directory() . '/lib/plugin-mods/calendar-control.php' );
 }
 
 /**
@@ -31,7 +31,7 @@ add_filter( 'invite_anyone_send_friend_requests_on_acceptance', '__return_false'
  * See also: mu-plugins/openlab-group-documents-privacy.php
  */
 if ( defined( 'BP_GROUP_DOCUMENTS_VERSION' ) ) {
-	require_once( STYLESHEETPATH . '/lib/plugin-mods/files-funcs.php' );
+	require_once( get_template_directory() . '/lib/plugin-mods/files-funcs.php' );
 }
 
 /**
@@ -53,7 +53,7 @@ add_filter( 'bp_docs_do_theme_compat', '__return_false' );
  */
 function openlab_hide_docs_native_menu( $menu_template ) {
 
-	$path = STYLESHEETPATH . '/buddypress/groups/single/docs/docs-header.php';
+	$path = get_template_directory() . '/buddypress/groups/single/docs/docs-header.php';
 
 	return $path;
 }
@@ -133,7 +133,7 @@ add_filter( 'bp_docs_get_current_view', 'openlab_fix_avatar_delete', 9999 );
  * BuddyPress Group Email Subscription
  * See also: openlab/buddypress/groups/single/notifications.php for template overrides
  */
-require_once( STYLESHEETPATH . '/lib/plugin-mods/email-funcs.php' );
+require_once( get_template_directory() . '/lib/plugin-mods/email-funcs.php' );
 
 /**
  * Plugin: BuddyPress Group Email Subscription
@@ -183,7 +183,7 @@ function openlab_manage_members_email_status( $user_id = '', $group = '' ) {
 
 	echo '</ul>';
 
-	wp_enqueue_script( 'openlab-bpges-js', get_stylesheet_directory_uri() . '/js/bpges.js', array( 'jquery' ) );
+	wp_enqueue_script( 'openlab-bpges-js', get_template_directory_uri() . '/js/bpges.js', array( 'jquery' ) );
 }
 
 remove_action( 'bp_group_manage_members_admin_item', 'ass_manage_members_email_status' );
