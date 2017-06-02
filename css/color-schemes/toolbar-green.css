@@ -7073,7 +7073,7 @@ button.oplb-bs .close {
 .oplb-bs #wpadminbar #wp-toolbar > ul > li.hover > .ab-item,
 .oplb-bs #wpadminbar #wp-toolbar > ul > li:hover > .ab-item {
   background: #333;
-  color: #7a660c;
+  color: #9fd764;
 }
 @media (max-width: 767px) {
   .oplb-bs #wpadminbar #wp-toolbar > ul > li {
@@ -7110,7 +7110,7 @@ button.oplb-bs .close {
 }
 .oplb-bs #wpadminbar #wp-toolbar .admin-bar-menu li a:hover,
 .oplb-bs #wpadminbar #wp-toolbar .admin-bar-menu li a:focus {
-  background: #dab715;
+  background: #88b956;
   color: #333;
 }
 @media (max-width: 767px) {
@@ -7153,7 +7153,7 @@ button.oplb-bs .close {
   border-bottom: none;
 }
 .oplb-bs #wpadminbar #wp-toolbar .ab-sub-wrapper .ab-submenu .submenu-title {
-  background: #7a660c;
+  background: #9fd764;
   margin-bottom: 16px;
   color: #333;
 }
@@ -7162,7 +7162,7 @@ button.oplb-bs .close {
   font-size: 14px;
 }
 .oplb-bs #wpadminbar #wp-toolbar .ab-sub-wrapper .ab-submenu .menu-bottom-link {
-  background: #7a660c;
+  background: #9fd764;
   padding: 9px 16px;
   text-align: right;
   border-radius: inherit;
@@ -7203,7 +7203,7 @@ button.oplb-bs .close {
 }
 .oplb-bs #wpadminbar #wp-toolbar .ab-sub-wrapper .ab-submenu .nav-content-item a:hover,
 .oplb-bs #wpadminbar #wp-toolbar .ab-sub-wrapper .ab-submenu .nav-content-item a:focus {
-  color: #7a660c;
+  color: #49672b;
 }
 .oplb-bs #wpadminbar #wp-toolbar .ab-sub-wrapper .ab-submenu .nav-content-item a.btn {
   text-decoration: none;
@@ -7267,7 +7267,7 @@ button.oplb-bs .close {
   height: 3px;
 }
 .oplb-bs #wpadminbar #wp-toolbar #wp-admin-bar-my-hamburger .icon-bar {
-  background: #dab715;
+  background: #88b956;
   height: 3px;
 }
 .oplb-bs #wpadminbar #wp-toolbar #wp-admin-bar-my-hamburger-mol .icon-bar {

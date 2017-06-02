@@ -8,14 +8,17 @@ module.exports = function (grunt) {
 			lightHighlight: '#98d0ff',
 			linkHighlightColor: '#3170a4',
 			coloredBackgroundTextColor: '#fff',
+			loginForegroundColor: '#3170a4',
 			loginBackgroundColor: '#5b97c9'
 		},
-		gold: {
-			primaryColor: '#dab715',
-			darkHighlight: '#7a660c',
-			lightHighlight: '#7a660c',
-			linkHighlightColor: '#dab715',
-			coloredBackgroundTextColor: '#333'
+		green: {
+			primaryColor: '#88b956',
+			darkHighlight: '#49672b',
+			lightHighlight: '#9fd764',
+			linkHighlightColor: '#49672b',
+			coloredBackgroundTextColor: '#333',
+			loginForegroundColor: '#8dc753',
+			loginBackgroundColor: '#719f42'
 		},
 		red: {
 			primaryColor: '#c42e10',
@@ -23,6 +26,7 @@ module.exports = function (grunt) {
 			lightHighlight: '#f7a898',
 			linkHighlightColor: '#c42e10',
 			coloredBackgroundTextColor: '#fff',
+			loginForegroundColor: '#c42e10',
 			loginBackgroundColor: '#aa280e'
 		}
 	};
