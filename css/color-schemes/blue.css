@@ -8051,7 +8051,7 @@ body form .checkbox-list-container {
   }
 }
 .home-page .row-home-top .login {
-  background: url('images/log_in_background.png') no-repeat 123px -44px #ec6348;
+  background: url('../../images/log_in_background.png') no-repeat 123px -44px #ec6348;
   border-bottom: 13px solid #ff5959;
   float: left;
   width: 32.5%;
