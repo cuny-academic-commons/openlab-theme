@@ -7,7 +7,8 @@ module.exports = function (grunt) {
 			darkHighlight: '#98d0ff',
 			lightHighlight: '#98d0ff',
 			linkHighlightColor: '#3170a4',
-			coloredBackgroundTextColor: '#fff'
+			coloredBackgroundTextColor: '#fff',
+			loginBackgroundColor: '#5b97c9'
 		},
 		gold: {
 			primaryColor: '#dab715',
