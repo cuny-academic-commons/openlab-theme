@@ -90,7 +90,7 @@ function openlab_customizer_setup( $wp_customize ) {
 		}
 
 		$c = clone( $section );
-		$wp_customize->remove_section( $id );
+		$wp_customize->remove_section( $sid );
 
 		$c->panel = 'openlab_home_page';
 		$wp_customize->add_section( $c );
@@ -100,7 +100,7 @@ function openlab_customizer_setup( $wp_customize ) {
 	$footer_section = $wp_customize->get_section( 'sidebar-widgets-footer' );
 	if ( $footer_section ) {
 		$c = clone( $footer_section );
-		$wp_customize->remove_section( $id );
+		$wp_customize->remove_section( 'sidebar-widgets-footer' );
 
 		$c->panel = '';
 		$c->priority = 160;
