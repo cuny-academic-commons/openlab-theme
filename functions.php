@@ -29,6 +29,9 @@ function openlab_maybe_install() {
 		return;
 	}
 
+	// Set flag early to prevent dupes.
+	update_option( 'openlab_theme_installed', time() );
+
 	require dirname( __FILE__ ) . '/lib/cbox-widget-setter.php';
 
 	// Group Type widgets.
@@ -83,7 +86,7 @@ function openlab_maybe_install() {
 		) );
 	}
 
-	// Footer sidebar..
+	// Footer sidebar.
 	if ( ! CBox_Widget_Setter::is_sidebar_populated( 'footer' ) ) {
 		$welcome_text = __( 'The footer areas can be used to display general information about your site, such as contact information and links to terms of service.', 'openlab-theme' );
 
@@ -113,7 +116,70 @@ function openlab_maybe_install() {
 	// Nav menu.
 	openlab_create_default_nav_menu();
 
-	update_option( 'openlab_theme_installed', time() );
+	// Slider.
+	$slides = array(
+		array(
+			'title' => __( 'Your Second Sample Slide', 'openlab-theme' ),
+			'content' => 'Ex consequatur ipsam iusto id impedit nesciunt. Velit perspiciatis laborum et culpa rem earum. Beatae fugit perspiciatis dolorum. Incidunt voluptate officia cupiditate ipsum. Officiis eius quo incidunt voluptatem vitae deleniti aut. Non dolorem iste qui voluptates id ratione unde accusantium.',
+			'image' => get_template_directory() . '/images/default-slide-1.jpeg',
+		),
+		array(
+			'title' => __( 'Your First Sample Slide', 'openlab-theme' ),
+			'content' => 'Ipsam et voluptas sed qui vel voluptatem quam. Qui pariatur occaecati consequatur quibusdam reiciendis aut asperiores nam. Esse et et id amet et quis. Beatae quaerat a ea expedita blanditiis quia. Doloremque ad nemo culpa. Quia at qui et.',
+			'image' => get_template_directory() . '/images/default-slide-2.jpeg',
+		),
+	);
+
+	// only need these if performing outside of admin environment
+	if ( ! function_exists( 'media_sideload_image' ) ) {
+		require_once( ABSPATH . 'wp-admin/includes/media.php' );
+		require_once( ABSPATH . 'wp-admin/includes/file.php' );
+		require_once( ABSPATH . 'wp-admin/includes/image.php' );
+	}
+
+	foreach ( $slides as $slide ) {
+		$slide_id = wp_insert_post( array(
+			'post_type' => 'slider',
+			'post_status' => 'publish',
+			'post_title' => $slide['title'],
+			'post_content' => $slide['content'],
+		) );
+
+		$file_path = $slide['image'];
+
+		// Generate attachment and set as featured post.
+		$tmpfname = wp_tempnam( $file_path );
+		copy( $file_path, $tmpfname );
+
+		$file = array(
+			'error' => null,
+			'tmp_name' => $tmpfname,
+			'size' => filesize( $file_path ),
+			'name' => basename( $file_path ),
+		);
+
+		$overrides = array(
+			'test_form' => false,
+			'test_size' => false,
+		);
+
+		$sideloaded = wp_handle_sideload( $file, $overrides );
+
+		$attachment = array(
+			'post_mime_type' => $sideloaded['type'],
+			'post_title' => basename( $tmpfname ),
+			'post_content' => '',
+			'post_status' => 'inherit',
+			'post_parent' => $slide_id,
+		);
+
+		$attachment_id = wp_insert_attachment( $attachment, $sideloaded['file'] );
+		$attach_data = wp_generate_attachment_metadata( $attachment_id, $sideloaded );
+		wp_update_attachment_metadata( $attachment_id, $attach_data );
+
+		set_post_thumbnail( $slide_id, $attachment_id );
+	}
+
 	remove_action( 'after_switch_theme', '_wp_sidebars_changed' );
 }
 
