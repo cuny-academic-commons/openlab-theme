@@ -5,7 +5,6 @@
  */
 
 function openlab_get_home_slider() {
-	global $post;
 	$slider_mup = '';
 	$slider_sr_mup = '';
 
@@ -15,10 +14,9 @@ function openlab_get_home_slider() {
 		'post_status' => 'publish',
 	);
 
-	$legacy = $post;
 	$slider_query = new WP_Query( $slider_args );
 
-	if ( $slider_query->have_posts() ) :
+	if ( $slider_query->have_posts() ) {
 		$slider_mup = '<div class="camera_wrap clearfix" tabindex="-1" aria-hidden="true">';
 		$slider_sr_mup = '<div class="camera_wrap_sr" role="widget"><h2 class="sr-only">Slideshow Content</h2><ul class="list-unstyled">';
 		while ( $slider_query->have_posts() ) : $slider_query->the_post();
@@ -33,9 +31,11 @@ function openlab_get_home_slider() {
 		endwhile;
 		$slider_mup .= '</div>';
 		$slider_sr_mup .= '</ul></div>';
-	endif;
+	} else {
+		$slider_mup .= '<div class="slider-empty">' . esc_html__( 'You haven\'t added any slides yet!', 'openlab-theme' ) . '</div>';
+	}
 
-	$post = $legacy;
+	wp_reset_postdata();
 
 	return $slider_mup . $slider_sr_mup;
 }

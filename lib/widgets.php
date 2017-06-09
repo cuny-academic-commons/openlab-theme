@@ -29,15 +29,5 @@ function openlab_register_widgets() {
 
 		require_once( $widgets_dir . 'group-type.php' );
 		register_widget( 'OpenLab_Group_Type_Widget' );
-		/*
-		$group_types = cboxol_get_group_types();
-		if ( $group_types ) {
-			require_once( $widgets_dir . 'group-type.php' );
-			foreach ( $group_types as $group_type ) {
-				$widget = new OpenLab_Group_Type_Widget( $group_type );
-				register_widget( $widget );
-			}
-		}
-		*/
 	}
 }

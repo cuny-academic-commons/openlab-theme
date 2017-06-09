@@ -8307,6 +8307,9 @@ body form .checkbox-list-container {
   top: 0;
   width: 50%;
 }
+.home-page .row-home-top .slider-empty {
+  padding: 20px;
+}
 .home-page .row-home-bottom h2 {
   margin-bottom: 10px;
   font-weight: 600;
