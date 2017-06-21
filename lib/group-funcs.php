@@ -652,6 +652,15 @@ function cuny_group_single() {
 								<div class="bold col-sm-7"><?php esc_html_e( 'Semester / Year', 'openlab-theme' ); ?></div>
 								<div class="col-sm-17 row-content"><?php echo $semester; ?> <?php echo $year; ?></div>
 							</div>
+							<?php if ( function_exists( 'bpcgc_get_group_selected_terms' ) ) : ?>
+								<?php if ( $group_terms = bpcgc_get_group_selected_terms( $group_id, true ) ) : ?>
+									<div class="table-row row">
+										<div class="bold col-sm-7"><?php esc_html_e( 'Category', 'openlab-theme' ); ?></div>
+										<div class="col-sm-17 row-content"><?php echo implode( ', ', wp_list_pluck( $group_terms, 'name' ) ); ?></div>
+									</div>
+								<?php endif; ?>
+							<?php endif; ?>
+
 							<div class="table-row row">
 								<div class="bold col-sm-7"><?php esc_html_e( 'Course Description', 'openlab-theme' ); ?></div>
 								<div class="col-sm-17 row-content"><?php echo apply_filters( 'the_content', $group_description ); ?></div>
