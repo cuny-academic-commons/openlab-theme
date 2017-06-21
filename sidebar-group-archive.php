@@ -180,8 +180,7 @@ if ($group_type == 'not-archive' && $post_obj->post_title == "People") {
                     </select>
                 </div>
 
-                <?php if (function_exists('bpcgc_get_terms_by_group_type')): ?>
-                    <?php if ($group_type === 'project' || $group_type === 'club'): ?>
+                <?php if ( function_exists( 'bpcgc_get_terms_by_group_type' ) ): ?>
 
                         <?php $group_terms = bpcgc_get_terms_by_group_type($group_type); ?>
 
@@ -197,7 +196,6 @@ if ($group_type == 'not-archive' && $post_obj->post_title == "People") {
                                 </select>
                             </div>
 
-                        <?php endif; ?>
                     <?php endif; ?>
 
                 <?php endif;
