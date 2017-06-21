@@ -632,11 +632,12 @@ function cuny_group_single() {
 							}
 							?>
 							<div class="table-row row">
-								<div class="bold col-sm-7">Professor(s)</div>
+								<div class="bold col-sm-7"><?php esc_html_e( 'Professor(s)', 'openlab-theme' ); ?></div>
 								<div class="col-sm-17 row-content"><?php echo openlab_get_faculty_list() ?></div>
 							</div>
+							<?php /* @todo This will change with Academic Units */ ?>
 							<div class="table-row row">
-								<div class="bold col-sm-7">Department</div>
+								<div class="bold col-sm-7"><?php esc_html_e( 'Department', 'openlab-theme' ); ?></div>
 								<div class="col-sm-17 row-content"><?php echo $wds_departments; ?></div>
 							</div>
 							<div class="table-row row">
@@ -648,11 +649,11 @@ function cuny_group_single() {
 								<div class="col-sm-17 row-content"><?php echo esc_html( $section_code ); ?></div>
 							</div>
 							<div class="table-row row">
-								<div class="bold col-sm-7">Semester / Year</div>
+								<div class="bold col-sm-7"><?php esc_html_e( 'Semester / Year', 'openlab-theme' ); ?></div>
 								<div class="col-sm-17 row-content"><?php echo $semester; ?> <?php echo $year; ?></div>
 							</div>
 							<div class="table-row row">
-								<div class="bold col-sm-7">Course Description</div>
+								<div class="bold col-sm-7"><?php esc_html_e( 'Course Description', 'openlab-theme' ); ?></div>
 								<div class="col-sm-17 row-content"><?php echo apply_filters( 'the_content', $group_description ); ?></div>
 							</div>
 						</div>
