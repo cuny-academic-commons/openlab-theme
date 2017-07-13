@@ -414,7 +414,7 @@ add_action( 'groups_group_settings_edited', 'openlab_process_group_calendar_sett
 
 function openlab_group_calendar_media_settings( $settings, $post ) {
 
-	if ( $post->post_type === 'event' ) {
+	if ( $post instanceof WP_Post && 'event' === $post->post_type ) {
 
 	}
 
