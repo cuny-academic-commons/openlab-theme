@@ -7102,9 +7102,12 @@ blockquote .h6 {
   font-weight: 700;
   padding: 0;
 }
+.nav.nav-inline li.current-menu-item {
+  font-weight: 700;
+}
 .nav.nav-inline li.current-menu-item,
 .nav.nav-inline li:hover {
-  color: #49cabe;
+  color: #3170a4;
 }
 .nav.nav-inline li.current-menu-item a,
 .nav.nav-inline li:hover a,
@@ -8201,7 +8204,7 @@ body form .checkbox-list-container {
   float: left;
 }
 .home-page .row-home-top .slider .camera_wrap .camera_pag {
-  background: #3170a4;
+  background: #5b97c9;
   width: 4.5%;
   float: left;
   height: 100%;
@@ -10051,14 +10054,14 @@ input.help-search {
   text-decoration: none;
 }
 #breadcrumb-container .breadcrumb-col .breadcrumb-prefix-label {
-  background: #98d0ff;
+  background: #387fbb;
   display: inline-block;
   text-align: center;
   width: 86%;
 }
 #breadcrumb-container .breadcrumb-col .fa.fa-caret-right {
   margin: 0 10% 0 0;
-  color: #98d0ff;
+  color: #387fbb;
 }
 @media (max-width: 767px) {
   #breadcrumb-container .breadcrumb-col {

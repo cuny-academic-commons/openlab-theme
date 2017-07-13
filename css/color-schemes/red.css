@@ -7102,9 +7102,12 @@ blockquote .h6 {
   font-weight: 700;
   padding: 0;
 }
+.nav.nav-inline li.current-menu-item {
+  font-weight: 700;
+}
 .nav.nav-inline li.current-menu-item,
 .nav.nav-inline li:hover {
-  color: #49cabe;
+  color: #c42e10;
 }
 .nav.nav-inline li.current-menu-item a,
 .nav.nav-inline li:hover a,
@@ -8201,7 +8204,7 @@ body form .checkbox-list-container {
   float: left;
 }
 .home-page .row-home-top .slider .camera_wrap .camera_pag {
-  background: #c42e10;
+  background: #aa280e;
   width: 4.5%;
   float: left;
   height: 100%;
