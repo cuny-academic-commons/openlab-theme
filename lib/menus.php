@@ -105,15 +105,17 @@ function openlab_modify_options_nav() {
 		), 'admin', bp_get_current_group_slug());
 
 		$nav_items = buddypress()->groups->nav->get_secondary( array( 'parent_slug' => bp_get_current_group_slug() ) );
+		$current_group = groups_get_current_group();
+
 		foreach ( $nav_items as $nav_item ) {
 
-			if ( $nav_item->slug === 'events' ) {
+			if ( 'events' === $nav_item->slug ) {
 
 				$new_option_args = array(
 					'name' => $nav_item->name,
 					'slug' => $nav_item->slug . '-mobile',
 					'parent_slug' => $nav_item->parent_slug,
-					'parent_url' => trailingslashit( bp_get_group_permalink() ),
+					'parent_url' => trailingslashit( bp_get_group_permalink( $current_group ) ),
 					'link' => trailingslashit( $nav_item->link ) . 'upcoming/',
 					'position' => intval( $nav_item->position ) + 1,
 					'item_css_id' => $nav_item->css_id . '-mobile',
