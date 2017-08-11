@@ -46,5 +46,5 @@ if ( bp_is_user_activity() || ! bp_current_component() ) :
 	</div>
 
 <?php do_action( 'bp_after_member_home_content' ); ?>
-	
+
 <?php openlab_bp_sidebar( 'members' ); ?>

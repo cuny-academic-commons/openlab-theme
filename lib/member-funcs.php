@@ -792,57 +792,46 @@ function cuny_member_profile_header() {
 						<div class="profile-fields table-div">
 
 		<?php
-		while ( bp_profile_groups() ) :
-			bp_the_profile_group();
-?>
+		while ( bp_profile_groups() ) : bp_the_profile_group();
+			if ( bp_profile_group_has_fields() ) :
+			while ( bp_profile_fields() ) : bp_the_profile_field();
+				if ( bp_field_has_data() ) :
+					if ( bp_get_the_profile_field_name() !== 'Name'
+						&& bp_get_the_profile_field_name() !== 'Account Type'
+						&& bp_get_the_profile_field_name() !== 'First Name'
+						&& bp_get_the_profile_field_name() !== 'Last Name'
+					) : ?>
 
-								<?php if ( bp_profile_group_has_fields() ) : ?>
+						<div class="table-row row">
+							<div class="bold col-sm-7">
+								<?php bp_the_profile_field_name(); ?>
+							</div>
 
-			<?php
-			while ( bp_profile_fields() ) :
-				bp_the_profile_field();
-?>
+							<div class="col-sm-17">
+								<?php
+								if ( bp_get_the_profile_field_name() == 'Academic interests' || bp_get_the_profile_field_name() == 'Bio' ) {
+								echo bp_get_the_profile_field_value();
+								} else {
+								$field_value = str_replace( '<p>', '', bp_get_the_profile_field_value() );
+								$field_value = str_replace( '</p>', '', $field_value );
+								echo $field_value;
+								}
+								?>
+							</div>
+						</div>
+					<?php endif; ?>
 
-			<?php if ( bp_field_has_data() ) : ?>
-			<?php
-			if ( bp_get_the_profile_field_name() != 'Name'
-				&& bp_get_the_profile_field_name() != 'Account Type'
-				&& bp_get_the_profile_field_name() != 'First Name'
-				&& bp_get_the_profile_field_name() != 'Last Name'
-			) :
-				?>
-
-			  <div class="table-row row">
-			   <div class="bold col-sm-7">
-				<?php bp_the_profile_field_name(); ?>
-			  </div>
-
-			  <div class="col-sm-17">
-				<?php
-				if ( bp_get_the_profile_field_name() == 'Academic interests' || bp_get_the_profile_field_name() == 'Bio' ) {
-					echo bp_get_the_profile_field_value();
-				} else {
-					$field_value = str_replace( '<p>', '', bp_get_the_profile_field_value() );
-					$field_value = str_replace( '</p>', '', $field_value );
-					echo $field_value;
-				}
-				?>
-			   </div>
-			  </div>
-
-			<?php endif; ?>
-
-			<?php endif; // bp_field_has_data() ?>
+				<?php endif; // bp_field_has_data() ?>
 
 			<?php endwhile; // bp_profile_fields() ?>
 
-								<?php endif; // bp_profile_group_has_fields() ?>
+			<?php endif; // bp_profile_group_has_fields() ?>
 
 		<?php endwhile; // bp_profile_groups() ?>
 
-						</div>
-					</div>
-				<?php endif; // bp_has_profile() ?>
+			</div>
+		</div>
+	<?php endif; // bp_has_profile() ?>
 			</div>
 
 		</div><!-- #item-header-content -->
