@@ -159,7 +159,7 @@ jQuery(document).ready(function() {
 	$account_type_signup_code_field.on( 'blur', function() {
 		$signup_code_message
 			.html( OLReg.strings.dashChecking )
-			.removeClass( 'signup-code-ok', 'signup-code-bad' )
+			.removeClass( 'signup-code-ok signup-code-bad' )
 			.addClass( 'signup-code-checking' );
 
 		$.post( {
@@ -172,11 +172,11 @@ jQuery(document).ready(function() {
 			success: function( response ) {
 				if ( response.success ) {
 					$signup_code_message.html( OLReg.strings.dashOK )
-						.removeClass( 'signup-code-checking', 'signup-code-bad' )
+						.removeClass( 'signup-code-checking signup-code-bad' )
 						.addClass( 'signup-code-ok' );
 				} else {
 					$signup_code_message.html( OLReg.strings.dashInvalidCode )
-						.removeClass( 'signup-code-checking', 'signup-code-ok' )
+						.removeClass( 'signup-code-checking signup-code-ok' )
 						.addClass( 'signup-code-bad' );
 				}
 			}
