@@ -1136,10 +1136,10 @@ function openlab_get_register_fields( $account_type = '', $post_data = array() )
 							endwhile;
 
 				/**
-		 * Left over from WDS, we need to hardcode 3,7,241 in some cases.
-		  *
-		 * @todo Investigate
-		 */
+				 * Left over from WDS, we need to hardcode 3,7,241 in some cases.
+				 *
+				 * @todo Investigate
+				 */
 				$profile_field_ids = bp_get_the_profile_group_field_ids();
 
 				$pfids_a = explode( ',', $profile_field_ids );
