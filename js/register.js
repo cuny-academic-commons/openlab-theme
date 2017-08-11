@@ -266,14 +266,6 @@ jQuery(document).ready(function() {
 		}
 
 	}
-
-	var $academicUnits = $('.academic-unit-checkbox');
-	$academicUnits.change( validateAcademicTypeSelector );
-	validateAcademicTypeSelector();
-	function validateAcademicTypeSelector() {
-		var $selectedUnits = $('.academic-unit-checkbox:checked');
-		//$selectedUnits.each
-	}
 });
 
 }(jQuery));
