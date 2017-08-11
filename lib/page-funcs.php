@@ -261,6 +261,11 @@ function openlab_registration_page() {
 
 								<div id="openlab-profile-fields"></div>
 
+
+<?php	echo cboxol_get_academic_unit_selector( array(
+	) );
+?>
+
 								<?php do_action( 'bp_after_signup_profile_fields' ) ?>
 
 							</div><!-- #profile-details-section -->
