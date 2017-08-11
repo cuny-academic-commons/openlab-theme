@@ -707,6 +707,11 @@ function cuny_member_profile_header() {
 	$last_name = xprofile_get_field_data( 'Last Name', $name_member_id );
 	$update_user_first = update_user_meta( $name_member_id, 'first_name', $first_name );
 	$update_user_last = update_user_meta( $name_member_id, 'last_name', $last_name );
+
+	$academic_unit_data = cboxol_get_object_academic_unit_data_for_display( array(
+		'object_id' => bp_displayed_user_id(),
+		'object_type' => 'user',
+	) );
 	?>
 
 	<?php
@@ -792,6 +797,7 @@ function cuny_member_profile_header() {
 			if ( bp_profile_group_has_fields() ) :
 			while ( bp_profile_fields() ) : bp_the_profile_field();
 				if ( bp_field_has_data() ) :
+					// @todo This should not be hardcoded like this.
 					if ( bp_get_the_profile_field_name() !== 'Name'
 						&& bp_get_the_profile_field_name() !== 'Account Type'
 						&& bp_get_the_profile_field_name() !== 'First Name'
@@ -825,6 +831,18 @@ function cuny_member_profile_header() {
 
 		<?php endwhile; // bp_profile_groups() ?>
 
+				<?php /* @todo this should go somewhere else */ ?>
+				<?php foreach ( $academic_unit_data as $type => $type_data ) : ?>
+					<div class="table-row row">
+						<div class="bold col-sm-7">
+							<?php echo esc_html( $type_data['label'] ); ?>
+						</div>
+
+						<div class="col-sm-17">
+							<?php echo esc_html( $type_data['value'] ); ?>
+						</div>
+					</div>
+				<?php endforeach; ?>
 			</div>
 		</div>
 	<?php endif; // bp_has_profile() ?>
