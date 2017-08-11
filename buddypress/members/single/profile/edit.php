@@ -6,6 +6,17 @@
 $displayed_user_id = bp_displayed_user_id();
 
 $display_name = bp_get_profile_field_data( 'field=Name' );
+$member_type = cboxol_get_user_member_type( $displayed_user_id );
+
+$member_academic_units = cboxol_get_object_academic_units( array(
+	'object_type' => 'user',
+	'object_id' => $displayed_user_id,
+) );
+
+$selected_academic_units = array();
+foreach ( $member_academic_units as $member_academic_unit ) {
+	$selected_academic_units[] = $member_academic_unit->get_slug();
+}
 
 $profile_args = array();
 
@@ -140,6 +151,11 @@ $field_ids = array( 1 );
 					<?php endwhile; ?>
 
 				<?php endwhile; ?>
+
+				<?php echo cboxol_get_academic_unit_selector( array(
+					'member_type' => $member_type->get_slug(),
+					'selected' => $selected_academic_units,
+				) ); ?>
 
 				<?php
 				/* @todo Move to the plugin so that it works outside of this theme */
