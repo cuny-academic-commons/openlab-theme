@@ -14,7 +14,7 @@ Text Domain: openlab
 @import "less/variables.less";
 
 @primaryColor: #c42e10;
-@darkHighlight: #95230c;
+@breadcrumbHighlight: #95230c;
 @lightHighlight: #f7a898;
 
 @linkHighlightColor: #c42e10;
@@ -130,9 +130,12 @@ blockquote {
                 font-weight: @bold;
                 padding: 0;
             }
+			&.current-menu-item {
+				font-weight: @bold;
+			}
             &.current-menu-item,
             &:hover{
-                color: @aqua;
+                color: @linkHighlightColor;
                 a,
                 span{
                     color: inherit;
@@ -1237,7 +1240,7 @@ body form{
                     float: left;
                 }
                 .camera_pag{
-                    background: @primaryColor;
+                    background: @loginBackgroundColor;
                     width: 4.5%;
                     float: left;
                     height: 100%;
@@ -3009,17 +3012,17 @@ input.help-search {
                 }
             }
         }
-        .breadcrumb-prefix-label{
-            background: @darkHighlight;
+        .breadcrumb-prefix-label {
+            background: @breadcrumbHighlight;
             display: inline-block;
             text-align: center;
             width: 86%;
         }
-        .fa.fa-caret-right{
+        .fa.fa-caret-right {
             margin: 0 10% 0 0;
-            color: @darkHighlight;
+            color: @breadcrumbHighlight;
         }
-        @media (max-width: @screen-xs-max){
+        @media (max-width: @screen-xs-max) {
             font-size: 10px;
             .breadcrumb-prefix-label,
             a{

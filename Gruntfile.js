@@ -4,7 +4,8 @@ module.exports = function (grunt) {
 	colorSchemes = {
 		blue: {
 			primaryColor: '#3170a4',
-			darkHighlight: '#98d0ff',
+			breadcrumbHighlight: '#387fbb',
+			darkHighlight: '#387fbb',
 			lightHighlight: '#98d0ff',
 			linkHighlightColor: '#3170a4',
 			coloredBackgroundTextColor: '#fff',
@@ -13,7 +14,8 @@ module.exports = function (grunt) {
 		},
 		green: {
 			primaryColor: '#88b956',
-			darkHighlight: '#49672b',
+			breadcrumbHighlight: '#9fd764',
+			darkHighlight: '#9fd764',
 			lightHighlight: '#9fd764',
 			linkHighlightColor: '#49672b',
 			coloredBackgroundTextColor: '#333',
@@ -22,6 +24,7 @@ module.exports = function (grunt) {
 		},
 		red: {
 			primaryColor: '#c42e10',
+			breadcrumbHighlight: '#95230c',
 			darkHighlight: '#95230c',
 			lightHighlight: '#f7a898',
 			linkHighlightColor: '#c42e10',
