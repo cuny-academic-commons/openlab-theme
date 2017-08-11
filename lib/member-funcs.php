@@ -1016,6 +1016,10 @@ function openlab_get_register_fields( $account_type = '', $post_data = array() )
 
 	$return = '';
 
+	$return .= cboxol_get_academic_unit_selector( array(
+		'member_type' => $account_type,
+	) );
+
 	if ( function_exists( 'bp_has_profile' ) ) :
 		if ( bp_has_profile(
 			array(

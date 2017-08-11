@@ -7823,6 +7823,34 @@ body #register-page .error {
   background: #f7e700;
   border-color: #f7e700;
 }
+body .cboxol-academic-unit-selector {
+  clear: both;
+}
+body .cboxol-academic-unit-selector legend {
+  border-bottom: 0;
+  font-size: 14px;
+  margin-bottom: 0;
+}
+body .cboxol-academic-unit-selector-for-type {
+  margin-bottom: 1.5rem;
+}
+body .cboxol-units-of-type {
+  border: 1px solid #dddddd;
+  border-radius: 4px;
+  height: 120px;
+  overflow: auto;
+  padding: 6px 12px;
+}
+body .cboxol-units-of-type ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+body .academic-unit label {
+  font-weight: normal;
+}
+body .academic-unit-hidden {
+  display: none;
+}
 body .account-type-select-ui .col-md-24,
 body .account-type-select-ui .col-md-12 {
   padding-left: 0;
