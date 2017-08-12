@@ -69,34 +69,6 @@ openlab_group_admin_js_data( $group_type );
 				</div>
 			</div>
 
-			<?php
-			$academic_unit_types = cboxol_get_academic_unit_types( array(
-				'group_type' => $group_type->get_slug(),
-			) );
-			$group_academic_units = cboxol_get_object_academic_units( array(
-				'object_type' => 'group',
-				'object_id' => bp_get_current_group_id(),
-			) );
-
-			$selected_academic_units = array();
-			foreach ( $group_academic_units as $group_academic_unit ) {
-				$selected_academic_units[] = $group_academic_unit->get_slug();
-			}
-			?>
-			<?php if ( $academic_unit_types ) : ?>
-				<div class="panel panel-default">
-					<div class="panel-heading"><?php esc_html_e( 'Academic Units', 'openlab-theme' ) ?></div>
-					<div class="panel-body">
-						<?php
-						echo cboxol_get_academic_unit_selector( array(
-							'group_type' => $group_type->get_slug(),
-							'selected' => $selected_academic_units,
-						) );
-						?>
-					</div>
-				</div>
-			<?php endif; ?>
-
 			<?php do_action( 'bp_after_group_details_admin' ); ?>
 
 			<?php openlab_group_site_markup(); ?>
