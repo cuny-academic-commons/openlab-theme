@@ -579,6 +579,11 @@ function cuny_group_single() {
 	$group_name = $bp->groups->current_group->name;
 	$group_description = $bp->groups->current_group->description;
 	$html = groups_get_groupmeta( $group_id, 'cboxol_additional_desc_html' );
+
+	$academic_unit_data = cboxol_get_object_academic_unit_data_for_display( array(
+		'object_id' => $group_id,
+		'object_type' => 'group',
+	) );
 	?>
 
 	<?php if ( bp_is_group_home() ) : ?>
@@ -631,6 +636,19 @@ function cuny_group_single() {
 								do_action( 'bp_after_group_status_message' );
 							}
 							?>
+
+							<?php foreach ( $academic_unit_data as $type => $type_data ) : ?>
+								<div class="table-row row">
+									<div class="bold col-sm-7">
+										<?php echo esc_html( $type_data['label'] ); ?>
+									</div>
+
+									<div class="col-sm-17">
+										<?php echo esc_html( $type_data['value'] ); ?>
+									</div>
+								</div>
+							<?php endforeach; ?>
+
 							<div class="table-row row">
 								<div class="bold col-sm-7"><?php esc_html_e( 'Professor(s)', 'openlab-theme' ); ?></div>
 								<div class="col-sm-17 row-content"><?php echo openlab_get_faculty_list() ?></div>
@@ -679,31 +697,21 @@ function cuny_group_single() {
 								<div class="col-xs-24 status-message italics"><?php echo openlab_group_status_message() ?></div>
 							</div>
 
-							<?php
-							/* @todo */
-							$wds_school = openlab_generate_school_name( $group_id );
-							$wds_departments = openlab_generate_department_name( $group_id );
+							<?php foreach ( $academic_unit_data as $type => $type_data ) : ?>
+								<div class="table-row row">
+									<div class="bold col-sm-7">
+										<?php echo esc_html( $type_data['label'] ); ?>
+									</div>
 
+									<div class="col-sm-17">
+										<?php echo esc_html( $type_data['value'] ); ?>
+									</div>
+								</div>
+							<?php endforeach; ?>
+
+							<?php
 							$group_contacts = groups_get_groupmeta( $group_id, 'group_contact', false );
 							?>
-
-							<?php if ( $wds_school && ! empty( $wds_school ) ) : ?>
-
-								<div class="table-row row">
-									<div class="bold col-sm-7">School</div>
-									<div class="col-sm-17 row-content"><?php echo $wds_school; ?></div>
-								</div>
-
-							<?php endif; ?>
-
-							<?php if ( $wds_departments && ! empty( $wds_departments ) ) : ?>
-
-								<div class="table-row row">
-									<div class="bold col-sm-7">Department</div>
-									<div class="col-sm-17 row-content"><?php echo $wds_departments; ?></div>
-								</div>
-
-							<?php endif; ?>
 
 							<?php if ( $group_contacts ) : ?>
 								<div class="table-row row">
