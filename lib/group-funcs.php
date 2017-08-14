@@ -1428,6 +1428,7 @@ function openlab_bp_group_site_pages( $mobile = false ) {
 	global $bp;
 
 	$group_id = bp_get_current_group_id();
+	$group_type = cboxol_get_group_group_type( $group_id );
 
 	$group_site_settings = openlab_get_group_site_settings( $group_id );
 
@@ -1476,7 +1477,7 @@ function openlab_bp_group_site_pages( $mobile = false ) {
 			<div class="sidebar-block group-site-links <?php echo esc_html( $responsive_class ); ?>">
 				<ul class="sidebar-sublinks portfolio-sublinks inline-element-list">
 					<li class="portfolio-site-link">
-						<?php echo '<a class="bold no-deco" href="' . trailingslashit( esc_attr( $group_site_settings['site_url'] ) ) . '">Visit ' . ucwords( groups_get_groupmeta( bp_get_group_id(), 'wds_group_type' ) ) . ' Site <span class="fa fa-chevron-circle-right cyan-circle" aria-hidden="true"></span></a>'; ?>
+						<?php echo '<a class="bold no-deco" href="' . trailingslashit( esc_attr( $group_site_settings['site_url'] ) ) . '">' . $group_type->get_label( 'visit_group_site' ) . '<span class="fa fa-chevron-circle-right cyan-circle" aria-hidden="true"></span></a>'; ?>
 					</li>
 					<?php if ( $group_site_settings['is_local'] && ($bp->is_item_admin || is_super_admin() || groups_is_user_member( bp_loggedin_user_id(), bp_get_current_group_id() )) ) : ?>
 						<li class="portfolio-dashboard-link">
