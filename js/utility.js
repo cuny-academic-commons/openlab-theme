@@ -4,7 +4,7 @@
         var OpenLab = {};
     }
 
-    var resizeTimer;
+    var resizeTimer, select2args;
 
     OpenLab.utility = {
         newMembers: {},
@@ -479,30 +479,77 @@
 
         },
         customSelects: function (resize) {
+			select2args = {
+				minimumResultsForSearch: Infinity,
+				width: "100%",
+				escapeMarkup: function (text) {
+					return text;
+				}
+			}
             //custom select arrows
             if (resize) {
                 $('.custom-select-parent').html(OpenLab.utility.customSelectHTML);
-                $('.custom-select select').select2({
-                    minimumResultsForSearch: Infinity,
-                    width: "100%",
-                    escapeMarkup: function (text) {
-                        return text;
-                    }
-                });
+                $('.custom-select select').select2( select2args );
             } else {
                 OpenLab.utility.customSelectHTML = $('.custom-select-parent').html();
-                $('.custom-select select').select2({
-                    minimumResultsForSearch: Infinity,
-                    width: "100%",
-                    escapeMarkup: function (text) {
-                        return text;
-                    }
-                });
+                $('.custom-select select').select2( select2args );
             }
 
-            OpenLab.utility.filterAjax();
-
+			$( '.academic-unit-type-select' ).on( 'select2:select', function() {
+				OpenLab.utility.updateAcademicUnitFilters();
+			} );
+			OpenLab.utility.updateAcademicUnitFilters();
         },
+
+		updateAcademicUnitFilters: function() {
+			var selectedSlugs = [];
+			var $selectedUnits = $( '.academic-unit:selected' );
+			$selectedUnits.each( function( k, v ) {
+				if ( v.value.length > 0 ) {
+					if ( 'all' === v.value ) {
+						$(v).siblings( '.academic-unit-nonempty' ).each( function( k, v ) {
+							selectedSlugs.push( v.value );
+						} );
+					} else {
+						selectedSlugs.push( v.value );
+					}
+				}
+			} );
+
+			// Mark all disabled for reenabling later.
+			var $academicUnits = $( '.academic-unit' );
+			$academicUnits.prop( 'disabled', true ).removeClass( 'academic-unit-enabled' );
+
+			$academicUnits.each( function( k, v ) {
+				var $thisFilter = $( v );
+				var thisParent = $thisFilter.data( 'parent' );
+
+				// Enable items with no parent, or those with a selected parent.
+				if ( thisParent.length === 0 || -1 !== selectedSlugs.indexOf( thisParent ) ) {
+					$thisFilter.prop( 'disabled', false );
+					if ( $thisFilter.hasClass( 'academic-unit-nonempty' ) ) {
+						$thisFilter.addClass( 'academic-unit-enabled' );
+					}
+				}
+			} );
+
+			/*
+			TODO!!
+			- Form submit handler
+			- Ensure it works for member directory
+			*/
+
+			// Select2 needs to reinitialize to pickup the 'disabled' changes.
+			var $academicUnitSelectors = $( '.academic-unit-type-select select' );
+			$academicUnitSelectors.prop( 'disabled', false );
+			$academicUnitSelectors.each( function( k, v ) {
+				if ( $( v ).find( '.academic-unit-enabled' ).length === 0 ) {
+					$( v ).prop( 'disabled', true );
+				}
+			} );
+			$academicUnitSelectors.select2( 'destroy' ).select2( select2args );
+		},
+
         filterAjax: function () {
 
             //safety first

@@ -111,7 +111,7 @@ function openlab_group_privacy_settings( $group_type ) {
 }
 
 /**
- * This function outputs the full archive for a specific group, currently delineated by the archive page slug
+ * This function outputs the full archive for group type.
  */
 function openlab_group_archive() {
 	global $wpdb, $bp, $groups_template, $post;
@@ -119,6 +119,12 @@ function openlab_group_archive() {
 	if ( ! bp_is_active( 'groups' ) ) {
 		return;
 	}
+
+	$group_args = array(
+		'per_page' => 12,
+		'meta_query' => array(),
+		'tax_query' => array(),
+	);
 
 	$group_type = bp_get_current_group_directory_type();
 	$type_object = cboxol_get_group_type( $group_type );
@@ -139,21 +145,29 @@ function openlab_group_archive() {
 		$search_terms = 'search_terms=' . $search_terms_raw . '&';
 	}
 
-	if ( ! empty( $_GET['school'] ) ) {
-		$school = $_GET['school'];
-		/*
-         if ( $school=="tech" ) {
-          $school="Technology & Design";
-          } elseif ( $school=="studies" ) {
-          $school="Professional Studies";
-          } elseif ( $school=="arts" ) {
-          $school="Arts & Sciences";
-          } */
+	$group_args['search_terms'] = $search_terms_raw;
+
+	// @todo 'all' needs special treatment once tax queries work without shim.
+	$academic_units = array();
+	foreach ( $_GET as $get_key => $get_value ) {
+		if ( 'academic-unit-' !== substr( $get_key, 0, 14 ) ) {
+			continue;
+		}
+
+		$academic_units[] = urldecode( wp_unslash( $get_value ) );
 	}
 
-	if ( ! empty( $_GET['department'] ) ) {
-		$department = str_replace( '-', ' ', $_GET['department'] );
-		$department = ucwords( $department );
+	$academic_units = array_filter( $academic_units );
+
+	if ( ! empty( $academic_units ) ) {
+		$academic_units_tax_query = cboxol_get_tax_query_for_academic_units( array(
+			'units' => $academic_units,
+			'object_type' => 'group',
+		) );
+
+		if ( $academic_units_tax_query ) {
+			$group_args['tax_query']['academic_units'] = $academic_units_tax_query;
+		}
 	}
 
 	if ( ! empty( $_GET['cat'] ) ) {
@@ -169,47 +183,23 @@ function openlab_group_archive() {
 	}
 
 	// Set up filters
-	$meta_query = array();
-
-	if ( ! empty( $school ) && 'school_all' != strtolower( $school ) ) {
-		$meta_query[] = array(
-			'key' => 'wds_group_school',
-			'value' => $school,
-			'compare' => 'LIKE',
-		);
-	}
-
-	if ( ! empty( $department ) && 'dept_all' != strtolower( $department ) ) {
-		$meta_query[] = array(
-			'key' => 'wds_departments',
-			'value' => $department,
-			'compare' => 'LIKE',
-		);
-	}
-
 	if ( ! empty( $semester ) && 'semester_all' != strtolower( $semester ) ) {
-		$meta_query[] = array(
+		$group_args['meta_query'][] = array(
 			'key' => 'wds_semester',
 			'value' => $semester_season,
 		);
-		$meta_query[] = array(
+		$group_args['meta_query'][] = array(
 			'key' => 'wds_year',
 			'value' => $semester_year,
 		);
 	}
 
 	if ( ! empty( $_GET['usertype'] ) && 'user_type_all' != $_GET['usertype'] ) {
-		$meta_query[] = array(
+		$group_args['meta_query'][] = array(
 			'key' => 'portfolio_user_type',
 			'value' => ucwords( $_GET['usertype'] ),
 		);
 	}
-
-	$group_args = array(
-		'search_terms' => $search_terms_raw,
-		'per_page' => 12,
-		'meta_query' => $meta_query,
-	);
 
 	if ( ! empty( $categories ) ) {
 
@@ -222,12 +212,10 @@ function openlab_group_archive() {
 			$term_ids = $term_obj->term_id;
 		}
 
-		$group_args['tax_query'] = array(
-			array(
-				'taxonomy' => 'bp_group_categories',
-				'terms' => $term_ids,
-				'field' => 'term_id',
-			),
+		$group_args['tax_query']['group_categories'] = array(
+			'taxonomy' => 'bp_group_categories',
+			'terms' => $term_ids,
+			'field' => 'term_id',
 		);
 	}
 

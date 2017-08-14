@@ -18,56 +18,10 @@ if ( $group_type == 'not-archive' && $post_obj->post_title == 'People' ) {
 <div class="sidebar-block">
 	<?php
 	//determine class type for filtering
-	$school_color = 'passive';
-	$dept_color = 'passive';
 	$semester_color = 'passive';
 	$sort_color = 'passive';
 	$user_color = 'passive';
-
-	//school filter - easiest to do this with a switch statment
-	if ( empty( $_GET['school'] ) ) {
-		$_GET['school'] = '';
-	} elseif ( $_GET['school'] == 'school_all' ) {
-		$_GET['school'] = 'school_all';
-		$school_color = 'active';
-	} else {
-		$school_color = 'active';
-	}
-	switch ( $_GET['school'] ) {
-		case 'tech':
-			$display_option_school = 'Technology & Design';
-			$option_value_school = 'tech';
-			break;
-		case 'studies':
-			$display_option_school = 'Professional Studies';
-			$option_value_school = 'studies';
-			break;
-		case 'arts':
-			$display_option_school = 'Arts & Sciences';
-			$option_value_school = 'arts';
-			break;
-		case 'school_all':
-			$display_option_school = 'All';
-			$option_value_school = 'school_all';
-			break;
-		default:
-			$display_option_school = 'Select School';
-			$option_value_school = '';
-			break;
-	}
-	//processing the department value - now dynamic instead of a switch statement
-	if ( empty( $_GET['department'] ) ) {
-		$display_option_dept = 'Select Department';
-		$option_value_dept = '';
-	} elseif ( $_GET['department'] == 'dept_all' ) {
-		$display_option_dept = 'All';
-		$option_value_dept = 'dept_all';
-	} else {
-		$dept_color = 'active';
-		$display_option_dept = ucwords( str_replace( '-', ' ', $_GET['department'] ) );
-		$display_option_dept = str_replace( 'And', '&', $display_option_dept );
-		$option_value_dept = $_GET['department'];
-	}
+	$bpcgc_color = 'passive';
 
 	//categories
 	if ( empty( $_GET['cat'] ) ) {
@@ -158,27 +112,41 @@ if ( $group_type == 'not-archive' && $post_obj->post_title == 'People' ) {
 			$option_value = '';
 			break;
 	}
+
+	$academic_unit_types = cboxol_get_academic_unit_types( array(
+		'group_type' => bp_get_current_group_directory_type(),
+	) );
+
+	$academic_unit_map = cboxol_get_academic_unit_map();
+	echo '<script type="text/javascript">/* <![CDATA[ */
+var OLAcadUnits = ' . wp_json_encode( $academic_unit_map ) . ';
+/* ]]> */</script>';
+
 	?>
 	<div class="filter">
 		<p><?php esc_html_e( 'Narrow down your search using the filters or search box below.', 'openlab-theme' ); ?></p>
 		<form id="group_seq_form" name="group_seq_form" action="#" method="get">
 			<div id="sidebarCustomSelect" class="custom-select-parent">
-				<div class="custom-select" id="schoolSelect">
-					<select name="school" class="last-select <?php echo $school_color; ?>-text" id="school-select" tabindex="0">
-						<option value="" <?php selected( '', $option_value_school ) ?>><?php esc_html_e( 'Select School', 'openlab-theme' ); ?></option>
-						<option value='school_all' <?php selected( 'school_all', $option_value_school ) ?>><?php esc_html_e( 'All Schools', 'openlab-theme' ); ?></option>
-						<option value='tech' <?php selected( 'tech', $option_value_school ) ?>>Technology &amp; Design</option>
-						<option value='studies' <?php selected( 'studies', $option_value_school ) ?>>Professional Studies</option>
-						<option value='arts' <?php selected( 'arts', $option_value_school ) ?>>Arts & Sciences</option>
-					</select>
-				</div>
+				<?php foreach ( $academic_unit_types as $academic_unit_type ) : ?>
+					<?php
+					$url_param = 'academic-unit-' . $academic_unit_type->get_slug();
+					$current_unit = isset( $_GET[ $url_param ] ) ? wp_unslash( $_GET[ $url_param ] ) : null;
+					$color_class = empty( $current_unit ) ? 'passive' : 'active';
+					$units_of_type = cboxol_get_academic_units( array(
+						'type' => $academic_unit_type->get_slug(),
+					) );
+					?>
+					<div class="custom-select academic-unit-type-select" id="academic-unit-type-select-<?php echo esc_attr( $academic_unit_type->get_slug() ); ?>">
+						<select name="<?php echo esc_attr( $url_param ); ?>" class="last-select <?php echo esc_attr( $color_class ); ?>-text" id="<?php echo esc_attr( $academic_unit_type->get_slug() ); ?>-select" data-unittype="<?php echo esc_attr( $academic_unit_type->get_slug() ); ?>">
+							<option class="academic-unit" value="" data-parent="" <?php selected( '', $current_unit ) ?>><?php echo esc_html( $academic_unit_type->get_name() ); ?></option>
+							<option class="academic-unit" value="all" data-parent="" <?php selected( 'all', $current_unit ) ?>><?php esc_html_e( 'All', 'openlab-theme' ); ?></option>
 
-				<div class="hidden" id="nonce-value"><?php echo wp_create_nonce( 'dept_select_nonce' ); ?></div>
-				<div class="custom-select">
-					<select name="department" class="last-select processing <?php echo $dept_color; ?>-text" id="dept-select" <?php disabled( '', $option_value_school ) ?>>
-						<?php echo openlab_return_course_list( $option_value_school, $option_value_dept ); ?>
-					</select>
-				</div>
+							<?php foreach ( $units_of_type as $unit ) : ?>
+								<option class="academic-unit academic-unit-nonempty" data-parent="<?php echo esc_html( $unit->get_parent() ); ?>" value='<?php echo esc_attr( $unit->get_slug() ); ?>' <?php selected( $unit->get_slug(), $current_unit ) ?>><?php echo esc_html( $unit->get_name() ); ?></option>
+							<?php endforeach; ?>
+						</select>
+					</div>
+				<?php endforeach; ?>
 
 				<?php if ( function_exists( 'bpcgc_get_terms_by_group_type' ) ) :  ?>
 
