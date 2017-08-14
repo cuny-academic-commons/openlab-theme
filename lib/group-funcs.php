@@ -236,12 +236,18 @@ function openlab_group_archive() {
 			$count = 1;
 			while ( bp_groups() ) : bp_the_group();
 				$group_id = bp_get_group_id();
+
+				$group_site_url = openlab_get_group_site_url( $group_id );
+				$group_type = cboxol_get_group_group_type( $group_id );
 				?>
 				<div class="group-item col-xs-12">
 					<div class="group-item-wrapper">
 						<div class="row">
 							<div class="item-avatar alignleft col-xs-6">
 								<a href="<?php bp_group_permalink() ?>"><img class="img-responsive" src ="<?php echo bp_core_fetch_avatar( array( 'item_id' => $group_id, 'object' => 'group', 'type' => 'full', 'html' => false ) ) ?>" alt="<?php echo esc_attr( bp_get_group_name() ); ?>"/></a>
+								<?php if ( $group_site_url && cboxol_site_can_be_viewed( $group_id ) ) : ?>
+									<a class="group-site-link" href="<?php echo esc_url( $group_site_url ); ?>"><?php echo esc_html( $group_type->get_label( 'group_site' ) ); ?></a>
+								<?php endif; ?>
 							</div>
 							<div class="item col-xs-18">
 
@@ -796,7 +802,7 @@ function openlab_group_profile_activity_list() {
 
 			<?php if ( bp_get_group_status() == 'public' || ( ( bp_get_group_status() == 'hidden' || bp_get_group_status() == 'private' ) && ( bp_is_item_admin() || bp_group_is_member() ) ) ) : ?>
 				<?php
-				if ( wds_site_can_be_viewed() ) {
+				if ( cboxol_site_can_be_viewed() ) {
 					openlab_show_site_posts_and_comments();
 				}
 				?>
@@ -929,7 +935,7 @@ function openlab_group_profile_activity_list() {
 				// check if blog (site) is NOT private (option blog_public Not = '_2"), in which
 				// case show site posts and comments even though this group is private
 				//
-				if ( wds_site_can_be_viewed() ) {
+				if ( cboxol_site_can_be_viewed() ) {
 					openlab_show_site_posts_and_comments();
 					echo "<div class='clear'></div>";
 				}
