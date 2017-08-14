@@ -24,6 +24,10 @@ function cuny_home_login() {
 					<img class="img-responsive" src="<?php bp_loggedin_user_avatar( array( 'type' => 'full', 'html' => false ) ); ?>" alt="Avatar for <?php echo bp_core_get_user_displayname( bp_loggedin_user_id() ); ?>" />
 				</a>
 
+				<div class="welcome-link-my-profile">
+					<a href="<?php echo	esc_url( bp_loggedin_user_domain() ); ?>"><?php esc_html_e( 'My Profile', 'openlab-theme' ); ?></a>
+				</div>
+
 				<ul class="content-list">
 					<li class="no-margin no-margin-bottom"><a class="button logout font-size font-12 roll-over-loss" href="<?php echo wp_logout_url( bp_get_root_domain() ) ?>">Not <?php echo bp_core_get_username( bp_loggedin_user_id() ); ?>?</a></li>
 					<li class="no-margin no-margin-bottom"><a class="button logout font-size font-12 roll-over-loss" href="<?php echo wp_logout_url( bp_get_root_domain() ) ?>"><?php _e( 'Log Out', 'buddypress' ) ?></a></li>

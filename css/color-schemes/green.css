@@ -8134,15 +8134,28 @@ body form .checkbox-list-container {
   padding-right: 5px;
 }
 .home-page .row-home-top .login .log-box#open-lab-login #user-info {
+  height: 86px;
   margin-bottom: 23px;
+  padding-left: 96px;
+  position: relative;
+}
+.home-page .row-home-top .login .log-box#open-lab-login #user-info .avatar {
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 .home-page .row-home-top .login .log-box#open-lab-login #user-info .avatar img {
   border: 1px solid #000000;
   max-width: 86px;
 }
-.home-page .row-home-top .login .log-box#open-lab-login #user-info .avatar,
+.home-page .row-home-top .login .log-box#open-lab-login #user-info .welcome-link-my-profile {
+  font-weight: bold;
+}
 .home-page .row-home-top .login .log-box#open-lab-login #user-info .content-list {
+  bottom: 0;
   display: inline-block;
+  opacity: .7;
+  position: absolute;
   vertical-align: bottom;
 }
 .home-page .row-home-top .login .log-box#open-lab-login #user-info .avatar {

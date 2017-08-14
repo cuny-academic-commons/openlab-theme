@@ -1166,16 +1166,27 @@ body form{
                         padding-right: 5px;
                     }
                     #user-info{
+						height: 86px;
                         margin-bottom: 23px;
+						padding-left: 96px;
+						position: relative;
                         .avatar{
+							position: absolute;
+							top: 0;
+							left: 0;
                             img{
                                 border: 1px solid @black;
                                 max-width: 86px;
                             }
                         }
-                        .avatar,
+						.welcome-link-my-profile {
+							font-weight: bold;
+						}
                         .content-list{
+							bottom: 0;
                             display: inline-block;
+							opacity: .7;
+							position: absolute;
                             vertical-align: bottom;
                         }
                         .avatar{
