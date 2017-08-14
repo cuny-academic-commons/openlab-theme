@@ -1,6 +1,10 @@
 <?php
 global $bp, $wp_query;
 $group_type = bp_get_current_group_directory_type();
+$group_type_object = cboxol_get_group_type( $group_type );
+if ( is_wp_error( $group_type_object ) ) {
+	$group_type_object = null;
+}
 $group_slug = $group_type . 's';
 
 $sidebar_title = __( 'Search', 'openlab-theme' );
@@ -141,7 +145,7 @@ var OLAcadUnits = ' . wp_json_encode( $academic_unit_map ) . ';
 				?>
 
 				<?php // @todo figure out a way to make this dynamic ?>
-				<?php if ( bp_is_groups_directory() && $group_type->is_course() ) :  ?>
+				<?php if ( bp_is_groups_directory() && $group_type_object && $group_type_object->is_course() ) :  ?>
 					<div class="custom-select">
 						<select name="semester" class="last-select <?php echo $semester_color; ?>-text">
 							<option value='' <?php selected( '', $option_value_semester ) ?>>Select Semester</option>
@@ -153,7 +157,7 @@ var OLAcadUnits = ' . wp_json_encode( $academic_unit_map ) . ';
 					</div>
 				<?php endif; ?>
 
-				<?php if ( ( bp_is_groups_directory() && $group_type->is_portfolio() ) || bp_is_members_directory() ) :  ?>
+				<?php if ( ( bp_is_groups_directory() && $group_type_object->is_portfolio() ) || bp_is_members_directory() ) :  ?>
 					<div class="custom-select">
 						<select name="member_type" class="last-select <?php echo $user_color; ?>-text">
 							<option value='' <?php selected( '', $member_type_slug ) ?>><?php esc_html_e( 'Select User Type', 'openlab-theme' ); ?></option>
