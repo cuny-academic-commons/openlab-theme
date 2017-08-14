@@ -28,22 +28,7 @@ function openlab_list_members( $view ) {
 
 	// Set up variables
 	// There are two ways to specify user type: through the page name, or a URL param
-	$user_type = $sequence_type = $search_terms = $user_school = $user_dept = '';
-	if ( ! empty( $_GET['usertype'] ) && $_GET['usertype'] != 'user_type_all' ) {
-		$user_type = $_GET['usertype'];
-		$user_type = ucwords( $user_type );
-	} else {
-		$post_obj = $wp_query->get_queried_object();
-		$post_title = ! empty( $post_obj->post_title ) ? ucwords( $post_obj->post_title ) : '';
-
-		if ( in_array( $post_title, array( 'Staff', 'Faculty', 'Students' ) ) ) {
-			if ( 'Students' == $post_title ) {
-				$user_type = 'Student';
-			} else {
-				$user_type = $post_title;
-			}
-		}
-	}
+	$sequence_type = $search_terms = $user_school = $user_dept = '';
 
 	if ( ! empty( $_GET['group_sequence'] ) ) {
 		$sequence_type = $_GET['group_sequence'];
@@ -116,28 +101,6 @@ function openlab_list_members( $view ) {
 			$include_noop = true;
 		} else {
 			$include_arrays[] = $search_terms_matches;
-		}
-	}
-
-	if ( $user_type && ! $include_noop ) {
-		$user_type_matches = $wpdb->get_col(
-			$wpdb->prepare(
-				"SELECT user_id
-			 FROM {$bp->profile->table_name_data}
-			 WHERE field_id = 7
-			       AND
-			       value = %s", $user_type
-			)
-		);
-
-		if ( empty( $user_type_matches ) ) {
-			   $user_type_matches = array( 0 );
-		}
-
-		if ( empty( $user_type_matches ) ) {
-			 $include_noop = true;
-		} else {
-			 $include_arrays[] = $user_type_matches;
 		}
 	}
 
@@ -307,13 +270,6 @@ function openlab_list_members( $view ) {
 
 	<?php
 	else :
-		if ( $user_type == 'Student' ) {
-			   $user_type = 'students';
-		}
-
-		if ( empty( $user_type ) ) {
-			   $user_type = 'people';
-		}
 	?>
 		<div class="row group-archive-header-row">
 			<div class="current-group-filters current-portfolio-filters col-sm-18">
@@ -323,7 +279,7 @@ function openlab_list_members( $view ) {
 
 		<div id="group-members-list" class="item-list group-list row">
 			<div class="widget-error query-no-results col-sm-24">
-				<p class="bold"><?php _e( 'There are no ' . strtolower( $user_type ) . ' to display.', 'buddypress' ); ?></p>
+				<p class="bold"><?php esc_html_e( 'There are no people to display.', 'openlab-theme' ); ?></p>
 			</div>
 		</div>
 
@@ -1162,3 +1118,17 @@ function openlab_get_register_fields( $account_type = '', $post_data = array() )
 	endif;
 	return $return;
 }
+
+/**
+ * Translate 'all' member type filter.
+ *
+ * It means the same thing as 'no filter', but we need to differentiate in the UI.
+ */
+function openlab_translate_all_member_type_filter( $r ) {
+	if ( 'all' === $r['member_type'] || array( 'all' ) === $r['member_type'] ) {
+		$r['member_type'] = '';
+	}
+
+	return $r;
+}
+add_filter( 'bp_after_has_members_parse_args', 'openlab_translate_all_member_type_filter' );

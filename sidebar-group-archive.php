@@ -4,6 +4,12 @@ $group_type = bp_get_current_group_directory_type();
 $group_slug = $group_type . 's';
 
 $sidebar_title = __( 'Search', 'openlab-theme' );
+
+$member_type_slug = '';
+if ( isset( $_GET['member_type'] ) ) {
+	$member_type_slug = urldecode( wp_unslash( $_GET['member_type'] ) );
+}
+
 ?>
 
 <h2 class="sidebar-title"><?php echo $sidebar_title; ?></h2>
@@ -48,38 +54,6 @@ $sidebar_title = __( 'Search', 'openlab-theme' );
 		$option_value_semester = $_GET['semester'];
 	}
 
-	//user types - for people archive page
-	if ( empty( $_GET['usertype'] ) ) {
-		$_GET['usertype'] = '';
-	} else {
-		$user_color = 'active';
-	}
-	switch ( $_GET['usertype'] ) {
-
-		case 'student' :
-			$display_option_user_type = 'Student';
-			$option_value_user_type = 'student';
-			break;
-		case 'faculty' :
-			$display_option_user_type = 'Faculty';
-			$option_value_user_type = 'faculty';
-			break;
-		case 'staff' :
-			$display_option_user_type = 'Staff';
-			$option_value_user_type = 'staff';
-			break;
-		case 'alumni' :
-			$display_option_user_type = 'Alumni';
-			$option_value_user_type = 'alumni';
-		case 'user_type_all':
-			$display_option_user_type = 'All';
-			$option_value_user_type = 'user_type_all';
-			break;
-		default:
-			$display_option_user_type = 'Select User Type';
-			$option_value_user_type = '';
-			break;
-	}
 	//sequence filter - easy enough to keep this as a switch for now
 	if ( empty( $_GET['group_sequence'] ) ) {
 		$_GET['group_sequence'] = 'active';
@@ -176,13 +150,12 @@ var OLAcadUnits = ' . wp_json_encode( $academic_unit_map ) . ';
 
 				<?php if ( ( bp_is_groups_directory() && $group_type->is_portfolio() ) || bp_is_members_directory() ) :  ?>
 					<div class="custom-select">
-						<select name="usertype" class="last-select <?php echo $user_color; ?>-text">
-							<option value='' <?php selected( '', $option_value_user_type ) ?>>Select User Type</option>
-							<option value='student' <?php selected( 'student', $option_value_user_type ) ?>>Student</option>
-							<option value='faculty' <?php selected( 'faculty', $option_value_user_type ) ?>>Faculty</option>
-							<option value='staff' <?php selected( 'staff', $option_value_user_type ) ?>>Staff</option>
-							<option value='alumni' <?php selected( 'alumni', $option_value_user_type ) ?>>Alumni</option>
-							<option value='user_type_all' <?php selected( 'user_type_all', $option_value_user_type ) ?>>All</option>
+						<select name="member_type" class="last-select <?php echo $user_color; ?>-text">
+							<option value='' <?php selected( '', $member_type_slug ) ?>><?php esc_html_e( 'Select User Type', 'openlab-theme' ); ?></option>
+							<?php foreach ( cboxol_get_member_types() as $member_type ) : ?>
+								<option value='<?php echo esc_attr( $member_type->get_slug() ); ?>' <?php selected( $member_type->get_slug(), $member_type_slug ) ?>><?php echo esc_html( $member_type->get_label( 'singular' ) ); ?></option>
+							<?php endforeach; ?>
+							<option value='all' <?php selected( 'all', $member_type_slug ) ?>>All</option>
 						</select>
 					</div>
 				<?php endif; ?>
