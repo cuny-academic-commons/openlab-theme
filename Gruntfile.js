@@ -10,7 +10,8 @@ module.exports = function (grunt) {
 			linkHighlightColor: '#3170a4',
 			coloredBackgroundTextColor: '#fff',
 			loginForegroundColor: '#3170a4',
-			loginBackgroundColor: '#5b97c9'
+			loginBackgroundColor: '#5b97c9',
+			siteLinkColor: '#444'
 		},
 		green: {
 			primaryColor: '#88b956',
@@ -20,7 +21,8 @@ module.exports = function (grunt) {
 			linkHighlightColor: '#49672b',
 			coloredBackgroundTextColor: '#333',
 			loginForegroundColor: '#8dc753',
-			loginBackgroundColor: '#719f42'
+			loginBackgroundColor: '#719f42',
+			siteLinkColor: '#444'
 		},
 		red: {
 			primaryColor: '#c42e10',
@@ -30,7 +32,8 @@ module.exports = function (grunt) {
 			linkHighlightColor: '#c42e10',
 			coloredBackgroundTextColor: '#fff',
 			loginForegroundColor: '#c42e10',
-			loginBackgroundColor: '#aa280e'
+			loginBackgroundColor: '#aa280e',
+			siteLinkColor: '#ff5959'
 		}
 	};
 

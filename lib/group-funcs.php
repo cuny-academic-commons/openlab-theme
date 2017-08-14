@@ -1432,7 +1432,7 @@ function openlab_bp_group_site_pages() {
 			<?php /* Abstract the displayed user id, so that this function works properly on my-* pages */ ?>
 			<?php $displayed_user_id = bp_is_user() ? bp_displayed_user_id() : bp_loggedin_user_id(); ?>
 
-			<div class="sidebar-block">
+			<div class="sidebar-block group-site-links">
 
 				<?php
 				$account_type = xprofile_get_field_data( 'Account Type', $displayed_user_id );
@@ -1451,7 +1451,6 @@ function openlab_bp_group_site_pages() {
 						<?php endif ?>
 					</ul>
 				<?php else : ?>
-
 					<ul class="sidebar-sublinks portfolio-sublinks inline-element-list">
 						<li class="portfolio-site-link">
 							<a class="bold no-deco" href="<?php echo trailingslashit( esc_attr( $group_site_settings['site_url'] ) ); ?>"><?php echo esc_html( $portfolio_group_type->get_label( 'visit_portfolio_site' ) ); ?><span class="fa fa-chevron-circle-right cyan-circle" aria-hidden="true"></span></a>
@@ -1462,7 +1461,7 @@ function openlab_bp_group_site_pages() {
 			</div>
 		<?php } else { ?>
 
-			<div class="sidebar-block">
+			<div class="sidebar-block group-site-links">
 				<ul class="sidebar-sublinks portfolio-sublinks inline-element-list">
 					<li class="portfolio-site-link">
 						<?php echo '<a class="bold no-deco" href="' . trailingslashit( esc_attr( $group_site_settings['site_url'] ) ) . '">Visit ' . ucwords( groups_get_groupmeta( bp_get_group_id(), 'wds_group_type' ) ) . ' Site <span class="fa fa-chevron-circle-right cyan-circle" aria-hidden="true"></span></a>'; ?>
