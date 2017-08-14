@@ -83,7 +83,7 @@ function openlab_group_sidebar( $mobile = false ) {
 		<div class="sidebar-widget sidebar-widget-wrapper" id="portfolio-sidebar-widget">
 			<h2 class="sidebar-header group-single top-sidebar-header">&nbsp;</h2>
 			<div class="wrapper-block">
-				<?php openlab_bp_group_site_pages(); ?>
+				<?php openlab_bp_group_site_pages( $mobile ); ?>
 			</div>
 			<div id="sidebar-menu-wrapper" class="sidebar-menu-wrapper wrapper-block">
 				<div id="item-buttons" class="profile-nav sidebar-block clearfix">
