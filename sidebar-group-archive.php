@@ -1,17 +1,9 @@
 <?php
 global $bp, $wp_query;
-$post_obj = $wp_query->get_queried_object();
 $group_type = bp_get_current_group_directory_type();
 $group_slug = $group_type . 's';
 
-//conditional for people archive sidebar
-if ( $group_type == 'not-archive' && $post_obj->post_title == 'People' ) {
-	$group_type = 'people';
-	$group_slug = $group_type;
-	$sidebar_title = 'Find People';
-} else {
-	$sidebar_title = 'Find a ' . ucfirst( $group_type );
-}
+$sidebar_title = __( 'Search', 'openlab-theme' );
 ?>
 
 <h2 class="sidebar-title"><?php echo $sidebar_title; ?></h2>
@@ -170,7 +162,7 @@ var OLAcadUnits = ' . wp_json_encode( $academic_unit_map ) . ';
 				?>
 
 				<?php // @todo figure out a way to make this dynamic ?>
-				<?php if ( $group_type == 'course' ) :  ?>
+				<?php if ( bp_is_groups_directory() && $group_type->is_course() ) :  ?>
 					<div class="custom-select">
 						<select name="semester" class="last-select <?php echo $semester_color; ?>-text">
 							<option value='' <?php selected( '', $option_value_semester ) ?>>Select Semester</option>
@@ -182,7 +174,7 @@ var OLAcadUnits = ' . wp_json_encode( $academic_unit_map ) . ';
 					</div>
 				<?php endif; ?>
 
-				<?php if ( $group_type == 'portfolio' || $post_obj->post_title == 'People' ) :  ?>
+				<?php if ( ( bp_is_groups_directory() && $group_type->is_portfolio() ) || bp_is_members_directory() ) :  ?>
 					<div class="custom-select">
 						<select name="usertype" class="last-select <?php echo $user_color; ?>-text">
 							<option value='' <?php selected( '', $option_value_user_type ) ?>>Select User Type</option>
