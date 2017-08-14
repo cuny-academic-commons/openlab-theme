@@ -79,9 +79,14 @@ if ( isset( $_GET['member_type'] ) ) {
 			break;
 	}
 
-	$academic_unit_types = cboxol_get_academic_unit_types( array(
-		'group_type' => bp_get_current_group_directory_type(),
-	) );
+	$unit_type_args = array();
+	if ( bp_is_groups_directory() ) {
+		$unit_type_args['group_type'] = bp_get_current_group_directory_type();
+	} elseif ( bp_is_members_directory() && $member_type_slug ) {
+		$unit_type_args['member_type'] = $member_type_slug;
+	}
+
+	$academic_unit_types = cboxol_get_academic_unit_types( $unit_type_args );
 
 	$academic_unit_map = cboxol_get_academic_unit_map();
 	echo '<script type="text/javascript">/* <![CDATA[ */
