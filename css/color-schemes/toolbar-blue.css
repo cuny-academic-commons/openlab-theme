@@ -7592,7 +7592,7 @@ button.oplb-bs .close {
   color: #444444;
 }
 .oplb-bs .search .search-trigger-wrapper:hover {
-  color: #49cabe;
+  color: #000;
 }
 .oplb-bs .search .search-trigger-wrapper .search-trigger {
   display: block;
@@ -7617,7 +7617,7 @@ button.oplb-bs .close {
   z-index: 999999;
 }
 .oplb-bs .search .search-trigger-wrapper.search-live span {
-  color: #49cabe;
+  color: #000;
 }
 @media (max-width: 767px) {
   .oplb-bs .search .search-trigger-wrapper span {
