@@ -267,7 +267,7 @@ function openlab_members_sidebar_blocks( $mobile_hide = false ) {
 
 	if ( is_user_logged_in() && openlab_is_my_profile() ) :
 		?>
-		<h2 class="sidebar-header top-sidebar-header hidden-xs">My OpenLab</h2>
+		<h2 class="sidebar-header top-sidebar-header hidden-xs"><?php esc_html_e( 'My Profile', 'openlab-theme' ); ?></h2>
 	<?php else : ?>
 		<h2 class="sidebar-header top-sidebar-header hidden-xs">Member Profile</h2>
 	<?php endif; ?>
