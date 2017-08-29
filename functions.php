@@ -479,24 +479,6 @@ function openlab_profile_field_input_attributes() {
 }
 
 /**
- * Get the URL for the group type directory for a user.
- *
- * @param \CBOX\OL\GroupType $group_type Group type object.
- * @param int                $user_id    Optional. Defaults to displayed user.
- * @return string
- */
-function openlab_get_user_group_type_directory_url( \CBOX\OL\GroupType $group_type, $user_id = null ) {
-	if ( ! $user_id ) {
-		$user_id = bp_displayed_user_id();
-	}
-
-	$url = bp_core_get_user_domain( $user_id ) . bp_get_groups_slug() . '/';
-	$url = add_query_arg( 'group_type', $group_type->get_slug(), $url );
-
-	return $url;
-}
-
-/**
  * Fetch the sitewide footer markup, storing in a transient if necessary.
  */
 function openlab_site_footer() {

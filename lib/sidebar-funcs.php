@@ -178,7 +178,7 @@ function openlab_member_sidebar_menu( $mobile = false ) {
 						$selected = 'selected-page';
 					}
 					?>
-					<li class="sq-bullet <?php echo $selected ?> mol-courses my-<?php echo esc_attr( $group_type->get_slug() ) ?>"><a href="<?php echo openlab_get_user_group_type_directory_url( $group_type ) ?>"><?php echo esc_html( $group_type->get_label( 'my_groups' ) ) ?></a></li>
+					<li class="sq-bullet <?php echo $selected ?> mol-courses my-<?php echo esc_attr( $group_type->get_slug() ) ?>"><a href="<?php echo cboxol_get_user_group_type_directory_url( $group_type ) ?>"><?php echo esc_html( $group_type->get_label( 'my_groups' ) ) ?></a></li>
 				<?php endforeach; ?>
 
 				<?php /* Get a friend request count */ ?>
@@ -239,7 +239,7 @@ function openlab_member_sidebar_menu( $mobile = false ) {
 				<?php endif; ?>
 
 				<?php foreach ( $group_types as $group_type ) : ?>
-					<li class="sq-bullet <?php if ( bp_is_user_groups() && $group_type->get_slug() === $current_group_type ) : ?>selected-page<?php endif ?> mol-courses"><a href="<?php echo openlab_get_user_group_type_directory_url( $group_type, bp_displayed_user_id() ) ?>"><?php echo esc_html( $group_type->get_label( 'plural' ) ); ?></a></li>
+					<li class="sq-bullet <?php if ( bp_is_user_groups() && $group_type->get_slug() === $current_group_type ) : ?>selected-page<?php endif ?> mol-courses"><a href="<?php echo cboxol_get_user_group_type_directory_url( $group_type, bp_displayed_user_id() ) ?>"><?php echo esc_html( $group_type->get_label( 'plural' ) ); ?></a></li>
 				<?php endforeach; ?>
 
 				<li class="sq-bullet <?php if ( bp_is_user_friends() ) : ?>selected-page<?php endif ?> mol-friends"><a href="<?php echo $dud . bp_get_friends_slug() ?>/">Friends</a></li>
