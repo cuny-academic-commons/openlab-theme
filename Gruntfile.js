@@ -33,7 +33,7 @@ module.exports = function (grunt) {
 			coloredBackgroundTextColor: '#fff',
 			loginForegroundColor: '#c42e10',
 			loginBackgroundColor: '#aa280e',
-			siteLinkColor: '#ff5959'
+			siteLinkColor: '#444'
 		}
 	};
 
