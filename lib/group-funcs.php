@@ -1154,7 +1154,9 @@ function openlab_current_directory_filters() {
 		$academic_unit_types = cboxol_get_academic_unit_types();
 	} else {
 		$current_view = bp_get_current_group_directory_type();
-		$academic_unit_types = cboxol_get_academic_unit_types( $current_view );
+		$academic_unit_types = cboxol_get_academic_unit_types( array(
+			'group_type' => $current_view,
+		) );
 		$group_type = cboxol_get_group_type( $current_view );
 	}
 
