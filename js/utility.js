@@ -1,10 +1,12 @@
 (function ($) {
 
     if (window.OpenLab === undefined) {
-        var OpenLab = {};
+        window.OpenLab = {};
     }
 
     var resizeTimer, select2args;
+
+		var OpenLab = window.OpenLab;
 
     OpenLab.utility = {
         newMembers: {},
