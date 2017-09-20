@@ -1116,64 +1116,31 @@ add_filter( 'paginate_links', 'openlab_group_pagination_search_key' );
 // DIRECTORY FILTERS   //
 //
 /**
- * Get an array describing some details about filters
- *
- * This is the master function where filter data should be stored
+ * Get breadcrumb text for a filter parameter in a directory.
  */
-function openlab_get_directory_filter( $filter_type, $label_type ) {
-	$filter_array = array(
-		'type' => $filter_type,
-		'label' => '',
-		'options' => array(),
-	);
+function openlab_get_directory_filter( $filter_type, $filter_value ) {
+	$filter_label = '';
 
-	switch ( $filter_type ) {
-		case 'school' :
-			$filter_array['label'] = 'School';
-			$filter_array['options'] = array(
-				'school_all' => 'All',
-			);
-
-			foreach ( openlab_get_school_list() as $school_key => $school_label ) {
-				$filter_array['options'][ $school_key ] = $school_label;
-			}
-
-			break;
-
-		case 'department' :
-			$filter_array['label'] = 'Department';
-			$filter_array['options'] = array(
-				'dept_all' => 'All',
-			);
-
-			foreach ( openlab_get_department_list( '', 'short' ) as $depts ) {
-				foreach ( $depts as $dept_key => $dept_label ) {
-					$filter_array['options'][ $dept_key ] = $dept_label;
-				}
-			}
-
-			break;
-
-		case 'user_type' :
-			$filter_array['label'] = 'User Type';
-			$filter_array['options'] = array(
-				'user_type_all' => 'All',
-				'student' => 'Student',
-				'faculty' => 'Faculty',
-				'staff' => 'Staff',
-			);
-			break;
-
-		case 'semester' :
-			$filter_array['label'] = 'Semester';
-			$filter_array['options'] = array();
-			foreach ( openlab_get_active_semesters() as $sem ) {
-				$filter_array['options'][ $sem['option_value'] ] = $sem['option_label'];
-			}
-			break;
+	if ( 0 === strpos( $filter_type, 'academic-unit-' ) ) {
+		$academic_unit = cboxol_get_academic_unit( $filter_value );
+		if ( ! is_wp_error( $academic_unit ) ) {
+			$filter_label = $academic_unit->get_name();
+		}
+	} elseif ( 'member_type' === $filter_type ) {
+		$member_type = cboxol_get_member_type( $filter_value );
+		if ( ! is_wp_error( $member_type ) ) {
+			$filter_label = $member_type->get_label( 'singular' );
+		}
+	} elseif ( 'cat' === $filter_type ) {
+		$term_obj = get_term_by( 'slug', $filter_value, 'bp_group_categories' );
+		if ( $term_obj ) {
+			$filter_label = $term_obj->name;
+		}
 	}
 
-	return $filter_array;
+	// @todo academic term
+
+	return $filter_label;
 }
 
 /**
@@ -1182,39 +1149,36 @@ function openlab_get_directory_filter( $filter_type, $label_type ) {
 function openlab_current_directory_filters() {
 	$filters = array();
 
-	if ( is_page( 'people' ) ) {
+	if ( bp_is_members_directory() ) {
 		$current_view = 'people';
+		$academic_unit_types = cboxol_get_academic_unit_types();
 	} else {
 		$current_view = bp_get_current_group_directory_type();
+		$academic_unit_types = cboxol_get_academic_unit_types( $current_view );
+		$group_type = cboxol_get_group_type( $current_view );
 	}
 
 	switch ( $current_view ) {
-		case 'portfolio' :
-			$filters = array( 'school', 'department', 'usertype' );
-			break;
-
-		case 'course' :
-
-			$filters = array( 'school', 'department', 'semester' );
-			break;
-
-		case 'club' :
-		case 'project' :
-			$filters = array( 'school', 'department', 'cat', 'semester' );
-			break;
-
 		case 'people' :
-			$filters = array( 'usertype', 'school', 'department' );
+			$filters = array( 'member_type' );
 			break;
 
 		default :
+			$filters = array( 'cat', 'semester' );
+			if ( $group_type->is_portfolio() ) {
+				$filters[] = 'member_type';
+			}
 			break;
+	}
+
+	foreach ( $academic_unit_types as $academic_unit_type ) {
+		$filters[] = 'academic-unit-' . $academic_unit_type->get_slug();
 	}
 
 	$active_filters = array();
 	foreach ( $filters as $f ) {
-		if ( ! empty( $_GET[ $f ] ) && ! (strpos( $_GET[ $f ], '_all' )) ) {
-			$active_filters[ $f ] = $_GET[ $f ];
+		if ( ! empty( $_GET[ $f ] ) && ! ( strpos( $_GET[ $f ], '_all' ) ) ) {
+			$active_filters[ $f ] = wp_unslash( $_GET[ $f ] );
 		}
 	}
 
@@ -1224,31 +1188,11 @@ function openlab_current_directory_filters() {
 
 		$filter_words = array();
 		foreach ( $active_filters as $ftype => $fvalue ) {
-			$filter_data = openlab_get_directory_filter( $ftype, 'short' );
-
-			$word = isset( $filter_data['options'][ $fvalue ] ) ? $filter_data['options'][ $fvalue ] : ucwords( $fvalue );
-
-			// dump hyphens from semester values
-			if ( $filter_data['type'] == 'semester' ) {
-				$word = str_replace( '-', ' ', $word );
+			$word = openlab_get_directory_filter( $ftype, $fvalue );
+			if ( $word ) {
+				$filter_words[] = $word;
 			}
-
-			// for group categories
-			if ( $filter_data['type'] == 'cat' ) {
-
-				$term_obj = get_term_by( 'slug', $word, 'bp_group_categories' );
-
-				if ( $term_obj ) {
-					$word = $term_obj->name;
-				} else {
-					$word = 'All';
-				}
-			}
-
-			// Leave out the 'All's
-			if ( 'All' != $word ) {
-				$filter_words[] = '<span>' . $word . '</span>';
-			}
+			continue;
 		}
 
 		$markup .= implode( '<span class="sep">&nbsp;&nbsp;|&nbsp;&nbsp;</span>', $filter_words );
