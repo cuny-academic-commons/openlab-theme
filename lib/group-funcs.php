@@ -836,7 +836,9 @@ function openlab_group_profile_activity_list() {
 													// Oh, bbPress.
 													$last_reply = get_post( $last_reply_id );
 													if ( ! empty( $last_reply->post_content ) ) {
-														$last_topic_content = wds_content_excerpt( strip_tags( $last_reply->post_content ), 250 );
+														$last_topic_content = bp_create_excerpt( strip_tags( $last_reply->post_content ), 250, array(
+															'ending' => '',
+														) );
 													}
 													?>
 
@@ -877,7 +879,7 @@ function openlab_group_profile_activity_list() {
 										while ( $query->have_posts() ) : $query->the_post();
 											?>
 											<div class="panel panel-default"><div class="panel-body">
-													<?php echo openlab_get_group_activity_content( get_the_title(), wds_content_excerpt( strip_tags( $post->post_content ), 250 ), site_url() . '/groups/' . $group_slug . '/docs/' . $post->post_name ); ?>
+													<?php echo openlab_get_group_activity_content( get_the_title(), bp_create_excerpt( strip_tags( $post->post_content ), 250, array( 'ending' => '' ) ), site_url() . '/groups/' . $group_slug . '/docs/' . $post->post_name ); ?>
 												</div></div>
 											<?php
 										endwhile;
