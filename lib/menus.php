@@ -104,6 +104,27 @@ function openlab_modify_options_nav() {
 			'name' => 'Settings',
 		), 'admin', bp_get_current_group_slug() );
 
+		$files_item = buddypress()->groups->nav->get_secondary( array(
+			'slug' => 'documents',
+			'parent_slug' => bp_get_current_group_slug(),
+		) );
+
+		if ( $files_item ) {
+			if ( preg_match( '/<span>([0-9]+)<\/span>/', reset( $files_item )['name'], $matches ) ) {
+				$files_name = sprintf(
+					/* translators: 1. count span */
+					__( 'Files %1$s', 'openlab-theme' ),
+					sprintf( '<span class="mol-count pull-right count-%d gray">%d</span>', $matches[1], $matches[1] )
+				);
+			} else {
+				$files_name = __( 'Files', 'openlab-theme' );
+			}
+
+			buddypress()->groups->nav->edit_nav( array(
+				'name' => $files_name,
+			), 'documents', bp_get_current_group_slug() );
+		}
+
 		$nav_items = buddypress()->groups->nav->get_secondary( array( 'parent_slug' => bp_get_current_group_slug() ) );
 		$current_group = groups_get_current_group();
 
