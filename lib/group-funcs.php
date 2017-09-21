@@ -252,12 +252,12 @@ function openlab_group_archive() {
 							<div class="item col-xs-18">
 
 								<p class="item-title h2">
-									<a class="no-deco truncate-on-the-fly hyphenate" href="<?php bp_group_permalink() ?>" data-basevalue="<?php echo ($group_type == 'course' ? 50 : 65 ) ?>" data-minvalue="20" data-basewidth="290"><?php bp_group_name() ?></a>
+									<a class="no-deco truncate-on-the-fly hyphenate" href="<?php bp_group_permalink() ?>" data-basevalue="<?php echo ( $group_type->get_is_course() ? 50 : 65 ) ?>" data-minvalue="20" data-basewidth="290"><?php bp_group_name() ?></a>
 									<span class="original-copy hidden"><?php bp_group_name() ?></span>
 								</p>
 								<?php
 								// course group type
-								if ( $group_type == 'course' ) :
+								if ( $group_type->get_is_course() ) :
 									?>
 
 									<div class="info-line uppercase">
@@ -1336,18 +1336,20 @@ function openlab_show_site_posts_and_comments() {
 function openlab_output_course_info_line( $group_id ) {
 	$infoline_mup = '';
 
-	$admins = groups_get_group_admins( $group_id );
-	$wds_faculty = openlab_get_faculty_list();
-	$wds_course_code = groups_get_groupmeta( $group_id, 'wds_course_code' );
-	$wds_semester = groups_get_groupmeta( $group_id, 'wds_semester' );
-	$wds_year = groups_get_groupmeta( $group_id, 'wds_year' );
-	$wds_departments = openlab_shortened_text( groups_get_groupmeta( $group_id, 'wds_departments' ), 15, false );
+	$course_code = groups_get_groupmeta( $group_id, 'cboxol_course_code' );
+//	$wds_semester = groups_get_groupmeta( $group_id, 'wds_semester' );
+//	$wds_year = groups_get_groupmeta( $group_id, 'wds_year' );
+	$academic_units = cboxol_get_object_academic_units( array(
+		'object_id' => $group_id,
+		'object_type' => 'group',
+	) );
 
 	$infoline_elems = array();
 
-	if ( openlab_not_empty( $wds_faculty ) ) {
-		array_push( $infoline_elems, $wds_faculty );
+	foreach ( $academic_units as $academic_unit ) {
+		_b( $academic_unit );
 	}
+
 	if ( openlab_not_empty( $wds_departments ) ) {
 		array_push( $infoline_elems, $wds_departments );
 	}
