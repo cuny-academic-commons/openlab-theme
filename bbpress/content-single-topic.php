@@ -90,6 +90,7 @@
         $last_topic_index = end($group_topics->posts);
 
         $prev_url = $next_url = '';
+		$prev_link = $next_link = '';
 
         // Previous is +1.
         if ($this_topic_index < $last_topic_index) {
