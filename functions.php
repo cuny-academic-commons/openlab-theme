@@ -25,9 +25,19 @@ function openlab_core_setup() {
 add_action( 'after_setup_theme', 'openlab_core_setup' );
 
 function openlab_maybe_install() {
+	if ( defined( 'DOING_AJAX' ) ) {
+		return;
+	}
+
 	if ( get_option( 'openlab_theme_installed' ) ) {
 		return;
 	}
+
+	if ( get_option( 'cboxol_installing' ) ) {
+		return;
+	}
+
+	openlab_register_sidebars();
 
 	// Set flag early to prevent dupes.
 	update_option( 'openlab_theme_installed', time() );
