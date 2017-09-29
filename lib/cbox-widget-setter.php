@@ -26,7 +26,8 @@ class CBox_Widget_Setter {
 		}
 
 		$sidebars = wp_get_sidebars_widgets();
-		$sidebar = (array) $sidebars[ $sidebar_id ];
+
+		$sidebar = isset( $sidebar[ $sidebar_id ] ) ? $sidebars[ $sidebar_id ] : array();
 
 		// Multi-widgets can only be detected by looking at their settings
 		$option_name  = 'widget_' . $id_base;
