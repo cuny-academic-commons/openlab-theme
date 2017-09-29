@@ -3391,7 +3391,7 @@ fieldset[disabled] .oplb-bs .btn-default.active {
 .oplb-bs .btn-default:active,
 .oplb-bs .btn-default.active,
 .open > .dropdown-toggle.oplb-bs .btn-default {
-  color: #63dfd2;
+  color: #98d0ff;
   background-color: #e6e6e6;
   border-color: #adadad;
 }
@@ -3468,7 +3468,7 @@ fieldset[disabled] .oplb-bs .btn-primary.active {
 .oplb-bs .btn-primary:active,
 .oplb-bs .btn-primary.active,
 .open > .dropdown-toggle.oplb-bs .btn-primary {
-  color: #63dfd2;
+  color: #98d0ff;
   background-color: #2b2b2b;
   border-color: #191919;
 }
@@ -3545,7 +3545,7 @@ fieldset[disabled] .oplb-bs .btn-success.active {
 .oplb-bs .btn-success:active,
 .oplb-bs .btn-success.active,
 .open > .dropdown-toggle.oplb-bs .btn-success {
-  color: #63dfd2;
+  color: #98d0ff;
   background-color: #449d44;
   border-color: #398439;
 }
@@ -3622,7 +3622,7 @@ fieldset[disabled] .oplb-bs .btn-info.active {
 .oplb-bs .btn-info:active,
 .oplb-bs .btn-info.active,
 .open > .dropdown-toggle.oplb-bs .btn-info {
-  color: #63dfd2;
+  color: #98d0ff;
   background-color: #31b0d5;
   border-color: #269abc;
 }
@@ -3699,7 +3699,7 @@ fieldset[disabled] .oplb-bs .btn-warning.active {
 .oplb-bs .btn-warning:active,
 .oplb-bs .btn-warning.active,
 .open > .dropdown-toggle.oplb-bs .btn-warning {
-  color: #63dfd2;
+  color: #98d0ff;
   background-color: #ec971f;
   border-color: #d58512;
 }
@@ -3776,7 +3776,7 @@ fieldset[disabled] .oplb-bs .btn-danger.active {
 .oplb-bs .btn-danger:active,
 .oplb-bs .btn-danger.active,
 .open > .dropdown-toggle.oplb-bs .btn-danger {
-  color: #63dfd2;
+  color: #98d0ff;
   background-color: #c9302c;
   border-color: #ac2925;
 }
