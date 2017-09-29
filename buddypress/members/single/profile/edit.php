@@ -152,8 +152,14 @@ $field_ids = array( 1 );
 
 				<?php endwhile; ?>
 
-				<?php echo cboxol_get_academic_unit_selector( array(
-					'member_type' => $member_type->get_slug(),
+				<?php
+				$member_type_slug = '';
+				if ( ! is_wp_error( $member_type ) ) {
+					$member_type_slug = $member_type->get_slug();
+				}
+				echo cboxol_get_academic_unit_selector( array(
+					'entity_type' => 'user',
+					'member_type' => $member_type_slug,
 					'selected' => $selected_academic_units,
 				) ); ?>
 
@@ -167,7 +173,10 @@ $field_ids = array( 1 );
 				<?php if ( $selectable_types ) : ?>
 					<label for="member-type"><?php esc_html_e( 'Member Type', 'openlab' ); ?></label>
 					<select id="member-type" name="member-type" class="form-control">
-						<?php foreach ( $selectable_types as $selectable_type ) : ?>
+						<?php foreach ( $selectable_types as $selectable_type ) :
+							if ( is_wp_error( $selectable_type ) ) {
+								continue;
+							} ?>
 							<option value="<?php echo esc_attr( $selectable_type->get_slug() ); ?>" <?php selected( $current_type, $selectable_type->get_slug() ); ?>><?php echo esc_html( $selectable_type->get_label( 'singular' ) ); ?></option>
 						<?php endforeach; ?>
 					</select>
