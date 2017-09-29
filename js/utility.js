@@ -527,7 +527,7 @@
 				var thisParent = $thisFilter.data( 'parent' );
 
 				// Enable items with no parent, or those with a selected parent.
-				if ( thisParent.length === 0 || -1 !== selectedSlugs.indexOf( thisParent ) ) {
+				if ( 'undefined' === typeof thisParent || thisParent.length === 0 || -1 !== selectedSlugs.indexOf( thisParent ) ) {
 					$thisFilter.prop( 'disabled', false );
 					if ( $thisFilter.hasClass( 'academic-unit-nonempty' ) ) {
 						$thisFilter.addClass( 'academic-unit-enabled' );
