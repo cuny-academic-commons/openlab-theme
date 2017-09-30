@@ -1348,10 +1348,6 @@ function openlab_output_course_info_line( $group_id ) {
 
 	$infoline_elems = array();
 
-	foreach ( $academic_units as $academic_unit ) {
-		_b( $academic_unit );
-	}
-
 	if ( openlab_not_empty( $wds_departments ) ) {
 		array_push( $infoline_elems, $wds_departments );
 	}
