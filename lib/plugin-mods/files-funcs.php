@@ -28,8 +28,9 @@ function openlab_get_files_count() {
 	$page = 1;
 
 	$group_id = bp_get_group_id();
+	$table = BP_GROUP_DOCUMENTS_TABLE;
 
-	$sql = "SELECT COUNT(*) FROM {$bp->group_documents->table_name} WHERE group_id = %d ";
+	$sql = "SELECT COUNT(*) FROM {$table} WHERE group_id = %d ";
 
 	$total_records = $wpdb->get_var( $wpdb->prepare( $sql, $group_id ) );
 

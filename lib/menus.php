@@ -949,7 +949,7 @@ function openlab_group_submenu_nav() {
 		'admin' => 11,
 		'nav-forum' => 25,
 		'members' => 35,
-		'files' => 60,
+		BP_GROUP_DOCUMENTS_SLUG => 60,
 	);
 
 	foreach ( $positions as $slug => $position ) {
