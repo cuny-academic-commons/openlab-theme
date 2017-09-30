@@ -1130,3 +1130,15 @@ function openlab_translate_all_member_type_filter( $r ) {
 	return $r;
 }
 add_filter( 'bp_after_has_members_parse_args', 'openlab_translate_all_member_type_filter' );
+
+/**
+ * Hide profile group tabs if there's only one to show.
+ */
+function openlab_hide_single_profile_group_tab( $tabs ) {
+	if ( 1 === count( $tabs ) ) {
+		return array();
+	}
+
+	return $tabs;
+}
+add_filter( 'xprofile_filter_profile_group_tabs', 'openlab_hide_single_profile_group_tab' );
