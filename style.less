@@ -303,7 +303,12 @@ input[type="submit"]{
 .btn-default {
 	&:hover {
 		color: #333;
+
+		&.btn-primary {
+			color: @lightHighlight;
+		}
 	}
+
 }
 .form-inline{
     &.btn-combo{
@@ -1790,6 +1795,10 @@ body form{
 			a,
 			.fa.cyan-circle {
 				color: #fff;
+			}
+
+			&:hover a, &:hover .fa.cyan-circle {
+				color: @lightHighlight;
 			}
 		}
         &.activity-block{
