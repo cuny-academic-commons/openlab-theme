@@ -20,7 +20,7 @@ global $bp, $wp_query;
 						<?php openlab_docs_tabs(); ?>
 					</ul>
 
-				<?php elseif ( $bp->current_action == 'files' ) :  ?>
+				<?php elseif ( $bp->current_action == BP_GROUP_DOCUMENTS_SLUG ) :  ?>
 
 					<div class="row">
 						<div class="submenu col-sm-17">

@@ -24,6 +24,7 @@
 							<?php } ?>
 						</select>
 						<input type="submit" class="button" value="<?php echo __( 'Go', 'bp-group-documents' ); ?>" />
+						<?php wp_nonce_field( 'bp_group_document_save_' . $template->operation, 'bp_group_document_save' ); ?>
 					</form>
 				</div>
 			<?php } ?>
@@ -184,6 +185,7 @@
 							</div><!-- .bp-group-documents-category-wrapper -->
 						<?php } ?>
 
+						<?php wp_nonce_field( 'bp_group_document_save_' . $template->operation, 'bp_group_document_save' ); ?>
 					</form>
 
 				</div>
