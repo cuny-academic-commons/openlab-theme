@@ -131,8 +131,8 @@ var OLAcadUnits = ' . wp_json_encode( $academic_unit_map ) . ';
 
 							<div class="custom-select">
 								<select name="cat" class="last-select <?php echo $bpcgc_color; ?>-text" id="bp-group-categories-select">
-									<option value="" <?php selected( '', $option_value_bpcgc ) ?>>Select Category</option>
-									<option value='cat_all' <?php selected( 'cat_all', $option_value_bpcgc ) ?>>All</option>
+									<option value="" <?php selected( '', $option_value_bpcgc ) ?>><?php esc_html_e( 'Category', 'openlab-theme' ); ?></option>
+									<option value='cat_all' <?php selected( 'cat_all', $option_value_bpcgc ) ?>><?php esc_html_e( 'All', 'openlab-theme' ); ?></option>
 									<?php foreach ( $group_terms as $term ) : ?>
 										<option value="<?php echo $term->slug ?>" <?php selected( $option_value_bpcgc, $term->slug ) ?>><?php echo $term->name ?></option>
 									<?php endforeach; ?>
@@ -160,7 +160,7 @@ var OLAcadUnits = ' . wp_json_encode( $academic_unit_map ) . ';
 				<?php if ( ( bp_is_groups_directory() && $group_type_object->is_portfolio() ) || bp_is_members_directory() ) :  ?>
 					<div class="custom-select">
 						<select name="member_type" class="last-select <?php echo $user_color; ?>-text">
-							<option value='' <?php selected( '', $member_type_slug ) ?>><?php esc_html_e( 'Select User Type', 'openlab-theme' ); ?></option>
+							<option value='' <?php selected( '', $member_type_slug ) ?>><?php esc_html_e( 'User Type', 'openlab-theme' ); ?></option>
 							<?php foreach ( cboxol_get_member_types() as $member_type ) : ?>
 								<option value='<?php echo esc_attr( $member_type->get_slug() ); ?>' <?php selected( $member_type->get_slug(), $member_type_slug ) ?>><?php echo esc_html( $member_type->get_label( 'singular' ) ); ?></option>
 							<?php endforeach; ?>
