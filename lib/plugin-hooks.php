@@ -46,6 +46,12 @@ add_filter( 'bp_docs_do_theme_compat', '__return_false' );
 
 /**
  * Plugin: BuddyPress Docs
+ * Disable group creation step.
+ */
+add_filter( 'bp_docs_force_enable_at_group_creation', '__return_true' );
+
+/**
+ * Plugin: BuddyPress Docs
  * Overriding the BP Docs header file to clean up sub menus
  *
  * @param type $menu_template
