@@ -557,9 +557,7 @@ function cuny_group_single() {
 						/* @todo */
 						$course_code = groups_get_groupmeta( $group_id, 'cboxol_course_code' );
 						$section_code = groups_get_groupmeta( $group_id, 'cboxol_section_code' );
-						$semester = groups_get_groupmeta( $group_id, 'cboxol_term' );
-						$year = groups_get_groupmeta( $group_id, 'cboxol_year' );
-						$wds_departments = groups_get_groupmeta( $group_id, 'wds_departments' );
+						$term = openlab_get_group_term( $group_id );
 						?>
 						<div class="table-div">
 							<?php
@@ -601,10 +599,12 @@ function cuny_group_single() {
 								<div class="bold col-sm-7"><?php echo esc_html( $group_type->get_label( 'section_code' ) ); ?></div>
 								<div class="col-sm-17 row-content"><?php echo esc_html( $section_code ); ?></div>
 							</div>
-							<div class="table-row row">
-								<div class="bold col-sm-7"><?php esc_html_e( 'Semester / Year', 'openlab-theme' ); ?></div>
-								<div class="col-sm-17 row-content"><?php echo $semester; ?> <?php echo $year; ?></div>
-							</div>
+							<?php if ( $term ) : ?>
+								<div class="table-row row">
+									<div class="bold col-sm-7"><?php esc_html_e( 'Semester / Year', 'openlab-theme' ); ?></div>
+									<div class="col-sm-17 row-content"><?php echo esc_html( $term ); ?></div>
+								</div>
+							<?php endif; ?>
 							<?php if ( function_exists( 'bpcgc_get_group_selected_terms' ) ) : ?>
 								<?php if ( $group_terms = bpcgc_get_group_selected_terms( $group_id, true ) ) : ?>
 									<div class="table-row row">
