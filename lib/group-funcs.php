@@ -2124,6 +2124,11 @@ function openlab_get_default_group_term() {
 }
 
 function openlab_group_term_edit_markup() {
+	// Only show for courses.
+	$group_type = cboxol_get_group_group_type( bp_get_current_group_id() );
+	if ( is_wp_error( $group_type ) || ! $group_type->get_is_course() ) {
+		return;
+	}
 	$term = openlab_get_group_term( bp_get_current_group_id() );
 	if ( ! $term ) {
 		$term = openlab_get_default_group_term();
