@@ -55,6 +55,19 @@ function openlab_page_crumb_overrides( $crumb, $args ) {
 
 	$crumb = '';
 
+	if ( bp_is_groups_directory() ) {
+		$group_type_slug = bp_get_current_group_directory_type();
+		$group_type = cboxol_get_group_type( $group_type_slug );
+		if ( ! is_wp_error( $group_type ) ) {
+			$type_directory_url = bp_get_group_type_directory_permalink( $group_type->get_slug() );
+			$crumb = sprintf(
+				'<a href="%s">%s</a>',
+				esc_url( $type_directory_url ),
+				esc_html( $group_type->get_label( 'plural' ) )
+			);
+		}
+	}
+
 	if ( bp_is_group() && ! bp_is_group_create() ) {
 		$group = groups_get_current_group();
 
