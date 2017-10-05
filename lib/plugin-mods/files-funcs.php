@@ -74,3 +74,18 @@ function openlab_bp_group_documents_custom_pagination_links( $template ) {
 
 	return $legacy_pag;
 }
+
+/**
+ * Disables the bp-group-documents step in the group creation process.
+ *
+ * This is a hack based on the fact that bp-group-documents doesn't show the
+ * step if mods are not allowed to configure this setting.
+ */
+function openlab_disable_bp_group_documents_group_creation_step( $value ) {
+	if ( ! bp_is_group_create() ) {
+		return $value;
+	}
+
+	return '';
+}
+add_filter( 'option_bp_group_documents_upload_permission', 'openlab_disable_bp_group_documents_group_creation_step' );
