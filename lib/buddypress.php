@@ -53,10 +53,19 @@ function openlab_bp_enqueue_scripts() {
 function openlab_page_crumb_overrides( $crumb, $args ) {
 	global $post, $bp;
 
-	if ( bp_is_group() && ! bp_is_group_create() ) {
+	$crumb = '';
 
-		$group_type = openlab_get_group_type();
-		$crumb = '<a href="' . site_url() . '/' . $group_type . 's/">' . ucfirst( $group_type ) . 's</a> / ' . bp_get_group_name();
+	if ( bp_is_group() && ! bp_is_group_create() ) {
+		$group = groups_get_current_group();
+
+		$group_type = cboxol_get_group_group_type( $group->id );
+		$type_directory_url = '';
+		if ( ! is_wp_error( $group_type ) ) {
+			$type_directory_url = bp_get_group_type_directory_permalink( $group_type->get_slug() );
+			if ( $type_directory_url ) {
+				$crumb = '<a href="' . esc_url( $type_directory_url ) . '">' . $group_type->get_label( 'plural' ) . '</a> / ' . esc_html( $group->name );
+			}
+		}
 	}
 
 	if ( bp_is_user() ) {
