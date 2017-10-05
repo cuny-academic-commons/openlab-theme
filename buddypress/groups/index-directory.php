@@ -13,7 +13,7 @@ $type_object = cboxol_get_group_type( $type );
 			<h1 class="entry-title"><?php echo esc_html( $type_object->get_label( 'plural' ) ); ?><button data-target="#sidebar" data-backgroundonly="true" class="mobile-toggle direct-toggle pull-right visible-xs" type="button"><span class="fa fa-binoculars"></span></button></h1>
 
 			<div class="entry-content">
-				<?php openlab_group_archive(); ?>
+				<?php bp_get_template_part( 'groups/groups-loop' ); ?>
 			</div><!--entry-content-->
 		</div><!--hentry-->
 	</div>
