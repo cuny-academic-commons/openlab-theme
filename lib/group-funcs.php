@@ -593,11 +593,6 @@ function cuny_group_single() {
 								<div class="bold col-sm-7"><?php esc_html_e( 'Professor(s)', 'openlab-theme' ); ?></div>
 								<div class="col-sm-17 row-content"><?php echo openlab_get_faculty_list() ?></div>
 							</div>
-							<?php /* @todo This will change with Academic Units */ ?>
-							<div class="table-row row">
-								<div class="bold col-sm-7"><?php esc_html_e( 'Department', 'openlab-theme' ); ?></div>
-								<div class="col-sm-17 row-content"><?php echo $wds_departments; ?></div>
-							</div>
 							<div class="table-row row">
 								<div class="bold col-sm-7"><?php echo esc_html( $group_type->get_label( 'course_code' ) ); ?></div>
 								<div class="col-sm-17 row-content"><?php echo esc_html( $course_code ); ?></div>
