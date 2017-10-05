@@ -1109,31 +1109,67 @@ function openlab_show_site_posts_and_comments() {
 	}
 }
 
+/**
+ * Generates the info line that appears under group names in directories.
+ *
+ * @param int $group_id ID of the group.
+ * @return string
+ */
 function openlab_output_course_info_line( $group_id ) {
 	$infoline_mup = '';
 
+	$group_type = cboxol_get_group_group_type( $group_id );
+	if ( is_wp_error( $group_type ) ) {
+		return '';
+	}
+
 	$course_code = groups_get_groupmeta( $group_id, 'cboxol_course_code' );
-//	$wds_semester = groups_get_groupmeta( $group_id, 'wds_semester' );
-//	$wds_year = groups_get_groupmeta( $group_id, 'wds_year' );
+	$term = openlab_get_group_term( $group_id );
+
 	$academic_units = cboxol_get_object_academic_units( array(
 		'object_id' => $group_id,
 		'object_type' => 'group',
 	) );
 
-	$infoline_elems = array();
+	// We only care about units from "node" types - those that have no children.
+	$academic_unit_types = cboxol_get_academic_unit_types( array(
+		'group_type' => $group_type->get_slug(),
+	) );
+	$parent_types = array();
+	foreach ( $academic_unit_types as $academic_unit_type ) {
+		$parent = $academic_unit_type->get_parent();
+		if ( ! $parent ) {
+			continue;
+		}
+		$parent_types[ $parent ] = true;
+	}
 
-	/*
-	if ( openlab_not_empty( $wds_departments ) ) {
-		array_push( $infoline_elems, $wds_departments );
+	$node_types = array();
+	foreach ( $academic_unit_types as $academic_unit_type ) {
+		$slug = $academic_unit_type->get_slug();
+		if ( isset( $parent_types[ $slug ] ) ) {
+			continue;
+		}
+		$node_types[ $slug ] = 1;
 	}
-	if ( openlab_not_empty( $wds_course_code ) ) {
-		array_push( $infoline_elems, $wds_course_code );
+
+	$infoline_elems = array();
+	foreach ( $academic_units as $academic_unit ) {
+		$unit_type = $academic_unit->get_type();
+		if ( ! isset( $node_types[ $unit_type ] ) ) {
+			continue;
+		}
+
+		$infoline_elems[] = esc_html( $academic_unit->get_name() );
 	}
-	if ( openlab_not_empty( $wds_semester ) || openlab_not_empty( $wds_year ) ) {
-		$semester_year = '<span class="bold">' . $wds_semester . ' ' . $wds_year . '</span>';
-		array_push( $infoline_elems, $semester_year );
+
+	if ( $course_code ) {
+		$infoline_elems[] = esc_html( $course_code );
 	}
-	*/
+
+	if ( $term ) {
+		$infoline_elems[] = sprintf( '<span class="bold">%s</span>', esc_html( $term ) );
+	}
 
 	$infoline_mup = implode( '|', $infoline_elems );
 
