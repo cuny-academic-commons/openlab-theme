@@ -20,7 +20,6 @@ if ( isset( $_GET['member_type'] ) ) {
 <div class="sidebar-block">
 	<?php
 	//determine class type for filtering
-	$semester_color = 'passive';
 	$sort_color = 'passive';
 	$user_color = 'passive';
 	$bpcgc_color = 'passive';
@@ -39,24 +38,8 @@ if ( isset( $_GET['member_type'] ) ) {
 		$option_value_bpcgc = $_GET['cat'];
 	}
 
-	//semesters
-	if ( empty( $_GET['semester'] ) ) {
-		$_GET['semester'] = '';
-	} else {
-		$semester_color = 'active';
-	}
-	//processing the semester value - now dynamic instead of a switch statement
-	if ( empty( $_GET['semester'] ) ) {
-		$display_option_semester = 'Select Semester';
-		$option_value_semester = '';
-	} elseif ( $_GET['semester'] == 'semester_all' ) {
-		$display_option_semester = 'All';
-		$option_value_semester = 'semester_all';
-	} else {
-		$dept_color = 'active';
-		$display_option_semester = ucfirst( str_replace( '-', ' ', $_GET['semester'] ) );
-		$option_value_semester = $_GET['semester'];
-	}
+	$current_term = isset( $_GET['term'] ) ? wp_unslash( $_GET['term'] ) : '';
+	$term_color = ( empty( $current_term ) || 'term_all' === $current_term ) ? 'passive' : 'active';
 
 	//sequence filter - easy enough to keep this as a switch for now
 	if ( empty( $_GET['group_sequence'] ) ) {
@@ -144,14 +127,13 @@ var OLAcadUnits = ' . wp_json_encode( $academic_unit_map ) . ';
 				<?php endif;
 				?>
 
-				<?php // @todo figure out a way to make this dynamic ?>
-				<?php if ( bp_is_groups_directory() && $group_type_object && $group_type_object->is_course() ) :  ?>
+				<?php if ( bp_is_groups_directory() && $group_type_object && $group_type_object->get_is_course() ) :  ?>
 					<div class="custom-select">
-						<select name="semester" class="last-select <?php echo $semester_color; ?>-text">
-							<option value='' <?php selected( '', $option_value_semester ) ?>>Select Semester</option>
-							<option value='semester_all' <?php selected( 'semester_all', $option_value_semester ) ?>>All</option>
-							<?php foreach ( openlab_get_active_semesters() as $sem ) : ?>
-								<option value="<?php echo esc_attr( $sem['option_value'] ) ?>" <?php selected( $option_value_semester, $sem['option_value'] ) ?>><?php echo esc_attr( $sem['option_label'] ) ?></option>
+						<select name="term" class="last-select <?php echo $term_color; ?>-text">
+							<option value='' <?php selected( '', $current_term ) ?>><?php esc_html_e( 'Term', 'openlab-theme' ); ?></option>
+							<option value='term_all' <?php selected( 'term_all', $current_term ) ?>><?php esc_html_e( 'All', 'openlab-theme' ); ?></option>
+							<?php foreach ( openlab_get_active_terms() as $term ) : ?>
+								<option value="<?php echo esc_attr( $term ) ?>" <?php selected( $current_term, $term ) ?>><?php echo esc_attr( $term ) ?></option>
 							<?php endforeach; ?>
 						</select>
 					</div>

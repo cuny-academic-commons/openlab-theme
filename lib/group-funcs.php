@@ -174,23 +174,13 @@ function openlab_group_archive() {
 		$categories = $_GET['cat'];
 	}
 
-	if ( ! empty( $_GET['semester'] ) ) {
-		$semester = str_replace( '-', ' ', $_GET['semester'] );
-		$semester = explode( ' ', $semester );
-		$semester_season = ucwords( $semester[0] );
-		$semester_year = ucwords( $semester[1] );
-		$semester = trim( $semester_season . ' ' . $semester_year );
-	}
+	$term = isset( $_GET['term'] ) ? wp_unslash( urldecode( $_GET['term'] ) ) : '';
 
 	// Set up filters
-	if ( ! empty( $semester ) && 'semester_all' != strtolower( $semester ) ) {
+	if ( ! empty( $term ) && 'term_all' != strtolower( $term ) ) {
 		$group_args['meta_query'][] = array(
-			'key' => 'wds_semester',
-			'value' => $semester_season,
-		);
-		$group_args['meta_query'][] = array(
-			'key' => 'wds_year',
-			'value' => $semester_year,
+			'key' => 'openlab_term',
+			'value' => $term,
 		);
 	}
 
@@ -399,53 +389,6 @@ function cuny_groups_pagination_count() {
 
 	/* @todo Proper localization with _n() */
 	echo sprintf( __( '%1$s to %2$s (of %3$s total)', 'openlab-theme' ), $from_num, $to_num, $total );
-}
-
-/**
- * Get list of active semesters for use in course sidebar filter.
- */
-function openlab_get_active_semesters() {
-	global $wpdb, $bp;
-
-	$tkey = 'openlab_active_semesters';
-	$combos = get_transient( $tkey );
-
-	if ( false === $combos ) {
-		$sems = array( 'Winter', 'Spring', 'Summer', 'Fall' );
-		$years = array();
-		$this_year = date( 'Y' );
-		for ( $i = 2011; $i <= $this_year; $i++ ) {
-			$years[] = $i;
-		}
-
-		// Combos
-		$combos = array();
-		foreach ( $years as $year ) {
-			foreach ( $sems as $sem ) {
-				$combos[] = array(
-					'year' => $year,
-					'sem' => $sem,
-					'option_value' => sprintf( '%s-%s', strtolower( $sem ), $year ),
-					'option_label' => sprintf( '%s %s', $sem, $year ),
-				);
-			}
-		}
-
-		// Verify that the combos are all active
-		foreach ( $combos as $ckey => $c ) {
-			$active = (bool) $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(gm1.id) FROM {$bp->groups->table_name_groupmeta} gm1 JOIN {$bp->groups->table_name_groupmeta} gm2 ON gm1.group_id = gm2.group_id WHERE gm1.meta_key = 'wds_semester' AND gm1.meta_value = %s AND gm2.meta_key = 'wds_year' AND gm2.meta_value = %s", $c['sem'], $c['year'] ) );
-
-			if ( ! $active ) {
-				unset( $combos[ $ckey ] );
-			}
-		}
-
-		$combos = array_values( array_reverse( $combos ) );
-
-		set_transient( $tkey, $combos );
-	}
-
-	return $combos;
 }
 
 /**
@@ -1137,9 +1080,9 @@ function openlab_get_directory_filter( $filter_type, $filter_value ) {
 		if ( $term_obj ) {
 			$filter_label = $term_obj->name;
 		}
+	} elseif ( 'term' === $filter_type ) {
+		$filter_label = $filter_value;
 	}
-
-	// @todo academic term
 
 	return $filter_label;
 }
@@ -1159,18 +1102,32 @@ function openlab_current_directory_filters() {
 			'group_type' => $current_view,
 		) );
 		$group_type = cboxol_get_group_type( $current_view );
+
+		if ( ! is_wp_error( $group_type ) ) {
+			if ( $group_type->get_is_course() ) {
+				$current_view = 'course';
+			} elseif ( $group_type->get_is_portfolio() ) {
+				$current_view = 'portfolio';
+			}
+		}
 	}
 
+	$filters = array();
 	switch ( $current_view ) {
 		case 'people' :
-			$filters = array( 'member_type' );
+			$filters = array_merge( $filters, array( 'member_type' ) );
 			break;
 
+		case 'course' :
+			$filters = array_merge( $filters, array( 'term' ) );
+			// fall through
+
+		case 'portfolio' :
+			$filters = array_merge( $filters, array( 'member_type' ) );
+			// fall through
+
 		default :
-			$filters = array( 'cat', 'semester' );
-			if ( $group_type->is_portfolio() ) {
-				$filters[] = 'member_type';
-			}
+			$filters = array_merge( $filters, array( 'cat' ) );
 			break;
 	}
 
@@ -1348,6 +1305,7 @@ function openlab_output_course_info_line( $group_id ) {
 
 	$infoline_elems = array();
 
+	/*
 	if ( openlab_not_empty( $wds_departments ) ) {
 		array_push( $infoline_elems, $wds_departments );
 	}
@@ -1358,6 +1316,7 @@ function openlab_output_course_info_line( $group_id ) {
 		$semester_year = '<span class="bold">' . $wds_semester . ' ' . $wds_year . '</span>';
 		array_push( $infoline_elems, $semester_year );
 	}
+	*/
 
 	$infoline_mup = implode( '|', $infoline_elems );
 
@@ -2138,3 +2097,91 @@ function openlab_group_academic_units_edit_markup() {
 }
 add_action( 'bp_after_group_details_admin', 'openlab_group_academic_units_edit_markup' );
 add_action( 'bp_after_group_details_creation_step', 'openlab_group_academic_units_edit_markup', 3 );
+
+/** "Term" - temporary implementation ****************************************/
+
+function openlab_get_group_term( $group_id ) {
+	return groups_get_groupmeta( $group_id, 'openlab_term', true );
+}
+
+/**
+ * A hack to encourage standardized terms.
+ *
+ * This will not translate well.
+ */
+function openlab_get_default_group_term() {
+	$month = date( 'n' );
+	$year = date( 'Y' );
+
+	if ( $month > 9 || $month < 4 ) {
+		$term = __( 'Spring', 'openlab-theme' );
+		$year++;
+	} else {
+		$term = __( 'Fall', 'openlab-theme' );
+	}
+
+	return sprintf( '%s %s', $term, $year );
+}
+
+function openlab_group_term_edit_markup() {
+	$term = openlab_get_group_term( bp_get_current_group_id() );
+	if ( ! $term ) {
+		$term = openlab_get_default_group_term();
+	}
+
+	?>
+	<div class="panel panel-default">
+		<div class="panel-heading"><?php esc_html_e( 'Term', 'openlab-theme' ) ?></div>
+		<div class="panel-body">
+			<label for="academic-term"><?php esc_html_e( 'Academic term for this course', 'openlab-theme' ); ?></label>
+			<input class="form-control" type="text" name="academic-term" value="<?php echo esc_attr( $term ); ?>" />
+			<?php wp_nonce_field( 'openlab_academic_term', '_openlab-term-nonce', false ); ?>
+		</div>
+	</div>
+	<?php
+}
+add_action( 'bp_after_group_details_admin', 'openlab_group_term_edit_markup' );
+add_action( 'bp_after_group_details_creation_step', 'openlab_group_term_edit_markup', 3 );
+
+/**
+ * Save Course term
+ *
+ * @param BP_Groups_Group $group
+ */
+function openlab_course_term_save( BP_Groups_Group $group ) {
+	if ( ! isset( $_POST['_openlab-term-nonce'] ) || ! wp_verify_nonce( $_POST['_openlab-term-nonce'], 'openlab_academic_term' ) ) {
+		return;
+	}
+
+	if ( ! isset( $_POST['academic-term'] ) ) {
+		return;
+	}
+
+	$term = wp_unslash( $_POST['academic-term'] );
+
+	groups_update_groupmeta( $group->id, 'openlab_term', $term );
+	delete_transient( 'openlab_active_terms' );
+}
+add_action( 'groups_group_after_save', 'openlab_course_term_save' );
+
+/**
+ * Get list of active semesters for use in course sidebar filter.
+ */
+function openlab_get_active_terms() {
+	global $wpdb, $bp;
+
+	$tkey = 'openlab_active_terms';
+	$options = get_transient( $tkey );
+
+	if ( false === $options ) {
+		$bp = buddypress();
+
+		// Best we can do is alphabetical ordering.
+		$options = $wpdb->get_col( "SELECT DISTINCT(meta_value) FROM {$bp->groups->table_name_groupmeta} WHERE meta_key = 'openlab_term' ORDER BY meta_value ASC" );
+
+		set_transient( $tkey, $options );
+	}
+
+	return $options;
+}
+
