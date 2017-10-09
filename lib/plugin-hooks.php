@@ -36,13 +36,49 @@ if ( defined( 'BP_GROUP_DOCUMENTS_VERSION' ) ) {
 
 /**
  * Plugin: BuddyPress Docs
- * See also: openlab/buddypress/groups/single/docs for template overrides
+ * See also: openlab/buddypress/docs for template overrides
  */
+
+function openlab_disable_wplink_for_docs( $plugins ) {
+	if ( ! bp_docs_is_doc_edit() && ! bp_docs_is_doc_create() ) {
+		return $plugins;
+	}
+
+	return array_diff( $plugins, array( 'wplink' ) );
+}
+add_filter( 'tiny_mce_plugins', 'openlab_disable_wplink_for_docs' );
+
+function openlab_bp_docs_template( $template ) {
+	global $bp;
+
+	switch ( $bp->bp_docs->current_view ) {
+		case 'edit' :
+		case 'create' :
+			$template = bp_locate_template( 'docs/single/edit.php' );
+			break;
+
+		case 'single' :
+			$template = bp_locate_template( 'docs/single/index.php' );
+			break;
+
+		case 'list' :
+			$template = bp_locate_template( 'docs/docs-loop.php' );
+			break;
+	}
+	return $template;
+}
+add_filter( 'bp_docs_template', 'openlab_bp_docs_template' );
+
+add_action( 'bp_docs_theme_compat_setup', function( $theme_compat ) {
+	remove_action( 'bp_replace_the_content', array( $theme_compat, 'single_content' ) );
+	remove_action( 'bp_replace_the_content', array( $theme_compat, 'create_content' ) );
+} );
+
 /**
- * Plugin: BuddyPress Docs
- * Don't allow BuddyPress Docs to use its own theme compatibility layer
+ * BuddyPress Docs directory filters should be disabled.
  */
-add_filter( 'bp_docs_do_theme_compat', '__return_false' );
+add_filter( 'bp_docs_filter_types', '__return_empty_array', 999 );
+
 
 /**
  * Plugin: BuddyPress Docs
@@ -58,37 +94,9 @@ add_filter( 'bp_docs_force_enable_at_group_creation', '__return_true' );
  * @return string
  */
 function openlab_hide_docs_native_menu( $menu_template ) {
-
-	$path = get_template_directory() . '/buddypress/groups/single/docs/docs-header.php';
-
-	return $path;
+	return bp_locate_template( 'docs/docs-header.php' );
 }
-
 add_filter( 'bp_docs_header_template', 'openlab_hide_docs_native_menu' );
-
-/**
- * Plugin: BuddyPress Docs
- * Custom templates for BP Docs pages
- * Allows for layout control and Bootstrap injection
- *
- * @param type $path
- * @param type $template
- * @return type
- */
-function openlab_custom_docs_templates( $path, $template ) {
-
-	if ( $template->current_view == 'list' ) {
-		$path = bp_locate_template( 'groups/single/docs/docs-loop.php', false );
-	} elseif ( $template->current_view == 'create' || $template->current_view == 'edit' ) {
-		$path = bp_locate_template( 'groups/single/docs/edit-doc.php', false );
-	} elseif ( $template->current_view == 'single' ) {
-		$path = bp_locate_template( 'groups/single/docs/single-doc.php', false );
-	}
-
-	return $path;
-}
-
-add_filter( 'bp_docs_template', 'openlab_custom_docs_templates', 10, 2 );
 
 /**
  * Allow super admins to edit any BuddyPress Doc

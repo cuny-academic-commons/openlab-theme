@@ -2,7 +2,7 @@
 
 <?php bp_docs_inline_toggle_js() ?>
 
-<?php if ( have_posts() ) : ?>
+<?php if ( bp_docs_has_docs() ) : ?>
 
 <div class="docs-info-header img-rounded">
 	<div class="row">
@@ -46,14 +46,14 @@
 		</thead>
 
 		<tbody>
-			<?php while ( have_posts() ) : the_post() ?>
+			<?php while ( bp_docs_has_docs() ) : bp_docs_the_doc() ?>
 				<tr>
 					<td class="title-cell">
 						<span class="title-wrapper">
 							<a class="hyphenate truncate-on-the-fly" href="<?php bp_docs_group_doc_permalink() ?>" data-basevalue="80" data-minvalue="55" data-basewidth="376"><?php the_title() ?></a>
 							<span class="original-copy hidden"><?php the_title() ?></span>
 						</span>
-						
+
 						<span class="hyphenate">
 							<?php the_excerpt() ?>
 						</span>
@@ -61,9 +61,9 @@
 						<div class="row-actions">
 							<?php bp_docs_doc_action_links() ?>
 						</div>
-						
+
 						<div class="author-info-mobile visible-xs">
-							<span class="bold"><?php _e( 'Author', 'bp-docs' ); ?>:</span> <a href="<?php bp_docs_order_by_link( 'author' ) ?>"><?php _e( 'Author', 'bp-docs' ); ?></a>
+							<span class="bold"><?php esc_html_e( 'Author', 'openlab-theme' ); ?>:</span> <a href="<?php bp_docs_order_by_link( 'author' ) ?>"><?php esc_html_e( 'Author', 'openlab-theme' ); ?></a>
 						</div>
 					</td>
 
@@ -80,17 +80,17 @@
 					</td>
 
 					<?php
-							$tags = wp_get_post_terms( get_the_ID(), buddypress()->bp_docs->docs_tag_tax_name );
-							$tagtext = array();
+					$tags = wp_get_post_terms( get_the_ID(), buddypress()->bp_docs->docs_tag_tax_name );
+					$tagtext = array();
 
 					foreach ( $tags as $tag ) {
 						$tagtext[] = bp_docs_get_tag_link( array( 'tag' => $tag->name ) );
 					}
-							?>
+					?>
 
-							<td class="tags-cell hidden-sm hidden-xs">
-								<?php echo implode( ', ', $tagtext ) ?>
-							</td>
+					<td class="tags-cell hidden-sm hidden-xs">
+						<?php echo implode( ', ', $tagtext ) ?>
+					</td>
 
 				</tr>
 			<?php endwhile ?>
@@ -101,7 +101,7 @@
 
 	<div id="bp-docs-pagination">
 		<div id="bp-docs-pagination-count">
-			<?php printf( __( 'Viewing %1$s-%2$s of %3$s docs', 'bp-docs' ), bp_docs_get_current_docs_start(), bp_docs_get_current_docs_end(), bp_docs_get_total_docs_num() ) ?>
+			<?php printf( __( 'Viewing %1$s-%2$s of %3$s docs', 'openlab-theme' ), bp_docs_get_current_docs_start(), bp_docs_get_current_docs_end(), bp_docs_get_total_docs_num() ) ?>
 		</div>
 
 		<div id="bp-docs-paginate-links">
@@ -110,10 +110,10 @@
 	</div>
 
 <?php else : ?>
-	<?php if ( groups_is_user_member( get_current_user_id(),bp_get_group_id() ) ) :  ?>
-		<p class="no-docs bold"><?php printf( __( 'There are no docs for this view. Why not <a href="%s">create one</a>?', 'bp-docs' ), bp_docs_get_item_docs_link() . BP_DOCS_CREATE_SLUG ) ?></p>
+	<?php if ( groups_is_user_member( get_current_user_id(), bp_get_current_group_id()() ) ) :  ?>
+		<p class="no-docs bold"><?php printf( __( 'There are no docs for this view. Why not <a href="%s">create one</a>?', 'openlab-theme' ), bp_docs_get_item_docs_link() . BP_DOCS_CREATE_SLUG ) ?></p>
 	<?php else : ?>
-		<p class="no-docs bold"><?php printf( __( 'There are no docs for this view.', 'bp-docs' ) ) ?></p>
+		<p class="no-docs bold"><?php printf( __( 'There are no docs for this view.', 'openlab-theme' ) ) ?></p>
 	<?php endif; ?>
 
 <?php endif ?>

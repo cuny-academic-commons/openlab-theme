@@ -60,7 +60,8 @@ if ( bp_has_groups() ) : while ( bp_groups() ) : bp_the_group();
 						elseif ( bp_current_action() == 'notifications' ) : bp_get_template_part( 'groups/single/notifications' );
 
 							// Anything else (plugins mostly)
-						else : bp_get_template_part( 'groups/single/plugins' );
+						else :
+							bp_get_template_part( 'groups/single/plugins' );
 
 						endif;
 					endif;

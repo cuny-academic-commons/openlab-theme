@@ -1,6 +1,4 @@
-<?php if ( have_posts() ) : while ( have_posts() ) : the_post() ?>
-
-<?php include( apply_filters( 'bp_docs_header_template', bp_docs_locate_template( 'docs-header.php' ) ) ) ?>
+<?php bp_get_template_part( 'docs/docs-header' ); ?>
 
 <?php if ( bp_docs_is_doc_edit_locked() && bp_docs_current_user_can( 'edit' ) ) : ?>
 	<div class="toggleable doc-is-locked">
@@ -28,13 +26,3 @@
 </div>
 
 <?php comments_template( '/docs/comments.php' ) ?>
-
-<?php endwhile; ?>
-
-<?php else : ?>
-
-	<p><?php _e( 'No Doc by this name exists.', 'bp-docs' ) ?></p>
-
-	<p><?php printf( __( '<a href="%1$s">View all Docs in this group</a> or <a href="%2$s">create a new Doc</a>.', 'bp-docs' ), bp_docs_get_item_docs_link(), bp_docs_get_item_docs_link() . 'create' ) ?></p>
-
-<?php endif; ?>
