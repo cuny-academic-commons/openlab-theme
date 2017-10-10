@@ -12,50 +12,52 @@
  * Openlab specific functionality
  *
  */
-add_action('bp_before_footer', 'openlab_do_breadcrumbs', 5);
+add_action( 'bp_before_footer', 'openlab_do_breadcrumbs', 5 );
 
-add_filter('openlab_breadcrumb_args', 'custom_breadcrumb_args');
-
-function custom_breadcrumb_args($args) {
-    $args['labels']['prefix'] = '<div class="breadcrumb-inline prefix-label"><div class="breadcrumb-prefix-label">' . esc_html__( 'You are here', 'openlab-theme' ) . '</div><i class="fa fa-caret-right"></i></div><div class="breadcrumb-inline breadcrumbs">';
-    $args['prefix'] = '<div id="breadcrumb-container"><div class="breadcrumb-col semibold uppercase"><div class="breadcrumb-wrapper">';
-    $args['suffix'] = '</div></div></div></div>';
-    return $args;
+function custom_breadcrumb_args( $args ) {
+	$args['labels']['prefix'] = '<div class="breadcrumb-inline prefix-label"><div class="breadcrumb-prefix-label">' . esc_html__( 'You are here', 'openlab-theme' ) . '</div><i class="fa fa-caret-right"></i></div><div class="breadcrumb-inline breadcrumbs">';
+	$args['prefix'] = '<div id="breadcrumb-container"><div class="breadcrumb-col semibold uppercase"><div class="breadcrumb-wrapper">';
+	$args['suffix'] = '</div></div></div></div>';
+	return $args;
 }
+add_filter( 'openlab_breadcrumb_args', 'custom_breadcrumb_args' );
 
 /**
  * For the help page breadcrumb
  */
-add_filter('openlab_single_crumb', 'openlab_specific_blog_breadcrumb', 10, 2);
+function openlab_specific_blog_breadcrumb( $crumb, $args ) {
+	global $post;
 
-function openlab_specific_blog_breadcrumb($crumb, $args) {
-    global $post;
+	if ( $post->post_type == 'help' ) {
+		// @todo This will not work to build a path.
+		$crumb = '<a title="' . esc_attr__( 'View all Help', 'openlab-theme' ) . '" href="' . site_url( 'help/openlab-help' ) . '">Help</a>';
 
-    if ($post->post_type == 'help') {
-        $crumb = '<a title="View all Help" href="' . site_url('help/openlab-help') . '">Help</a>';
+		$post_terms = get_the_terms( $post->ID, 'help_category' );
+		$term = array();
+		if ( is_array( $post_terms ) ) {
+			foreach ( $post_terms as $post_term ) {
+				$term[] = $post_term;
+			}
+		}
 
-        $post_terms = get_the_terms($post->ID, 'help_category');
-        $term = array();
-        if (is_array($post_terms)) {
-            foreach ($post_terms as $post_term) {
-                $term[] = $post_term;
-            }
-        }
+		$term_link = '';
+		if ( ! empty( $term ) ) {
+			$current_term = get_term_by( 'id', $term[0]->term_id, 'help_category' );
+			$term_link = get_term_link( $current_term, 'help_category' );
+		}
 
-        $term_link = '';
-        if (!empty($term)) {
-            $current_term = get_term_by('id', $term[0]->term_id, 'help_category');
-            $term_link = get_term_link($current_term, 'help_category');
-        }
+		if ( $term_link && ! is_wp_error( $term_link ) ) {
+			$crumb .= ' / <a href="' . esc_url( $term_link ) . '">' . esc_html( $current_term->name ) . '</a>';
+		}
 
-        if ($term_link && !is_wp_error($term_link)) {
-            $crumb .= ' / <a href="' . $term_link . '">' . $current_term->name . '</a>';
-        }
-        $crumb .= ' / ' . bp_create_excerpt($post->post_title, 50, array('ending' => __('&hellip;', 'buddypress')));
-    }
+		$crumb .= ' / ' . bp_create_excerpt( $post->post_title, 50, array(
+			'ending' => __( '&hellip;', 'openlab-theme' ),
+		) );
+	}
 
-    return $crumb;
+	return $crumb;
 }
+add_filter( 'openlab_single_crumb', 'openlab_specific_blog_breadcrumb', 10, 2 );
 
 add_filter('openlab_archive_crumb', 'openlab_specific_archive_breadcrumb', 10, 2);
 
