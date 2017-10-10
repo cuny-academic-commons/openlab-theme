@@ -17,7 +17,7 @@ add_action('bp_before_footer', 'openlab_do_breadcrumbs', 5);
 add_filter('openlab_breadcrumb_args', 'custom_breadcrumb_args');
 
 function custom_breadcrumb_args($args) {
-    $args['labels']['prefix'] = '<div class="breadcrumb-inline prefix-label"><div class="breadcrumb-prefix-label">You are here</div><i class="fa fa-caret-right"></i></div><div class="breadcrumb-inline breadcrumbs">';
+    $args['labels']['prefix'] = '<div class="breadcrumb-inline prefix-label"><div class="breadcrumb-prefix-label">' . esc_html__( 'You are here', 'openlab-theme' ) . '</div><i class="fa fa-caret-right"></i></div><div class="breadcrumb-inline breadcrumbs">';
     $args['prefix'] = '<div id="breadcrumb-container"><div class="breadcrumb-col semibold uppercase"><div class="breadcrumb-wrapper">';
     $args['suffix'] = '</div></div></div></div>';
     return $args;
@@ -153,7 +153,7 @@ class Openlab_Breadcrumb {
 
         /** Default arguments * */
         $this->args = array(
-            'home' => __('Home', 'genesis'),
+            'home' => __('Home', 'openlab-theme'),
             'sep' => ' / ',
             'list_sep' => ', ',
             'prefix' => '<div class="breadcrumb">',
@@ -162,15 +162,15 @@ class Openlab_Breadcrumb {
             'heirarchial_categories' => true,
             'display' => true,
             'labels' => array(
-                'prefix' => __('You are here: ', 'genesis'),
-                'author' => __('Archives for ', 'genesis'),
-                'category' => __('Archives for ', 'genesis'),
-                'tag' => __('Archives for ', 'genesis'),
-                'date' => __('Archives for ', 'genesis'),
-                'search' => __('Search for ', 'genesis'),
-                'tax' => __('Archives for ', 'genesis'),
-                'post_type' => __('Archives for ', 'genesis'),
-                '404' => __('Not found: ', 'genesis')
+                'prefix' => __('You are here: ', 'openlab-theme'),
+                'author' => __('Archives for ', 'openlab-theme'),
+                'category' => __('Archives for ', 'openlab-theme'),
+                'tag' => __('Archives for ', 'openlab-theme'),
+                'date' => __('Archives for ', 'openlab-theme'),
+                'search' => __('Search for ', 'openlab-theme'),
+                'tax' => __('Archives for ', 'openlab-theme'),
+                'post_type' => __('Archives for ', 'openlab-theme'),
+                '404' => __('Not found: ', 'openlab-theme')
             )
         );
     }
