@@ -376,7 +376,6 @@ function cuny_group_single() {
 				<?php if ( $group_type->get_is_course() ) : ?>
 					<div class="info-panel panel panel-default no-margin no-margin-top">
 						<?php
-						/* @todo */
 						$course_code = groups_get_groupmeta( $group_id, 'cboxol_course_code' );
 						$section_code = groups_get_groupmeta( $group_id, 'cboxol_section_code' );
 						$term = openlab_get_group_term( $group_id );
@@ -413,14 +412,21 @@ function cuny_group_single() {
 								<div class="bold col-sm-7"><?php esc_html_e( 'Professor(s)', 'openlab-theme' ); ?></div>
 								<div class="col-sm-17 row-content"><?php echo openlab_get_faculty_list() ?></div>
 							</div>
-							<div class="table-row row">
-								<div class="bold col-sm-7"><?php echo esc_html( $group_type->get_label( 'course_code' ) ); ?></div>
-								<div class="col-sm-17 row-content"><?php echo esc_html( $course_code ); ?></div>
-							</div>
-							<div class="table-row row">
-								<div class="bold col-sm-7"><?php echo esc_html( $group_type->get_label( 'section_code' ) ); ?></div>
-								<div class="col-sm-17 row-content"><?php echo esc_html( $section_code ); ?></div>
-							</div>
+
+							<?php if ( $course_code ) : ?>
+								<div class="table-row row">
+									<div class="bold col-sm-7"><?php echo esc_html( $group_type->get_label( 'course_code' ) ); ?></div>
+									<div class="col-sm-17 row-content"><?php echo esc_html( $course_code ); ?></div>
+								</div>
+							<?php endif; ?>
+
+							<?php if ( $section_code ) : ?>
+								<div class="table-row row">
+									<div class="bold col-sm-7"><?php echo esc_html( $group_type->get_label( 'section_code' ) ); ?></div>
+									<div class="col-sm-17 row-content"><?php echo esc_html( $section_code ); ?></div>
+								</div>
+							<?php endif; ?>
+
 							<?php if ( $term ) : ?>
 								<div class="table-row row">
 									<div class="bold col-sm-7"><?php esc_html_e( 'Semester / Year', 'openlab-theme' ); ?></div>
