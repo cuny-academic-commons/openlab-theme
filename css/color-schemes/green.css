@@ -8900,6 +8900,9 @@ body form .checkbox-list-container {
     margin: 0 auto;
   }
 }
+.sidebar-widget .bpeo-upcoming-event-title {
+  padding-left: 0;
+}
 @media (max-width: 767px) {
   .mobile-enabled .sidebar-menu-wrapper {
     background: transparent;
