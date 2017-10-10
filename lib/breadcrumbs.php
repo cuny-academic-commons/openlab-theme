@@ -282,14 +282,14 @@ class Openlab_Breadcrumb {
 
         global $wp_query;
 
-        if ('page' == $this->on_front && is_front_page()) {
+        if ( 'page' == $this->on_front && is_front_page() ) {
             // Don't do anything - we're on the front page and we've already dealt with that elsewhere.
             $crumb = $this->get_home_crumb();
         } else {
             $post = $wp_query->get_queried_object();
 
             // If this is a top level Page, it's simple to output the breadcrumb
-            if (0 == $post->post_parent) {
+            if ( 0 == $post->post_parent ) {
                 $crumb = get_the_title();
             } else {
                 if (isset($post->ancestors)) {
@@ -427,32 +427,33 @@ class Openlab_Breadcrumb {
         return apply_filters('openlab_single_crumb', $crumb, $this->args);
     }
 
-    /**
-     * Return the correct crumbs for this query, combined together. Private.
-     *
-     * @since 1.5
-     *
-     * @return string HTML markup
-     */
-    function build_crumbs() {
+	/**
+	 * Return the correct crumbs for this query, combined together. Private.
+	 *
+	 * @since 1.0
+	 *
+	 * @return string HTML markup
+	 */
+	public function build_crumbs() {
 
-        $crumbs[] = $this->get_home_crumb();
+		$crumbs[] = $this->get_home_crumb();
 
-        if (is_home())
-            $crumbs[] = $this->get_blog_crumb();
-        elseif (is_search())
-            $crumbs[] = $this->get_search_crumb();
-        elseif (is_404())
-            $crumbs[] = $this->get_404_crumb();
-        elseif (is_page())
-            $crumbs[] = $this->get_page_crumb();
-        elseif (is_archive())
-            $crumbs[] = $this->get_archive_crumb();
-        elseif (is_singular())
-            $crumbs[] = $this->get_single_crumb();
+		if ( is_home() ) {
+			$crumbs[] = $this->get_blog_crumb();
+		} elseif ( is_search() ) {
+			$crumbs[] = $this->get_search_crumb();
+		} elseif ( is_404() ) {
+			$crumbs[] = $this->get_404_crumb();
+		} elseif ( is_page() ) {
+			$crumbs[] = $this->get_page_crumb();
+		} elseif ( is_archive() ) {
+			$crumbs[] = $this->get_archive_crumb();
+		} elseif ( is_singular() ) {
+			$crumbs[] = $this->get_single_crumb();
+		}
 
-        return join($this->args['sep'], array_unique($crumbs));
-    }
+		return join( $this->args['sep'], array_unique( $crumbs ) );
+	}
 
     /**
      * Return recursive linked crumbs of category, tag or custom taxonomy parents. Private.
