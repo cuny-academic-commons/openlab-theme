@@ -25,7 +25,7 @@ add_action( 'admin_enqueue_scripts', 'openlab_custom_calendar_assets', 999 );
  * @return boolean
  */
 function openlab_eo_is_event_detail_screen() {
-	if ( ! empty( buddypress()->action_variables ) && ! bp_is_action_variable( 'ical' ) && ! bp_is_action_variable( 'upcoming', 0 ) && ! bpeo_is_action( 'new' ) && ! bpeo_is_action( 'edit' ) ) {
+	if ( ! empty( buddypress()->action_variables ) && ! bp_is_action_variable( 'ical' ) && ! bp_is_action_variable( 'upcoming', 0 ) && ! bpeo_is_action( 'new' ) && ! bpeo_is_action( 'edit' ) && ! bp_is_action_variable( 'calendar', 0 ) ) {
 		return true;
 	} else {
 		return false;
@@ -169,8 +169,7 @@ function openlab_event_page_controller( $wp ) {
 	 */
 	if ( strpos( $wp->request, '/events/' ) !== false && strpos( $wp->request, '/new-event' ) !== false ) {
 
-		$event_create_access = groups_get_groupmeta( bp_get_current_group_id(), 'openlab_bpeo_event_create_access' );
-
+		$event_create_access = openlab_get_group_event_create_access_setting( bp_get_current_group_id() );
 		if ( $event_create_access === 'admin' && ! bp_is_item_admin() && ! bp_is_item_mod() ) {
 
 			$request_url = $wp->request;
@@ -394,6 +393,19 @@ function _eventorganiser_details_metabox_openlab_custom( $post ) {
 	$custom_meta_box = ob_get_clean();
 
 	echo $custom_meta_box;
+}
+
+/**
+ * Get the create access setting for a group.
+ *
+ * Falls back on 'admin'.
+ */
+function openlab_get_group_event_create_access_setting( $group_id ) {
+	$setting = groups_get_groupmeta( $group_id, 'openlab_bpeo_event_create_access', true );
+	if ( ! $setting ) {
+		$setting = 'admin';
+	}
+	return $setting;
 }
 
 /**
