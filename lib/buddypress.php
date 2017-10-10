@@ -53,9 +53,9 @@ function openlab_bp_enqueue_scripts() {
 function openlab_page_crumb_overrides( $crumb, $args ) {
 	global $post, $bp;
 
-	$crumb = '';
-
 	if ( bp_is_groups_directory() ) {
+		$crumb = '';
+
 		$group_type_slug = bp_get_current_group_directory_type();
 		$group_type = cboxol_get_group_type( $group_type_slug );
 		if ( ! is_wp_error( $group_type ) ) {
@@ -69,6 +69,8 @@ function openlab_page_crumb_overrides( $crumb, $args ) {
 	}
 
 	if ( bp_is_group() && ! bp_is_group_create() ) {
+		$crumb = '';
+
 		$group = groups_get_current_group();
 
 		$group_type = cboxol_get_group_group_type( $group->id );
@@ -82,7 +84,6 @@ function openlab_page_crumb_overrides( $crumb, $args ) {
 	}
 
 	if ( bp_is_user() ) {
-
 		$account_type = xprofile_get_field_data( 'Account Type', $bp->displayed_user->id );
 		// @todo Account type switch does not need to be hardcoded.
 		if ( 'Staff' === $account_type ) {
@@ -99,5 +100,6 @@ function openlab_page_crumb_overrides( $crumb, $args ) {
 
 		$crumb = $b1 . ' / ' . $b2;
 	}
+
 	return $crumb;
 }
