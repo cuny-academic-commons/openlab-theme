@@ -123,8 +123,8 @@ function openlab_maybe_install() {
 		) );
 	}
 
-	// Nav menu.
-	openlab_create_default_nav_menu();
+	// Nav menus.
+	openlab_create_default_nav_menus();
 
 	// Slider.
 	$slides = array(
@@ -193,7 +193,8 @@ function openlab_maybe_install() {
 	remove_action( 'after_switch_theme', '_wp_sidebars_changed' );
 }
 
-function openlab_create_default_nav_menu() {
+function openlab_create_default_nav_menus() {
+	// Main Menu.
 	$menu_name = wp_slash( __( 'Main Menu', 'cbox-openlab-core' ) );
 	$menu_id = wp_create_nav_menu( $menu_name );
 
@@ -256,6 +257,31 @@ function openlab_create_default_nav_menu() {
 	$locations = get_theme_mod( 'nav_menu_locations' );
 	$locations['main'] = $menu_id;
 	set_theme_mod( 'nav_menu_locations', $locations );
+
+	// About Menu.
+	if ( isset( $brand_pages['about'] ) ) {
+		$menu_name = wp_slash( __( 'About Menu', 'cbox-openlab-core' ) );
+		$menu_id = wp_create_nav_menu( $menu_name );
+
+		if ( is_wp_error( $menu_id ) ) {
+			return;
+		}
+
+		wp_update_nav_menu_item(
+			$menu_id,
+			0,
+			array(
+				'menu-item-title' => $brand_pages['about']['title'],
+				'menu-item-classes' => 'about',
+				'menu-item-url' => $brand_pages['about']['preview_url'],
+				'menu-item-status' => 'publish',
+			)
+		);
+
+		$locations = get_theme_mod( 'nav_menu_locations' );
+		$locations['aboutmenu'] = $menu_id;
+		set_theme_mod( 'nav_menu_locations', $locations );
+	}
 }
 
 /*

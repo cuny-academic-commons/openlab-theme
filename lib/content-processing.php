@@ -24,15 +24,18 @@ function openlab_conditional_body_classes( $classes ) {
 		$classes[] = 'group-archive-page';
 	}
 
-	$about_page_obj = get_page_by_path( 'about' );
+	$is_about_page = cboxol_is_brand_page( 'about' );
+	if ( ! $is_about_page && ! empty( $post->post_parent ) ) {
+		$is_about_page = cboxol_is_brand_page( 'about', $post->post_parent );
+	}
+
 	$calendar_page_obj = get_page_by_path( 'about/calendar' );
 	$my_group_pages = array( 'my-courses', 'my-clubs', 'my-projects' );
 
 	if ( ( isset( $post->post_name ) && in_array( $post->post_name, $group_archives ) ) ||
 			( function_exists( 'bp_is_single_item' ) && bp_is_single_item() ) ||
 			( function_exists( 'bp_is_user' ) && bp_is_user() ) ||
-			( isset( $post->post_name ) && $about_page_obj && $post->ID == $about_page_obj->ID ) ||
-			( isset( $post->post_parent ) && $about_page_obj && $post->post_parent == $about_page_obj->ID ) ||
+			( $is_about_page ) ||
 			( isset( $post->post_parent ) && $calendar_page_obj && $post->post_parent == $calendar_page_obj->ID ) ||
 			( isset( $post->post_type ) && $post->post_type == 'help' ) ||
 			( isset( $post->post_type ) && $post->post_type == 'help_glossary') ||
