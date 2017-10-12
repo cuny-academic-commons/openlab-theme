@@ -9010,6 +9010,7 @@ body form .checkbox-list-container {
   color: inherit;
 }
 .group-list .group-item-wrapper p {
+  word-break: break-all;
   color: #333333;
   margin-bottom: 12px;
 }
