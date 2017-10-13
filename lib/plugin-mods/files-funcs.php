@@ -89,3 +89,8 @@ function openlab_disable_bp_group_documents_group_creation_step( $value ) {
 	return '';
 }
 add_filter( 'option_bp_group_documents_upload_permission', 'openlab_disable_bp_group_documents_group_creation_step' );
+
+/**
+ * Disable BP Group Documents category feature for the time being.
+ */
+add_filter( 'option_bp_group_documents_use_categories', '__return_false' );
