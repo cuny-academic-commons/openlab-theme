@@ -146,7 +146,7 @@ var OLAcadUnits = ' . wp_json_encode( $academic_unit_map ) . ';
 					</div>
 				<?php endif; ?>
 
-				<?php if ( ( bp_is_groups_directory() && $group_type_object->is_portfolio() ) || bp_is_members_directory() ) :  ?>
+				<?php if ( ( bp_is_groups_directory() && ! is_wp_error( $group_type_object ) && $group_type_object->get_is_portfolio() ) || bp_is_members_directory() ) :  ?>
 					<div class="custom-select">
 						<select name="member_type" class="last-select <?php echo $user_color; ?>-text">
 							<option value='' <?php selected( '', $member_type_slug ) ?>><?php esc_html_e( 'User Type', 'openlab-theme' ); ?></option>
