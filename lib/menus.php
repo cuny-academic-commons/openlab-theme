@@ -531,7 +531,9 @@ function openlab_my_friends_submenu( $count = true ) {
 	}
 
 	$menu_out['menu'] = openlab_submenu_gen( $menu_list );
-	$menu_out['submenu_text'] = '<a class="' . $submenu_class . '" href="' . $my_friends . '">My Friends</a>';
+
+	$label = bp_is_my_profile() ? __( 'My Friends', 'openlab-theme' ) : sprintf( __( '%s\'s Friends', 'openlab-theme' ), bp_core_get_user_displayname( bp_displayed_user_id() ) );
+	$menu_out['submenu_text'] = '<a class="' . esc_attr( $submenu_class ) . '" href="' . esc_url( $my_friends ) . '">' . esc_html( $label ) . '</a>';
 
 	return $menu_out;
 }
