@@ -19,8 +19,7 @@ function openlab_conditional_body_classes( $classes ) {
 		$classes[] = 'content-sidebar';
 	}
 
-	$group_archives = array( 'people', 'courses', 'projects', 'clubs', 'portfolios' );
-	if ( isset( $post->post_name ) && in_array( $post->post_name, $group_archives ) ) {
+	if ( bp_is_groups_directory() || bp_is_members_directory() ) {
 		$classes[] = 'group-archive-page';
 	}
 
@@ -32,15 +31,14 @@ function openlab_conditional_body_classes( $classes ) {
 	$calendar_page_obj = get_page_by_path( 'about/calendar' );
 	$my_group_pages = array( 'my-courses', 'my-clubs', 'my-projects' );
 
-	if ( ( isset( $post->post_name ) && in_array( $post->post_name, $group_archives ) ) ||
+	if ( ( bp_is_groups_directory() || bp_is_members_directory() ) ||
 			( function_exists( 'bp_is_single_item' ) && bp_is_single_item() ) ||
 			( function_exists( 'bp_is_user' ) && bp_is_user() ) ||
 			( $is_about_page ) ||
 			( isset( $post->post_parent ) && $calendar_page_obj && $post->post_parent == $calendar_page_obj->ID ) ||
 			( isset( $post->post_type ) && $post->post_type == 'help' ) ||
-			( isset( $post->post_type ) && $post->post_type == 'help_glossary') ||
-			( ! empty( $query_vars ) && isset( $query_vars['help_category'] )) ||
-			( isset( $post->post_name ) && in_array( $post->post_name, $my_group_pages )) ) {
+			( isset( $post->post_type ) && $post->post_type == 'help_glossary' ) ||
+			( ! empty( $query_vars ) && isset( $query_vars['help_category'] ) ) ) {
 		$classes[] = 'sidebar-mobile-dropdown';
 	}
 
