@@ -29,13 +29,16 @@ function openlab_conditional_body_classes( $classes ) {
 	}
 
 	$calendar_page_obj = get_page_by_path( 'about/calendar' );
-	$my_group_pages = array( 'my-courses', 'my-clubs', 'my-projects' );
+	$is_calendar_page = cboxol_is_brand_page( 'calendar' );
+	if ( ! $is_calendar_page && ! empty( $post->post_parent ) ) {
+		$is_calendar_page = cboxol_is_brand_page( 'calendar', $post->post_parent );
+	}
 
 	if ( ( bp_is_groups_directory() || bp_is_members_directory() ) ||
 			( function_exists( 'bp_is_single_item' ) && bp_is_single_item() ) ||
 			( function_exists( 'bp_is_user' ) && bp_is_user() ) ||
 			( $is_about_page ) ||
-			( isset( $post->post_parent ) && $calendar_page_obj && $post->post_parent == $calendar_page_obj->ID ) ||
+			( $is_calendar_page ) ||
 			( isset( $post->post_type ) && $post->post_type == 'help' ) ||
 			( isset( $post->post_type ) && $post->post_type == 'help_glossary' ) ||
 			( ! empty( $query_vars ) && isset( $query_vars['help_category'] ) ) ) {
