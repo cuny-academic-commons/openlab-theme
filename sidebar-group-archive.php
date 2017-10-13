@@ -14,6 +14,13 @@ if ( isset( $_GET['member_type'] ) ) {
 	$member_type_slug = urldecode( wp_unslash( $_GET['member_type'] ) );
 }
 
+$reset_url = '';
+if ( bp_is_members_directory() ) {
+	$reset_url = bp_get_members_directory_permalink();
+} else {
+	$reset_url = bp_get_group_type_directory_permalink( $group_type );
+}
+
 ?>
 
 <h2 class="sidebar-title"><?php echo $sidebar_title; ?></h2>
@@ -160,7 +167,7 @@ var OLAcadUnits = ' . wp_json_encode( $academic_unit_map ) . ';
 
 			</div>
 			<input class="btn btn-primary" type="submit" onchange="document.forms['group_seq_form'].submit();" value="Submit">
-			<input class="btn btn-default" type="button" value="Reset" onClick="window.location.href = '<?php echo $bp->root_domain ?>/<?php echo $group_slug; ?>/'">
+			<input class="btn btn-default" type="button" value="Reset" onClick="window.location.href = '<?php echo esc_url( $reset_url ); ?>'">
 		</form>
 
 		<div class="archive-search">
