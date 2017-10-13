@@ -428,18 +428,18 @@ jQuery(document).ready(function($){
 		}
 
 		if ( 0 == domain.length ) {
-			$domain_field.after('<div class="ajax-warning bp-template-notice error">This field cannot be blank.</div>');
+			$domain_field.after('<div class="ajax-warning bp-template-notice error">' + OLGroupCreate.strings.fieldCannotBeBlank + '</div>');
 			return false;
 		}
 
-		$.post( ajaxurl, // Forward-compatibility with ajaxurl in BP 1.6
+		$.post( ajaxurl,
 			{
 				action: 'openlab_validate_groupblog_url_handler',
 				'path': domain
 			},
 			function( response ) {
 				if ( 'exists' == response ) {
-					$domain_field.after('<div class="ajax-warning bp-template-notice error">Sorry, that URL is already taken.</div>');
+					$domain_field.after('<div class="ajax-warning bp-template-notice error">' + OLGroupCreate.strings.urlTaken + '</div>');
 					return false;
 				} else {
 					// We're done validating.
