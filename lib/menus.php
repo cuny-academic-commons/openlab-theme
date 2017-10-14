@@ -321,6 +321,9 @@ function openlab_submenu_markup( $type = '', $opt_var = null, $row_wrapper = tru
 			break;
 		case 'friends':
 			$friends_menu = openlab_my_friends_submenu( false );
+			if ( ! $friends_menu ) {
+				return '';
+			}
 
 			$menu = $friends_menu['menu'];
 			$submenu_text = $friends_menu['submenu_text'];
