@@ -358,8 +358,8 @@ function cuny_group_single() {
 
 				<?php if ( is_user_logged_in() && $bp->is_item_admin ) : ?>
 					<div id="group-action-wrapper">
-						<a class="btn btn-default btn-block btn-primary link-btn" href="<?php echo bp_group_permalink() . 'admin/edit-details/'; ?>"><i class="fa fa-pencil" aria-hidden="true"></i> Edit Profile</a>
-						<a class="btn btn-default btn-block btn-primary link-btn" href="<?php echo bp_group_permalink() . 'admin/group-avatar/'; ?>"><i class="fa fa-camera" aria-hidden="true"></i> Change Avatar</a>
+						<a class="btn btn-default btn-block btn-primary link-btn" href="<?php echo bp_group_permalink() . 'admin/edit-details/'; ?>"><i class="fa fa-pencil" aria-hidden="true"></i> <?php esc_html_e( 'Edit Settings', 'openlab-theme' ); ?></a>
+						<a class="btn btn-default btn-block btn-primary link-btn" href="<?php echo bp_group_permalink() . 'admin/group-avatar/'; ?>"><i class="fa fa-camera" aria-hidden="true"></i> <?php esc_html_e( 'Change Avatar', 'openlab-theme' ); ?></a>
 					</div>
 				<?php elseif ( is_user_logged_in() ) : ?>
 					<div id="group-action-wrapper">
