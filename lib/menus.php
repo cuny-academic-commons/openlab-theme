@@ -520,7 +520,7 @@ function openlab_my_friends_submenu( $count = true ) {
 
 	if ( $bp->is_item_admin ) {
 		$menu_list = array(
-			$friend_requests => 'Requests Received ' . $count_span,
+			$friend_requests => __( 'Requests Received', 'openlab-theme' ) . ' ' . $count_span,
 				// '#' => $page_identify,
 		);
 	} else {
