@@ -128,6 +128,23 @@ function openlab_modify_options_nav() {
 		$nav_items = buddypress()->groups->nav->get_secondary( array( 'parent_slug' => bp_get_current_group_slug() ) );
 		$current_group = groups_get_current_group();
 
+		// Docs should have count.
+		$doc_item = buddypress()->groups->nav->get_secondary( array(
+			'slug' => 'docs',
+			'parent_slug' => bp_get_current_group_slug(),
+		) );
+		if ( $doc_item ) {
+			$group_doc_count = openlab_get_group_doc_count( $current_group->id );
+			$docs_name = sprintf(
+				/* translators: 1. count span */
+				__( 'Docs %1$s', 'openlab-theme' ),
+				sprintf( '<span class="mol-count pull-right count-%d gray">%d</span>', $group_doc_count, $group_doc_count )
+			);
+			buddypress()->groups->nav->edit_nav( array(
+				'name' => $docs_name,
+			), 'docs', bp_get_current_group_slug() );
+		}
+
 		foreach ( $nav_items as $nav_item ) {
 
 			if ( 'events' === $nav_item->slug ) {
