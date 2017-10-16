@@ -69,7 +69,7 @@ function openlab_bp_docs_template( $template ) {
 }
 add_filter( 'bp_docs_template', 'openlab_bp_docs_template' );
 
-add_action( 'bp_docs_theme_compat_setup', function( $theme_compat ) {
+add_action( 'bp_docs_setup_theme_compat', function( $theme_compat ) {
 	remove_action( 'bp_replace_the_content', array( $theme_compat, 'single_content' ) );
 	remove_action( 'bp_replace_the_content', array( $theme_compat, 'create_content' ) );
 } );
