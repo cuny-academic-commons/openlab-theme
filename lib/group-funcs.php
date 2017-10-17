@@ -625,33 +625,32 @@ function openlab_group_profile_activity_list() {
 								<div class="recent-posts">
 									<h2 class="title activity-title"><a class="no-deco" href="<?php site_url(); ?>/groups/<?php echo $group_slug; ?>/docs/"><?php esc_html_e( 'Recent Docs', 'openlab-theme' ); ?><span class="fa fa-chevron-circle-right" aria-hidden="true"></span></a></h2>
 									<?php
-									$docs_arg = array(
-										'posts_per_page' => '3',
-										'post_type' => 'bp_doc',
-										'tax_query' =>
-										array(
-											array(
-												'taxonomy' => 'bp_docs_associated_item',
-												'field' => 'slug',
-												'terms' => $group_slug,
-											),
-										),
-									);
-									$query = new WP_Query( $docs_arg );
-									// $query = new WP_Query( "posts_per_page=3&post_type=bp_doc&category_name=$group_slug" );
-									// $query = new WP_Query( "posts_per_page=3&post_type=bp_doc&category_name=$group_id" );
+
+									$docs_query = new BP_Docs_Query( array(
+										'group_id' => bp_get_current_group_id(),
+										'orderby' => 'created',
+										'order' => 'DESC',
+										'posts_per_page' => 3,
+									) );
+									$query = $docs_query->get_wp_query();
+
 									global $post;
 									if ( $query->have_posts() ) {
 										while ( $query->have_posts() ) : $query->the_post();
+											$doc_url = bp_docs_get_doc_link( get_the_ID() );
 											?>
-											<div class="panel panel-default"><div class="panel-body">
-													<?php echo openlab_get_group_activity_content( get_the_title(), bp_create_excerpt( strip_tags( $post->post_content ), 250, array( 'ending' => '' ) ), site_url() . '/groups/' . $group_slug . '/docs/' . $post->post_name ); ?>
-												</div></div>
+											<div class="panel panel-default">
+												<div class="panel-body">
+													<?php echo openlab_get_group_activity_content( get_the_title(), bp_create_excerpt( strip_tags( $post->post_content ), 250, array( 'ending' => '' ) ), $doc_url ); ?>
+												</div>
+											</div>
 											<?php
 										endwhile;
 									} else {
 										echo '<div class="panel panel-default"><div class="panel-body"><p>' . esc_html__( 'No Recent Docs', 'openlab-theme' ) . '</p></div></div>';
 									}
+
+									$query->reset_postdata();
 									?>
 								</div>
 							</div>
