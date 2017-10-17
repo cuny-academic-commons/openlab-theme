@@ -74,36 +74,11 @@ function openlab_list_members( $view ) {
 	$include_arrays = array();
 	$include_noop = false;
 
-	if ( $search_terms && ! $include_noop ) {
-		// The first and last name fields are private, so they should
-		// not show up in search results
-		$first_name_field_id = xprofile_get_field_id_from_name( 'First Name' );
-		$last_name_field_id = xprofile_get_field_id_from_name( 'Last Name' );
-
-		// Split the search terms into separate words
-		$search_terms_a = explode( ' ', $search_terms );
-
-		$search_query = "SELECT user_id
-			 FROM {$bp->profile->table_name_data}
-			 WHERE field_id NOT IN ({$first_name_field_id}, {$last_name_field_id})";
-
-		if ( ! empty( $search_terms_a ) ) {
-			$match_clauses = array();
-			foreach ( $search_terms_a as $search_term ) {
-				$match_clauses[] = "value LIKE '%" . esc_sql( like_escape( $search_term ) ) . "%'";
-			}
-			$search_query .= ' AND ( ' . implode( ' AND ', $match_clauses ) . ' )';
-		}
-
-		$search_terms_matches = $wpdb->get_col( $search_query );
-
-		if ( empty( $search_terms_matches ) ) {
-			$include_noop = true;
-		} else {
-			$include_arrays[] = $search_terms_matches;
-		}
+	if ( $search_terms ) {
+		$args['search_terms'] = $search_terms;
 	}
 
+	// @todo This must be unhardcoded.
 	if ( $user_school && ! $include_noop ) {
 		$department_field_id = xprofile_get_field_id_from_name( 'Department' );
 		$major_field_id = xprofile_get_field_id_from_name( 'Major Program of Study' );
