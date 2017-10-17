@@ -4,9 +4,18 @@
  *
  */
 global $bp, $wp_query;
+
+$div_class = sprintf(
+	'plugins action-%s component-%',
+	bp_current_action(),
+	bp_current_component()
+);
+if ( function_exists( 'openlab_eo_is_event_detail_screen' ) && openlab_eo_is_event_detail_screen() ) {
+	$div_class .= ' event-detail';
+}
 ?>
 
-<div id="single-course-body" class="plugins action-<?php echo $bp->current_action ?> component-<?php echo $bp->current_component ?><?php echo (openlab_eo_is_event_detail_screen() ? ' event-detail' : '') ?>">
+<div id="single-course-body" class="<?php echo esc_attr( $div_class ); ?>">
 	<div class="row submenu-row"><div class="col-md-24">
 			<div class="submenu">
 				<?php if ( $bp->current_action == 'invite-anyone' || $bp->current_action == 'notifications' ) : ?>

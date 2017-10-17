@@ -39,7 +39,7 @@ function openlab_bp_docs_template( $template ) {
 }
 add_filter( 'bp_docs_template', 'openlab_bp_docs_template' );
 
-add_action( 'bp_docs_theme_compat_setup', function( $theme_compat ) {
+add_action( 'bp_docs_setup_theme_compat', function( $theme_compat ) {
 	remove_action( 'bp_replace_the_content', array( $theme_compat, 'single_content' ) );
 	remove_action( 'bp_replace_the_content', array( $theme_compat, 'create_content' ) );
 } );
@@ -93,6 +93,34 @@ function openlab_allow_super_admins_to_edit_bp_docs( $user_can, $action ) {
 }
 
 add_filter( 'bp_docs_current_user_can', 'openlab_allow_super_admins_to_edit_bp_docs', 10, 2 );
+
+/**
+ * Cache-friendly method for fetching a group's Docs count.
+ */
+function openlab_get_group_doc_count( $group_id ) {
+	$cache_key = $group_id . wp_cache_get_last_changed( 'posts' );
+	$count = wp_cache_get( $cache_key, 'bp_docs_group_doc_counts' );
+	if ( false === $count ) {
+		$dq = new BP_Docs_Query( array(
+			'group_id' => $group_id,
+		) );
+
+		add_filter( 'bp_docs_pre_query_args', 'openlab_filter_docs_query_for_count' );
+		$doc_query = $dq->get_wp_query();
+		remove_filter( 'bp_docs_pre_query_args', 'openlab_filter_docs_query_for_count' );
+
+		$count = $doc_query->found_posts;
+		wp_cache_set( $cache_key, $count, 'bp_docs_group_doc_counts' );
+	}
+
+	return intval( $count );
+}
+
+function openlab_filter_docs_query_for_count( $args ) {
+	$args['fields'] = 'ids';
+	$args['posts_per_page'] = -1;
+	return $args;
+}
 
 /**
  * Hack alert! Allow group avatars to be deleted

@@ -20,6 +20,13 @@ function openlab_bp_enqueue_scripts() {
 	     ( bp_is_group_create() && bp_is_action_variable( 'invite-anyone', 1 ) ) ||
 	     ( bp_is_group_admin_page() && bp_is_action_variable( 'edit-details', 0 ) ) ) {
 		wp_enqueue_script( 'openlab-group-create', get_template_directory_uri() . '/js/group-create.js', array( 'jquery' ) );
+
+		wp_localize_script( 'openlab-group-create', 'OLGroupCreate', array(
+			'strings' => array(
+				'fieldCannotBeBlank' => __( 'This field cannot be blank.', 'openlab-theme' ),
+				'urlTaken' => __( 'Sorry, that URL is already taken.', 'openlab-theme' ),
+			),
+		) );
 	}
 
 	if ( bp_is_register_page() ) {

@@ -128,6 +128,23 @@ function openlab_modify_options_nav() {
 		$nav_items = buddypress()->groups->nav->get_secondary( array( 'parent_slug' => bp_get_current_group_slug() ) );
 		$current_group = groups_get_current_group();
 
+		// Docs should have count.
+		$doc_item = buddypress()->groups->nav->get_secondary( array(
+			'slug' => 'docs',
+			'parent_slug' => bp_get_current_group_slug(),
+		) );
+		if ( $doc_item ) {
+			$group_doc_count = openlab_get_group_doc_count( $current_group->id );
+			$docs_name = sprintf(
+				/* translators: 1. count span */
+				__( 'Docs %1$s', 'openlab-theme' ),
+				sprintf( '<span class="mol-count pull-right count-%d gray">%d</span>', $group_doc_count, $group_doc_count )
+			);
+			buddypress()->groups->nav->edit_nav( array(
+				'name' => $docs_name,
+			), 'docs', bp_get_current_group_slug() );
+		}
+
 		foreach ( $nav_items as $nav_item ) {
 
 			if ( 'events' === $nav_item->slug ) {
@@ -321,6 +338,9 @@ function openlab_submenu_markup( $type = '', $opt_var = null, $row_wrapper = tru
 			break;
 		case 'friends':
 			$friends_menu = openlab_my_friends_submenu( false );
+			if ( ! $friends_menu ) {
+				return '';
+			}
 
 			$menu = $friends_menu['menu'];
 			$submenu_text = $friends_menu['submenu_text'];
@@ -517,7 +537,7 @@ function openlab_my_friends_submenu( $count = true ) {
 
 	if ( $bp->is_item_admin ) {
 		$menu_list = array(
-			$friend_requests => 'Requests Received ' . $count_span,
+			$friend_requests => __( 'Requests Received', 'openlab-theme' ) . ' ' . $count_span,
 				// '#' => $page_identify,
 		);
 	} else {
@@ -531,7 +551,9 @@ function openlab_my_friends_submenu( $count = true ) {
 	}
 
 	$menu_out['menu'] = openlab_submenu_gen( $menu_list );
-	$menu_out['submenu_text'] = '<a class="' . $submenu_class . '" href="' . $my_friends . '">My Friends</a>';
+
+	$label = bp_is_my_profile() ? __( 'My Friends', 'openlab-theme' ) : sprintf( __( '%s\'s Friends', 'openlab-theme' ), bp_core_get_user_displayname( bp_displayed_user_id() ) );
+	$menu_out['submenu_text'] = '<a class="' . esc_attr( $submenu_class ) . '" href="' . esc_url( $my_friends ) . '">' . esc_html( $label ) . '</a>';
 
 	return $menu_out;
 }
@@ -1216,7 +1238,7 @@ function openlab_calendar_submenu() {
  */
 function openlab_custom_nav_menu_item( $title, $url, $order, $parent = 0, $classes = array() ) {
 	$item = new stdClass();
-	$item->ID = 1000000 + $order + parent;
+	$item->ID = 1000000 + $order + $parent;
 	$item->db_id = $item->ID;
 	$item->title = $title;
 	$item->url = $url;

@@ -10085,6 +10085,9 @@ input.help-search {
 .archive .cat-list {
   margin-left: 21px;
 }
+#nav-documents .count-0 {
+  display: none;
+}
 /**breadcrumbs**/
 #breadcrumb-container {
   background-color: #b82d11;

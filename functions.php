@@ -8,7 +8,7 @@ if ( ! defined( 'CSS_DEBUG' ) ) {
 add_action( 'widgets_init', 'openlab_register_sidebars' );
 
 // Install widgets.
-add_action( 'admin_init', 'openlab_maybe_install', 5 );
+add_action( 'wp_loaded', 'openlab_maybe_install' );
 
 function openlab_core_setup() {
 	add_theme_support( 'post-thumbnails' );
@@ -25,6 +25,16 @@ function openlab_core_setup() {
 add_action( 'after_setup_theme', 'openlab_core_setup' );
 
 function openlab_maybe_install() {
+	return;
+	if ( ! isset( $_GET['cboxol-trigger-theme'] ) ) {
+		return;
+	}
+
+	$nonce = get_option( 'cboxol_setup_nonce' );
+	if ( ! $nonce || $nonce !== wp_unslash( $_GET['cboxol-trigger-theme'] ) ) {
+		return;
+	}
+
 	if ( defined( 'DOING_AJAX' ) ) {
 		return;
 	}
@@ -37,94 +47,8 @@ function openlab_maybe_install() {
 		return;
 	}
 
-	openlab_register_sidebars();
-
-	// Set flag early to prevent dupes.
-	update_option( 'openlab_theme_installed', time() );
-
-	require dirname( __FILE__ ) . '/lib/cbox-widget-setter.php';
-
-	// Group Type widgets.
-	if ( ! CBox_Widget_Setter::is_sidebar_populated( 'home-main' ) ) {
-		$group_types = cboxol_get_group_types();
-		foreach ( $group_types as $group_type ) {
-			CBox_Widget_Setter::set_widget( array(
-				'id_base'    => 'openlab_group_type',
-				'sidebar_id' => 'home-main',
-				'settings'   => array(
-					'title' => $group_type->get_label( 'plural' ),
-					'group_type' => $group_type->get_slug(),
-				),
-			) );
-		}
-	}
-
-	// Home sidebar.
-	if ( ! CBox_Widget_Setter::is_sidebar_populated( 'home-sidebar' ) ) {
-		CBox_Widget_Setter::set_widget( array(
-			'id_base'    => 'cac_featured_content_widget',
-			'sidebar_id' => 'home-sidebar',
-			'settings'   => array(
-				'crop_length' => 300,
-				'custom_description' => __( 'Use this space to highlight content from around your network.', 'openlab-theme' ),
-				'display_images' => true,
-				'featured_content_type' => 'resource',
-				'featured_resource_title' => __( 'Featured Item', 'openlab-theme' ),
-				'featured_resource_link' => home_url(),
-				'image_url' => bp_core_avatar_default(),
-				'image_height' => 50,
-				'image_width' => 50,
-				'read_more' => '',
-				'title' => __( 'In The Spotlight', 'openlab-theme' ),
-				'title_element' => 'h2',
-			),
-		) );
-
-		CBox_Widget_Setter::set_widget( array(
-			'id_base'    => 'openlab-whats-happening',
-			'sidebar_id' => 'home-sidebar',
-		) );
-
-		CBox_Widget_Setter::set_widget( array(
-			'id_base'    => 'openlab-whos-online',
-			'sidebar_id' => 'home-sidebar',
-		) );
-
-		CBox_Widget_Setter::set_widget( array(
-			'id_base'    => 'openlab-new-members',
-			'sidebar_id' => 'home-sidebar',
-		) );
-	}
-
-	// Footer sidebar.
-	if ( ! CBox_Widget_Setter::is_sidebar_populated( 'footer' ) ) {
-		$welcome_text = __( 'The footer areas can be used to display general information about your site, such as contact information and links to terms of service.', 'openlab-theme' );
-
-		CBox_Widget_Setter::set_widget( array(
-			'id_base'    => 'text',
-			'sidebar_id' => 'footer',
-			'settings'   => array(
-				'title' => __( 'Footer area 1', 'openlab-theme' ),
-				'text'  => $welcome_text,
-				'filter' => false,
-			),
-		) );
-
-		$welcome_text = sprintf( __( 'Modify the text of this and other widgets using the <a href="%s">Customizer</a>.', 'openlab-theme' ), admin_url( 'customize.php?autofocus[section]=sidebar-widgets-footer' ) );
-
-		CBox_Widget_Setter::set_widget( array(
-			'id_base'    => 'text',
-			'sidebar_id' => 'footer',
-			'settings'   => array(
-				'title' => __( 'Footer area 2', 'openlab-theme' ),
-				'text'  => $welcome_text,
-				'filter' => false,
-			),
-		) );
-	}
-
-	// Nav menu.
-	openlab_create_default_nav_menu();
+	// Nav menus.
+	openlab_create_default_nav_menus();
 
 	// Slider.
 	$slides = array(
@@ -193,7 +117,8 @@ function openlab_maybe_install() {
 	remove_action( 'after_switch_theme', '_wp_sidebars_changed' );
 }
 
-function openlab_create_default_nav_menu() {
+function openlab_create_default_nav_menus() {
+	// Main Menu.
 	$menu_name = wp_slash( __( 'Main Menu', 'cbox-openlab-core' ) );
 	$menu_id = wp_create_nav_menu( $menu_name );
 
@@ -256,6 +181,31 @@ function openlab_create_default_nav_menu() {
 	$locations = get_theme_mod( 'nav_menu_locations' );
 	$locations['main'] = $menu_id;
 	set_theme_mod( 'nav_menu_locations', $locations );
+
+	// About Menu.
+	if ( isset( $brand_pages['about'] ) ) {
+		$menu_name = wp_slash( __( 'About Menu', 'cbox-openlab-core' ) );
+		$menu_id = wp_create_nav_menu( $menu_name );
+
+		if ( is_wp_error( $menu_id ) ) {
+			return;
+		}
+
+		wp_update_nav_menu_item(
+			$menu_id,
+			0,
+			array(
+				'menu-item-title' => $brand_pages['about']['title'],
+				'menu-item-classes' => 'about',
+				'menu-item-url' => $brand_pages['about']['preview_url'],
+				'menu-item-status' => 'publish',
+			)
+		);
+
+		$locations = get_theme_mod( 'nav_menu_locations' );
+		$locations['aboutmenu'] = $menu_id;
+		set_theme_mod( 'nav_menu_locations', $locations );
+	}
 }
 
 /*
@@ -315,14 +265,7 @@ function openlab_load_scripts() {
 
 		wp_register_script( 'select2', $stylesheet_dir_uri . '/js/select2.min.js', array( 'jquery' ) );
 
-		$utility_deps = array( 'jquery', 'select2' );
-		/*
-		if ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) {
-			$utility_deps[] = 'hyphenator-js';
-		} else {
-			$utility_deps[] = 'openlab-smoothscroll';
-		}
-		*/
+		$utility_deps = array( 'jquery', 'select2', 'hyphenator-js' );
 		wp_register_script( 'utility', $stylesheet_dir_uri . '/js/utility.js', $utility_deps, '1.6.9.8', true );
 
 		wp_enqueue_script( 'utility' );

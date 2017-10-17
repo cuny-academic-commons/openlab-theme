@@ -265,7 +265,9 @@ function openlab_registration_page() {
 
 								<div id="openlab-profile-fields"></div>
 
-								<?php echo cboxol_get_academic_unit_selector(); ?>
+								<?php echo cboxol_get_academic_unit_selector( array(
+									'entity_type' => 'user',
+								) ); ?>
 
 								<?php do_action( 'bp_after_signup_profile_fields' ) ?>
 

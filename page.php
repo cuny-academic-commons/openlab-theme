@@ -7,12 +7,16 @@
 	$postID = $post->ID;
 	$parent = $post->post_parent;
 
+	$is_about_or_calendar = cboxol_is_brand_page( 'about' );
+
 	// @todo This should not be hardcoded.
+	/*
 	$about_page_obj = get_page_by_path( 'about' );
 	$calendar_page_obj = get_page_by_path( 'about/calendar' );
 	$is_about_or_calendar = ( $about_page_obj && ( $postID == $about_page_obj->ID || $parent == $about_page_obj->ID ) ) || ( $calendar_page_obj && $parent == $calendar_page_obj->ID );
+	*/
 
-	if ( $is_about_or_calendar) {
+	if ( $is_about_or_calendar ) {
 		openlab_bp_mobile_sidebar( 'about' );
 	}
 	?>
