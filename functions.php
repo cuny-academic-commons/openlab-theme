@@ -265,14 +265,7 @@ function openlab_load_scripts() {
 
 		wp_register_script( 'select2', $stylesheet_dir_uri . '/js/select2.min.js', array( 'jquery' ) );
 
-		$utility_deps = array( 'jquery', 'select2' );
-		/*
-		if ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) {
-			$utility_deps[] = 'hyphenator-js';
-		} else {
-			$utility_deps[] = 'openlab-smoothscroll';
-		}
-		*/
+		$utility_deps = array( 'jquery', 'select2', 'hyphenator-js' );
 		wp_register_script( 'utility', $stylesheet_dir_uri . '/js/utility.js', $utility_deps, '1.6.9.8', true );
 
 		wp_enqueue_script( 'utility' );
