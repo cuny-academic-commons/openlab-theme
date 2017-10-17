@@ -140,3 +140,34 @@ function openlab_fix_avatar_delete( $view ) {
 }
 
 add_filter( 'bp_docs_get_current_view', 'openlab_fix_avatar_delete', 9999 );
+
+/**
+ * Remove the 'Unlink from Group' link and replace with 'Delete'.
+ */
+function openlab_docs_action_links( $links, $doc_id ) {
+	$link_index = null;
+	foreach ( $links as $link_index => $link ) {
+		if ( false === strpos( $link, 'unlink-from-group' ) ) {
+			continue;
+		}
+	}
+
+	$delete_link = null;
+	if ( current_user_can( 'bp_docs_manage', $doc_id ) ) {
+		$delete_link = sprintf(
+			'<a href="%s" class="delete confirm">%s</a>',
+			esc_url( bp_docs_get_delete_doc_link() ),
+			esc_html__( 'Delete', 'bp-docs' )
+		);
+	}
+
+	if ( $delete_link ) {
+		$links[ $link_index ] = $delete_link;
+	} else {
+		unset( $links[ $link_index ] );
+		$links = array_values( $links );
+	}
+
+	return $links;
+}
+add_filter( 'bp_docs_doc_action_links', 'openlab_docs_action_links', 50, 2 );
