@@ -1329,14 +1329,12 @@ function openlab_get_group_site_settings( $group_id ) {
 function openlab_custom_group_excerpts( $excerpt, $group ) {
 	global $post, $bp;
 
-	$hits = array( 'courses', 'projects', 'clubs', 'portfolios', 'my-courses', 'my-projects', 'my-clubs' );
-	if ( in_array( $post->post_name, $hits ) || $bp->current_action == 'invites' ) {
+	if ( bp_is_groups_directory() || bp_is_user_groups() || $bp->current_action == 'invites' ) {
 		$excerpt = strip_tags( $excerpt );
 	}
 
 	return $excerpt;
 }
-
 add_filter( 'bp_get_group_description_excerpt', 'openlab_custom_group_excerpts', 10, 2 );
 
 /**
