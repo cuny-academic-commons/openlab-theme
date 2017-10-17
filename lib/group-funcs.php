@@ -650,7 +650,7 @@ function openlab_group_profile_activity_list() {
 											<?php
 										endwhile;
 									} else {
-										echo '<div class="panel panel-default"><div class="panel-body"><p>No Recent Docs</p></div></div>';
+										echo '<div class="panel panel-default"><div class="panel-body"><p>' . esc_html__( 'No Recent Docs', 'openlab-theme' ) . '</p></div></div>';
 									}
 									?>
 								</div>
@@ -688,7 +688,7 @@ function openlab_group_profile_activity_list() {
 						<?php else : ?>
 
 							<div id="message" class="info">
-								<p>This group has no members.</p>
+								<p><?php esc_html_e( 'This group has no members.', 'openlab-theme' ); ?></p>
 							</div>
 
 						<?php endif; ?>
@@ -1069,7 +1069,7 @@ function openlab_show_site_posts_and_comments() {
 			<div class="col-sm-12">
 				<div id="recent-course">
 					<div class="recent-posts">
-						<h2 class="title activity-title"><a class="no-deco" href="<?php echo esc_attr( $site_url ) ?>">Recent Posts<span class="fa fa-chevron-circle-right" aria-hidden="true"></span></a></h2>
+						<h2 class="title activity-title"><a class="no-deco" href="<?php echo esc_attr( $site_url ) ?>"><?php esc_html_e( 'Recent Posts', 'openlab-theme' ); ?><span class="fa fa-chevron-circle-right" aria-hidden="true"></span></a></h2>
 
 
 						<?php foreach ( $posts as $post ) : ?>
@@ -1081,7 +1081,7 @@ function openlab_show_site_posts_and_comments() {
 						<?php endforeach ?>
 
 						<?php if ( 'external' == $site_type && groups_is_user_admin( bp_loggedin_user_id(), bp_get_current_group_id() ) ) : ?>
-							<p class="description">Feed updates automatically every 10 minutes <a class="refresh-feed" id="refresh-posts-feed" href="<?php echo wp_nonce_url( add_query_arg( 'refresh_feed', 'posts', bp_get_group_permalink( groups_get_current_group() ) ), 'refresh-posts-feed' ) ?>">Refresh now</a></p>
+							<p class="description"><?php esc_html_e( 'Feed updates automatically every 10 minutes', 'openlab-theme' ); ?> <a class="refresh-feed" id="refresh-posts-feed" href="<?php echo wp_nonce_url( add_query_arg( 'refresh_feed', 'posts', bp_get_group_permalink( groups_get_current_group() ) ), 'refresh-posts-feed' ) ?>"><?php esc_html_e( 'Refresh now', 'openlab-theme' ); ?></a></p>
 						<?php endif ?>
 					</div><!-- .recent-posts -->
 				</div><!-- #recent-course -->
@@ -1090,7 +1090,7 @@ function openlab_show_site_posts_and_comments() {
 			<div class="col-sm-12">
 				<div id="recent-site-comments">
 					<div class="recent-posts">
-						<h2 class="title activity-title"><a class="no-deco" href="<?php echo esc_attr( $site_url ) ?>">Recent Comments<span class="fa fa-chevron-circle-right" aria-hidden="true"></span></a></h2>
+						<h2 class="title activity-title"><a class="no-deco" href="<?php echo esc_attr( $site_url ) ?>"><?php esc_html_e( 'Recent Comments', 'openlab-theme' ); ?><span class="fa fa-chevron-circle-right" aria-hidden="true"></span></a></h2>
 						<?php if ( ! empty( $comments ) ) : ?>
 							<?php foreach ( $comments as $comment ) : ?>
 								<div class="panel panel-default">
@@ -1100,11 +1100,11 @@ function openlab_show_site_posts_and_comments() {
 							<?php endforeach ?>
 						<?php else : ?>
 							<div class="panel panel-default">
-								<div class="panel-body"><p>No Comments Found</p></div></div>
+								<div class="panel-body"><p><?php esc_html_e( 'No Comments Found', 'openlab-theme' ); ?></p></div></div>
 						<?php endif ?>
 
 						<?php if ( 'external' == $site_type && groups_is_user_admin( bp_loggedin_user_id(), bp_get_current_group_id() ) ) : ?>
-							<p class="refresh-message description">Feed updates automatically every 10 minutes <a class="refresh-feed" id="refresh-posts-feed" href="<?php echo wp_nonce_url( add_query_arg( 'refresh_feed', 'comments', bp_get_group_permalink( groups_get_current_group() ) ), 'refresh-comments-feed' ) ?>">Refresh now</a></p>
+							<p class="refresh-message description"><?php esc_html_e( 'Feed updates automatically every 10 minutes', 'openlab-theme' ); ?> <a class="refresh-feed" id="refresh-posts-feed" href="<?php echo wp_nonce_url( add_query_arg( 'refresh_feed', 'comments', bp_get_group_permalink( groups_get_current_group() ) ), 'refresh-comments-feed' ) ?>"><?php esc_html_e( 'Refresh now', 'openlab-theme' ); ?></a></p>
 						<?php endif ?>
 
 					</div><!-- .recent-posts -->
