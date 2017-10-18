@@ -227,7 +227,6 @@ jQuery(document).ready(function($){
 				$('#group-desc').val(r.description);
 
 				// Schools and Departments
-				console.log( r.academic_units );
 				$.each( r.academic_units, function( unitType, unitsOfType ) {
 					$typeSelector = $( '.cboxol-academic-unit-selector-for-type-' + unitType );
 
@@ -237,13 +236,13 @@ jQuery(document).ready(function($){
 				} );
 
 				// Course Code
-				$('input[name="wds_course_code"]').val(r.course_code);
+				$('#course-code').val(r.course_code);
 
 				// Section Code
-				$('input[name="wds_section_code"]').val(r.section_code);
+				$('#section-code').val(r.section_code);
 
 				// Additional Description
-				$('textarea[name="wds_course_html"]').val(r.additional_description);
+				$('#additional-desc-html').val(r.additional_description);
 
 				// Associated site
 				if ( r.site_id ) {
