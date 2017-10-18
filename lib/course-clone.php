@@ -693,6 +693,11 @@ class Openlab_Clone_Course_Site {
 			return copy( $source, $dest );
 	    }
 
+		// Nothing to do here.
+		if ( ! file_exists( $source ) ) {
+			return;
+		}
+
 	    // Make destination directory
 	    if ( ! is_dir( $dest ) ) {
 			mkdir( $dest );
