@@ -67,7 +67,6 @@
 							<?php
 							// Only show 'Existing' field if there's something to clone.
 							$group_args = array(
-								'per_page' => 2,
 								'show_hidden' => true,
 								'user_id' => bp_loggedin_user_id(),
 								'group_type' => $group_type->get_slug(),
