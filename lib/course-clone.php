@@ -550,9 +550,9 @@ class Openlab_Clone_Course_Site {
 		// add the theme mods
 		update_option( 'mods_' . $theme, $mods );
 
-				// Just in case
-				create_initial_taxonomies();
-				flush_rewrite_rules();
+		// Just in case
+		create_initial_taxonomies();
+		flush_rewrite_rules();
 
 		restore_current_blog();
 	}
