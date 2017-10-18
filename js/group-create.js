@@ -221,29 +221,20 @@ jQuery(document).ready(function($){
 			},
 			success: function( response ) {
 				var r = JSON.parse( response );
+				var $typeSelector;
 
 				// Description
 				$('#group-desc').val(r.description);
 
 				// Schools and Departments
-				$('input[name="wds_group_school[]"]').each(function(){
-					$school_input = $(this);
-					if ( -1 < $.inArray( $school_input.val(), r.schools ) ) {
-						$school_input.attr('checked', true);
-						wds_load_group_departments();
+				console.log( r.academic_units );
+				$.each( r.academic_units, function( unitType, unitsOfType ) {
+					$typeSelector = $( '.cboxol-academic-unit-selector-for-type-' + unitType );
 
-						// Departments are fetched via
-						// AJAX, so we do a lame delay
-						var foo = setTimeout( function() {
-							$('input[name="wds_departments[]"]').each(function(){
-								$dept_input = $(this);
-								if ( -1 < $.inArray( $dept_input.val(), r.departments ) ) {
-									$dept_input.attr('checked', true);
-								}
-							});
-						}, 2000 );
-					}
-				});
+					$.each( unitsOfType, function( key, unitValue ) {
+						$typeSelector.find( '#academic-unit-' + unitValue ).attr( 'checked', true ).trigger( 'change' );
+					} );
+				} );
 
 				// Course Code
 				$('input[name="wds_course_code"]').val(r.course_code);

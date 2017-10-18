@@ -123,20 +123,27 @@ function openlab_group_clone_details( $group_id ) {
 	);
 
 	if ( $group_id ) {
-		$group = groups_get_group( array( 'group_id' => $group_id ) );
+		$group = groups_get_group( $group_id );
 
 		$retval['name'] = $group->name;
 		$retval['description'] = $group->description;
 
-		$schools = groups_get_groupmeta( $group_id, 'wds_group_school' );
-		if ( ! empty( $schools ) ) {
-			$retval['schools'] = explode( ',', $schools );
+		$academic_units = cboxol_get_object_academic_units( array(
+			'object_id' => $group->id,
+			'object_type' => 'group',
+		) );
+
+		$academic_unit_data = array();
+		foreach ( $academic_units as $academic_unit ) {
+			$academic_unit_type = $academic_unit->get_type();
+			if ( ! isset( $academic_unit_data[ $academic_unit_type ] ) ) {
+				$academic_unit_data[ $academic_unit_type ] = array();
+			}
+
+			$academic_unit_data[ $academic_unit_type ][] = $academic_unit->get_slug();
 		}
 
-		$departments = groups_get_groupmeta( $group_id, 'wds_departments' );
-		if ( ! empty( $departments ) ) {
-			$retval['departments'] = explode( ',', $departments );
-		}
+		$retval['academic_units'] = $academic_unit_data;
 
 		$retval['course_code'] = groups_get_groupmeta( $group_id, 'wds_course_code' );
 		$retval['section_code'] = groups_get_groupmeta( $group_id, 'wds_section_code' );
