@@ -473,14 +473,15 @@ class Openlab_Clone_Course_Site {
 	protected function create_site() {
 		global $wpdb;
 
-		// Assemble args and create the new site
-		$domain = $wpdb->get_var( "SELECT domain FROM {$wpdb->blogs} WHERE blog_id = 1" );
+		$group = groups_get_group( $this->group_id );
+		$title = $group->name;
 
 		$clone_destination_path = groups_get_groupmeta( $this->group_id, 'clone_destination_path' );
-		$path = '/' . $clone_destination_path . '/';
+		$validated = wpmu_validate_blog_signup( $clone_destination_path, $title );
 
-		$group = groups_get_group( array( 'group_id' => $this->group_id ) );
-		$title = $group->name;
+		// Assemble args and create the new site
+		$domain = $validated['domain'];
+		$path = $validated['path'];
 
 		$user_id = $group->creator_id;
 
