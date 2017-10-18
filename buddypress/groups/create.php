@@ -23,7 +23,7 @@
 	}
 
 	$group_id_to_clone = 0;
-	if ( 'course' === $group_type && ! empty( $_GET['clone'] ) ) {
+	if ( $group_type->get_is_course() && ! empty( $_GET['clone'] ) ) {
 		$group_id_to_clone = intval( $_GET['clone'] );
 	}
 

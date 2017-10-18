@@ -1030,7 +1030,12 @@ function openlab_group_admin_tabs( $group = false ) {
 		--><li<?php if ( 'group-settings' == $current_tab ) : ?> class="current-menu-item"<?php endif; ?>><a href="<?php echo bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug ?>/admin/group-settings"><?php _e( 'Settings', 'buddypress' ); ?></a></li><!--
 
 		<?php if ( $group_type->get_is_course() ) : ?>
-			--><li class="clone-button <?php if ( 'clone-group' == $current_tab ) : ?>current-menu-item<?php endif; ?>" ><span class="fa fa-plus-circle"></span><a href="<?php echo bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/create/step/group-details?type=course&clone=' . bp_get_current_group_id() ?>"><?php esc_html_e( 'Clone', 'cbox-openlab-core' ); ?></a></li><!--
+			<?php
+			$clone_link = add_query_arg( array(
+				'group_type' => $group_type->get_slug(),
+				'clone' => bp_get_current_group_id(),
+			), bp_get_groups_directory_permalink() . 'create/step/group-details/' ); ?>
+			--><li class="clone-button <?php if ( 'clone-group' == $current_tab ) : ?>current-menu-item<?php endif; ?>" ><span class="fa fa-plus-circle"></span><a href="<?php echo esc_url( $clone_link ); ?>"><?php esc_html_e( 'Clone', 'cbox-openlab-core' ); ?></a></li><!--
 		<?php endif ?>
 
 		--><li class="delete-button last-item <?php if ( 'delete-group' == $current_tab ) : ?>current-menu-item<?php endif; ?>" ><span class="fa fa-minus-circle"></span><a href="<?php echo bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug ?>/admin/delete-group"><?php esc_html_e( 'Delete', 'cbox-openlab-core' ); ?></a></li><!--
