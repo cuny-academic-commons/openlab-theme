@@ -4,25 +4,6 @@
  */
 
 /**
- * Custom template loader for my-{grouptype}
- */
-function openlab_mygroups_template_loader( $template ) {
-	if ( is_page() ) {
-		switch ( get_query_var( 'pagename' ) ) {
-			case 'my-courses' :
-			case 'my-clubs' :
-			case 'my-projects' :
-				get_template_part( 'buddypress/groups/index' );
-				break;
-		}
-	}
-
-	return $template;
-}
-
-add_filter( 'template_include', 'openlab_mygroups_template_loader' );
-
-/**
  * This function consolidates the group privacy settings in one spot for easier updating
  */
 function openlab_group_privacy_settings( $group_type ) {
