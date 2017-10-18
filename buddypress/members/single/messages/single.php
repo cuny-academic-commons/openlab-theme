@@ -8,7 +8,7 @@
 
 		<p id="message-recipients">
 			<span class="highlight">
-				<?php printf( __( 'Sent between %1$s and %1$s', 'buddypress' ), bp_get_the_thread_recipients(), '<a href="' . bp_get_loggedin_user_link() . '" title="' . bp_get_loggedin_user_fullname() . '">' . bp_get_loggedin_user_fullname() . '</a>' ) ?>
+				<?php printf( __( 'Sent between %1$s', 'cbox-openlab-core' ), bp_get_the_thread_recipients() ); ?>
 			</span>
 		</p>
 
