@@ -1924,6 +1924,7 @@ function openlab_group_academic_units_edit_markup() {
 			<div class="panel-body">
 				<?php
 				echo cboxol_get_academic_unit_selector( array(
+					'entity_type' => 'group',
 					'group_type' => $group_type->get_slug(),
 					'selected' => $selected_academic_units,
 				) );
