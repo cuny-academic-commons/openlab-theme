@@ -74,10 +74,11 @@ if ( ! empty( $term ) && 'term_all' != strtolower( $term ) ) {
 	);
 }
 
-if ( ! empty( $_GET['usertype'] ) && 'user_type_all' != $_GET['usertype'] ) {
+if ( ! empty( $_GET['member_type'] ) && 'all' !== $_GET['member_type'] ) {
+	$member_type = wp_unslash( $_GET['member_type'] );
 	$group_args['meta_query'][] = array(
 		'key' => 'portfolio_user_type',
-		'value' => ucwords( $_GET['usertype'] ),
+		'value' => $member_type,
 	);
 }
 
