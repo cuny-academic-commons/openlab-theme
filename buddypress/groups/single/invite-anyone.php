@@ -17,11 +17,11 @@
 	<?php endif; ?>
 
 	<div id="topgroupinvite" class="panel panel-default">
-		<div class="panel-heading semibold">Invite OpenLab Members to Your <?php echo ucfirst( $group_type ); ?></div>
+		<div class="panel-heading semibold"><?php esc_html_e( 'Invite Members', 'openlab-theme' ); ?></div>
 		<div class="panel-body">
-			
+
 			<?php do_action( 'template_notices' ) ?>
-			
+
 			<label><?php _e( 'Search for members to invite:', 'bp-invite-anyone' ) ?></label>
 
 			<ul class="first acfb-holder invite-search inline-element-list">
@@ -31,7 +31,7 @@
 			</ul>
 
 			<div id="searchinvitemembersdescription">
-				<p class="italics">Start typing a few letters of member's display name. When a dropdown list appears, select from the list.</p>
+				<p class="italics"><?php esc_html_e( 'Start typing a few letters of member\'s display name. When a dropdown list appears, select from the list.', 'openlab-theme' ); ?></p>
 
 				<?php /* The ID 'friend-list' is important for AJAX support. */ ?>
 				<ul id="invite-anyone-invite-list" class="item-list inline-element-list row">
@@ -62,12 +62,12 @@
 			</div>
 
 			<p class="invite-copy italics">
-				<?php echo 'These members will be sent an invitation to your ' . ucfirst( $group_type ) . '.'; ?>
+				<?php esc_html_e( 'These members will be sent an invitation.', 'openlab-theme' ); ?>
 
 				<?php if ( bp_is_group_create() ) : ?>
-					Click 'Finish' to continue.
+					<?php esc_html_e( 'Click \'Finish\' to continue.', 'openlab-theme' ); ?>
 				<?php else : ?>
-					Click the "Send Invites" button to continue.
+					<?php esc_html_e( 'Click the "Send Invites" button to continue.', 'openlab-theme' ); ?>
 				<?php endif ?>
 			</p>
 
@@ -82,7 +82,7 @@
 			<?php do_action( 'bp_after_group_send_invites_list' ) ?>
 		</div>
 	</div>
-		
+
 	<?php wp_nonce_field( 'groups_invite_uninvite_user', '_wpnonce_invite_uninvite_user' ) ?>
 
 	<?php if ( invite_anyone_access_test() && ! bp_is_group_create() ) : ?>
@@ -90,7 +90,7 @@
 			<div class="panel-heading semibold"><?php _e( 'Invite new members by email:' ); ?></div>
 			<div class="panel-body">
 
-				<p class="invite-copy"><?php _e( 'This link will take you to My Invitations, where you may invite people to join the OpenLab and this ' . ucfirst( $group_type ) ); ?></p>
+				<p class="invite-copy"><?php esc_html_e( 'This link will take you to My Invitations, where you may invite people to join the OpenLab and this group.', 'openlab-theme' )?></p>
 
 				<p><a class="btn btn-primary no-deco" href="<?php echo bp_loggedin_user_domain() . BP_INVITE_ANYONE_SLUG . '/invite-new-members/group-invites/' . bp_get_group_id() ?>"><?php _e( 'Invite New Members to OpenLab.', 'bp-invite-anyone' ) ?></a></p>
 
