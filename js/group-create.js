@@ -132,7 +132,7 @@ jQuery(document).ready(function($){
 		disable_gc_form();
 		mark_loading( $(e.target) );
 
-		$.post( '/wp-admin/admin-ajax.php', // Forward-compatibility with ajaxurl in BP 1.6
+		$.post( ajaxurl,
 			{
 				action: 'openlab_detect_feeds',
 				'site_url': eu
