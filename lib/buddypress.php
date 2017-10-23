@@ -23,8 +23,11 @@ function openlab_bp_enqueue_scripts() {
 
 		wp_localize_script( 'openlab-group-create', 'OLGroupCreate', array(
 			'strings' => array(
+				'externalFeedsFieldLabelComments' => __( 'Comments:', 'openlab-theme' ),
+				'externalFeedsFieldLabelPosts' => __( 'Posts:', 'openlab-theme' ),
+				'externalFeedsFound' => __( 'We found the following feed URLs for your external site, which we\'ll use to pull posts and comments into your activity stream.', 'openlab-theme' ),
+				'externalFeedsNotFound' => __( 'We couldn\'t find any feed URLs for your external site, which we use to pull posts and comments into your activity stream. If your site has feeds, you may enter the URLs below.', 'openlab-theme' ),
 				'fieldCannotBeBlank' => __( 'This field cannot be blank.', 'openlab-theme' ),
-				'urlTaken' => __( 'Sorry, that URL is already taken.', 'openlab-theme' ),
 			),
 		) );
 	}

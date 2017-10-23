@@ -150,18 +150,18 @@ jQuery(document).ready(function($){
 				}
 
 				if ( "posts" in robj ) {
-					$(efr).append( '<p class="feed-url-tip">We found the following feed URLs for your external site, which we\'ll use to pull posts and comments into your activity stream.</p>' );
+					$(efr).append( '<p class="feed-url-tip">' + OLGroupCreate.strings.externalFeedsFound + '</p>' );
 				} else {
-					$(efr).append( '<p class="feed-url-tip">We couldn\'t find any feed URLs for your external site, which we use to pull posts and comments into your activity stream. If your site has feeds, you may enter the URLs below.</p>' );
+					$(efr).append( '<p class="feed-url-tip">' + OLGroupCreate.strings.externalFeedsNotFound + '</p>' );
 				}
 
 				var posts = "posts" in robj ? robj.posts : '';
 				var comments = "comments" in robj ? robj.comments : '';
 				var type = "type" in robj ? robj.type : '';
 
-				$(efr).append( '<p class="feed-url posts-feed-url"><label for="external-posts-url">Posts:</label> <input name="external-posts-url" id="external-posts-url" value="' + posts + '" /></p>' );
+				$(efr).append( '<p class="feed-url posts-feed-url"><label for="external-posts-url">' + OLGroupCreate.strings.externalFeedsFieldLabelPosts + '</label> <input name="external-posts-url" id="external-posts-url" type="text" class="form-control" value="' + posts + '" /></p>' );
 
-				$(efr).append( '<p class="feed-url comments-feed-url"><label for="external-comments-url">Comments:</label> <input name="external-comments-url" id="external-comments-url" value="' + comments + '" /></p>' );
+				$(efr).append( '<p class="feed-url comments-feed-url"><label for="external-comments-url">' + OLGroupCreate.strings.externalFeedsFieldLabelComments + '</label> <input name="external-comments-url" id="external-comments-url" type="text" class="form-control" value="' + comments + '" /></p>' );
 
 				$(efr).append( '<input name="external-site-type" id="external-site-type" type="hidden" value="' + type + '" />' );
 
