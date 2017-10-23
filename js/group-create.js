@@ -428,8 +428,8 @@ jQuery(document).ready(function($){
 				'path': domain
 			},
 			function( response ) {
-				if ( 'exists' == response ) {
-					$domain_field.after('<div class="ajax-warning bp-template-notice error">' + OLGroupCreate.strings.urlTaken + '</div>');
+				if ( ! response.success ) {
+					$domain_field.after('<div class="ajax-warning bp-template-notice error">' + response.data.error + '</div>');
 					return false;
 				} else {
 					// We're done validating.
