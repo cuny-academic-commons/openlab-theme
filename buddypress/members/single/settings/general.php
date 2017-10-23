@@ -27,10 +27,8 @@ do_action( 'bp_before_member_settings_template' );
 		</div>
 
 		<div class="form-group settings-section email-section">
-			<label for="email_visible">Account Email Address</label>
-			<input class="form-control" type="text" name="email_visible" id="email_visible" value="<?php echo bp_get_displayed_user_email(); ?>" class="settings-input" disabled="disabled" />
-			<input type="hidden" name="email" value="<?php echo bp_get_displayed_user_email() ?>" />
-			<p class="description">Your email address cannot be changed. If your City Tech email address has changed, <a class="underline" href="<?php bp_get_root_domain(); ?>/about/contact-us">contact us</a> for assistance.</p>
+			<label for="email_visible"><?php esc_html_e( 'Account Email Address', 'openlab-theme' ); ?></label>
+			<input class="form-control" type="text" name="email" id="email" value="<?php echo esc_attr( bp_get_displayed_user_email() ); ?>" class="settings-input" />
 		</div>
 
 		<div class="form-group settings-section current-pw-section">
