@@ -2046,3 +2046,41 @@ function openlab_get_active_terms() {
 
 	return $options;
 }
+
+/**
+ * Modify group-related template messages to remove the word 'group'.
+ *
+ * bp_core_setup_message() fires at bp_actions:5.
+ *
+ * Yikes.
+ */
+function openlab_modify_template_messages() {
+	if ( empty( buddypress()->template_message ) ) {
+		return;
+	}
+
+	// Note we are intentionally using the 'buddypress' textdomain here.
+	$new_message = null;
+	switch ( buddypress()->template_message	) {
+		case __( 'You successfully left the group.', 'buddypress' ) :
+			$new_message = __( 'You successfully left.', 'openlab-theme' );
+			break;
+
+		case __( 'You joined the group!', 'buddypress' ) :
+			$new_message = __( 'You joined!', 'openlab-theme' );
+			break;
+
+		case __( 'Your membership request was sent to the group administrator successfully. You will be notified when the group administrator responds to your request.', 'buddypress' ) :
+			$new_message = __( 'Your membership request was sent successfully. You will be notified when your request has been addressed.', 'openlab-theme' );
+			break;
+
+		case __( 'Group created successfully.', 'invite-anyone' ) :
+			$new_message = __( 'Created successfully.', 'openlab-theme' );
+			break;
+	}
+
+	if ( $new_message ) {
+		buddypress()->template_message = $new_message;
+	}
+}
+add_action( 'bp_actions', 'openlab_modify_template_messages' );
