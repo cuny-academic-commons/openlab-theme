@@ -1919,7 +1919,7 @@ function openlab_group_academic_units_edit_markup() {
 	) );
 	?>
 	<?php if ( $academic_unit_types ) : ?>
-		<div class="panel panel-default">
+		<div class="panel panel-default" id="panel-academic-units">
 			<div class="panel-heading"><?php esc_html_e( 'Academic Units', 'openlab-theme' ) ?></div>
 			<div class="panel-body">
 				<?php
