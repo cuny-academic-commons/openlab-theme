@@ -928,26 +928,27 @@ function openlab_current_directory_filters() {
 	}
 
 	$filters = array();
+
+	foreach ( $academic_unit_types as $academic_unit_type ) {
+		$filters[] = 'academic-unit-' . $academic_unit_type->get_slug();
+	}
+
 	switch ( $current_view ) {
 		case 'people' :
 			$filters = array_merge( $filters, array( 'member_type' ) );
 			break;
 
 		case 'course' :
-			$filters = array_merge( $filters, array( 'term' ) );
-			// fall through
+			$filters = array_merge( $filters, array( 'cat', 'term' ) );
+			break;
 
 		case 'portfolio' :
-			$filters = array_merge( $filters, array( 'member_type' ) );
-			// fall through
+			$filters = array_merge( $filters, array( 'cat', 'member_type' ) );
+			break;
 
 		default :
 			$filters = array_merge( $filters, array( 'cat' ) );
 			break;
-	}
-
-	foreach ( $academic_unit_types as $academic_unit_type ) {
-		$filters[] = 'academic-unit-' . $academic_unit_type->get_slug();
 	}
 
 	$active_filters = array();
