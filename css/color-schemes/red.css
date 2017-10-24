@@ -8011,12 +8011,32 @@ body form .checkbox-list-container {
 .ct-group-meta tr #external-site-url {
   width: 88%;
 }
-.ct-group-meta .groupblog-setup .site-label {
-  padding-top: 9px;
+.ct-group-meta .groupblog-setup p:empty {
+  margin: 0;
 }
 .ct-group-meta .groupblog-setup .radio {
-  margin-bottom: 7px;
+  margin-bottom: 0;
   margin-top: 7px;
+}
+.ct-group-meta .groupblog-setup .radio label {
+  padding-left: 25px;
+}
+.ct-group-meta .groupblog-setup .site-path {
+  display: table;
+  padding-left: 25px;
+  width: 90%;
+}
+.ct-group-meta .groupblog-setup .site-path span {
+  display: table-cell;
+  width: 1px;
+}
+.ct-group-meta .groupblog-setup .site-path input.form-control {
+  display: table-cell;
+  margin-left: 8px;
+  width: 100%;
+}
+.ct-group-meta .groupblog-setup #noo_external_options .site-path input.form-control {
+  margin-left: 0;
 }
 .notification-settings .no,
 .notification-settings .yes {

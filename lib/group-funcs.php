@@ -1492,22 +1492,25 @@ function openlab_group_site_markup() {
 					<div id="wds-website-clone" class="form-field form-required" style="display:<?php echo $show_website; ?>">
 						<div id="noo_clone_options">
 							<div class="row">
-								<div class="radio disabled-opt col-sm-6">
+								<div class="radio disabled-opt">
 									<label>
 										<input type="radio" class="noo_radio" name="new_or_old" id="new_or_old_clone" value="clone" disabled />
 										<?php esc_html_e( 'Name your cloned site:', 'openlab-theme' ); ?>
 									</label>
 								</div>
 
-								<div class="col-sm-5 site-label">
-									<?php global $current_site ?>
-									<?php echo $current_site->domain . $current_site->path ?>
-								</div><!-- /.site-label -->
+								<div class="site-label site-path<?php if ( is_subdomain_install() ) : ?> site-path-subdomain<?php endif; ?>">
+									<?php if ( is_subdomain_install() ) : ?>
 
-								<div class="col-sm-13">
-									<?php /* @todo subdomains */ ?>
-									<input class="form-control domain-validate" size="40" id="clone-destination-path" name="clone-destination-path" type="text" title="<?php _e( 'Path', 'openlab-theme' ) ?>" value="" />
-								</div>
+									<?php else : ?>
+										<?php global $current_site ?>
+										<span>
+											<?php echo $current_site->domain . $current_site->path ?>
+										</span>
+										<input class="form-control domain-validate" size="40" id="clone-destination-path" name="clone-destination-path" type="text" title="<?php _e( 'Path', 'openlab-theme' ) ?>" value="" />
+
+									<?php endif; ?>
+								</div><!-- /.site-label -->
 
 								<input name="blog-id-to-clone" value="" type="hidden" />
 							</div><!-- /.row -->
@@ -1520,22 +1523,22 @@ function openlab_group_site_markup() {
 				<div id="wds-website" class="form-field form-required" style="display:<?php echo $show_website; ?>">
 					<div id="noo_new_options">
 						<div id="noo_new_options-div" class="row">
-							<div class="radio col-sm-6">
+							<div class="radio">
 								<label>
 									<input type="radio" class="noo_radio" name="new_or_old" id="new_or_old_new" value="new" />
 									<?php esc_html_e( 'Create a new site:', 'openlab-theme' ); ?>
 								</label>
 							</div>
 
-							<div class="col-sm-5 site-label">
+							<div class="site-label site-path">
+								<span>
 								<?php
 								$suggested_path = $group_type->get_is_portfolio() ? openlab_suggest_portfolio_path() : '';
 								// @todo Subdomains
 								echo $current_site->domain . $current_site->path
 								?>
-							</div>
+								</span>
 
-							<div class="col-sm-13">
 								<input id="new-site-domain" class="form-control domain-validate" size="40" name="blog[domain]" type="text" title="<?php esc_html_e( 'Domain', 'openlab-theme' ) ?>" value="<?php echo esc_html( $suggested_path ) ?>" />
 							</div>
 						</div><!-- #noo_new_options-div -->
@@ -1584,13 +1587,13 @@ function openlab_group_site_markup() {
 
 							<div id="noo_external_options">
 								<div class="form-group row">
-									<div class="radio col-sm-6">
+									<div class="radio">
 										<label>
 											<input type="radio" class="noo_radio" id="new_or_old_external" name="new_or_old" value="external" />
 											<?php esc_html_e( 'Use an external site:', 'openlab-theme' ); ?>
 										</label>
 									</div>
-									<div class="col-sm-18">
+									<div class="site-path">
 										<label class="sr-only" for="external-site-url"><?php esc_html_e( 'Input external site URL', 'openlab-theme' ); ?></label>
 										<input class="form-control pull-left" type="text" name="external-site-url" id="external-site-url" placeholder="http://" />
 										<a class="btn btn-primary no-deco top-align pull-right" id="find-feeds" href="#" display="none"><?php echo esc_html_x( 'Check', 'External site RSS feed check button', 'openlab-theme' ); ?><span class="sr-only"><?php esc_html_e( 'Check external site for Post and Comment feeds', 'openlab-theme' ); ?></span></a>

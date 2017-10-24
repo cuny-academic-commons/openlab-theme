@@ -1049,13 +1049,34 @@ body form{
         }
     }
     .groupblog-setup{
-        .site-label{
-            padding-top: 9px;
-        }
+		p:empty {
+			margin: 0;
+		}
         .radio{
-            margin-bottom: 7px;
-            margin-top: 7px
+            margin-bottom: 0;
+            margin-top: 7px;
+			label {
+				padding-left: 25px;
+			}
         }
+		.site-path {
+			display: table;
+			padding-left: 25px;
+			width: 90%;
+			span {
+				display: table-cell;
+				width: 1px;
+			}
+			input.form-control {
+				display: table-cell;
+				margin-left: 8px;
+				width: 100%;
+			}
+		}
+
+		#noo_external_options .site-path input.form-control {
+			margin-left: 0;
+		}
     }
 }
 .notification-settings{
@@ -2009,6 +2030,8 @@ body form{
             border-right: none;
         }
     }
+}
+#noo_clone_options {
 }
 #group-list{
     .group-item-wrapper{
