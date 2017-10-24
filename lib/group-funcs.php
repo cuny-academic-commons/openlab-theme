@@ -1587,18 +1587,18 @@ function openlab_group_site_markup() {
 									<div class="radio col-sm-6">
 										<label>
 											<input type="radio" class="noo_radio" id="new_or_old_external" name="new_or_old" value="external" />
-											Use an external site:
+											<?php esc_html_e( 'Use an external site:', 'openlab-theme' ); ?>
 										</label>
 									</div>
 									<div class="col-sm-18">
-										<label class="sr-only" for="external-site-url">Input external site URL</label>
+										<label class="sr-only" for="external-site-url"><?php esc_html_e( 'Input external site URL', 'openlab-theme' ); ?></label>
 										<input class="form-control pull-left" type="text" name="external-site-url" id="external-site-url" placeholder="http://" />
 										<a class="btn btn-primary no-deco top-align pull-right" id="find-feeds" href="#" display="none">Check<span class="sr-only"> external site for Post and Comment feeds</span></a>
 									</div>
 								</div>
 							</div>
 						</div>
-						<div id="check-note-wrapper" style="display:<?php echo $show_website; ?>"><div colspan="2"><p id="check-note" class="italics disabled-opt"><?php esc_html_e( 'Note: Please click the Check button to search for Post and Comment feeds for your external site. Doing so will push new activity to the Profile page. If no feeds are detected, you may type in the Post and Comment feed URLs directly or just leave blank.', 'cbox-openlab-core' ) ?></p></div></div>
+						<div id="check-note-wrapper" style="display:<?php echo $show_website; ?>"><div colspan="2"><p id="check-note" class="italics disabled-opt"><?php esc_html_e( 'Note: Please click the Check button to search for Post and Comment feeds for your external site. Doing so will push new activity to the Profile page. If no feeds are detected, you may type in the Post and Comment feed URLs directly or just leave blank.', 'openlab-theme' ) ?></p></div></div>
 					</div>
 
 				<?php endif; ?>
