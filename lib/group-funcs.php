@@ -774,23 +774,35 @@ add_action( 'bp_get_group_join_button', 'openlab_remove_hidden_class_from_leave_
 
 function openlab_custom_group_buttons( $button ) {
 
-	if ( $button['id'] == 'leave_group' ) {
-		$button['link_text'] = '<span class="pull-left"><i class="fa fa-user" aria-hidden="true"></i> ' . $button['link_text'] . '</span><i class="fa fa-minus-circle pull-right" aria-hidden="true"></i>';
-		$button['link_class'] = $button['link_class'] . ' btn btn-default btn-block btn-primary link-btn clearfix';
-	} elseif ( $button['id'] == 'join_group' || $button['id'] == 'request_membership' ) {
-		$button['link_text'] = '<span class="pull-left"><i class="fa fa-user" aria-hidden="true"></i> ' . $button['link_text'] . '</span><i class="fa fa-plus-circle pull-right" aria-hidden="true"></i>';
-		$button['link_class'] = $button['link_class'] . ' btn btn-default btn-block btn-primary link-btn clearfix';
-	} elseif ( $button['id'] == 'membership_requested' ) {
-		$button['link_text'] = '<span class="pull-left"><i class="fa fa-user" aria-hidden="true"></i> ' . $button['link_text'] . '</span><i class="fa fa-clock-o pull-right" aria-hidden="true"></i>';
-		$button['link_class'] = $button['link_class'] . ' btn btn-default btn-block btn-primary link-btn clearfix';
-	} elseif ( $button['id'] == 'accept_invite' ) {
-		$button['link_text'] = '<span class="pull-left"><i class="fa fa-user" aria-hidden="true"></i> ' . $button['link_text'] . '</span><i class="fa fa-plus-circle pull-right" aria-hidden="true"></i>';
-		$button['link_class'] = $button['link_class'] . ' btn btn-default btn-block btn-primary link-btn clearfix';
+	switch ( $button['id'] ) {
+		case 'leave_group' :
+			$button['link_text'] = '<span class="pull-left"><i class="fa fa-user" aria-hidden="true"></i> ' . __( 'Leave', 'openlab-theme' ) . '</span><i class="fa fa-minus-circle pull-right" aria-hidden="true"></i>';
+			$button['link_class'] = $button['link_class'] . ' btn btn-default btn-block btn-primary link-btn clearfix';
+			break;
+
+		case 'join_group' :
+			$button['link_text'] = '<span class="pull-left"><i class="fa fa-user" aria-hidden="true"></i> ' . __( 'Join', 'openlab-theme' ) . '</span><i class="fa fa-plus-circle pull-right" aria-hidden="true"></i>';
+			$button['link_class'] = $button['link_class'] . ' btn btn-default btn-block btn-primary link-btn clearfix';
+			break;
+
+		case 'request_membership' :
+			$button['link_text'] = '<span class="pull-left"><i class="fa fa-user" aria-hidden="true"></i> ' . $button['link_text'] . '</span><i class="fa fa-plus-circle pull-right" aria-hidden="true"></i>';
+			$button['link_class'] = $button['link_class'] . ' btn btn-default btn-block btn-primary link-btn clearfix';
+			break;
+
+		case 'membership_requested' :
+			$button['link_text'] = '<span class="pull-left"><i class="fa fa-user" aria-hidden="true"></i> ' . $button['link_text'] . '</span><i class="fa fa-clock-o pull-right" aria-hidden="true"></i>';
+			$button['link_class'] = $button['link_class'] . ' btn btn-default btn-block btn-primary link-btn clearfix';
+			break;
+
+		case 'accept_invite' :
+			$button['link_text'] = '<span class="pull-left"><i class="fa fa-user" aria-hidden="true"></i> ' . $button['link_text'] . '</span><i class="fa fa-plus-circle pull-right" aria-hidden="true"></i>';
+			$button['link_class'] = $button['link_class'] . ' btn btn-default btn-block btn-primary link-btn clearfix';
+			break;
 	}
 
 	return $button;
 }
-
 add_filter( 'bp_get_group_join_button', 'openlab_custom_group_buttons' );
 
 /**
@@ -2034,4 +2046,3 @@ function openlab_get_active_terms() {
 
 	return $options;
 }
-
