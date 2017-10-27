@@ -7531,13 +7531,21 @@ button.oplb-bs .close {
 }
 @media (max-width: 991px) {
   .oplb-bs .navbar-header header {
+    height: 63px;
     width: 136px;
     margin: 0;
   }
   .oplb-bs .navbar-header header a {
-    width: 135px;
+    background-repeat: no-repeat;
     background-size: 100%;
     background-position: 0 8px;
+    height: 100%;
+    width: 100%;
+  }
+  .oplb-bs .navbar-header header a img {
+    height: auto;
+    margin-top: 8px;
+    width: 100%;
   }
 }
 .oplb-bs .search {

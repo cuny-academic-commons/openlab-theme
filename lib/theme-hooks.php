@@ -66,6 +66,10 @@ add_filter( 'the_content', 'openlab_custom_the_content' );
 function openlab_main_menu( $location = 'header' ) {
 
 	$logo_html = openlab_get_logo_html();
+	if ( 'header' === $location ) {
+		$logo_html = preg_replace( '/height="[^"]+"/', '', $logo_html );
+		$logo_html = preg_replace( '/width="[^"]+"/', '', $logo_html );
+	}
 
 	?>
 	<nav class="navbar navbar-default oplb-bs navbar-location-<?php echo $location ?>" role="navigation">
