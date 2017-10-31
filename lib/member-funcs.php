@@ -552,7 +552,7 @@ function cuny_member_profile_header() {
 	$this_user_id = isset( $site_members_template->member->id ) ? $site_members_template->member->id : bp_displayed_user_id();
 	do_action( 'bp_before_member_home_content' );
 	?>
-		<div id="member-header-avatar" class="alignleft group-header-avatar col-sm-8 col-xs-12">
+		<div id="member-header-avatar" class="alignleft group-header-avatar col-sm-8">
 			<div id="avatar-wrapper">
 				<div class="padded-img darker">
 					<img class="img-responsive padded" src ="
