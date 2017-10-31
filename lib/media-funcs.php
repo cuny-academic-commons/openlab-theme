@@ -149,6 +149,7 @@ function openlab_whats_happening_activity_items() {
 		$activity_args = array(
 			'per_page' => 10,
 			'filter' => array(
+				'object' => 'groups',
 				'action' => openlab_whats_happening_activity_types(),
 			),
 			'update_meta_cache' => false, // we'll be hitting this alot
