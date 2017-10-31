@@ -410,7 +410,7 @@ function cuny_group_single() {
 
 							<?php if ( $term ) : ?>
 								<div class="table-row row">
-									<div class="bold col-sm-7"><?php esc_html_e( 'Semester / Year', 'openlab-theme' ); ?></div>
+									<div class="bold col-sm-7"><?php esc_html_e( 'Term', 'openlab-theme' ); ?></div>
 									<div class="col-sm-17 row-content"><?php echo esc_html( $term ); ?></div>
 								</div>
 							<?php endif; ?>
