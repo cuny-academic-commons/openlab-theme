@@ -76,6 +76,12 @@ function openlab_default_group_avatar_img( $html ) {
 add_filter( 'bp_core_fetch_avatar', 'openlab_default_group_avatar_img' );
 
 /**
+ * Set avatar dimensions.
+ */
+add_filter( 'bp_core_avatar_full_width', function() { return 225; } );
+add_filter( 'bp_core_avatar_full_height', function() { return 225; } );
+
+/**
  * WordPress adds dimensions to embedded images; this is totally not responsive WordPress
  *
  * @param type $html
