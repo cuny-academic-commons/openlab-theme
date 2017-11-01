@@ -1564,15 +1564,15 @@ function openlab_group_site_markup() {
 
 								<div id="noo_old_options">
 									<div class="row">
-										<div class="radio col-sm-6">
+										<div class="radio">
 											<label>
 												<input type="radio" class="noo_radio" id="new_or_old_old" name="new_or_old" value="old" />
-												Use an existing site:</label>
+												<?php esc_html_e( 'Use an existing site:', 'openlab-theme' ); ?></label>
 										</div>
-										<div class="col-sm-18">
-											<label class="sr-only" for="groupblog-blogid">Choose a site</label>
+										<div class="site-path">
+											<label class="sr-only" for="groupblog-blogid"><?php esc_html_e( 'Choose a site', 'openlab-theme' ); ?></label>
 											<select class="form-control" name="groupblog-blogid" id="groupblog-blogid">
-												<option value="0">- Choose a site -</option>
+												<option value="0"><?php esc_html_e( '- Choose a site -', 'openlab-theme' ); ?></option>
 												<?php foreach ( (array) $user_blogs as $user_blog ) : ?>
 													<option value="<?php echo $user_blog->userblog_id; ?>"><?php echo $user_blog->blogname; ?></option>
 												<?php endforeach ?>
