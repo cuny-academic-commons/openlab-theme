@@ -1545,6 +1545,44 @@ function openlab_group_site_markup() {
 					</div><!-- #noo_new_options -->
 				</div><!-- #wds-website -->
 
+						<?php /* Existing blogs - only display if some are available */ ?>
+						<?php
+						// Exclude blogs already used as groupblogs
+						global $wpdb, $bp;
+						$current_groupblogs = $wpdb->get_col( "SELECT meta_value FROM {$bp->groups->table_name_groupmeta} WHERE meta_key = 'cboxol_group_site_id'" );
+
+						foreach ( $user_blogs as $ubid => $ub ) {
+							if ( in_array( $ub->userblog_id, $current_groupblogs ) ) {
+								unset( $user_blogs[ $ubid ] );
+							}
+						}
+						$user_blogs = array_values( $user_blogs );
+						?>
+
+						<?php if ( ! empty( $user_blogs ) ) : ?>
+							<div id="wds-website-existing" class="form-field form-required" style="display:<?php echo $show_website; ?>">
+
+								<div id="noo_old_options">
+									<div class="row">
+										<div class="radio col-sm-6">
+											<label>
+												<input type="radio" class="noo_radio" id="new_or_old_old" name="new_or_old" value="old" />
+												Use an existing site:</label>
+										</div>
+										<div class="col-sm-18">
+											<label class="sr-only" for="groupblog-blogid">Choose a site</label>
+											<select class="form-control" name="groupblog-blogid" id="groupblog-blogid">
+												<option value="0">- Choose a site -</option>
+												<?php foreach ( (array) $user_blogs as $user_blog ) : ?>
+													<option value="<?php echo $user_blog->userblog_id; ?>"><?php echo $user_blog->blogname; ?></option>
+												<?php endforeach ?>
+											</select>
+										</div>
+									</div>
+								</div>
+							</div>
+						<?php endif ?>
+
 						<div id="wds-website-external" class="form-field form-required" style="display:<?php echo $show_website; ?>">
 
 							<div id="noo_external_options">
