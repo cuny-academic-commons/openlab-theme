@@ -47,39 +47,41 @@ jQuery(document).ready(function($){
 
 			if ( noo == thisval) {
 				$(thisid).find('input').each(function(index,element){
-                                        $(element).removeClass('disabled-opt');
-                                        $(element).removeProp('disabled').removeClass('disabled');
-				});
-				$(thisid).find('select').each(function(index,element){
-                                    if ($(element).attr('type') !== 'radio') {
-                                        $(element).removeClass('disabled-opt');
+					$(element).removeClass('disabled-opt');
 					$(element).removeProp('disabled').removeClass('disabled');
-                                    }
 				});
 
-                                //for external site note
-                                if ($(this).attr('id') === 'new_or_old_external'){
-                                    $('#check-note').removeClass('disabled-opt');
-                                }
+				$(thisid).find('select').each(function(index,element){
+					if ($(element).attr('type') !== 'radio') {
+						$(element).removeClass('disabled-opt');
+						$(element).removeProp('disabled').removeClass('disabled');
+					}
+				});
+
+				//for external site note
+				if ($(this).attr('id') === 'new_or_old_external'){
+					$('#check-note').removeClass('disabled-opt');
+				}
 
 			} else {
 				$(thisid).find('input').each(function(index,element){
-                                    if ($(element).attr('type') !== 'radio') {
-                                        $(element).addClass('disabled-opt');
-					$(element).prop('disabled','disabled').addClass('disabled');
-                                    }
-				});
-				$(thisid).find('select').each(function(index,element){
-                                    if ($(element).attr('type') !== 'radio') {
-                                        $(element).addClass('disabled-opt');
-					$(element).prop('disabled','disabled').addClass('disabled');
-                                    }
+					if ($(element).attr('type') !== 'radio') {
+						$(element).addClass('disabled-opt');
+						$(element).prop('disabled','disabled').addClass('disabled');
+					}
 				});
 
-                                //for external site note
-                                if ($(this).attr('id') === 'new_or_old_external'){
-                                    $('#check-note').addClass('disabled-opt');
-                                }
+				$(thisid).find('select').each(function(index,element){
+					if ($(element).attr('type') !== 'radio') {
+						$(element).addClass('disabled-opt');
+						$(element).prop('disabled','disabled').addClass('disabled');
+					}
+				});
+
+				//for external site note
+				if ($(this).attr('id') === 'new_or_old_external'){
+					$('#check-note').addClass('disabled-opt');
+				}
 			}
 		});
 
