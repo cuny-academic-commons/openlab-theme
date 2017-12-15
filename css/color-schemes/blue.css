@@ -8037,6 +8037,7 @@ body form .checkbox-list-container {
 }
 .ct-group-meta .groupblog-setup #noo_external_options .site-path input.form-control {
   margin-left: 0;
+  width: 85%;
 }
 .notification-settings .no,
 .notification-settings .yes {
