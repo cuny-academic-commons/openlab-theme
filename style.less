@@ -1170,11 +1170,13 @@ body form{
                 margin-bottom: 25px;
             }
             a{
-                color: inherit;
-                font-size: inherit;
-                &:hover{
-                    color: #000;
-                }
+				:not(.btn){
+					color: inherit;
+					font-size: inherit;
+					&:hover{
+						color: #000;
+					}
+				}
             }
             .fa{
                 font-size: inherit;
@@ -1182,7 +1184,9 @@ body form{
             .log-box{
                 padding: 0 4.5% 0 7.5%;
 				a {
-                    color: @loginTextColor;
+					:not(.btn){
+						color: @loginTextColor;
+					}
 				}
                 &#open-lab-join{
                     h2{

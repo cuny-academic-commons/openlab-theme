@@ -8133,11 +8133,11 @@ body form .checkbox-list-container {
 .home-page .row-home-top .login h4 {
   margin-bottom: 25px;
 }
-.home-page .row-home-top .login a {
+.home-page .row-home-top .login a :not(.btn) {
   color: inherit;
   font-size: inherit;
 }
-.home-page .row-home-top .login a:hover {
+.home-page .row-home-top .login a :not(.btn):hover {
   color: #000;
 }
 .home-page .row-home-top .login .fa {
@@ -8146,7 +8146,7 @@ body form .checkbox-list-container {
 .home-page .row-home-top .login .log-box {
   padding: 0 4.5% 0 7.5%;
 }
-.home-page .row-home-top .login .log-box a {
+.home-page .row-home-top .login .log-box a :not(.btn) {
   color: #fff;
 }
 .home-page .row-home-top .login .log-box#open-lab-join h2 {
