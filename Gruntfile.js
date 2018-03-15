@@ -25,14 +25,14 @@ module.exports = function (grunt) {
 			siteLinkColor: '#444'
 		},
 		red: {
-			primaryColor: '#c42e10',
+			primaryColor: '#a9280e',
 			breadcrumbHighlight: '#95230c',
-			darkHighlight: '#95230c',
-			lightHighlight: '#f7a898',
-			linkHighlightColor: '#c42e10',
+			darkHighlight: '#8c210b',
+			lightHighlight: '#fbd8d1',
+			linkHighlightColor: '#a9280e',
 			coloredBackgroundTextColor: '#fff',
-			loginForegroundColor: '#c42e10',
-			loginBackgroundColor: '#aa280e',
+			loginForegroundColor: '#a9280e',
+			loginBackgroundColor: '#c42e10',
 			siteLinkColor: '#444'
 		}
 	};
