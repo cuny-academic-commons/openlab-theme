@@ -7110,7 +7110,7 @@ button.oplb-bs .close {
 }
 .oplb-bs #wpadminbar #wp-toolbar .admin-bar-menu li a:hover,
 .oplb-bs #wpadminbar #wp-toolbar .admin-bar-menu li a:focus {
-  background: #88b956;
+  background: #b6d498;
   color: #333;
 }
 @media (max-width: 767px) {
@@ -7267,7 +7267,7 @@ button.oplb-bs .close {
   height: 3px;
 }
 .oplb-bs #wpadminbar #wp-toolbar #wp-admin-bar-my-hamburger .icon-bar {
-  background: #88b956;
+  background: #b6d498;
   height: 3px;
 }
 .oplb-bs #wpadminbar #wp-toolbar #wp-admin-bar-my-hamburger-mol .icon-bar {

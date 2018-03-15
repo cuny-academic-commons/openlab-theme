@@ -15,14 +15,14 @@ module.exports = function (grunt) {
 			siteLinkColor: '#444'
 		},
 		green: {
-			primaryColor: '#88b956',
-			breadcrumbHighlight: '#9fd764',
+			primaryColor: '#b6d498',
+			breadcrumbHighlight: '#d4e6c3',
 			darkHighlight: '#9fd764',
 			lightHighlight: '#9fd764',
-			linkHighlightColor: '#49672b',
+			linkHighlightColor: '#b6d498',
 			coloredBackgroundTextColor: '#333',
-			loginForegroundColor: '#8dc753',
-			loginBackgroundColor: '#719f42',
+			loginForegroundColor: '#d4e6c3',
+			loginBackgroundColor: '#b6d498',
 			loginTextColor: '#333',
 			siteLinkColor: '#444'
 		},
