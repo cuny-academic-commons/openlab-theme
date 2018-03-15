@@ -8296,7 +8296,7 @@ body form .checkbox-list-container {
 .home-page .row-home-top .slider .camera_wrap .camera_pag .camera_pag_ul li {
   margin: 0 auto 4px;
   background: transparent;
-  border: 1px solid #fff;
+  border: 1px solid #333;
   display: block;
   height: 12px;
   width: 12px;
@@ -8305,7 +8305,7 @@ body form .checkbox-list-container {
   display: none;
 }
 .home-page .row-home-top .slider .camera_wrap .camera_pag .camera_pag_ul li.cameracurrent {
-  background: #fff;
+  background: #333;
 }
 .home-page .row-home-top .slider .camera_wrap .camera_prev,
 .home-page .row-home-top .slider .camera_wrap .camera_next {

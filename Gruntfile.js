@@ -5,6 +5,7 @@ module.exports = function (grunt) {
 		blue: {
 			primaryColor: '#1d5f7b',
 			breadcrumbHighlight: '#113849',
+			cameraBulletColor: '#333',
 			darkHighlight: '#113849',
 			lightHighlight: '#8ccae4',
 			linkHighlightColor: '#1d5f7b',
@@ -16,6 +17,7 @@ module.exports = function (grunt) {
 		},
 		green: {
 			primaryColor: '#b6d498',
+			cameraBulletColor: '#333',
 			breadcrumbHighlight: '#d4e6c3',
 			darkHighlight: '#9fd764',
 			lightHighlight: '#9fd764',
@@ -28,6 +30,7 @@ module.exports = function (grunt) {
 		},
 		red: {
 			primaryColor: '#a9280e',
+			cameraBulletColor: '#fff',
 			breadcrumbHighlight: '#95230c',
 			darkHighlight: '#8c210b',
 			lightHighlight: '#fbd8d1',
