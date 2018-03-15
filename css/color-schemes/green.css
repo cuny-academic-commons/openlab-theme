@@ -8146,6 +8146,9 @@ body form .checkbox-list-container {
 .home-page .row-home-top .login .log-box {
   padding: 0 4.5% 0 7.5%;
 }
+.home-page .row-home-top .login .log-box a {
+  color: #fff;
+}
 .home-page .row-home-top .login .log-box#open-lab-join h2 {
   margin: 18px 0 9px;
 }

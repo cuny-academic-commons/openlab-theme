@@ -4,7 +4,7 @@ module.exports = function (grunt) {
 	colorSchemes = {
 		blue: {
 			primaryColor: '#1d5f7b',
-			breadcrumbHighlight: '#387fbb',
+			breadcrumbHighlight: '#113849',
 			darkHighlight: '#113849',
 			lightHighlight: '#8ccae4',
 			linkHighlightColor: '#1d5f7b',

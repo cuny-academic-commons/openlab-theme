@@ -8146,6 +8146,9 @@ body form .checkbox-list-container {
 .home-page .row-home-top .login .log-box {
   padding: 0 4.5% 0 7.5%;
 }
+.home-page .row-home-top .login .log-box a {
+  color: #fff;
+}
 .home-page .row-home-top .login .log-box#open-lab-join h2 {
   margin: 18px 0 9px;
 }
@@ -10157,14 +10160,14 @@ input.help-search {
   text-decoration: none;
 }
 #breadcrumb-container .breadcrumb-col .breadcrumb-prefix-label {
-  background: #387fbb;
+  background: #113849;
   display: inline-block;
   text-align: center;
   width: 86%;
 }
 #breadcrumb-container .breadcrumb-col .fa.fa-caret-right {
   margin: 0 10% 0 0;
-  color: #387fbb;
+  color: #113849;
 }
 @media (max-width: 767px) {
   #breadcrumb-container .breadcrumb-col {
