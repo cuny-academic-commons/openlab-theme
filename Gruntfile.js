@@ -3,14 +3,14 @@ module.exports = function (grunt) {
 
 	colorSchemes = {
 		blue: {
-			primaryColor: '#3170a4',
+			primaryColor: '#1d5f7b',
 			breadcrumbHighlight: '#387fbb',
-			darkHighlight: '#387fbb',
-			lightHighlight: '#98d0ff',
-			linkHighlightColor: '#3170a4',
+			darkHighlight: '#113849',
+			lightHighlight: '#8ccae4',
+			linkHighlightColor: '#1d5f7b',
 			coloredBackgroundTextColor: '#fff',
-			loginForegroundColor: '#3170a4',
-			loginBackgroundColor: '#5b97c9',
+			loginForegroundColor: '#1d5f7b',
+			loginBackgroundColor: '#8ccae4',
 			siteLinkColor: '#444'
 		},
 		green: {
