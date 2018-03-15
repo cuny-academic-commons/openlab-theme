@@ -365,6 +365,8 @@ function cuny_group_single() {
 
 				<?php do_action( 'bp_before_group_header_meta' ) ?>
 
+				<?php $status_message = openlab_group_status_message(); ?>
+
 				<?php if ( $group_type->get_is_course() ) : ?>
 					<div class="info-panel panel panel-default no-margin no-margin-top">
 						<?php
@@ -374,13 +376,13 @@ function cuny_group_single() {
 						?>
 						<div class="table-div">
 							<?php
-							if ( bp_is_group_home() && openlab_group_status_message() != '' ) {
+							if ( bp_is_group_home() && '' != $status_message ) {
 
 								do_action( 'bp_before_group_status_message' )
 								?>
 
 								<div class="table-row row">
-									<div class="col-xs-24 status-message italics"><?php echo openlab_group_status_message() ?></div>
+									<div class="col-xs-24 status-message italics"><?php echo esc_html( $status_message ); ?></div>
 								</div>
 
 								<?php
@@ -449,7 +451,7 @@ function cuny_group_single() {
 					<div class="info-panel panel panel-default no-margin no-margin-top">
 						<div class="table-div">
 							<div class="table-row row">
-								<div class="col-xs-24 status-message italics"><?php echo openlab_group_status_message() ?></div>
+								<div class="col-xs-24 status-message italics"><?php echo esc_html( $status_message ); ?></div>
 							</div>
 
 							<?php foreach ( $academic_unit_data as $type => $type_data ) : ?>

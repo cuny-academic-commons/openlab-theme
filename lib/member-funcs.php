@@ -211,24 +211,23 @@ function openlab_group_status_message( $group = null ) {
 		$group = & $groups_template->group;
 	}
 
-	/* @todo
+	$group_type = cboxol_get_group_group_type( $group->id );
+
     $site_id = openlab_get_site_id_by_group_id( $group->id );
     $site_url = openlab_get_group_site_url( $group->id );
 
     $site_status = 1;
     if ( $site_url ) {
-    // If we have a site URL but no ID, it's an external site, and is public
-    if ( ! $site_id ) {
-    $site_status = 1;
-    } else {
-    $site_status = get_blog_option( $site_id, 'blog_public' );
-    }
+		// If we have a site URL but no ID, it's an external site, and is public
+		if ( ! $site_id ) {
+			$site_status = 1;
+		} else {
+			$site_status = get_blog_option( $site_id, 'blog_public' );
+		}
     }
 
     $site_status = (float) $site_status;
-    */
 
-	$site_status = 0;
 	$message = '';
 
 	switch ( $site_status ) {
@@ -236,24 +235,24 @@ function openlab_group_status_message( $group = null ) {
 		case 1:
 		case 0:
 			if ( 'public' === $group->status ) {
-				$message = esc_html__( 'This Profile is OPEN.', 'openlab-theme' );
+				$message = $group_type->get_label( 'status_open' );
 			} elseif ( ! $site_url ) {
 				// Special case: $site_status will be 0 when the
 				// group does not have an associated site. When
 				// this is the case, and the group is not
 				// public, don't mention anything about the Site.
-				$message = esc_html__( 'This Profile is PRIVATE.', 'openlab-theme' );
+				$message = $group_type->get_label( 'status_private' );
 			} else {
-				$message = esc_html__( 'This Profile is PRIVATE, but the corresponding Site is OPEN to all visitors.', 'openlab-theme' );
+				$message = $group_type->get_label( 'status_private_open_site' );
 			}
 
 			break;
 
 		case -1:
 			if ( 'public' === $group->status ) {
-				$message = esc_html__( 'This Profile is OPEN, but only logged-in OpenLab members may view the corresponding Site.', 'openlab-theme' );
+				$message = $group_type->get_label( 'status_open_community_site' );
 			} else {
-				$message = esc_html__( 'This Profile is PRIVATE, but all logged-in OpenLab members may view the corresponding Site.', 'openlab-theme' );
+				$message = $group_type->get_label( 'status_private_community_site' );
 			}
 
 			break;
@@ -261,9 +260,9 @@ function openlab_group_status_message( $group = null ) {
 		case -2:
 		case -3:
 			if ( 'public' === $group->status ) {
-				$message = esc_html__( 'This Profile is OPEN, but the corresponding Site is PRIVATE.', 'openlab-theme' );
+				$message = $group_type->get_label( 'status_open_private_site' );
 			} else {
-				$message = esc_html__( 'This Profile is PRIVATE, and you must be a member to view the corresponding Site.', 'openlab-theme' );
+				$message = $group_type->get_label( 'status_private_private_site' );
 			}
 
 			break;
