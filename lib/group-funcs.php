@@ -262,9 +262,20 @@ function openlab_group_profile_header() {
 	global $bp;
 	$group_type = cboxol_get_group_group_type( bp_get_current_group_id() );
 
+	$status_label = null;
+	if ( bp_group_is_admin() ) {
+		$status_label = __( 'Admin', 'openlab-theme' );
+	} elseif ( bp_group_is_mod() ) {
+		$status_label = __( 'Mod', 'openlab-theme' );
+	} elseif ( bp_group_is_member() ) {
+		$status_label = __( 'Member', 'openlab-theme' );
+	}
+
 	?>
 	<h1 class="entry-title group-title clearfix"><span class="profile-name-group-type"><?php echo esc_html( $group_type->get_label( 'singular' ) ); ?>:</span> <span class="profile-name hyphenate"><?php echo bp_group_name(); ?></span>
-		<span class="profile-type pull-right hidden-xs"><?php echo esc_html( $group_type->get_label( 'singular' ) ); ?></span>
+		<?php if ( $status_label ) : ?>
+			<span class="profile-type pull-right hidden-xs"><?php echo esc_html( $status_label ); ?></span>
+		<?php endif; ?>
 		<button data-target="#sidebar-menu-wrapper" data-backgroundonly="true" class="mobile-toggle direct-toggle pull-right visible-xs" type="button">
 			<span class="sr-only">Toggle navigation</span>
 			<span class="icon-bar"></span>
