@@ -7487,6 +7487,9 @@ h1.entry-title {
   padding-bottom: 6px;
   position: relative;
 }
+h1.entry-title .profile-name-group-type {
+  font-weight: normal;
+}
 h1.entry-title .direct-toggle {
   background: #d1d1d1;
   height: 47px;
