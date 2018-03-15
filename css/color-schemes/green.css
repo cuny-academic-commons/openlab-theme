@@ -8119,7 +8119,7 @@ body form .checkbox-list-container {
   float: left;
   width: 32.5%;
   border-radius: 4px 0 0 4px;
-  color: #ffffff;
+  color: #333;
   height: 295px;
 }
 @media (max-width: 767px) {
@@ -8147,7 +8147,7 @@ body form .checkbox-list-container {
   padding: 0 4.5% 0 7.5%;
 }
 .home-page .row-home-top .login .log-box a {
-  color: #fff;
+  color: #333;
 }
 .home-page .row-home-top .login .log-box#open-lab-join h2 {
   margin: 18px 0 9px;

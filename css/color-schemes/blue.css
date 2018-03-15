@@ -8119,7 +8119,7 @@ body form .checkbox-list-container {
   float: left;
   width: 32.5%;
   border-radius: 4px 0 0 4px;
-  color: #ffffff;
+  color: #fff;
   height: 295px;
 }
 @media (max-width: 767px) {

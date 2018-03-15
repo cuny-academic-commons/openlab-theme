@@ -11,6 +11,7 @@ module.exports = function (grunt) {
 			coloredBackgroundTextColor: '#fff',
 			loginForegroundColor: '#1d5f7b',
 			loginBackgroundColor: '#8ccae4',
+			loginTextColor: '#fff',
 			siteLinkColor: '#444'
 		},
 		green: {
@@ -22,6 +23,7 @@ module.exports = function (grunt) {
 			coloredBackgroundTextColor: '#333',
 			loginForegroundColor: '#8dc753',
 			loginBackgroundColor: '#719f42',
+			loginTextColor: '#333',
 			siteLinkColor: '#444'
 		},
 		red: {
@@ -33,6 +35,7 @@ module.exports = function (grunt) {
 			coloredBackgroundTextColor: '#fff',
 			loginForegroundColor: '#a9280e',
 			loginBackgroundColor: '#c42e10',
+			loginTextColor: '#fff',
 			siteLinkColor: '#444'
 		}
 	};
