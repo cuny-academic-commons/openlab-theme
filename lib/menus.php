@@ -725,11 +725,11 @@ function openlab_filter_subnav_home( $subnav_item ) {
 	$site_link = '';
 
 	if ( ! empty( $group_site_settings['site_url'] ) && $group_site_settings['is_visible'] ) {
-		$site_link = '<li id="site-groups-li" class="visible-xs"><a href="' . trailingslashit( esc_attr( $group_site_settings['site_url'] ) ) . '" id="site">' . esc_html__( 'Site', 'cbox-openlab-core' ) . '</a></li>';
+		$site_link = '<li id="site-groups-li" class="visible-xs"><a href="' . trailingslashit( esc_attr( $group_site_settings['site_url'] ) ) . '" id="site">' . esc_html__( 'Site', 'openlab-theme' ) . '</a></li>';
 
 		if ( $group_site_settings['is_local'] && ((cboxol_is_portfolio() && openlab_is_my_portfolio()) || ( ! cboxol_is_portfolio() && groups_is_user_member( bp_loggedin_user_id(), bp_get_current_group_id() )) || $bp->is_item_admin || is_super_admin()) ) {
 
-			$site_link .= '<li id="site-admin-groups-li" class="visible-xs"><a href="' . trailingslashit( esc_attr( $group_site_settings['site_url'] ) ) . 'wp-admin/" id="site-admin">Site Dashboard</a></li>';
+			$site_link .= '<li id="site-admin-groups-li" class="visible-xs"><a href="' . trailingslashit( esc_attr( $group_site_settings['site_url'] ) ) . 'wp-admin/" id="site-admin">' . esc_html__( 'Site Dashboard', 'openlab-theme' ) . '</a></li>';
 		}
 	}
 
