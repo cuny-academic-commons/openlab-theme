@@ -492,7 +492,7 @@ function openlab_create_group_menu( \CBOX\OL\GroupType $group_type ) {
 			break;
 		case 'group-details' :
 		default:
-			$step_name = __( 'Step One: Profile', 'openlab-theme' );
+			$step_name = sprintf( __( 'Step One: %s', 'openlab-theme' ), esc_html( $group_type->get_label( 'item_creation' ) ) );
 			break;
 	}
 
