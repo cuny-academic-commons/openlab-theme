@@ -34,6 +34,8 @@
 
 	<?php echo openlab_create_group_menu( $group_type ); ?>
 
+	<p class="group-create-help-text"><?php echo esc_html( $group_type->get_label( 'create_item_help_text' ) ); ?></p>
+
 	<div id="single-course-body" class="<?php echo ( $group_type->get_is_course() ? 'course-create' : '' ); ?>">
 		<div id="openlab-main-content"></div>
 

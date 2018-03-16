@@ -9063,6 +9063,9 @@ body form .checkbox-list-container {
   margin-right: 4px;
   border-right: none;
 }
+.group-create-help-text {
+  margin-top: 1rem;
+}
 #group-list .group-item-wrapper .item-avatar img {
   max-width: 95%;
 }
