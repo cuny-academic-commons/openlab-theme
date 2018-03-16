@@ -81,9 +81,14 @@ add_filter( 'wp_nav_menu_objects', 'openlab_wp_menu_customizations', 11, 2 );
  */
 function openlab_modify_options_nav() {
 	if ( bp_is_group() && cboxol_is_portfolio() && ! bp_is_group_create() ) {
-		buddypress()->groups->nav->edit_nav(array(
-			'name' => 'Profile',
-		), 'home', bp_get_current_group_slug());
+		$group_type = cboxol_get_group_group_type( bp_get_current_group_id() );
+		buddypress()->groups->nav->edit_nav(
+			array(
+				'name' => $group_type->get_label( 'group_home' ),
+			),
+			'home',
+			bp_get_current_group_slug()
+		);
 
 		// Keep the following tabs as-is
 		$keepers = array( 'home', 'admin', 'members' );
@@ -702,7 +707,12 @@ function openlab_filter_subnav_home( $subnav_item ) {
 	$displayed_user_id = bp_is_user() ? bp_displayed_user_id() : bp_loggedin_user_id();
 
 	// Intentionally use the 'buddypress' text domain.
-	$new_item = str_replace( __( 'Home', 'buddypress' ), esc_html__( 'Profile', 'cbox-openlab-core' ), $subnav_item );
+	if ( bp_is_group() ) {
+		$group_type = cboxol_get_group_group_type( bp_get_current_group_id() );
+		$new_item = str_replace( __( 'Home', 'buddypress' ), esc_html__( $group_type->get_label( 'group_home' ) ), $subnav_item );
+	} else {
+		$new_item = str_replace( __( 'Home', 'buddypress' ), esc_html__( 'Profile', 'cbox-openlab-core' ), $subnav_item );
+	}
 
 	// update "current" class to "current-menu-item" to unify site identification of current menu page
 	$new_item = str_replace( 'current selected', 'current-menu-item', $new_item );
