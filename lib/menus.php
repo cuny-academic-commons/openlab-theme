@@ -101,9 +101,9 @@ function openlab_modify_options_nav() {
 	}
 
 	if ( bp_is_group() && ! bp_is_group_create() ) {
-		buddypress()->groups->nav->edit_nav(array(
-			'position' => 15,
-		), 'admin', bp_get_current_group_slug());
+		buddypress()->groups->nav->edit_nav( array(
+			'position' => 95,
+		), 'admin', bp_get_current_group_slug() );
 
 		buddypress()->groups->nav->edit_nav( array(
 			'name' => 'Settings',
@@ -978,10 +978,10 @@ function openlab_group_submenu_nav() {
 
 	$positions = array(
 		'home' => 10,
-		'admin' => 11,
 		'nav-forum' => 25,
 		'members' => 35,
 		BP_GROUP_DOCUMENTS_SLUG => 60,
+		'admin' => 95,
 	);
 
 	foreach ( $positions as $slug => $position ) {
