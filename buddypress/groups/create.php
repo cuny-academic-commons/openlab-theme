@@ -92,7 +92,7 @@
 							</li>
 						</ul>
 
-						<p class="ol-clone-description italics" id="ol-clone-description"><?php esc_html_e( 'Note: Cloning copies the source profile, site set-up, and all documents, files, discussions and posts you\'ve created. Posts will be set to "draft" mode. The clone will not copy membership or member-created documents, files, discussions, comments or posts.', 'openlab-theme' ); ?></p>
+						<p class="ol-clone-description italics" id="ol-clone-description"><?php echo esc_html( $group_type->get_label( 'clone_help_text' ) ); ?></p>
 						</div>
 					</div>
 
