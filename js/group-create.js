@@ -229,6 +229,7 @@ jQuery(document).ready(function($){
 
 				// Description
 				$('#group-desc').val(r.description);
+				$('#group-status-' + r.status).prop('checked',true);
 
 				// Schools and Departments
 				$.each( r.academic_units, function( unitType, unitsOfType ) {

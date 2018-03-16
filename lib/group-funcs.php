@@ -4,6 +4,62 @@
  */
 
 /**
+ * Group privacy settings markup.
+ */
+function openlab_group_privacy_settings_markup() {
+	$group_type = cboxol_get_edited_group_group_type();
+	if ( is_wp_error( $group_type ) ) {
+		return;
+	}
+
+	$group_status = 'public';
+	if ( bp_is_group() && ! bp_is_group_create() ) {
+		$group_status = groups_get_current_group()->status;
+	}
+
+	?>
+
+	<div class="panel panel-default">
+		<div class="panel-heading semibold"><?php esc_html_e( 'Privacy Settings', 'openlab-theme' ); ?></div>
+
+		<div class="radio group-profile panel-body">
+
+			<?php if ( bp_is_group_create() ) : ?>
+				<p id="privacy-settings-tag-b"><?php echo esc_html( $group_type->get_label( 'privacy_help_text' ) ); ?> <?php echo esc_html( $group_type->get_label( 'privacy_help_text_new' ) ); ?></p>
+			<?php else : ?>
+				<p class="privacy-settings-tag-c"><?php echo esc_html( $group_type->get_label( 'privacy_help_text' ) ); ?></p>
+			<?php endif; ?>
+
+			<div class="row">
+				<div class="col-sm-23 col-sm-offset-1">
+					<label><input type="radio" name="group-status" value="public" id="group-status-public" <?php checked( 'public', $group_status ) ?> /><?php esc_html_e( 'Public', 'openlab-theme' ); ?></label>
+					<ul>
+						<li><?php echo esc_html( $group_type->get_label( 'privacy_help_text_public_content' ) ); ?></li>
+						<li><?php echo esc_html( $group_type->get_label( 'privacy_help_text_public_directory' ) ); ?></li>
+						<li><?php echo esc_html( $group_type->get_label( 'privacy_help_text_public_membership' ) ); ?></li>
+					</ul>
+
+					<label><input type="radio" name="group-status" value="private" id="group-status-private" <?php checked( 'private', $group_status ) ?> /><?php esc_html_e( 'Private', 'openlab-theme' ) ?></label>
+					<ul>
+						<li><?php echo esc_html( $group_type->get_label( 'privacy_help_text_private_content' ) ); ?></li>
+						<li><?php echo esc_html( $group_type->get_label( 'privacy_help_text_public_directory' ) ); ?></li>
+						<li><?php echo esc_html( $group_type->get_label( 'privacy_help_text_byrequest_membership' ) ); ?></li>
+					</ul>
+
+					<label><input type="radio" name="group-status" value="hidden" id="group-status-hidden" <?php checked( 'hidden', $group_status ) ?> /><?php esc_html_e( 'Hidden', 'openlab-theme' ) ?></label>
+					<ul>
+						<li><?php echo esc_html( $group_type->get_label( 'privacy_help_text_private_content' ) ); ?></li>
+						<li><?php echo esc_html( $group_type->get_label( 'privacy_help_text_private_directory' ) ); ?></li>
+						<li><?php echo esc_html( $group_type->get_label( 'privacy_help_text_invited_membership' ) ); ?></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+	<?php
+}
+
+/**
  * This function consolidates the group privacy settings in one spot for easier updating
  */
 function openlab_group_privacy_settings( $group_type ) {

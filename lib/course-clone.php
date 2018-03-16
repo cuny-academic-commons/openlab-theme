@@ -112,6 +112,7 @@ function openlab_group_clone_details( $group_id ) {
 		'group_id'               => $group_id,
 		'name'                   => '',
 		'description'            => '',
+		'status'                 => '',
 		'schools'                => array(),
 		'departments'            => array(),
 		'course_code'            => '',
@@ -127,6 +128,7 @@ function openlab_group_clone_details( $group_id ) {
 
 		$retval['name'] = $group->name;
 		$retval['description'] = $group->description;
+		$retval['status'] = $group->status;
 
 		$academic_units = cboxol_get_object_academic_units( array(
 			'object_id' => $group->id,

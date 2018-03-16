@@ -134,6 +134,8 @@
 
 				<?php do_action( 'bp_after_group_details_creation_step' ) ?>
 
+				<?php openlab_group_privacy_settings_markup(); ?>
+
 				<?php openlab_group_site_markup(); ?>
 
 				<?php wp_nonce_field( 'groups_create_save_group-details' ) ?>
