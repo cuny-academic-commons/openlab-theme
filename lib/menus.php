@@ -496,12 +496,10 @@ function openlab_create_group_menu( \CBOX\OL\GroupType $group_type ) {
 			break;
 	}
 
-	$title = esc_html( $title );
 	$step_name = esc_html( $step_name );
 
 	$menu_mup = <<<HTML
 		<div class="submenu create-group-submenu">
-			<div class="submenu-text pull-left bold"><h2>{$title}</h2></div>
 			<ul class="nav nav-inline">
 			<li class="submenu-item item-create-clone-a-course current-menu-item bold">{$step_name}</li>
 			</ul>
