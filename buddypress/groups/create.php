@@ -108,7 +108,7 @@
 					<div class="panel-body">
 
 						<?php if ( $group_type->get_is_portfolio() ) : ?>
-							<p class="ol-tooltip"><?php esc_html_e( 'The suggested Portfolio Name below uses your first and last name. If you do not wish to use your full name, you may change it now or at any time in the future.', 'cbox-openlab-core' ) ?></p>
+							<p class="ol-tooltip"><?php echo esc_html( $group_type->get_label( 'name_help_text' ) ); ?></p>
 
 							<ul class="ol-tooltip">
 								<li><?php esc_html_e( 'FirstName LastName\'s Portfolio', 'openlab-theme' ); ?></li>
@@ -118,7 +118,7 @@
 							<input class="form-control" size="80" type="text" name="group-name" id="group-name" value="<?php echo esc_attr( bp_get_new_group_name() ) ?>" required />
 
 						<?php else : ?>
-							<p class="ol-tooltip"><?php esc_html_e( 'Please choose your Name carefully. A clear Name will make it easier for others to find your group. We recommend keeping the Name under 50 characters.', 'openlab-theme' ); ?></p>
+							<p class="ol-tooltip"><?php echo esc_html( $group_type->get_label( 'name_help_text' ) ); ?></p>
 							<input class="form-control" size="80" type="text" name="group-name" id="group-name" value="<?php bp_new_group_name() ?>" required />
 
 						<?php endif ?>
