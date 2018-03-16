@@ -117,11 +117,6 @@ function openlab_customizer_styles() {
 	$color_schemes = openlab_color_schemes();
 	?>
 	<style type="text/css">
-		#customize-control-openlab_color_scheme label {
-			display: block;
-			height: 50px;
-		}
-
 		#customize-control-openlab_color_scheme label::before {
 			border: 1px solid #666;
 			border-radius: 50%;
@@ -136,8 +131,8 @@ function openlab_customizer_styles() {
 
 		<?php foreach ( $color_schemes as $color_scheme => $color_scheme_data ) : ?>
 			<?php printf(
-				"\n" . '#customize-control-openlab_color_scheme label.color-scheme-%s::before {
-					background-color: %s
+				"\n" . '#customize-control-openlab_color_scheme label[for="_customize-input-openlab_color_scheme-radio-%s"]::before {
+					background-color: %s;
 				}',
 				esc_attr( $color_scheme ),
 				esc_attr( $color_scheme_data['icon_color'] )
