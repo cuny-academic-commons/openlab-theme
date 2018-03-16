@@ -496,12 +496,6 @@ function openlab_create_group_menu( \CBOX\OL\GroupType $group_type ) {
 			break;
 	}
 
-	if ( $group_type->get_can_be_cloned() ) {
-		$title = __( 'Create/Clone', 'openlab-theme' );
-	} else {
-		$title = __( 'Create', 'openlab-theme' );
-	}
-
 	$title = esc_html( $title );
 	$step_name = esc_html( $step_name );
 
