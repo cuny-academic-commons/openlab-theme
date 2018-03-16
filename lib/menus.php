@@ -338,7 +338,7 @@ function openlab_submenu_markup( $type = '', $opt_var = null, $row_wrapper = tru
 
 	switch ( $type ) {
 		case 'invitations':
-			$submenu_text = 'My Invitations<span aria-hidden="true">:</span> ';
+			$submenu_text = esc_html__( 'My Invitations', 'openlab-theme' ) . '<span aria-hidden="true">:</span> ';
 			$menu = openlab_my_invitations_submenu();
 			break;
 		case 'friends':
@@ -354,7 +354,7 @@ function openlab_submenu_markup( $type = '', $opt_var = null, $row_wrapper = tru
 
 			break;
 		case 'messages':
-			$submenu_text = 'My Messages<span aria-hidden="true">:</span> ';
+			$submenu_text = esc_html__( 'My Messages', 'openlab-theme' ) . '<span aria-hidden="true">:</span> ';
 			$menu = openlab_my_messages_submenu();
 			break;
 		case 'groups':
@@ -370,7 +370,7 @@ function openlab_submenu_markup( $type = '', $opt_var = null, $row_wrapper = tru
 
 			break;
 		default:
-			$submenu_text = 'My Settings<span aria-hidden="true">:</span> ';
+			$submenu_text = esc_html__( 'My Settings', 'openlab-theme' ) . '<span aria-hidden="true">:</span> ';
 			$menu = openlab_profile_settings_submenu();
 	}
 
@@ -571,9 +571,9 @@ function openlab_my_messages_submenu() {
 	}
 
 	$menu_list = array(
-		$dud . 'messages/inbox/' => 'Inbox',
-		$dud . 'messages/sentbox/' => 'Sent',
-		$dud . 'messages/compose' => 'Compose',
+		$dud . 'messages/inbox/' => __( 'Inbox', 'openlab-theme' ),
+		$dud . 'messages/sentbox/' => __( 'Sent', 'openlab-theme' ),
+		$dud . 'messages/compose' => __( 'Compose', 'openlab-theme' ),
 	);
 	return openlab_submenu_gen( $menu_list );
 }
@@ -586,9 +586,9 @@ function openlab_my_invitations_submenu() {
 	}
 
 	$menu_list = array(
-		$dud . 'groups/invites/' => 'Invitations Received',
-		$dud . 'invite-anyone/' => 'Invite New Members',
-		$dud . 'invite-anyone/sent-invites/' => 'Sent Invitations',
+		$dud . 'groups/invites/' => __( 'Invitations Received', 'openlab-theme' ),
+		$dud . 'invite-anyone/' => __( 'Invite New Members', 'openlab-theme' ),
+		$dud . 'invite-anyone/sent-invites/' => __( 'Sent Invitations', 'openlab-theme' ),
 	);
 	return openlab_submenu_gen( $menu_list );
 }
@@ -637,20 +637,20 @@ function openlab_submenu_gen( $items, $timestamp = false ) {
 		}
 
 		// special case for send invitations page hitting the same time as invitations received
-		if ( $page_identify == 'invites' && $title == 'Sent Invitations' ) {
+		if ( $page_identify == 'invites' && $title == __( 'Sent Invitations', 'openlab-theme' ) ) {
 			$current_check = false;
 		}
 
 		// adding the current-menu-item class - also includes special cases, parsed out to make them easier to identify
 		if ( $current_check !== false ) {
 			$item_classes .= ' current-menu-item';
-		} elseif ( $page_identify == 'general' && $title == 'Account Settings' ) {
+		} elseif ( $page_identify == 'general' && $title == __( 'Account Settings', 'openlab-theme' ) ) {
 			// special case just for account settings page
 			$item_classes .= ' current-menu-item';
-		} elseif ( $page_identify == 'my-friends' && $title == 'My Friends' ) {
+		} elseif ( $page_identify == 'my-friends' && $title == __( 'My Friends', 'openlab-theme' ) ) {
 			// special case just for my friends page
 			$item_classes .= ' current-menu-item bold';
-		} elseif ( $page_identify == 'invite-new-members' && $title == 'Invite New Members' ) {
+		} elseif ( $page_identify == 'invite-new-members' && $title == __( 'Invite New Members', 'openlab-theme' ) ) {
 			// special case just for Invite New Members page
 			$item_classes .= ' current-menu-item';
 		}
@@ -679,7 +679,7 @@ function openlab_submenu_gen( $items, $timestamp = false ) {
 		$submenu .= (strstr( $slug, 'create-' ) > -1 ? '<span class="fa fa-plus-circle"></span>' : '');
 
 		$submenu .= ( $item == 'no-link' ? '' : '<a href="' . $item . '">' );
-		$submenu .= $title;
+		$submenu .= esc_html( $title );
 		$submenu .= ( $item == 'no-link' ? '' : '</a>' );
 		$submenu .= '</li><!--';
 
