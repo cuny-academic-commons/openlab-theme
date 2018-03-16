@@ -54,10 +54,52 @@ function openlab_group_privacy_settings_markup() {
 					</ul>
 				</div>
 			</div>
+
+			<?php wp_nonce_field( 'openlab_group_status', 'openlab-group-status-nonce', false ); ?>
 		</div>
 	</div>
 	<?php
 }
+
+/**
+ * Catches and processes group status setting.
+ *
+ * This is needed because we've moved privacy settings to the first step, so
+ * BP no longer handles it.
+ */
+function openlab_save_group_status( BP_Groups_Group $group ) {
+	if ( ! isset( $_POST['openlab-group-status-nonce'] ) ) {
+		return;
+	}
+
+	check_admin_referer( 'openlab_group_status', 'openlab-group-status-nonce' );
+
+	if ( ! isset( $_POST['group-status'] ) ) {
+		return;
+	}
+
+	$status = wp_unslash( $_POST['group-status'] );
+	if ( ! in_array( $status, buddypress()->groups->valid_status, true ) ) {
+		return;
+	}
+
+	$group_args = array(
+		'group_id'     => $group->id,
+		'status'       => $status,
+		'creator_id'   => $group->creator_id,
+		'name'         => $group->name,
+		'description'  => $group->description,
+		'slug'         => $group->slug,
+		'parent_id'    => $group->parent_id,
+		'enable_forum' => $group->enable_forum,
+		'date_created' => $group->date_created,
+	);
+
+	remove_action( 'groups_group_after_save', 'openlab_save_group_status' );
+	$saved = groups_create_group( $group_args );
+	add_action( 'groups_group_after_save', 'openlab_save_group_status' );
+}
+add_action( 'groups_group_after_save', 'openlab_save_group_status' );
 
 /**
  * This function consolidates the group privacy settings in one spot for easier updating
