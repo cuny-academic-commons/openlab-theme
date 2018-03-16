@@ -482,7 +482,7 @@ function openlab_create_group_menu( \CBOX\OL\GroupType $group_type ) {
 
 	switch ( bp_get_groups_current_create_step() ) {
 		case 'group-settings' :
-			$step_name = __( 'Step Two: Privacy Settings', 'openlab-theme' );
+			$step_name = __( 'Step Two: Associated Site Creation', 'openlab-theme' );
 			break;
 		case 'group-avatar' :
 			$step_name = __( 'Step Three: Avatar', 'openlab-theme' );
