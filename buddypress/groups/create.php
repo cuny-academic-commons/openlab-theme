@@ -34,8 +34,6 @@
 
 	<?php echo openlab_create_group_menu( $group_type ); ?>
 
-	<p class="group-create-help-text"><?php echo esc_html( $group_type->get_label( 'create_item_help_text' ) ); ?></p>
-
 	<div id="single-course-body" class="<?php echo ( $group_type->get_is_course() ? 'course-create' : '' ); ?>">
 		<div id="openlab-main-content"></div>
 
@@ -49,6 +47,8 @@
 
 			<?php /* Group creation step 1: Basic group details */ ?>
 			<?php if ( bp_is_group_creation_step( 'group-details' ) ) : ?>
+
+				<p class="group-create-help-text"><?php echo esc_html( $group_type->get_label( 'create_item_help_text' ) ); ?></p>
 
 				<?php do_action( 'bp_before_group_details_creation_step' ); ?>
 
@@ -144,6 +144,8 @@
 			<?php if ( bp_is_group_creation_step( 'group-settings' ) ) : ?>
 
 				<?php do_action( 'bp_before_group_settings_creation_step' ); ?>
+
+				<p class="group-create-help-text"><?php echo esc_html( $group_type->get_label( 'site_help_text' ) ); ?></p>
 
 				<?php if ( function_exists( 'bbpress' ) && ! cboxol_is_portfolio() ) : ?>
 					<input type="hidden" name="group-show-forum" value="1" />
