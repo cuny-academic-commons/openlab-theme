@@ -178,7 +178,7 @@ function openlab_member_sidebar_menu( $mobile = false ) {
 						$selected = 'selected-page';
 					}
 					?>
-					<li class="sq-bullet <?php echo $selected ?> mol-courses my-<?php echo esc_attr( $group_type->get_slug() ) ?>"><a href="<?php echo cboxol_get_user_group_type_directory_url( $group_type ) ?>"><?php echo esc_html( $group_type->get_label( 'my_groups' ) ) ?></a></li>
+					<li class="sq-bullet <?php echo $selected ?> mol-courses my-<?php echo esc_attr( $group_type->get_slug() ) ?>"><a href="<?php echo cboxol_get_user_group_type_directory_url( $group_type, bp_loggedin_user_id() ) ?>"><?php echo esc_html( $group_type->get_label( 'my_groups' ) ) ?></a></li>
 				<?php endforeach; ?>
 
 				<?php /* Get a friend request count */ ?>
