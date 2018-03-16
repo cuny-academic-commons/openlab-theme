@@ -8761,17 +8761,6 @@ body form .checkbox-list-container {
   margin: 0;
   border-top: 1px solid #bbbbbb;
 }
-.sidebar .sidebar-block.group-site-links {
-  background: #444;
-}
-.sidebar .sidebar-block.group-site-links a,
-.sidebar .sidebar-block.group-site-links .fa.cyan-circle {
-  color: #fff;
-}
-.sidebar .sidebar-block.group-site-links a:hover,
-.sidebar .sidebar-block.group-site-links a:hover .fa.cyan-circle {
-  color: #fbd8d1;
-}
 .sidebar .sidebar-block.activity-block {
   padding: 6%;
 }
