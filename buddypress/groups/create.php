@@ -30,7 +30,7 @@
 	openlab_group_admin_js_data( $group_type ); ?>
 
 	<?php /* @todo this can't translate */ ?>
-	<h1 class="entry-title mol-title"><?php bp_loggedin_user_fullname() ?>'s Profile</h1>
+	<h1 class="entry-title mol-title"><?php echo esc_html( $group_type->get_label( 'create_clone_item' ) ); ?></h1>
 
 	<?php echo openlab_create_group_menu( $group_type ); ?>
 
