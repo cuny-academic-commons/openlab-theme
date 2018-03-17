@@ -253,4 +253,4 @@ function openlab_group_creation_categories() {
 
 	echo $cats_out;
 }
-add_action( 'openlab_group_creation_extra_meta', 'openlab_group_creation_categories' );
+//add_action( 'openlab_group_creation_extra_meta', 'openlab_group_creation_categories' );

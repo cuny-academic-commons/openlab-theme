@@ -4,6 +4,28 @@
  */
 
 /**
+ * Reconfigure group creation steps.
+ */
+function openlab_set_group_creation_steps() {
+	$steps = array(
+		'group-details' => array(
+			'name' => __( 'Group Details', 'cbox-openlab-core' ),
+			'position' => 10,
+		),
+		'site-details' => array(
+			'name' => __( 'Associated Site', 'cbox-openlab-core' ),
+			'position' => 20,
+		),
+		'invite-anyone' => array(
+			'name' => __( 'Invite Members', 'cbox-openlab-core' ),
+			'position' => 30,
+		),
+	);
+	buddypress()->groups->group_creation_steps = $steps;
+}
+add_action( 'bp_actions', 'openlab_set_group_creation_steps', 5 );
+
+/**
  * Group privacy settings markup.
  */
 function openlab_group_privacy_settings_markup() {
@@ -62,10 +84,330 @@ function openlab_group_privacy_settings_markup() {
 }
 
 /**
+ * Renders the markup for group-site affilitation.
+ */
+function openlab_group_site_markup() {
+	global $wpdb, $bp, $current_site, $base;
+
+	$group_type = cboxol_get_edited_group_group_type();
+	if ( is_wp_error( $group_type ) ) {
+		return;
+	}
+
+	$the_group_id = null;
+	if ( bp_is_group() ) {
+		$the_group_id = bp_get_current_group_id();
+	}
+
+	?>
+
+	<div class="ct-group-meta">
+
+		<?php do_action( 'openlab_group_creation_extra_meta' ); ?>
+
+		<?php $group_site_url = openlab_get_group_site_url( $the_group_id ); ?>
+
+		<div class="panel panel-default">
+			<div class="panel-heading"><?php esc_html_e( 'Associated Site Details', 'openlab-theme' ); ?></div>
+			<div class="panel-body">
+
+				<?php if ( ! empty( $group_site_url ) ) : ?>
+
+					<div id="current-group-site">
+						<?php
+						$maybe_site_id = openlab_get_site_id_by_group_id( $the_group_id );
+
+						if ( $maybe_site_id ) {
+							$group_site_name = get_blog_option( $maybe_site_id, 'blogname' );
+							$group_site_text = '<strong>' . esc_html( $group_site_name ) . '</strong>';
+							$group_site_url_out = '<a class="bold" href="' . esc_url( $group_site_url ) . '">' . esc_html( $group_site_url ) . '</a>';
+						} else {
+							$group_site_text = esc_url( $group_site_url );
+							$group_site_url_out = '<a class="bold" href="' . esc_url( $group_site_url ) . '">' . esc_html( $group_site_url ) . '</a>';
+						}
+						?>
+						<p><?php printf( esc_html__( 'This group is currently associated with the site "%s"', 'openlab-theme' ), $group_site_text ) ?></p>
+						<ul id="change-group-site"><li><?php echo $group_site_url_out ?> <a class="button underline confirm" href="<?php echo wp_nonce_url( bp_get_group_permalink( groups_get_current_group() ) . 'admin/edit-details/unlink-site/', 'unlink-site' ) ?>" id="change-group-site-toggle"><?php esc_html_e( 'Unlink', 'openlab-theme' ); ?></a></li></ul>
+
+					</div>
+
+				<?php else : ?>
+
+					<?php
+					$template = $group_type->get_template_site_id();
+
+					$blog_details = get_blog_details( $template );
+
+					// Set up user blogs for fields below
+					$user_blogs = get_blogs_of_user( get_current_user_id() );
+
+					// Exclude blogs where the user is not an Admin
+					foreach ( $user_blogs as $ubid => $ub ) {
+						$role = get_user_meta( bp_loggedin_user_id(), $wpdb->base_prefix . $ub->userblog_id . '_capabilities', true );
+
+						if ( ! array_key_exists( 'administrator', (array) $role ) ) {
+							unset( $user_blogs[ $ubid ] );
+						}
+					}
+					$user_blogs = array_values( $user_blogs );
+					?>
+					<style type="text/css">
+						.disabled-opt {
+							opacity: .4;
+						}
+					</style>
+
+					<input type="hidden" name="action" value="copy_blog" />
+					<input type="hidden" name="source_blog" value="<?php echo intval( $blog_details->blog_id ); ?>" />
+
+					<div class="form-table groupblog-setup"<?php if ( ! empty( $group_site_url ) ) : ?> style="display: none;"<?php endif ?>>
+						<?php if ( ! $group_type->get_requires_site() ) : ?>
+							<?php $show_website = 'none' ?>
+							<div class="form-field form-required">
+								<div scope='row' class="site-details-query">
+									<label><input type="checkbox" id="set-up-site-toggle" name="set-up-site-toggle" value="yes" /> <?php esc_html_e( 'Set up a site?', 'openlab-theme' ); ?></label>
+								</div>
+							</div>
+						<?php else : ?>
+							<?php $show_website = 'auto' ?>
+						<?php endif ?>
+
+						<div id="wds-website-tooltips" class="form-field form-required" style="display:<?php echo $show_website; ?>"><div>
+
+						<p class="ol-tooltip"><?php echo esc_html( $group_type->get_label( 'site_address_help_text' ) ); ?></p>
+
+					</div><!-- /.groupblog-setup -->
+				</div><!-- /.panel-body -->
+
+				<?php if ( bp_is_group_create() && $group_type->get_can_be_cloned() ) : ?>
+					<?php /* @todo get rid of all 'wds' */ ?>
+					<div id="wds-website-clone" class="form-field form-required" style="display:<?php echo $show_website; ?>">
+						<div id="noo_clone_options">
+							<div class="row">
+								<div class="radio disabled-opt">
+									<label>
+										<input type="radio" class="noo_radio" name="new_or_old" id="new_or_old_clone" value="clone" disabled />
+										<?php esc_html_e( 'Name your cloned site:', 'openlab-theme' ); ?>
+									</label>
+								</div>
+
+								<div class="site-label site-path<?php if ( is_subdomain_install() ) : ?> site-path-subdomain<?php endif; ?>">
+									<?php if ( is_subdomain_install() ) : ?>
+
+									<?php else : ?>
+										<?php global $current_site ?>
+										<span>
+											<?php echo $current_site->domain . $current_site->path ?>
+										</span>
+										<input class="form-control domain-validate" size="40" id="clone-destination-path" name="clone-destination-path" type="text" title="<?php _e( 'Path', 'openlab-theme' ) ?>" value="" />
+
+									<?php endif; ?>
+								</div><!-- /.site-label -->
+
+								<input name="blog-id-to-clone" value="" type="hidden" />
+							</div><!-- /.row -->
+
+							<p id="cloned-site-url"></p>
+						</div><!-- /#noo_clone_options -->
+					</div><!-- /#wds-website-clone -->
+				<?php endif ?>
+
+				<div id="wds-website" class="form-field form-required" style="display:<?php echo $show_website; ?>">
+					<div id="noo_new_options">
+						<div id="noo_new_options-div" class="row">
+							<div class="radio">
+								<label>
+									<input type="radio" class="noo_radio" name="new_or_old" id="new_or_old_new" value="new" />
+									<?php esc_html_e( 'Create a new site:', 'openlab-theme' ); ?>
+								</label>
+							</div>
+
+							<div class="site-label site-path">
+								<span>
+								<?php
+								$suggested_path = $group_type->get_is_portfolio() ? openlab_suggest_portfolio_path() : '';
+								// @todo Subdomains
+								echo $current_site->domain . $current_site->path
+								?>
+								</span>
+
+								<input id="new-site-domain" class="form-control domain-validate" size="40" name="blog[domain]" type="text" title="<?php esc_html_e( 'Domain', 'openlab-theme' ) ?>" value="<?php echo esc_html( $suggested_path ) ?>" />
+							</div>
+						</div><!-- #noo_new_options-div -->
+					</div><!-- #noo_new_options -->
+				</div><!-- #wds-website -->
+
+						<?php /* Existing blogs - only display if some are available */ ?>
+						<?php
+						// Exclude blogs already used as groupblogs
+						global $wpdb, $bp;
+						$current_groupblogs = $wpdb->get_col( "SELECT meta_value FROM {$bp->groups->table_name_groupmeta} WHERE meta_key = 'cboxol_group_site_id'" );
+
+						foreach ( $user_blogs as $ubid => $ub ) {
+							if ( in_array( $ub->userblog_id, $current_groupblogs ) ) {
+								unset( $user_blogs[ $ubid ] );
+							}
+						}
+						$user_blogs = array_values( $user_blogs );
+						?>
+
+						<?php if ( ! empty( $user_blogs ) ) : ?>
+							<div id="wds-website-existing" class="form-field form-required" style="display:<?php echo $show_website; ?>">
+
+								<div id="noo_old_options">
+									<div class="row">
+										<div class="radio">
+											<label>
+												<input type="radio" class="noo_radio" id="new_or_old_old" name="new_or_old" value="old" />
+												<?php esc_html_e( 'Use an existing site:', 'openlab-theme' ); ?></label>
+										</div>
+										<div class="site-path">
+											<label class="sr-only" for="groupblog-blogid"><?php esc_html_e( 'Choose a site', 'openlab-theme' ); ?></label>
+											<select class="form-control" name="groupblog-blogid" id="groupblog-blogid">
+												<option value="0"><?php esc_html_e( '- Choose a site -', 'openlab-theme' ); ?></option>
+												<?php foreach ( (array) $user_blogs as $user_blog ) : ?>
+													<option value="<?php echo $user_blog->userblog_id; ?>"><?php echo $user_blog->blogname; ?></option>
+												<?php endforeach ?>
+											</select>
+										</div>
+									</div>
+								</div>
+							</div>
+						<?php endif ?>
+
+						<div id="wds-website-external" class="form-field form-required" style="display:<?php echo $show_website; ?>">
+
+							<div id="noo_external_options">
+								<div class="form-group row">
+									<div class="radio">
+										<label>
+											<input type="radio" class="noo_radio" id="new_or_old_external" name="new_or_old" value="external" />
+											<?php esc_html_e( 'Use an external site:', 'openlab-theme' ); ?>
+										</label>
+									</div>
+									<div class="site-path">
+										<label class="sr-only" for="external-site-url"><?php esc_html_e( 'Input external site URL', 'openlab-theme' ); ?></label>
+										<input class="form-control pull-left" type="text" name="external-site-url" id="external-site-url" placeholder="http://" />
+										<a class="btn btn-primary no-deco top-align pull-right" id="find-feeds" href="#" display="none"><?php echo esc_html_x( 'Check', 'External site RSS feed check button', 'openlab-theme' ); ?><span class="sr-only"><?php esc_html_e( 'Check external site for Post and Comment feeds', 'openlab-theme' ); ?></span></a>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div id="check-note-wrapper" style="display:<?php echo $show_website; ?>"><div colspan="2"><p id="check-note" class="italics disabled-opt"><?php echo esc_html( $group_type->get_label( 'site_feed_check_help_text' ) ); ?></p></div></div>
+					</div>
+
+				<?php endif; ?>
+			</div>
+		</div>
+	</div>
+
+	<?php wp_nonce_field( 'openlab_site_settings', 'openlab-site-settings-nonce', false ); ?>
+
+	<?php
+}
+
+/**
+ * Gets the markup for the group site private settings in group creation/edit.
+ */
+function openlab_group_site_privacy_settings_markup() {
+	$group_id = bp_get_current_group_id();
+
+	$site_id = cboxol_get_group_site_id();
+	if ( $site_id ) {
+		$blog_public = get_blog_option( $site_id, 'blog_public' );
+	} else {
+		switch ( groups_get_current_group()->status ) {
+			case 'public' :
+				$blog_public = 1;
+			break;
+
+			case 'private' :
+				$blog_public = -2;
+			break;
+
+			case 'hidden' :
+				$blog_public = -2;
+			break;
+		}
+	}
+	?>
+
+		<div class="panel panel-default">
+			<div class="panel-heading semibold"><?php esc_html_e( 'Associated Site Privacy Settings', 'openlab-theme' ) ?></div>
+			<div class="panel-body">
+				<p class="privacy-settings-tag-c"><?php esc_html_e( 'These settings affect how others view your associated site.', 'openlab-theme' ) ?></p>
+
+				<div class="radio group-site">
+
+					<h5><?php _e( 'Public', 'buddypress' ) ?></h5>
+					<p id="search-setting-note" class="italics note"><?php esc_html_e( 'Note: These options will NOT block access to your site. It is up to search engines to honor your request.', 'openlab-theme' ); ?></p>
+					<div class="row">
+						<div class="col-sm-23 col-sm-offset-1">
+							<p><label for="blog-private1"><input id="blog-private1" type="radio" name="blog_public" value="1" <?php checked( '1', $blog_public ); ?> /><?php _e( 'Allow search engines to index this site. Your site will show up in web search results.', 'openlab-theme' ); ?></label></p>
+
+							<p><label for="blog-private0"><input id="blog-private0" type="radio" name="blog_public" value="0" <?php checked( '0', $blog_public ); ?> /><?php _e( 'Ask search engines not to index this site. Your site should not show up in web search results.', 'openlab-theme' ); ?></label></p>
+						</div>
+					</div>
+
+					<?php if ( ! cboxol_is_portfolio() && ( ! isset( $_GET['group_type'] ) || 'portfolio' != $_GET['group_type'] ) ) : ?>
+
+						<h5><?php esc_html_e( 'Private', 'openlab-theme' ) ?></h5>
+						<div class="row">
+							<div class="col-sm-23 col-sm-offset-1">
+								<p><label for="blog-private-1"><input id="blog-private-1" type="radio" name="blog_public" value="-1" <?php checked( '-1', $blog_public ); ?>><?php esc_html_e( 'I would like my site to be visible only to members of this community.', 'openlab-theme' ); ?></label></p>
+
+								<p><label for="blog-private-2"><input id="blog-private-2" type="radio" name="blog_public" value="-2" <?php checked( '-2', $blog_public ); ?>><?php esc_html_e( 'I would like my site to be visible to community members with a role on the associated site.', 'openlab-theme' ); ?></label></p>
+							</div>
+						</div>
+
+						<h5><?php esc_html_e( 'Hidden', 'openlab-theme' ) ?></h5>
+						<div class="row">
+							<div class="col-sm-23 col-sm-offset-1">
+								<p><label for="blog-private-3"><input id="blog-private-3" type="radio" name="blog_public" value="-3" <?php checked( '-3', $blog_public ); ?>><?php esc_html_e( 'I would like my site to be visible only to those members with an administrative role on the associated site.' ); ?></label></p>
+							</div>
+						</div>
+
+					<?php else : ?>
+
+						<?php /* Portfolios */ ?>
+						<h5><?php esc_html_e( 'Private', 'openlab-theme' ); ?></h5>
+						<div class="row">
+							<div class="col-sm-23 col-sm-offset-1">
+								<p><label for="blog-private-1"><input id="blog-private-1" type="radio" name="blog_public" value="-1" <?php checked( '-1', $blog_public ); ?>><?php esc_html_e( 'I would like my site to be visible only to registered users of the network.', 'openlab-theme' ); ?></label></p>
+
+								<p><label for="blog-private-2"><input id="blog-private-2" type="radio" name="blog_public" value="-2" <?php checked( '-2', $blog_public ); ?>><?php esc_html_e( 'I would like my site to be visible only to registered users that I have granted access.', 'openlab-theme' ); ?></label></p>
+								<p class="description private-portfolio-gloss italics note"><?php esc_html_e( 'Note: If you would like your site to be visible to people who are not members of this network, you will need to make your site public.', 'openlab-theme' ); ?></p>
+
+								<p><label for="blog-private-3"><input id="blog-private-3" type="radio" name="blog_public" value="-3" <?php checked( '-3', $blog_public ); ?>><?php esc_html_e( 'I would like my site to be visible only to me.', 'openlab-theme' ); ?></label></p>
+							</div>
+						</div>
+
+					<?php endif; ?>
+				</div>
+			</div>
+		</div>
+
+		<?php wp_nonce_field( 'openlab_site_status', 'openlab-site-status-nonce', false ); ?>
+	<?php
+}
+
+
+/** SAVE ROUTINES ************************************************************/
+
+/**
+ * Post group-save actions.
+ */
+add_action( 'groups_group_after_save', 'openlab_save_group_status' );
+add_action( 'groups_create_group_step_save_site-details', 'openlab_save_group_site' );
+add_action( 'groups_create_group_step_save_site-details', 'openlab_save_group_site_settings', 20 );
+
+/**
  * Catches and processes group status setting.
  *
  * This is needed because we've moved privacy settings to the first step, so
  * BP no longer handles it.
+ *
+ * @param BP_Groups_Group $group
  */
 function openlab_save_group_status( BP_Groups_Group $group ) {
 	if ( ! isset( $_POST['openlab-group-status-nonce'] ) ) {
@@ -99,7 +441,81 @@ function openlab_save_group_status( BP_Groups_Group $group ) {
 	$saved = groups_create_group( $group_args );
 	add_action( 'groups_group_after_save', 'openlab_save_group_status' );
 }
-add_action( 'groups_group_after_save', 'openlab_save_group_status' );
+
+/**
+ * Catches and processes group site settings.
+ */
+function openlab_save_group_site() {
+	if ( ! isset( $_POST['openlab-site-settings-nonce'] ) ) {
+		return;
+	}
+
+	check_admin_referer( 'openlab_site_settings', 'openlab-site-settings-nonce' );
+
+	$group = groups_get_current_group();
+
+	$group_type = cboxol_get_group_group_type( $group->id );
+	if ( isset( $_POST['set-up-site-toggle'] ) || ( ! is_wp_error( $group_type ) && $group_type->get_requires_site() ) ) {
+		if ( isset( $_POST['new_or_old'] ) && 'new' == $_POST['new_or_old'] ) {
+
+			// Create a new site
+			cboxol_copy_blog_page( $group->id );
+		} elseif ( isset( $_POST['new_or_old'] ) && 'old' == $_POST['new_or_old'] && isset( $_POST['groupblog-blogid'] ) ) {
+
+			// Associate an existing site
+			cboxol_set_group_site_id( $group->id, (int) $_POST['groupblog-blogid'] );
+		} elseif ( isset( $_POST['new_or_old'] ) && 'external' == $_POST['new_or_old'] && isset( $_POST['external-site-url'] ) ) {
+
+			// External site
+			// Some validation
+			$url = openlab_validate_url( $_POST['external-site-url'] );
+			groups_update_groupmeta( $group->id, 'external_site_url', $url );
+
+			if ( ! empty( $_POST['external-site-type'] ) ) {
+				groups_update_groupmeta( $group->id, 'external_site_type', $_POST['external-site-type'] );
+			}
+
+			if ( ! empty( $_POST['external-posts-url'] ) ) {
+				groups_update_groupmeta( $group->id, 'external_site_posts_feed', $_POST['external-posts-url'] );
+			}
+
+			if ( ! empty( $_POST['external-comments-url'] ) ) {
+				groups_update_groupmeta( $group->id, 'external_site_comments_feed', $_POST['external-comments-url'] );
+			}
+		}
+
+		$group_type = cboxol_get_group_group_type( $group->id );
+		if ( ! is_wp_error( $group_type ) && $group_type->get_is_portfolio() ) {
+			openlab_associate_portfolio_group_with_user( $group->id, bp_loggedin_user_id() );
+		}
+	}
+}
+
+/**
+ * Catches and processes group site privacy settings.
+ */
+function openlab_save_group_site_settings() {
+	if ( ! isset( $_POST['openlab-site-status-nonce'] ) ) {
+		return;
+	}
+
+	check_admin_referer( 'openlab_site_status', 'openlab-site-status-nonce' );
+
+	$group = groups_get_current_group();
+
+	if ( ! isset( $_POST['blog_public'] ) ) {
+		return;
+	}
+
+	$blog_public = (float) $_POST['blog_public'];
+
+	$site_id = cboxol_get_group_site_id( $group->id );
+	if ( ! $site_id ) {
+		return;
+	}
+
+	update_blog_option( $site_id, 'blog_public', $blog_public );
+}
 
 /**
  * This function consolidates the group privacy settings in one spot for easier updating
@@ -290,70 +706,6 @@ function cuny_groups_pagination_count() {
 
 	/* @todo Proper localization with _n() */
 	echo sprintf( __( '%1$s to %2$s (of %3$s total)', 'openlab-theme' ), $from_num, $to_num, $total );
-}
-
-/**
- * Markup for groupblog privacy settings
- */
-function openlab_site_privacy_settings_markup( $site_id = 0 ) {
-	global $blogname, $current_site;
-
-	if ( ! $site_id ) {
-		$site_id = get_current_blog_id();
-	}
-
-	$blog_name = get_blog_option( $site_id, 'blogname' );
-	$blog_public = get_blog_option( $site_id, 'blog_public' );
-	?>
-
-	<div class="radio group-site">
-
-		<h5><?php _e( 'Public', 'buddypress' ) ?></h5>
-		<p id="search-setting-note" class="italics note"><?php esc_html_e( 'Note: These options will NOT block access to your site. It is up to search engines to honor your request.', 'openlab-theme' ); ?></p>
-		<div class="row">
-			<div class="col-sm-23 col-sm-offset-1">
-				<p><label for="blog-private1"><input id="blog-private1" type="radio" name="blog_public" value="1" <?php checked( '1', $blog_public ); ?> /><?php _e( 'Allow search engines to index this site. Your site will show up in web search results.', 'openlab-theme' ); ?></label></p>
-
-				<p><label for="blog-private0"><input id="blog-private0" type="radio" name="blog_public" value="0" <?php checked( '0', $blog_public ); ?> /><?php _e( 'Ask search engines not to index this site. Your site should not show up in web search results.', 'openlab-theme' ); ?></label></p>
-			</div>
-		</div>
-
-		<?php if ( ! cboxol_is_portfolio() && ( ! isset( $_GET['group_type'] ) || 'portfolio' != $_GET['group_type'] ) ) : ?>
-
-			<h5><?php esc_html_e( 'Private', 'openlab-theme' ) ?></h5>
-			<div class="row">
-				<div class="col-sm-23 col-sm-offset-1">
-					<p><label for="blog-private-1"><input id="blog-private-1" type="radio" name="blog_public" value="-1" <?php checked( '-1', $blog_public ); ?>><?php esc_html_e( 'I would like my site to be visible only to members of the network.', 'openlab-theme' ); ?></label></p>
-
-					<p><label for="blog-private-2"><input id="blog-private-2" type="radio" name="blog_public" value="-2" <?php checked( '-2', $blog_public ); ?>><?php esc_html_e( 'I would like my site to be visible to users with a role on the Site.', 'openlab-theme' ); ?></label></p>
-				</div>
-			</div>
-
-			<h5><?php esc_html_e( 'Hidden', 'openlab-theme' ) ?></h5>
-			<div class="row">
-				<div class="col-sm-23 col-sm-offset-1">
-					<p><label for="blog-private-3"><input id="blog-private-3" type="radio" name="blog_public" value="-3" <?php checked( '-3', $blog_public ); ?>><?php esc_html_e( 'I would like my site to be visible only to site administrators.' ); ?></label></p>
-				</div>
-			</div>
-
-		<?php else : ?>
-
-			<?php /* Portfolios */ ?>
-			<h5><?php esc_html_e( 'Private', 'openlab-theme' ); ?></h5>
-			<div class="row">
-				<div class="col-sm-23 col-sm-offset-1">
-					<p><label for="blog-private-1"><input id="blog-private-1" type="radio" name="blog_public" value="-1" <?php checked( '-1', $blog_public ); ?>><?php esc_html_e( 'I would like my site to be visible only to registered users of the network.', 'openlab-theme' ); ?></label></p>
-
-					<p><label for="blog-private-2"><input id="blog-private-2" type="radio" name="blog_public" value="-2" <?php checked( '-2', $blog_public ); ?>><?php esc_html_e( 'I would like my site to be visible only to registered users that I have granted access.', 'openlab-theme' ); ?></label></p>
-					<p class="description private-portfolio-gloss italics note"><?php esc_html_e( 'Note: If you would like your site to be visible to people who are not members of this network, you will need to make your site public.', 'openlab-theme' ); ?></p>
-
-					<p><label for="blog-private-3"><input id="blog-private-3" type="radio" name="blog_public" value="-3" <?php checked( '-3', $blog_public ); ?>><?php esc_html_e( 'I would like my site to be visible only to me.', 'openlab-theme' ); ?></label></p>
-				</div>
-			</div>
-
-		<?php endif; ?>
-	</div>
-	<?php
 }
 
 function openlab_group_profile_header() {
@@ -1472,251 +1824,6 @@ function openlab_get_group_activity_events_feed() {
 	$events_out .= ob_get_clean();
 
 	return $events_out;
-}
-
-/**
- * Renders the markup for group-site affilitation
- */
-function openlab_group_site_markup() {
-	global $wpdb, $bp, $current_site, $base;
-
-	$group_type = cboxol_get_edited_group_group_type();
-	if ( is_wp_error( $group_type ) ) {
-		return;
-	}
-
-	$the_group_id = null;
-	if ( bp_is_group() ) {
-		$the_group_id = bp_get_current_group_id();
-	}
-
-	$group_school = groups_get_groupmeta( $the_group_id, 'wds_group_school' );
-	$group_project_type = groups_get_groupmeta( $the_group_id, 'wds_group_project_type' );
-
-	?>
-
-	<div class="ct-group-meta">
-
-		<?php
-		/** @todo This loads a hidden input as well as school/dept info - oy */
-		/*
-		if ( ! empty( $group_type ) && 'group' !== $group_type ) {
-			echo wds_load_group_type( $group_type );
-			?>
-			<input type="hidden" name="group_type" value="<?php echo $group_type; ?>" />
-			<?php
-		} */ ?>
-
-		<?php do_action( 'openlab_group_creation_extra_meta' ); ?>
-
-		<?php $group_site_url = openlab_get_group_site_url( $the_group_id ); ?>
-
-		<div class="panel panel-default">
-			<div class="panel-heading"><?php esc_html_e( 'Site Details', 'openlab-theme' ); ?></div>
-			<div class="panel-body">
-
-				<?php if ( ! empty( $group_site_url ) ) : ?>
-
-					<div id="current-group-site">
-						<?php
-						$maybe_site_id = openlab_get_site_id_by_group_id( $the_group_id );
-
-						if ( $maybe_site_id ) {
-							$group_site_name = get_blog_option( $maybe_site_id, 'blogname' );
-							$group_site_text = '<strong>' . esc_html( $group_site_name ) . '</strong>';
-							$group_site_url_out = '<a class="bold" href="' . esc_url( $group_site_url ) . '">' . esc_html( $group_site_url ) . '</a>';
-						} else {
-							$group_site_text = esc_url( $group_site_url );
-							$group_site_url_out = '<a class="bold" href="' . esc_url( $group_site_url ) . '">' . esc_html( $group_site_url ) . '</a>';
-						}
-						?>
-						<p><?php printf( esc_html__( 'This group is currently associated with the site "%s"', 'openlab-theme' ), $group_site_text ) ?></p>
-						<ul id="change-group-site"><li><?php echo $group_site_url_out ?> <a class="button underline confirm" href="<?php echo wp_nonce_url( bp_get_group_permalink( groups_get_current_group() ) . 'admin/edit-details/unlink-site/', 'unlink-site' ) ?>" id="change-group-site-toggle"><?php esc_html_e( 'Unlink', 'openlab-theme' ); ?></a></li></ul>
-
-					</div>
-
-				<?php else : ?>
-
-					<?php
-					$template = $group_type->get_template_site_id();
-
-					$blog_details = get_blog_details( $template );
-
-					// Set up user blogs for fields below
-					$user_blogs = get_blogs_of_user( get_current_user_id() );
-
-					// Exclude blogs where the user is not an Admin
-					foreach ( $user_blogs as $ubid => $ub ) {
-						$role = get_user_meta( bp_loggedin_user_id(), $wpdb->base_prefix . $ub->userblog_id . '_capabilities', true );
-
-						if ( ! array_key_exists( 'administrator', (array) $role ) ) {
-							unset( $user_blogs[ $ubid ] );
-						}
-					}
-					$user_blogs = array_values( $user_blogs );
-					?>
-					<style type="text/css">
-						.disabled-opt {
-							opacity: .4;
-						}
-					</style>
-
-					<input type="hidden" name="action" value="copy_blog" />
-					<input type="hidden" name="source_blog" value="<?php echo intval( $blog_details->blog_id ); ?>" />
-
-					<div class="form-table groupblog-setup"<?php if ( ! empty( $group_site_url ) ) : ?> style="display: none;"<?php endif ?>>
-						<?php if ( ! $group_type->get_requires_site() ) : ?>
-							<?php $show_website = 'none' ?>
-							<div class="form-field form-required">
-								<div scope='row' class="site-details-query">
-									<label><input type="checkbox" id="set-up-site-toggle" name="set-up-site-toggle" value="yes" /> <?php esc_html_e( 'Set up a site?', 'openlab-theme' ); ?></label>
-								</div>
-							</div>
-						<?php else : ?>
-							<?php $show_website = 'auto' ?>
-						<?php endif ?>
-
-						<div id="wds-website-tooltips" class="form-field form-required" style="display:<?php echo $show_website; ?>"><div>
-
-						<?php if ( $group_type->get_is_course() ) : ?>
-							<p class="ol-tooltip"><?php esc_html_e( 'Take a moment to consider the address for your site. You will not be able to change it once you\'ve created it. We recommend the following format:', 'openlab-theme' ); ?></p>
-
-							<ul class="ol-tooltip">
-								<li class="hyphenate"><?php esc_html_e( 'FacultyLastNameCourseCodeSemYear', 'openlab-theme' ); ?></li>
-								<li class="hyphenate"><?php esc_html_e( 'smithadv1100sp2012', 'openlab-theme' ); ?></li>
-							</ul>
-
-							<p class="ol-tooltip"><?php esc_html_e( 'If you teach multiple sections of the same course on this site, consider adding other identifying information to the address. Please note that all addresses must be unique.', 'openlab-theme' ); ?></p>
-
-						<?php elseif ( ! $group_type->get_is_portfolio() ) : ?>
-							<p class="ol-tooltip"><?php esc_html_e( 'Please take a moment to consider the address for your site. You will not be able to change it once you’ve created it.  If you are linking to an existing site, select from the drop-down menu.', 'openlab-theme' ); ?></p>
-						<?php endif ?>
-
-					</div><!-- /.groupblog-setup -->
-				</div><!-- /.panel-body -->
-
-				<?php if ( bp_is_group_create() && $group_type->get_can_be_cloned() ) : ?>
-					<?php /* @todo get rid of all 'wds' */ ?>
-					<div id="wds-website-clone" class="form-field form-required" style="display:<?php echo $show_website; ?>">
-						<div id="noo_clone_options">
-							<div class="row">
-								<div class="radio disabled-opt">
-									<label>
-										<input type="radio" class="noo_radio" name="new_or_old" id="new_or_old_clone" value="clone" disabled />
-										<?php esc_html_e( 'Name your cloned site:', 'openlab-theme' ); ?>
-									</label>
-								</div>
-
-								<div class="site-label site-path<?php if ( is_subdomain_install() ) : ?> site-path-subdomain<?php endif; ?>">
-									<?php if ( is_subdomain_install() ) : ?>
-
-									<?php else : ?>
-										<?php global $current_site ?>
-										<span>
-											<?php echo $current_site->domain . $current_site->path ?>
-										</span>
-										<input class="form-control domain-validate" size="40" id="clone-destination-path" name="clone-destination-path" type="text" title="<?php _e( 'Path', 'openlab-theme' ) ?>" value="" />
-
-									<?php endif; ?>
-								</div><!-- /.site-label -->
-
-								<input name="blog-id-to-clone" value="" type="hidden" />
-							</div><!-- /.row -->
-
-							<p id="cloned-site-url"></p>
-						</div><!-- /#noo_clone_options -->
-					</div><!-- /#wds-website-clone -->
-				<?php endif ?>
-
-				<div id="wds-website" class="form-field form-required" style="display:<?php echo $show_website; ?>">
-					<div id="noo_new_options">
-						<div id="noo_new_options-div" class="row">
-							<div class="radio">
-								<label>
-									<input type="radio" class="noo_radio" name="new_or_old" id="new_or_old_new" value="new" />
-									<?php esc_html_e( 'Create a new site:', 'openlab-theme' ); ?>
-								</label>
-							</div>
-
-							<div class="site-label site-path">
-								<span>
-								<?php
-								$suggested_path = $group_type->get_is_portfolio() ? openlab_suggest_portfolio_path() : '';
-								// @todo Subdomains
-								echo $current_site->domain . $current_site->path
-								?>
-								</span>
-
-								<input id="new-site-domain" class="form-control domain-validate" size="40" name="blog[domain]" type="text" title="<?php esc_html_e( 'Domain', 'openlab-theme' ) ?>" value="<?php echo esc_html( $suggested_path ) ?>" />
-							</div>
-						</div><!-- #noo_new_options-div -->
-					</div><!-- #noo_new_options -->
-				</div><!-- #wds-website -->
-
-						<?php /* Existing blogs - only display if some are available */ ?>
-						<?php
-						// Exclude blogs already used as groupblogs
-						global $wpdb, $bp;
-						$current_groupblogs = $wpdb->get_col( "SELECT meta_value FROM {$bp->groups->table_name_groupmeta} WHERE meta_key = 'cboxol_group_site_id'" );
-
-						foreach ( $user_blogs as $ubid => $ub ) {
-							if ( in_array( $ub->userblog_id, $current_groupblogs ) ) {
-								unset( $user_blogs[ $ubid ] );
-							}
-						}
-						$user_blogs = array_values( $user_blogs );
-						?>
-
-						<?php if ( ! empty( $user_blogs ) ) : ?>
-							<div id="wds-website-existing" class="form-field form-required" style="display:<?php echo $show_website; ?>">
-
-								<div id="noo_old_options">
-									<div class="row">
-										<div class="radio">
-											<label>
-												<input type="radio" class="noo_radio" id="new_or_old_old" name="new_or_old" value="old" />
-												<?php esc_html_e( 'Use an existing site:', 'openlab-theme' ); ?></label>
-										</div>
-										<div class="site-path">
-											<label class="sr-only" for="groupblog-blogid"><?php esc_html_e( 'Choose a site', 'openlab-theme' ); ?></label>
-											<select class="form-control" name="groupblog-blogid" id="groupblog-blogid">
-												<option value="0"><?php esc_html_e( '- Choose a site -', 'openlab-theme' ); ?></option>
-												<?php foreach ( (array) $user_blogs as $user_blog ) : ?>
-													<option value="<?php echo $user_blog->userblog_id; ?>"><?php echo $user_blog->blogname; ?></option>
-												<?php endforeach ?>
-											</select>
-										</div>
-									</div>
-								</div>
-							</div>
-						<?php endif ?>
-
-						<div id="wds-website-external" class="form-field form-required" style="display:<?php echo $show_website; ?>">
-
-							<div id="noo_external_options">
-								<div class="form-group row">
-									<div class="radio">
-										<label>
-											<input type="radio" class="noo_radio" id="new_or_old_external" name="new_or_old" value="external" />
-											<?php esc_html_e( 'Use an external site:', 'openlab-theme' ); ?>
-										</label>
-									</div>
-									<div class="site-path">
-										<label class="sr-only" for="external-site-url"><?php esc_html_e( 'Input external site URL', 'openlab-theme' ); ?></label>
-										<input class="form-control pull-left" type="text" name="external-site-url" id="external-site-url" placeholder="http://" />
-										<a class="btn btn-primary no-deco top-align pull-right" id="find-feeds" href="#" display="none"><?php echo esc_html_x( 'Check', 'External site RSS feed check button', 'openlab-theme' ); ?><span class="sr-only"><?php esc_html_e( 'Check external site for Post and Comment feeds', 'openlab-theme' ); ?></span></a>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div id="check-note-wrapper" style="display:<?php echo $show_website; ?>"><div colspan="2"><p id="check-note" class="italics disabled-opt"><?php esc_html_e( 'Note: Please click the Check button to search for Post and Comment feeds for your external site. Doing so will push new activity to the Profile page. If no feeds are detected, you may type in the Post and Comment feed URLs directly or just leave blank.', 'openlab-theme' ) ?></p></div></div>
-					</div>
-
-				<?php endif; ?>
-			</div>
-		</div>
-	</div>
-	<?php
 }
 
 /**

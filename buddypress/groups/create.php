@@ -29,7 +29,6 @@
 
 	openlab_group_admin_js_data( $group_type ); ?>
 
-	<?php /* @todo this can't translate */ ?>
 	<h1 class="entry-title mol-title"><?php echo esc_html( $group_type->get_label( 'create_clone_item' ) ); ?></h1>
 
 	<?php echo openlab_create_group_menu( $group_type ); ?>
@@ -140,24 +139,21 @@
 
 			<?php endif; ?>
 
-			<?php /* Group creation step 2: Group settings */ ?>
-			<?php if ( bp_is_group_creation_step( 'group-settings' ) ) : ?>
-
-				<?php do_action( 'bp_before_group_settings_creation_step' ); ?>
+			<?php /* Group creation step 2: Associated site */ ?>
+			<?php if ( bp_is_group_creation_step( 'site-details' ) ) : ?>
 
 				<p class="group-create-help-text"><?php echo esc_html( $group_type->get_label( 'site_help_text' ) ); ?></p>
 
-				<?php if ( function_exists( 'bbpress' ) && ! cboxol_is_portfolio() ) : ?>
-					<input type="hidden" name="group-show-forum" value="1" />
-				<?php endif; ?>
+				<?php openlab_group_site_markup(); ?>
+				<?php openlab_group_site_privacy_settings_markup(); ?>
 
-				<?php openlab_group_privacy_settings( $group_type ); ?>
+				<?php wp_nonce_field( 'groups_create_save_site-details' ) ?>
 
 			<?php endif; ?>
 
 			<?php /* Group creation step 3: Avatar Uploads */ ?>
 
-			<?php if ( bp_is_group_creation_step( 'group-avatar' ) ) : ?>
+			<?php if ( bp_is_group_creation_step( 'invite-anyone' ) ) : ?>
 
 				<?php do_action( 'bp_before_group_avatar_creation_step' ); ?>
 
