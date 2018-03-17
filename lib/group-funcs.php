@@ -25,6 +25,24 @@ function openlab_set_group_creation_steps() {
 }
 add_action( 'bp_actions', 'openlab_set_group_creation_steps', 5 );
 
+/** SETTINGS MARKUP FUNCTIONS ************************************************/
+
+/**
+ * The following items are added via hook to the group creation/edit process.
+ */
+add_action( 'bp_after_group_details_creation_step', 'openlab_group_academic_units_edit_markup', 3 );
+add_action( 'bp_after_group_details_creation_step', 'openlab_group_term_edit_markup', 4 );
+add_action( 'bp_after_group_details_creation_step', 'openlab_group_contact_field', 5 );
+add_action( 'bp_after_group_details_creation_step', 'openlab_course_information_edit_panel', 8 );
+add_action( 'bp_after_group_details_creation_step', 'openlab_group_privacy_settings_markup', 12 );
+
+add_action( 'bp_after_group_details_admin', 'openlab_group_academic_units_edit_markup', 3 );
+add_action( 'bp_after_group_details_admin', 'openlab_group_term_edit_markup', 4 );
+add_action( 'bp_after_group_details_admin', 'openlab_group_contact_field', 5 );
+add_action( 'bp_after_group_details_admin', 'openlab_course_information_edit_panel', 8 );
+add_action( 'bp_after_group_details_admin', 'openlab_group_privacy_settings_markup', 12 );
+
+
 /**
  * Group privacy settings markup.
  */
@@ -1912,8 +1930,6 @@ function openlab_group_contact_field() {
 
 	<?php
 }
-add_action( 'bp_after_group_details_creation_step', 'openlab_group_contact_field', 5 );
-add_action( 'bp_after_group_details_admin', 'openlab_group_contact_field', 5 );
 
 /**
  * AJAX handler for group contact autocomplete.
@@ -2095,8 +2111,6 @@ function openlab_course_information_edit_panel() {
 	</div><!--.panel-->
 	<?php
 }
-add_action( 'bp_after_group_details_creation_step', 'openlab_course_information_edit_panel', 8 );
-add_action( 'bp_after_group_details_admin', 'openlab_course_information_edit_panel', 8 );
 
 /**
  * Save Course Information.
@@ -2164,8 +2178,6 @@ function openlab_group_academic_units_edit_markup() {
 		</div>
 	<?php endif;
 }
-add_action( 'bp_after_group_details_admin', 'openlab_group_academic_units_edit_markup' );
-add_action( 'bp_after_group_details_creation_step', 'openlab_group_academic_units_edit_markup', 3 );
 
 /** "Term" - temporary implementation ****************************************/
 
@@ -2221,8 +2233,6 @@ function openlab_group_term_edit_markup() {
 	</div>
 	<?php
 }
-add_action( 'bp_after_group_details_admin', 'openlab_group_term_edit_markup' );
-add_action( 'bp_after_group_details_creation_step', 'openlab_group_term_edit_markup', 3 );
 
 /**
  * Save Course term
