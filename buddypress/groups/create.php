@@ -155,131 +155,15 @@
 
 			<?php if ( bp_is_group_creation_step( 'invite-anyone' ) ) : ?>
 
+				<?php /*
 				<?php do_action( 'bp_before_group_avatar_creation_step' ); ?>
 
 				<?php if ( ! bp_get_avatar_admin_step() || 'upload-image' == bp_get_avatar_admin_step() ) : ?>
 
-					<div class="panel panel-default">
-						<div class="panel-heading"><?php esc_html_e( 'Upload Avatar', 'openlab-theme' ); ?></div>
-
-						<div class="panel-body">
-							<div class="row">
-								<div class="col-sm-8">
-									<div id="avatar-wrapper">
-										<?php bp_new_group_avatar() ?>
-									</div>
-								</div>
-								<div class="col-sm-16">
-
-									<p class="italics"><?php esc_html_e( 'Upload an image to use as an avatar for this group. The image will be shown on the group Profile page, and in search results.', 'openlab-theme' ) ?></p>
-
-									<p id="avatar-upload">
-										<div class="form-group form-inline">
-												<div class="form-control type-file-wrapper">
-													<input type="file" name="file" id="file" />
-												</div>
-												<input class="btn btn-primary top-align" type="submit" name="upload" id="upload" value="<?php _e( 'Upload Image', 'buddypress' ) ?>" />
-												<input type="hidden" name="action" id="action" value="bp_avatar_upload" />
-										</div>
-									</p>
-
-									<p class="italics"><?php esc_html_e( 'To skip the avatar upload process, click the "Next Step" button.', 'openlab-theme' ); ?></p>
-								</div>
-							</div>
-						</div>
-					</div>
 
 					<?php endif; ?>
 
-					<?php if ( 'crop-image' == bp_get_avatar_admin_step() ) : ?>
-
-						<div class="panel panel-default">
-						<div class="panel-heading">Crop Avatar</div>
-						<div class="panel-body">
-
-							<img src="<?php bp_avatar_to_crop() ?>" id="avatar-to-crop" class="avatar" alt="<?php _e( 'Avatar to crop', 'buddypress' ) ?>" />
-
-							<div id="avatar-crop-pane">
-								<img src="<?php bp_avatar_to_crop() ?>" id="avatar-crop-preview" class="avatar" alt="<?php _e( 'Avatar preview', 'buddypress' ) ?>" />
-							</div>
-
-							<input class="btn btn-primary" type="submit" name="avatar-crop-submit" id="avatar-crop-submit" value="<?php _e( 'Crop Image', 'buddypress' ) ?>" />
-
-							<input type="hidden" name="image_src" id="image_src" value="<?php bp_avatar_to_crop_src() ?>" />
-							<input type="hidden" name="upload" id="upload" />
-							<input type="hidden" id="x" name="x" />
-							<input type="hidden" id="y" name="y" />
-							<input type="hidden" id="w" name="w" />
-							<input type="hidden" id="h" name="h" />
-
-						</div>
-						</div>
-
-					<?php endif; ?>
-
-					<?php do_action( 'bp_after_group_avatar_creation_step' ); ?>
-
-					<?php wp_nonce_field( 'groups_create_save_group-avatar' ) ?>
-
-				<?php endif; ?>
-
-				<?php /* Group creation step 4: Invite friends to group */ ?>
-				<?php if ( bp_is_group_creation_step( 'group-invites' ) ) : ?>
-
-					<?php do_action( 'bp_before_group_invites_creation_step' ); ?>
-
-				<?php if ( function_exists( 'bp_get_total_friend_count' ) && bp_get_total_friend_count( bp_loggedin_user_id() ) ) : ?>
-						<div class="left-menu">
-							<div id="invite-list">
-								<ul>
-									<?php bp_new_group_invite_friend_list() ?>
-								</ul>
-
-								<?php wp_nonce_field( 'groups_invite_uninvite_user', '_wpnonce_invite_uninvite_user' ); ?>
-							</div>
-						</div><!-- .left-menu -->
-
-						<div class="main-column">
-
-							<div id="message" class="info">
-								<p><?php _e( 'Select people to invite from your friends list.', 'openlab-theme' ); ?></p>
-							</div>
-
-								<?php /* The ID 'friend-list' is important for AJAX support. */ ?>
-							<ul id="friend-list" class="item-list">
-								<?php if ( bp_group_has_invites() ) : ?>
-									<?php while ( bp_group_invites() ) : bp_group_the_invite(); ?>
-
-										<li id="<?php bp_group_invite_item_id() ?>">
-											<?php bp_group_invite_user_avatar() ?>
-
-											<h4><?php bp_group_invite_user_link() ?></h4>
-											<span class="activity"><?php bp_group_invite_user_last_active() ?></span>
-
-											<div class="action">
-												<a class="remove" href="<?php bp_group_invite_user_remove_invite_url() ?>" id="<?php bp_group_invite_item_id() ?>"><?php _e( 'Remove Invite', 'openlab-theme' ) ?></a>
-											</div>
-										</li>
-
-									<?php endwhile; ?>
-
-									<?php wp_nonce_field( 'groups_send_invites', '_wpnonce_send_invites' ) ?>
-								<?php endif; ?>
-							</ul>
-
-						</div><!-- .main-column -->
-
-					<?php else : ?>
-
-						<div id="message" class="info">
-							<p><?php esc_html_e( 'Once you have built up friend connections you will be able to invite others. You can send invites any time in the future by selecting the "Send Invites" option when viewing the group Profile.', 'openlab-theme' ); ?></p>
-						</div>
-
-					<?php endif; ?>
-
-					<?php wp_nonce_field( 'groups_create_save_group-invites' ) ?>
-					<?php do_action( 'bp_after_group_invites_creation_step' ); ?>
-
+				*/ ?>
 				<?php endif; ?>
 
 				<?php do_action( 'groups_custom_create_steps' ) // Allow plugins to add custom group creation steps  ?>
