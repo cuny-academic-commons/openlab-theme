@@ -409,6 +409,82 @@ function openlab_group_site_privacy_settings_markup() {
 	<?php
 }
 
+/**
+ * Group avatar upload markup.
+ */
+function openlab_group_avatar_markup() {
+	$group_type = cboxol_get_edited_group_group_type();
+	if ( is_wp_error( $group_type ) ) {
+		return;
+	}
+
+	$the_group_id = null;
+	if ( bp_is_group() ) {
+		$the_group_id = bp_get_current_group_id();
+	}
+
+	$scripts = array( 'bp-plupload', 'bp-avatar', 'bp-webcam' );
+	foreach ( $scripts as $id => $script ) {
+		wp_enqueue_script( $id );
+	}
+
+	// Enqueue the Attachments scripts for the Avatar UI.
+	bp_attachments_enqueue_scripts( 'BP_Attachment_Avatar' );
+	bp_core_add_cropper_inline_css();
+
+	wp_enqueue_script( 'openlab-avatar-upload', get_template_directory_uri() . '/js/avatar-upload.js', array( 'bp-avatar' ), null, true );
+
+	?>
+
+	<div class="panel panel-default">
+		<div class="panel-heading semibold"><label for="group-avatar"><?php esc_html_e( 'Upload Avatar', 'openlab-theme' ); ?></label></div>
+
+		<div class="panel-body">
+			<div class="row">
+				<div class="col-sm-8">
+					<div id="avatar-wrapper">
+						<div class="padded-img">
+							<?php if ( bp_is_group() && bp_get_group_avatar() ) :  ?>
+								<img class="img-responsive padded" src ="<?php echo bp_core_fetch_avatar( array( 'item_id' => bp_get_group_id(), 'object' => 'group', 'type' => 'full', 'html' => false ) ) ?>" alt="<?php echo bp_get_group_name(); ?>"/>
+							<?php else : ?>
+								<img class="img-responsive padded" src="<?php echo esc_url( cboxol_default_avatar( 'full' ) ); ?>" alt="avatar-blank" />
+							<?php endif; ?>
+						</div>
+					</div>
+				</div>
+
+				<div class="col-sm-16">
+
+					<p class="italics"><?php esc_html_e( 'Upload an image to use as an avatar for this group. The image will be shown on the Profile and in search results.', 'openlab-theme' ) ?></p>
+
+					<p id="avatar-upload">
+					<div class="form-group form-inline avatar-upload-form">
+						<div class="form-control type-file-wrapper">
+							<input type="file" name="file" id="file" />
+						</div>
+						<input class="btn btn-primary top-align" type="submit" name="upload" id="upload" value="<?php _e( 'Upload Image', 'openlab-theme' ) ?>" />
+						<input type="hidden" name="action" id="action" value="bp_avatar_upload" />
+					</div>
+					</p>
+
+					<?php if ( bp_is_group() && bp_get_group_avatar() ) : ?>
+						<p class="italics"><?php _e( "If you'd like to remove the existing avatar but not upload a new one, please use the delete avatar button.", 'openlab-theme' ) ?></p>
+						<a class="btn btn-primary no-deco" href="<?php echo bp_get_group_avatar_delete_link() ?>" title="<?php _e( 'Delete Avatar', 'openlab-theme' ) ?>"><?php _e( 'Delete Avatar', 'openlab-theme' ) ?></a>
+					<?php endif; ?>
+
+					<?php
+					// Load Backbone template.
+					bp_attachments_get_template_part( 'avatars/index' );
+					?>
+
+					<?php wp_nonce_field( 'bp_avatar_upload' ) ?>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<?php
+}
 
 /** SAVE ROUTINES ************************************************************/
 
@@ -2313,3 +2389,105 @@ function openlab_modify_template_messages() {
 	}
 }
 add_action( 'bp_actions', 'openlab_modify_template_messages' );
+
+/**
+ * Get the current item ID for group avatars.
+ *
+ * If editing a group, this will be the current group ID; if creating a group, it
+ * will be a random int.
+ *
+ * @return int|string
+ */
+function openlab_group_avatar_item_id() {
+	static $uuid;
+
+	if ( empty( $uuid ) ) {
+
+		if ( bp_is_group() && ! bp_is_group_create() ) {
+			$uuid = bp_get_current_group_id();
+		} else {
+			$uuid = wp_rand( 999999 );
+		}
+	}
+
+	return $uuid;
+}
+
+/**
+ * Ensure that the bp_params variable is non-empty during group avatar upload, to avoid script errors.
+ */
+function openlab_avatar_force_bp_script_params( $params ) {
+	if ( ! bp_is_group() && ! bp_is_group_create() ) {
+		return $params;
+	}
+
+	$params['nonces'] = array(
+		'set' => wp_create_nonce( 'bp_avatar_cropstore' ),
+	);
+	$params['object'] = 'group';
+	$params['item_id'] = openlab_group_avatar_item_id();
+	$params['has_avatar'] = bp_is_group() && bp_get_group_has_avatar( bp_get_current_group_id() );
+	$params['is_group_create'] = bp_is_group_create();
+	$params['upload_dir_filter'] = 'openlab_group_avatar_upload_dir';
+
+	return $params;
+}
+add_filter( 'bp_attachment_avatar_params', 'openlab_avatar_force_bp_script_params', 1000 );
+
+/**
+ * Coerces BP into storing group avatar in the proper dummy directory during group creation.
+ */
+function openlab_filter_groups_avatar_upload_dir( $dir ) {
+	if ( ! bp_is_group_create() ) {
+		return $dir;
+	}
+
+	if ( empty( $_POST['bp_params']['item_id'] ) ) {
+		return $dir;
+	}
+
+	remove_filter( 'groups_avatar_upload_dir', 'openlab_filter_groups_avatar_upload_dir' );
+	return groups_avatar_upload_dir( $_POST['bp_params']['item_id'] );
+}
+add_filter( 'groups_avatar_upload_dir', 'openlab_filter_groups_avatar_upload_dir' );
+
+/**
+ * Add the avatar_dir param to the avatar upload handler.
+ *
+ * This needs to happen early enough that the uploader doesn't bail.
+ *
+ * @param array $params
+ */
+function openlab_set_group_avatar_dir_callback( $params ) {
+	if ( ! bp_is_group() && ! bp_is_group_create() ) {
+		return $params;
+	}
+
+	$params['upload_dir_filter'] = 'openlab_group_avatar_upload_dir';
+	return $params;
+}
+add_filter( 'bp_core_avatar_ajax_upload_params', 'openlab_set_group_avatar_dir_callback' );
+
+/**
+ * upload_dir callback.
+ *
+ * Points uploads at the signup-avatars/[uuid] directory.
+ */
+function openlab_group_avatar_upload_dir( $uuid = null ) {
+	if ( null === $uuid ) {
+		$uuid = intval( $_POST['bp_params']['item_id'] );
+	}
+	$params = groups_avatar_upload_dir( $uuid );
+	return $params;
+}
+
+/**
+ * Whitelist avatar upload for all users on group creation page.
+ */
+function openlab_force_edit_avatar_cap_on_group_creation( $can, $capability, $args ) {
+	if ( bp_is_group_create() && 'edit_avatar' === $capability ) {
+		$can = true;
+	}
+	return $can;
+}
+add_filter( 'bp_attachments_current_user_can', 'openlab_force_edit_avatar_cap_on_group_creation', 10, 3 );

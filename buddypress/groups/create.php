@@ -124,6 +124,8 @@
 					</div><!-- /.panel-body -->
 				</div>
 
+				<?php openlab_group_avatar_markup(); ?>
+
 				<div class="panel panel-default">
 					<div class="panel-heading semibold"><label for="group-desc"><?php esc_html_e( 'Description', 'openlab-theme' ); ?> <?php esc_html_e( '(required)', 'openlab-theme' ) ?></label></div>
 					<div class="panel-body">
