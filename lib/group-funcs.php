@@ -452,7 +452,7 @@ function openlab_group_url_markup() {
 				<?php esc_html_e( 'That URL is already taken.', 'openlab-theme' ); ?>
 			</div>
 
-			<?php wp_nonce_field( 'bp_group_url' ) ?>
+			<?php wp_nonce_field( 'openlab_group_url', 'openlab-group-url-nonce' ) ?>
 		</div>
 	</div>
 
@@ -541,6 +541,7 @@ function openlab_group_avatar_markup() {
  */
 add_action( 'groups_group_after_save', 'openlab_save_group_status' );
 add_action( 'groups_create_group_step_save_group-details', 'openlab_move_avatar_after_group_create' );
+add_action( 'groups_create_group_step_save_group-details', 'openlab_save_new_group_url' );
 add_action( 'groups_create_group_step_save_site-details', 'openlab_save_group_site' );
 add_action( 'groups_create_group_step_save_site-details', 'openlab_save_group_site_settings', 20 );
 
@@ -601,9 +602,58 @@ function openlab_move_avatar_after_group_create() {
 	}
 
 	$old_dir = groups_avatar_upload_dir( $uuid );
+
+	// No avatar, nothing to do.
+	if ( ! file_exists( $old_dir['path'] ) ) {
+		return;
+	}
+
 	$new_dir = groups_avatar_upload_dir( $new_group_id );
 
 	rename( $old_dir['path'], $new_dir['path'] );
+}
+
+/**
+ * Process custom URL for a newly created group.
+ *
+ * We do this immediately after BP creates the group, so that we don't have to try
+ * intercepting BP.
+ */
+function openlab_save_new_group_url() {
+	if ( ! isset( $_POST['openlab-group-url-nonce'] ) ) {
+		return;
+	}
+
+	check_admin_referer( 'openlab_group_url', 'openlab-group-url-nonce' );
+
+	if ( ! isset( $_POST['group-url'] ) ) {
+		return;
+	}
+
+	$url = wp_unslash( $_POST['group-url'] );
+
+	$new_group_id = bp_get_new_group_id();
+	if ( ! $new_group_id ) {
+		return;
+	}
+
+	$group = groups_get_group( $new_group_id );
+
+	$group_args = array(
+		'group_id'     => $group->id,
+		'status'       => $group->status,
+		'creator_id'   => $group->creator_id,
+		'name'         => $group->name,
+		'description'  => $group->description,
+		'slug'         => $url,
+		'parent_id'    => $group->parent_id,
+		'enable_forum' => $group->enable_forum,
+		'date_created' => $group->date_created,
+	);
+
+	remove_action( 'groups_group_after_save', 'openlab_save_group_status' );
+	$saved = groups_create_group( $group_args );
+	add_action( 'groups_group_after_save', 'openlab_save_group_status' );
 }
 
 /**
