@@ -436,7 +436,7 @@ function openlab_group_avatar_markup() {
 
 	?>
 
-	<div class="panel panel-default">
+	<div class="panel panel-default" id="avatar-panel">
 		<div class="panel-heading semibold"><label for="group-avatar"><?php esc_html_e( 'Upload Avatar', 'openlab-theme' ); ?></label></div>
 
 		<div class="panel-body">

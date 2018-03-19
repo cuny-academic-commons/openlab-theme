@@ -27,6 +27,7 @@ function openlab_bp_enqueue_scripts() {
 				'externalFeedsFound' => __( 'We found the following feed URLs for your external site, which we\'ll use to pull posts and comments into your activity stream.', 'openlab-theme' ),
 				'externalFeedsNotFound' => __( 'We couldn\'t find any feed URLs for your external site, which we use to pull posts and comments into your activity stream. If your site has feeds, you may enter the URLs below.', 'openlab-theme' ),
 				'fieldCannotBeBlank' => __( 'This field cannot be blank.', 'openlab-theme' ),
+				'incompleteCrop' => __( 'Please crop your image before continuing.', 'openlab-theme' ),
 			),
 		) );
 	}

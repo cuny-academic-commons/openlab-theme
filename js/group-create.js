@@ -385,6 +385,16 @@ jQuery(document).ready(function($){
 			return true;
 		}
 
+		// Don't allow submission if avatar is not cropped.
+		var $cropActions = $('#avatar-crop-actions');
+		if ( $cropActions.length > 0 && $cropActions.is( ':visible' ) ) {
+			$cropActions.after('<div class="ajax-warning bp-template-notice error">' + OLGroupCreate.strings.incompleteCrop + '</div>');
+			$('html,body').animate({
+				scrollTop: $('#avatar-panel').offset().top
+			}, 1000);
+			return false;
+		}
+
 		// If "Set up a site" is not checked, there's no validation to do
 		if ( $( setuptoggle ).length && ! $( setuptoggle ).is( ':checked' ) ) {
 			return true;
@@ -448,7 +458,7 @@ jQuery(document).ready(function($){
 	};
 
 	// Form validation.
-        if(form){
-            form.onsubmit = validate_form;
-        }
+	if( form ){
+		form.onsubmit = validate_form;
+	}
 },(jQuery));
