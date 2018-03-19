@@ -9073,6 +9073,8 @@ body form .checkbox-list-container {
   display: table-cell;
 }
 .group-url-fields .group-url-domain {
+  padding-top: 5px;
+  vertical-align: nowrap;
   white-space: nowrap;
   width: 1px;
 }
