@@ -455,7 +455,7 @@ function openlab_group_avatar_markup() {
 
 				<div class="col-sm-16">
 
-					<p class="italics"><?php esc_html_e( 'Upload an image to use as an avatar for this group. The image will be shown on the Profile and in search results.', 'openlab-theme' ) ?></p>
+					<p class="italics"><?php echo esc_html( $group_type->get_label( 'avatar_help_text' ) ); ?></p>
 
 					<p id="avatar-upload">
 					<div class="form-group form-inline avatar-upload-form">
@@ -477,6 +477,7 @@ function openlab_group_avatar_markup() {
 					bp_attachments_get_template_part( 'avatars/index' );
 					?>
 
+					<input type="hidden" name="avatar-item-uuid" value="<?php echo esc_attr( openlab_group_avatar_item_id() ); ?>" />
 					<?php wp_nonce_field( 'bp_avatar_upload' ) ?>
 				</div>
 			</div>
@@ -492,6 +493,7 @@ function openlab_group_avatar_markup() {
  * Post group-save actions.
  */
 add_action( 'groups_group_after_save', 'openlab_save_group_status' );
+add_action( 'groups_create_group_step_save_group-details', 'openlab_move_avatar_after_group_create' );
 add_action( 'groups_create_group_step_save_site-details', 'openlab_save_group_site' );
 add_action( 'groups_create_group_step_save_site-details', 'openlab_save_group_site_settings', 20 );
 
@@ -534,6 +536,27 @@ function openlab_save_group_status( BP_Groups_Group $group ) {
 	remove_action( 'groups_group_after_save', 'openlab_save_group_status' );
 	$saved = groups_create_group( $group_args );
 	add_action( 'groups_group_after_save', 'openlab_save_group_status' );
+}
+
+/**
+ * After group creation, move the dummy avatar to the proper location.
+ */
+function openlab_move_avatar_after_group_create() {
+	if ( ! isset( $_POST['avatar-item-uuid'] ) ) {
+		return;
+	}
+
+	$uuid = intval( $_POST['avatar-item-uuid'] );
+
+	$new_group_id = bp_get_new_group_id();
+	if ( ! $new_group_id ) {
+		return;
+	}
+
+	$old_dir = groups_avatar_upload_dir( $uuid );
+	$new_dir = groups_avatar_upload_dir( $new_group_id );
+
+	rename( $old_dir['path'], $new_dir['path'] );
 }
 
 /**
