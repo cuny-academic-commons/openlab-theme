@@ -9073,6 +9073,7 @@ body form .checkbox-list-container {
   display: table-cell;
 }
 .group-url-fields .group-url-domain {
+  white-space: nowrap;
   width: 1px;
 }
 .group-url-fields .group-url-path {
