@@ -408,6 +408,14 @@ jQuery(document).ready(function($){
 			return false;
 		}
 
+		// Don't allow submission if there's a URL error.
+		if ( $('.url-error').is(':visible') ) {
+			$('html,body').animate({
+				scrollTop: $('#url-panel').offset().top
+			}, 1000);
+			return false;
+		}
+
 		// If "Set up a site" is not checked, there's no validation to do
 		if ( $( setuptoggle ).length && ! $( setuptoggle ).is( ':checked' ) ) {
 			return true;
