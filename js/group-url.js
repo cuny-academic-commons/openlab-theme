@@ -39,6 +39,11 @@
 
 		// Only run the AJAX request on blur.
 		$urlField.on( 'blur', function() {
+			// No value? Nothing to check.
+			if ( 0 === $urlField.val().length ) {
+				return;
+			}
+
 			$urlFieldParent.addClass('did-ajax').addClass('ajax-in-progress');
 			$ajaxStatus.show().addClass('fa-spinner fa-pulse');
 
