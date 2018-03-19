@@ -120,7 +120,16 @@ jQuery(document).ready(function($){
 		showHide('wds-website-external');
 		showHide('wds-website-tooltips');
 		showHide('wds-website-clone');
-                showHide('check-note-wrapper');
+		showHide('check-note-wrapper');
+	}
+
+	function showHideAssociatedSitePrivacy() {
+		var $associatedSitePrivacyPanel = $('#associated-site-privacy-panel');
+		if ( setuptoggle.is(':checked') ) {
+			$associatedSitePrivacyPanel.show();
+		} else {
+			$associatedSitePrivacyPanel.hide();
+		}
 	}
 
 	function do_external_site_query(e) {
@@ -328,10 +337,14 @@ jQuery(document).ready(function($){
 
 	/* "Set up a site" toggle */
 	var setuptoggle = $('input[name="set-up-site-toggle"]');
-	$(setuptoggle).on( 'click', function(){ showHideAll(); } );
+	$(setuptoggle).on( 'click', function(){
+		showHideAll();
+		showHideAssociatedSitePrivacy();
+	} );
 	if ( $(setuptoggle).is(':checked') ) {
 		showHideAll();
 	};
+	showHideAssociatedSitePrivacy();
 
 	if ( CBOXOL_Group_Create.enable_site_by_default && ! $(setuptoggle).is( ':checked' ) ) {
 		$(setuptoggle).trigger('click');

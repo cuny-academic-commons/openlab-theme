@@ -350,7 +350,7 @@ function openlab_group_site_privacy_settings_markup() {
 	}
 	?>
 
-		<div class="panel panel-default">
+		<div class="panel panel-default" id="associated-site-privacy-panel">
 			<div class="panel-heading semibold"><?php esc_html_e( 'Associated Site Privacy Settings', 'openlab-theme' ) ?></div>
 			<div class="panel-body">
 				<p class="privacy-settings-tag-c"><?php esc_html_e( 'These settings affect how others view your associated site.', 'openlab-theme' ) ?></p>
