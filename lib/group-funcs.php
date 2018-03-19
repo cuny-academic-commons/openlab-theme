@@ -2448,6 +2448,7 @@ function openlab_avatar_force_bp_script_params( $params ) {
 
 	$params['nonces'] = array(
 		'set' => wp_create_nonce( 'bp_avatar_cropstore' ),
+		'remove' => wp_create_nonce( 'bp_group_avatar_delete' ),
 	);
 	$params['object'] = 'group';
 	$params['item_id'] = openlab_group_avatar_item_id();
@@ -2516,3 +2517,23 @@ function openlab_force_edit_avatar_cap_on_group_creation( $can, $capability, $ar
 	return $can;
 }
 add_filter( 'bp_attachments_current_user_can', 'openlab_force_edit_avatar_cap_on_group_creation', 10, 3 );
+
+/**
+ * Ensure that the script_data for BP attachments has the proper error messages.
+ */
+function openlab_group_avatar_script_data( $script_data ) {
+	if ( ! bp_is_group() && ! bp_is_group_create() ) {
+		return $script_data;
+	}
+
+	if ( ! isset( $script_data['feedback_messages'][3] ) ) {
+		$script_data['feedback_messages'][3] = __( 'There was a problem deleting the avatar. Please try again.', 'openlab-theme' );
+	}
+
+	if ( ! isset( $script_data['feedback_messages'][4] ) ) {
+		$script_data['feedback_messages'][4] = __( 'The avatar was deleted successfully.', 'openlab-theme' );
+	}
+
+	return $script_data;
+}
+add_filter( 'bp_attachment_avatar_script_data', 'openlab_group_avatar_script_data' );
