@@ -9074,7 +9074,7 @@ body form .checkbox-list-container {
 }
 .group-url-fields .group-url-domain {
   padding-top: 5px;
-  vertical-align: nowrap;
+  vertical-align: top;
   white-space: nowrap;
   width: 1px;
 }
