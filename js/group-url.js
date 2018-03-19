@@ -45,7 +45,11 @@
 			}
 
 			$urlFieldParent.addClass('did-ajax').addClass('ajax-in-progress');
-			$ajaxStatus.show().addClass('fa-spinner fa-pulse');
+			$ajaxStatus
+				.show()
+				.removeClass( 'fa-exclamation-circle' )
+				.removeClass( 'fa-check' )
+				.addClass('fa-spinner fa-pulse');
 
 			$.ajax( ajaxurl, {
 				data: {
