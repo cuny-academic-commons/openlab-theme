@@ -477,6 +477,8 @@ function openlab_group_avatar_markup() {
 					bp_attachments_get_template_part( 'avatars/index' );
 					?>
 
+					<p class="italics"><?php echo esc_html( $group_type->get_label( 'avatar_help_text_cant_decide' ) ); ?></p>
+
 					<input type="hidden" name="avatar-item-uuid" value="<?php echo esc_attr( openlab_group_avatar_item_id() ); ?>" />
 					<?php wp_nonce_field( 'bp_avatar_upload' ) ?>
 				</div>
