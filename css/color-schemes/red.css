@@ -9066,6 +9066,43 @@ body form .checkbox-list-container {
 .group-create-help-text {
   margin-top: 1rem;
 }
+.url-error[aria-hidden="true"] {
+  display: none;
+}
+.group-url-fields > * {
+  display: table-cell;
+}
+.group-url-fields .group-url-domain {
+  width: 1px;
+}
+.group-url-fields .group-url-path {
+  padding-left: 8px;
+  position: relative;
+  width: 100%;
+}
+.group-url-fields .group-url-path.did-ajax .group-url-status {
+  display: block;
+  font-size: 20px;
+  position: absolute;
+  right: 0;
+  top: 6px;
+  width: 20px;
+}
+.group-url-fields .group-url-path.did-ajax .group-url-status.fa-spinner {
+  color: #333333;
+}
+.group-url-fields .group-url-path.did-ajax .group-url-status.fa-exclamation-circle {
+  color: #f00;
+}
+.group-url-fields .group-url-path.did-ajax .group-url-status.fa-check {
+  color: #0f0;
+}
+.group-url-fields .group-url-path.did-ajax input.form-control {
+  width: calc(100% - 40px);
+}
+.group-url-fields .group-url-status {
+  display: none;
+}
 #group-list .group-item-wrapper .item-avatar img {
   max-width: 95%;
 }

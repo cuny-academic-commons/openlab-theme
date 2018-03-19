@@ -124,6 +124,8 @@
 					</div><!-- /.panel-body -->
 				</div>
 
+				<?php openlab_group_url_markup(); ?>
+
 				<?php openlab_group_avatar_markup(); ?>
 
 				<div class="panel panel-default">

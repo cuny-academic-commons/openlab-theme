@@ -410,6 +410,56 @@ function openlab_group_site_privacy_settings_markup() {
 }
 
 /**
+ * Group URL markup.
+ */
+function openlab_group_url_markup() {
+	$group_type = cboxol_get_edited_group_group_type();
+	if ( is_wp_error( $group_type ) ) {
+		return;
+	}
+
+	$the_group_id = null;
+	if ( bp_is_group() ) {
+		$the_group_id = bp_get_current_group_id();
+	}
+
+	wp_enqueue_script( 'openlab-group-url', get_template_directory_uri() . '/js/group-url.js', array( 'jquery' ), null, true );
+
+	?>
+
+	<div class="panel panel-default" id="url-panel">
+		<div class="panel-heading semibold"><label for="group-url"><?php esc_html_e( 'URL (required)', 'openlab-theme' ); ?></label></div>
+
+		<div class="panel-body">
+			<p><?php echo esc_html( $group_type->get_label( 'url_help_text' ) ); ?></p>
+
+			<div class="group-url-fields">
+				<span class="group-url-domain">
+					<?php bp_root_domain(); ?>/<?php echo esc_html( bp_get_groups_root_slug() ); ?>/
+				</span>
+
+				<div class="group-url-path">
+					<input class="form-control" type="text" name="group-url" id="group-url" required value="" />
+					<span id="group-url-status" class="fa group-url-status"></span>
+				</div>
+			</div>
+
+			<div id="url-error-format" class="bp-template-notice url-error error clearfix" aria-hidden="true">
+				<?php esc_html_e( 'Group URLs can contain only lowercase characters, numbers, hyphens, and underscores.', 'openlab-theme' ); ?>
+			</div>
+
+			<div id="url-error-taken" class="bp-template-notice url-error error clearfix" aria-hidden="true">
+				<?php esc_html_e( 'That URL is already taken.', 'openlab-theme' ); ?>
+			</div>
+
+			<?php wp_nonce_field( 'bp_group_url' ) ?>
+		</div>
+	</div>
+
+	<?php
+}
+
+/**
  * Group avatar upload markup.
  */
 function openlab_group_avatar_markup() {
@@ -444,7 +494,7 @@ function openlab_group_avatar_markup() {
 				<div class="col-sm-8">
 					<div id="avatar-wrapper">
 						<div class="padded-img">
-							<?php if ( bp_is_group() && bp_get_group_avatar() ) :  ?>
+							<?php if ( bp_is_group() && ! bp_is_group_create() && bp_get_group_avatar() ) :  ?>
 								<img class="img-responsive padded" src ="<?php echo bp_core_fetch_avatar( array( 'item_id' => bp_get_group_id(), 'object' => 'group', 'type' => 'full', 'html' => false ) ) ?>" alt="<?php echo bp_get_group_name(); ?>"/>
 							<?php else : ?>
 								<img class="img-responsive padded" src="<?php echo esc_url( cboxol_default_avatar( 'full' ) ); ?>" alt="avatar-blank" />
@@ -466,11 +516,6 @@ function openlab_group_avatar_markup() {
 						<input type="hidden" name="action" id="action" value="bp_avatar_upload" />
 					</div>
 					</p>
-
-					<?php if ( bp_is_group() && bp_get_group_avatar() ) : ?>
-						<p class="italics"><?php _e( "If you'd like to remove the existing avatar but not upload a new one, please use the delete avatar button.", 'openlab-theme' ) ?></p>
-						<a class="btn btn-primary no-deco" href="<?php echo bp_get_group_avatar_delete_link() ?>" title="<?php _e( 'Delete Avatar', 'openlab-theme' ) ?>"><?php _e( 'Delete Avatar', 'openlab-theme' ) ?></a>
-					<?php endif; ?>
 
 					<?php
 					// Load Backbone template.
@@ -723,6 +768,21 @@ function openlab_group_privacy_settings( $group_type ) {
 		<?php
 	endif;
 }
+
+/**
+ *
+ */
+function openlab_ajax_group_url_validate() {
+	$url = wp_unslash( $_GET['url'] );
+
+	if ( groups_get_id( $url ) ) {
+		// Try to get a unique slug for the group.
+		wp_send_json_error();
+	} else {
+		wp_send_json_success();
+	}
+}
+add_action( 'wp_ajax_openlab_group_url_validate', 'openlab_ajax_group_url_validate' );
 
 function openlab_groups_pagination_links() {
 	global $groups_template;

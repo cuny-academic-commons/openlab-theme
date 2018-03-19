@@ -2036,6 +2036,55 @@ body form{
 .group-create-help-text {
 	margin-top: 1rem;
 }
+.url-error[aria-hidden="true"] {
+	display: none;
+}
+.group-url-fields {
+	& > * {
+		display: table-cell;
+	}
+
+	.group-url-domain {
+		width: 1px;
+	}
+
+	.group-url-path {
+		padding-left: 8px;
+		position: relative;
+		width: 100%;
+
+		&.did-ajax {
+			.group-url-status {
+				display: block;
+				font-size: 20px;
+				position: absolute;
+				right: 0;
+				top: 6px;
+				width: 20px;
+
+				&.fa-spinner {
+					color: @80gray;
+				}
+
+				&.fa-exclamation-circle {
+					color: #f00;
+				}
+
+				&.fa-check {
+					color: #0f0;
+				}
+			}
+
+			input.form-control {
+				width: calc(~"100% - 40px");
+			}
+		}
+	}
+
+	.group-url-status {
+		display: none;
+	}
+}
 #noo_clone_options {
 }
 #group-list{
