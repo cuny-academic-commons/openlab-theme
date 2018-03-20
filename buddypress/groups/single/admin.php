@@ -491,17 +491,8 @@ openlab_group_admin_js_data( $group_type );
 		<?php endif; ?>
 
 		<?php
-		/**
-		 * This is a quick and dirty solution for injecting Bootstrap markup into the bp group email subscription edit screens
-		 * Basically it opts out of the action call to groups_custom_edit_steps and instead uses custom functions pulled from the bp group email subscription core
-		 * This functionality is definitely a candidate for a better solution
-		 */
-		if ( bp_is_group_admin_screen( 'notifications' ) ) {
-			openlab_ass_admin_notice_form();
-		} else {
-			// Allow plugins to add custom group edit screens
-			do_action( 'groups_custom_edit_steps' );
-		}
+		// Allow plugins to add custom group edit screens
+		do_action( 'groups_custom_edit_steps' );
 		?>
 
 <?php /* This is important, don't forget it */ ?>
