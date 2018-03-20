@@ -8102,6 +8102,7 @@ body form .checkbox-list-container {
 }
 .select2-container--default.select2-container .select2-results__option--highlighted[aria-selected] {
   background: #a9280e;
+  color: #fff;
 }
 /**home page**/
 .home-page .btn,
@@ -8116,8 +8117,11 @@ body form .checkbox-list-container {
     margin-top: 0;
   }
 }
+.home-page .row-home-top a {
+  color: #fff;
+}
 .home-page .row-home-top .login {
-  background: url('../../images/log_in_background.png') no-repeat 123px -44px #a9280e;
+  background: #a9280e;
   border-bottom: 13px solid #c42e10;
   float: left;
   width: 32.5%;
@@ -8137,7 +8141,6 @@ body form .checkbox-list-container {
   margin-bottom: 25px;
 }
 .home-page .row-home-top .login a :not(.btn) {
-  color: inherit;
   font-size: inherit;
 }
 .home-page .row-home-top .login a :not(.btn):hover {
@@ -9207,7 +9210,7 @@ input#group-request-send {
   margin-right: 18px;
 }
 .group-subscription-status {
-  background: url('images/email.png') no-repeat scroll left top rgba(0, 0, 0, 0) !important;
+  background: url('../../images/email.png') no-repeat scroll left top rgba(0, 0, 0, 0) !important;
   font-weight: 700;
   margin-left: 2px;
   padding-left: 20px !important;

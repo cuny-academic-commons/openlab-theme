@@ -7173,9 +7173,9 @@ blockquote .h6 {
 }
 .pagination li a.current,
 .pagination li span.current {
-  background: #1d5f7b;
-  border-color: #1d5f7b;
-  color: #fff;
+  background: #8ccae4;
+  border-color: #8ccae4;
+  color: #333;
 }
 .pagination li a .fa,
 .pagination li span .fa {
@@ -7460,8 +7460,8 @@ input[type="submit"] {
   }
 }
 .navbar-default .container-fluid ul.nav li.current-menu-item a {
-  background: #1d5f7b;
-  color: #fff;
+  background: #8ccae4;
+  color: #333;
 }
 @media (min-width: 992px) {
 }
@@ -8101,7 +8101,8 @@ body form .checkbox-list-container {
   padding-left: 8px;
 }
 .select2-container--default.select2-container .select2-results__option--highlighted[aria-selected] {
-  background: #1d5f7b;
+  background: #8ccae4;
+  color: #333;
 }
 /**home page**/
 .home-page .btn,
@@ -8116,8 +8117,11 @@ body form .checkbox-list-container {
     margin-top: 0;
   }
 }
+.home-page .row-home-top a {
+  color: #fff;
+}
 .home-page .row-home-top .login {
-  background: url('../../images/log_in_background.png') no-repeat 123px -44px #1d5f7b;
+  background: #1d5f7b;
   border-bottom: 13px solid #8ccae4;
   float: left;
   width: 32.5%;
@@ -8137,7 +8141,6 @@ body form .checkbox-list-container {
   margin-bottom: 25px;
 }
 .home-page .row-home-top .login a :not(.btn) {
-  color: inherit;
   font-size: inherit;
 }
 .home-page .row-home-top .login a :not(.btn):hover {
@@ -8299,7 +8302,7 @@ body form .checkbox-list-container {
 .home-page .row-home-top .slider .camera_wrap .camera_pag .camera_pag_ul li {
   margin: 0 auto 4px;
   background: transparent;
-  border: 1px solid #333;
+  border: 1px solid #1d5f7b;
   display: block;
   height: 12px;
   width: 12px;
@@ -8308,7 +8311,7 @@ body form .checkbox-list-container {
   display: none;
 }
 .home-page .row-home-top .slider .camera_wrap .camera_pag .camera_pag_ul li.cameracurrent {
-  background: #333;
+  background: #1d5f7b;
 }
 .home-page .row-home-top .slider .camera_wrap .camera_prev,
 .home-page .row-home-top .slider .camera_wrap .camera_next {
@@ -8796,13 +8799,13 @@ body form .checkbox-list-container {
 }
 .sidebar .sidebar-block ul.sidebar-nav li:hover > a,
 .sidebar .sidebar-block ul.sidebar-nav li:focus > a {
-  background: #1d5f7b;
-  color: #fff;
+  background: #8ccae4;
+  color: #333;
 }
 .sidebar .sidebar-block ul.sidebar-nav li.current-menu-item > a,
 .sidebar .sidebar-block ul.sidebar-nav li.selected-page > a {
-  background: #1d5f7b;
-  color: #fff;
+  background: #8ccae4;
+  color: #333;
 }
 .sidebar .sidebar-block ul.sidebar-nav li ul {
   display: none;
@@ -9207,7 +9210,7 @@ input#group-request-send {
   margin-right: 18px;
 }
 .group-subscription-status {
-  background: url('images/email.png') no-repeat scroll left top rgba(0, 0, 0, 0) !important;
+  background: url('../../images/email.png') no-repeat scroll left top rgba(0, 0, 0, 0) !important;
   font-weight: 700;
   margin-left: 2px;
   padding-left: 20px !important;
