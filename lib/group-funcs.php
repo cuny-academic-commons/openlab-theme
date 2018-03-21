@@ -1958,7 +1958,7 @@ function openlab_bp_group_site_pages( $mobile = false ) {
 
 						<?php if ( openlab_user_portfolio_site_is_local( $displayed_user_id ) ) : ?>
 							<li class="portfolio-dashboard-link">
-								<a class="line-height height-200 font-size font-13" href="<?php openlab_user_portfolio_url( $displayed_user_id ) ?>/wp-admin"><?php esc_html_e( 'Site Dashboard', 'openlab-theme' ); ?></a>
+								<a class="line-height font-size font-13" href="<?php openlab_user_portfolio_url( $displayed_user_id ) ?>/wp-admin"><?php esc_html_e( 'Site Dashboard', 'openlab-theme' ); ?></a>
 							</li>
 						<?php endif ?>
 					</ul>
@@ -1980,7 +1980,7 @@ function openlab_bp_group_site_pages( $mobile = false ) {
 					</li>
 					<?php if ( $group_site_settings['is_local'] && ($bp->is_item_admin || is_super_admin() || groups_is_user_member( bp_loggedin_user_id(), bp_get_current_group_id() )) ) : ?>
 						<li class="portfolio-dashboard-link">
-							<?php echo '<a class="line-height height-200 font-size font-13" href="' . esc_attr( trailingslashit( $group_site_settings['site_url'] ) ) . 'wp-admin/">' . esc_html__( 'Site Dashboard', 'openlab-theme' ) . '</a>'; ?>
+							<?php echo '<a class="line-height font-size font-13" href="' . esc_attr( trailingslashit( $group_site_settings['site_url'] ) ) . 'wp-admin/">' . esc_html__( 'Site Dashboard', 'openlab-theme' ) . '</a>'; ?>
 						</li>
 					<?php endif; ?>
 				</ul>
