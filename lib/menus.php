@@ -1001,7 +1001,7 @@ function openlab_group_admin_tabs( $group = false ) {
 	<!--
 	<?php if ( cboxol_is_portfolio() ) : ?>
 		<?php if ( $bp->is_item_admin || $bp->is_item_mod ) { ?>
-			--><li<?php if ( 'edit-details' == $current_tab || empty( $current_tab ) ) : ?> class="current-menu-item"<?php endif; ?>><a href="<?php echo bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug ?>/admin/edit-details"><?php esc_html_e( 'Edit Profile', 'openlab-theme' ); ?></a></li><!--
+			--><li<?php if ( 'edit-details' == $current_tab || empty( $current_tab ) ) : ?> class="current-menu-item"<?php endif; ?>><a href="<?php echo bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug ?>/admin/edit-details"><?php echo esc_html( $group_type->get_label( 'group_details' ) ); ?></a></li><!--
 		<?php } ?>
 
 		<?php if ( ! (int) bp_get_option( 'bp-disable-avatar-uploads' ) ) : ?>
@@ -1015,7 +1015,7 @@ function openlab_group_admin_tabs( $group = false ) {
 	<?php else : ?>
 
 		<?php if ( $bp->is_item_admin || $bp->is_item_mod ) { ?>
-			--><li<?php if ( 'edit-details' == $current_tab || empty( $current_tab ) ) : ?> class="current-menu-item"<?php endif; ?>><a href="<?php echo bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug ?>/admin/edit-details"><?php _e( 'Edit Profile', 'openlab-theme' ); ?></a></li><!--
+			--><li<?php if ( 'edit-details' == $current_tab || empty( $current_tab ) ) : ?> class="current-menu-item"<?php endif; ?>><a href="<?php echo bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug ?>/admin/edit-details"><?php echo esc_html( $group_type->get_label( 'group_details' ) ); ?></a></li><!--
 		<?php } ?>
 
 		<?php
