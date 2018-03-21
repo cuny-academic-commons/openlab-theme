@@ -87,7 +87,7 @@ openlab_group_admin_js_data( $group_type );
 				<div class="panel panel-default">
 					<div class="panel-heading"><?php esc_html_e( 'Discussion Settings', 'openlab-theme' ) ?></div>
 					<div class="panel-body">
-						<p id="discussion-settings-tag"><?php esc_html_e( 'These settings enable or disable the discussion forum on your Profile.', 'openlab-theme' ) ?></p>
+						<p id="discussion-settings-tag"><?php echo esc_html( $group_type->get_label( 'settings_help_text_discussion' ) ); ?></p>
 						<div class="checkbox">
 							<label><input type="checkbox" name="openlab-edit-group-forum" id="group-show-forum" value="1"<?php checked( $forum_enabled ) ?> /> <?php _e( 'Enable discussions forum', 'openlab-theme' ) ?></label>
 						</div>
@@ -104,12 +104,12 @@ openlab_group_admin_js_data( $group_type );
 				<div class="panel panel-default">
 					<div class="panel-heading"><?php esc_html_e( 'Calendar Settings', 'openlab-theme' ); ?></div>
 					<div class="panel-body">
-						<p id="discussion-settings-tag"><?php echo esc_html( sprintf( __( 'These settings determine who can create an event for the "%s" calendar and for the sitewide calendar.', 'openlab-theme' ), groups_get_current_group()->name ) ); ?></p>
+						<p id="discussion-settings-tag"><?php echo esc_html( $group_type->get_label( 'settings_help_text_calendar' ) ); ?></p>
 						<div class="row">
 							<div class="col-sm-23 col-sm-offset-1">
 								<div class="radio no-margin no-margin-all spaced-list">
-									<label class="regular"><input type="radio" name="openlab-bpeo-event-create-access" value="members" <?php checked( 'members', $event_create_access ) ?> /> <?php echo esc_html( sprintf( __( 'Any group member may connect events to "%s"', 'openlab-theme' ), groups_get_current_group()->name ) ); ?></label>
-									<label class="regular"><input type="radio" name="openlab-bpeo-event-create-access" value="admin" <?php checked( 'admin', $event_create_access ) ?> /> <?php echo esc_html( __( 'Only administrators and moderators may connect events to "%s"', 'openlab-theme' ), groups_get_current_group()->name ); ?></label>
+									<label class="regular"><input type="radio" name="openlab-bpeo-event-create-access" value="members" <?php checked( 'members', $event_create_access ) ?> /> <?php echo esc_html( $group_type->get_label( 'settings_help_text_calendar_members' ) ); ?></label>
+									<label class="regular"><input type="radio" name="openlab-bpeo-event-create-access" value="admin" <?php checked( 'admin', $event_create_access ) ?> /> <?php echo esc_html( $group_type->get_label( 'settings_help_text_calendar_admins' ) ); ?></label>
 								</div>
 							</div>
 						</div>
@@ -122,7 +122,7 @@ openlab_group_admin_js_data( $group_type );
 			<div class="panel panel-default">
 				<div class="panel-heading"><?php esc_html_e( 'Related Links List Settings', 'openlab-theme' ); ?></div>
 				<div class="panel-body">
-					<p><?php esc_html_e( 'These settings enable or disable the related links list display on your Profile.', 'openlab-theme' ) ?></p>
+					<p><?php echo esc_html( $group_type->get_label( 'settings_help_text_relatedlinks' ) ); ?></p>
 					<?php $related_links_list_enable = groups_get_groupmeta( bp_get_current_group_id(), 'openlab_related_links_list_enable' ); ?>
 	<?php $related_links_list_heading = groups_get_groupmeta( bp_get_current_group_id(), 'openlab_related_links_list_heading' ); ?>
 	<?php $related_links_list = openlab_get_group_related_links( bp_get_current_group_id(), 'edit' ); ?>
@@ -156,7 +156,7 @@ openlab_group_admin_js_data( $group_type );
 				<div class="panel panel-default">
 					<div class="panel-heading"><?php esc_html_e( 'Portfolio List Settings', 'openlab-theme' ); ?></div>
 					<div class="panel-body">
-						<p id="portfolio-list-settings-tag"><?php esc_html_e( 'These settings enable or disable the member portfolio list display.', 'openlab-theme' ); ?></p>
+						<p id="portfolio-list-settings-tag"><?php echo esc_html( $group_type->get_label( 'settings_help_text_portfoliolist' ) ); ?></p>
 
 						<?php $portfolio_list_enabled = openlab_portfolio_list_enabled_for_group() ?>
 						<?php $portfolio_list_heading = openlab_portfolio_list_group_heading() ?>
