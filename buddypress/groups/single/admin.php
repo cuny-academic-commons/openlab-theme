@@ -27,7 +27,7 @@ openlab_group_admin_js_data( $group_type );
 	</div><!-- .submenu -->
 </div></div>
 
-<form action="<?php bp_group_admin_form_action() ?>" name="group-settings-form" id="group-settings-form" class="standard-form form-panel" method="post" enctype="multipart/form-data">
+<form action="<?php bp_group_admin_form_action() ?>" name="group-settings-form" id="openlab-group-settings-form" class="standard-form form-panel" method="post" enctype="multipart/form-data">
 
 	<?php do_action( 'bp_before_group_admin_content' ) ?>
 
@@ -515,5 +515,5 @@ openlab_group_admin_js_data( $group_type );
 
 <?php do_action( 'bp_after_group_admin_content' ) ?>
 
-</form><!-- #group-settings-form -->
+</form><!-- #openlab-group-settings-form -->
 

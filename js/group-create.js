@@ -27,7 +27,7 @@ jQuery(document).ready(function($){
 
 	if ( $body.hasClass( 'group-admin' ) ) {
 		form_type = 'admin';
-		form = document.getElementById( 'group-settings-form' );
+		form = document.getElementById( 'openlab-group-settings-form' );
 	} else {
 		form_type = 'create';
 		form = document.getElementById( 'create-group-form' );
