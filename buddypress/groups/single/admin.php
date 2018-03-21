@@ -102,14 +102,14 @@ openlab_group_admin_js_data( $group_type );
 					$event_create_access = 'admin';
 } ?>
 				<div class="panel panel-default">
-					<div class="panel-heading">Calendar Settings</div>
+					<div class="panel-heading"><?php esc_html_e( 'Calendar Settings', 'openlab-theme' ); ?></div>
 					<div class="panel-body">
-						<p id="discussion-settings-tag">These settings determine who can create an event for your group calendar and for the site-wide calendar.</p>
+						<p id="discussion-settings-tag"><?php echo esc_html( sprintf( __( 'These settings determine who can create an event for the "%s" calendar and for the sitewide calendar.', 'openlab-theme' ), groups_get_current_group()->name ) ); ?></p>
 						<div class="row">
 							<div class="col-sm-23 col-sm-offset-1">
 								<div class="radio no-margin no-margin-all spaced-list">
-									<label class="regular"><input type="radio" name="openlab-bpeo-event-create-access" value="members" <?php checked( 'members', $event_create_access ) ?> /> <?php _e( 'Any group member may connect events to this group', 'openlab-theme' ) ?></label>
-									<label class="regular"><input type="radio" name="openlab-bpeo-event-create-access" value="admin" <?php checked( 'admin', $event_create_access ) ?> /> <?php _e( 'Only administrators and moderators may connect events to this group', 'openlab-theme' ) ?></label>
+									<label class="regular"><input type="radio" name="openlab-bpeo-event-create-access" value="members" <?php checked( 'members', $event_create_access ) ?> /> <?php echo esc_html( sprintf( __( 'Any group member may connect events to "%s"', 'openlab-theme' ), groups_get_current_group()->name ) ); ?></label>
+									<label class="regular"><input type="radio" name="openlab-bpeo-event-create-access" value="admin" <?php checked( 'admin', $event_create_access ) ?> /> <?php echo esc_html( __( 'Only administrators and moderators may connect events to "%s"', 'openlab-theme' ), groups_get_current_group()->name ); ?></label>
 								</div>
 							</div>
 						</div>
@@ -118,36 +118,36 @@ openlab_group_admin_js_data( $group_type );
 
 			<?php endif; ?>
 
-	<?php /* "Related Links List Settings" */ ?>
+			<?php /* "Related Links List Settings" */ ?>
 			<div class="panel panel-default">
-				<div class="panel-heading">Related Links List Settings</div>
+				<div class="panel-heading"><?php esc_html_e( 'Related Links List Settings', 'openlab-theme' ); ?></div>
 				<div class="panel-body">
-					<p><?php esc_html_e( 'These settings enable or disable the related groups list display on your Profile.', 'openlab-theme' ) ?></p>
+					<p><?php esc_html_e( 'These settings enable or disable the related links list display on your Profile.', 'openlab-theme' ) ?></p>
 					<?php $related_links_list_enable = groups_get_groupmeta( bp_get_current_group_id(), 'openlab_related_links_list_enable' ); ?>
 	<?php $related_links_list_heading = groups_get_groupmeta( bp_get_current_group_id(), 'openlab_related_links_list_heading' ); ?>
 	<?php $related_links_list = openlab_get_group_related_links( bp_get_current_group_id(), 'edit' ); ?>
 					<div class="checkbox">
-						<label><input type="checkbox" name="related-links-list-enable" id="related-links-list-enable" value="1" <?php checked( $related_links_list_enable ) ?> /> Enable related groups list</label>
+						<label><input type="checkbox" name="related-links-list-enable" id="related-links-list-enable" value="1" <?php checked( $related_links_list_enable ) ?> /> <?php esc_html_e( 'Enable related links list', 'openlab-theme' ); ?></label>
 					</div>
-					<label for="related-links-list-heading">List Heading</label>
+					<label for="related-links-list-heading"><?php esc_html_e( 'List Heading', 'openlab-theme' ); ?></label>
 					<input name="related-links-list-heading" id="related-links-list-heading" class="form-control" type="text" value="<?php echo esc_attr( $related_links_list_heading ) ?>" />
 					<ul class="related-links-edit-items inline-element-list">
-	<?php $rli = 1 ?>
-	<?php foreach ( (array) $related_links_list as $rl ) : ?>
+						<?php $rli = 1 ?>
+						<?php foreach ( (array) $related_links_list as $rl ) : ?>
 							<li class="form-inline label-combo row">
 								<div class="form-group col-sm-9">
-									<label for="related-links-<?php echo $rli ?>-name">Name</label> <input name="related-links[<?php echo $rli ?>][name]" id="related-links-<?php echo $rli ?>-name" class="form-control" value="<?php echo esc_attr( $rl['name'] ) ?>" />
+									<label for="related-links-<?php echo esc_attr( $rli ); ?>-name"><?php esc_html_e( 'Name', 'openlab-theme' ); ?></label> <input name="related-links[<?php echo esc_attr( $rli ) ?>][name]" id="related-links-<?php echo esc_attr( $rli ) ?>-name" class="form-control" value="<?php echo esc_attr( $rl['name'] ) ?>" />
 								</div>
 								<div class="form-group col-sm-15">
-									<label for="related-links-<?php echo $rli ?>-url">URL</label> <input name="related-links[<?php echo $rli ?>][url]" id="related-links-<?php echo $rli ?>-url" class="form-control" value="<?php echo esc_attr( $rl['url'] ) ?>" />
+									<label for="related-links-<?php echo esc_attr( $rli ) ;?>-url"><?php esc_html_e( 'URL', 'openlab-theme' ); ?></label> <input name="related-links[<?php echo esc_attr( $rli ); ?>][url]" id="related-links-<?php echo esc_attr( $rli ); ?>-url" class="form-control" value="<?php echo esc_attr( $rl['url'] ) ?>" />
 									<?php /* Last item - show the plus button */ ?>
 									<?php if ( $rli === count( $related_links_list ) ) : ?>
 										<a href="#" id="add-new-related-link">+</a>
-							<?php endif ?>
+									<?php endif ?>
 								</div>
 							</li>
-		<?php $rli++ ?>
-	<?php endforeach; ?>
+							<?php $rli++ ?>
+						<?php endforeach; ?>
 					</ul>
 				</div>
 			</div>
@@ -156,7 +156,7 @@ openlab_group_admin_js_data( $group_type );
 				<div class="panel panel-default">
 					<div class="panel-heading"><?php esc_html_e( 'Portfolio List Settings', 'openlab-theme' ); ?></div>
 					<div class="panel-body">
-						<p id="portfolio-list-settings-tag"><?php esc_html_e( 'These settings enable or disable the member portfolio list display on your group profile.', 'openlab-theme' ); ?></p>
+						<p id="portfolio-list-settings-tag"><?php esc_html_e( 'These settings enable or disable the member portfolio list display.', 'openlab-theme' ); ?></p>
 
 						<?php $portfolio_list_enabled = openlab_portfolio_list_enabled_for_group() ?>
 						<?php $portfolio_list_heading = openlab_portfolio_list_group_heading() ?>
@@ -169,10 +169,13 @@ openlab_group_admin_js_data( $group_type );
 					</div>
 				</div>
 
+				<?php // Output some default BP fields so that the default routine runs properly.  ?>
+				<input type="hidden" name="group-status" value="<?php echo esc_attr( groups_get_current_group()->status ); ?>" />
+
+				<p><input class="btn btn-primary" type="submit" value="<?php _e( 'Save Changes', 'openlab-theme' ) ?> &#xf138;" id="save" name="save" /></p>
+				<?php wp_nonce_field( 'groups_edit_group_settings' ) ?>
 
 			<?php endif; ?>
-
-			<?php openlab_group_privacy_settings( $group_type ); ?>
 
 		<?php endif; ?>
 
