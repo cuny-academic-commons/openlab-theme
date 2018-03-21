@@ -32,7 +32,4 @@ class OpenLab_Footer_Section_Control extends WP_Customize_Control {
 
 		<?php
 	}
-	private function filter_editor_setting_link() {
-//        add_filter( 'the_editor', function( $output ) { return preg_replace( '/<textarea/', '<textarea ' . $this->get_link(), $output, 1 ); } );
-    }
 }
