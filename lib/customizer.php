@@ -107,27 +107,21 @@ function openlab_customizer_setup( $wp_customize ) {
 		'description' => __( 'This works', 'openlab-theme' ),
 	) );
 
+	// Footer Left
 	$wp_customize->add_section( 'openlab_section_footer_left', array(
 		'title' => __( 'Footer - Left', 'openlab-theme' ),
 		'panel' => 'openlab_panel_footer',
 		'description' => __( 'Controls the text on the left-hand side of the community-wide footer.', 'openlab-theme' ),
 	) );
 
-	$wp_customize->add_section( 'openlab_section_footer_middle', array(
-		'title' => __( 'Footer - Right', 'openlab-theme' ),
-		'panel' => 'openlab_panel_footer',
-	) );
-
 	$wp_customize->add_setting( 'openlab_footer_left_heading', array(
 		'type' => 'theme_mod',
 		'transport' => 'postMessage',
-//		'sanitize_callback' => 'openlab_sanitize_customizer_setting_intval',
 	) );
 
 	$wp_customize->add_setting( 'openlab_footer_left_content', array(
 		'type' => 'theme_mod',
 		'transport' => 'postMessage',
-//		'sanitize_callback' => 'openlab_sanitize_customizer_setting_intval',
 	) );
 
 	$wp_customize->add_control( 'openlab_footer_left_heading', array(
@@ -145,13 +139,35 @@ function openlab_customizer_setup( $wp_customize ) {
 		)
 	) );
 
+	// Footer Middle
+	$wp_customize->add_section( 'openlab_section_footer_middle', array(
+		'title' => __( 'Footer - Middle', 'openlab-theme' ),
+		'panel' => 'openlab_panel_footer',
+		'description' => __( 'Controls the text on the middle of the community-wide footer.', 'openlab-theme' ),
+	) );
+
+	$wp_customize->add_setting( 'openlab_footer_middle_heading', array(
+		'type' => 'theme_mod',
+		'transport' => 'postMessage',
+	) );
+
+	$wp_customize->add_setting( 'openlab_footer_middle_content', array(
+		'type' => 'theme_mod',
+		'transport' => 'postMessage',
+	) );
+
+	$wp_customize->add_control( 'openlab_footer_middle_heading', array(
+		'type' => 'text',
+		'label' => __( 'Heading', 'openlab-theme' ),
+		'section' => 'openlab_section_footer_middle',
+	) );
+
 	$wp_customize->add_control( new OpenLab_Footer_Section_Control(
 		$wp_customize,
-		'openlab_footer_middle',
+		'openlab_footer_middle_content',
 		array(
-			'label' => __( 'Footer - Middle', 'openlab-theme' ),
+			'label' => __( 'Content', 'openlab-theme' ),
 			'section' => 'openlab_section_footer_middle',
-			'description' => __( 'Controls the text in the middle of the community-wide footer.', 'openlab-theme' ),
 		)
 	) );
 

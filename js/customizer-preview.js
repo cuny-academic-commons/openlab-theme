@@ -3,6 +3,8 @@
 		var fieldMap = {
 			openlab_footer_left_heading: 'footer-left-heading',
 			openlab_footer_left_content: 'footer-left-content',
+			openlab_footer_middle_heading: 'footer-middle-heading',
+			openlab_footer_middle_content: 'footer-middle-content'
 		};
 
 		for ( var settingId in fieldMap ) {

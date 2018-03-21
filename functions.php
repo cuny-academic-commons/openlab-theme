@@ -463,6 +463,8 @@ $footer = '';
 
 	$left_heading = get_theme_mod( 'openlab_footer_left_heading' );
 	$left_content = get_theme_mod( 'openlab_footer_left_content' );
+	$middle_heading = get_theme_mod( 'openlab_footer_middle_heading' );
+	$middle_content = get_theme_mod( 'openlab_footer_middle_content' );
 
 	ob_start(); ?>
 
@@ -477,7 +479,8 @@ $footer = '';
 					</div>
 
 					<div id="footer-middle" class="footer-middle footer-section col-md-8">
-						Twelve
+						<h2 id="footer-middle-heading"><?php echo esc_html( $middle_heading ); ?></h2>
+						<div id="footer-middle-content"><?php echo $middle_content; ?></div>
 					</div>
 
 					<div id="footer-right" class="footer-right footer-section col-md-4">
