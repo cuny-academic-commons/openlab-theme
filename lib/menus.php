@@ -423,11 +423,11 @@ function openlab_profile_settings_submenu() {
 
 	$settings_slug = $dud . bp_get_settings_slug();
 	$menu_list = array(
-		$dud . 'profile/edit' => 'Edit Profile',
-		$dud . 'profile/change-avatar' => 'Change Avatar',
-		$settings_slug => 'Account Settings',
-		$dud . 'settings/notifications' => 'Email Notifications',
-		$dud . 'settings/delete-account' => 'Delete Account',
+		$dud . 'profile/edit'            => __( 'Edit Profile', 'openlab-theme' ),
+		$dud . 'profile/change-avatar'   => __( 'Change Avatar', 'openlab-theme' ),
+		$settings_slug                   => __( 'Account Settings', 'openlab-theme' ),
+		$dud . 'settings/notifications'  => __( 'Email Notifications', 'openlab-theme' ),
+		$dud . 'settings/delete-account' => __( 'Delete Account', 'openlab-theme' ),
 	);
 	return openlab_submenu_gen( $menu_list, true );
 }
