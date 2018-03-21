@@ -1427,7 +1427,7 @@ add_filter( 'bp_get_options_nav_nav-invite-anyone', 'cuny_send_invite_fac_only' 
  * Add the 'Site' subnav to group admin.
  */
 function openlab_add_site_subnav_to_group_admin() {
-	if ( bp_is_item_admin() ) {
+	if ( bp_is_group() && bp_is_item_admin() ) {
 		$nav_params = array(
 			'name'              => _x( 'Site', 'Group admin nav item', 'openlab-theme' ),
 			'slug'              => 'site-details',
