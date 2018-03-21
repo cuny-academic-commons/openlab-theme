@@ -8,8 +8,9 @@
 		for ( var settingId in fieldMap ) {
 			var elementId = fieldMap[ settingId ];
 			wp.customize( settingId, function( value ) {
+				var thisElId = elementId;
 				value.bind( function( newval ) {
-					document.getElementById( elementId ).innerHTML = newval;
+					document.getElementById( thisElId ).innerHTML = newval;
 				} );
 			} );
 		}

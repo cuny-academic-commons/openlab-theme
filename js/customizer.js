@@ -14,23 +14,24 @@
 
 	$(window).load(function(){
 			var editorIds = [ 'openlab_footer_left_content', 'openlab_footer_middle_content' ];
-			var content, editorId, editor, setChange, textarea;
+			var setChange, textarea;
 			for ( var i in editorIds ) {
-				editorId = editorIds[ i ];
+				var editorId = editorIds[ i ];
 				wp.editor.initialize( editorId );
 
 				textarea = document.getElementById( editorId );
-				editor = tinyMCE.get( editorId );
+				var editor = tinyMCE.get( editorId );
 
 				// Catch changes to Visual.
 				if ( editor ) {
 					switchEditors.go( editorId, 'tmce' );
 
 					editor.onChange.add( function(ed,e) {
+						console.log(ed.id);
 						ed.save();
-						content = ed.getContent();
+						var newContent = ed.getContent();
 
-						updateTextarea( ed.id, content );
+						updateTextarea( ed.id, newContent );
 					} );
 				}
 
@@ -40,19 +41,18 @@
 					var setChange;
 					clearTimeout(setChange);
 					setChange = setTimeout(function(){
-						content = $(e.target).val();
-						console.log(content);
-						updateTextarea( e.target.id, content );
+						var newContent = $(e.target).val();
+						updateTextarea( e.target.id, newContent );
 					}, 1000);
 				} );
 			}
 	});
 
 	var updateTextarea = function( textareaId, content ) {
-		var $textareaInput = $( 'input[data-customize-setting-link="' + textareaId + '"]' );
 		var setChange;
 		clearTimeout(setChange);
 		setChange = setTimeout(function(){
+			var $textareaInput = $( 'input[data-customize-setting-link="' + textareaId + '"]' );
 			$textareaInput.val(content).trigger('change');
 		}, 500);
 	}
