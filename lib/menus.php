@@ -1001,21 +1001,21 @@ function openlab_group_admin_tabs( $group = false ) {
 	<!--
 	<?php if ( cboxol_is_portfolio() ) : ?>
 		<?php if ( $bp->is_item_admin || $bp->is_item_mod ) { ?>
-			--><li<?php if ( 'edit-details' == $current_tab || empty( $current_tab ) ) : ?> class="current-menu-item"<?php endif; ?>><a href="<?php echo bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug ?>/admin/edit-details"><?php esc_html_e( 'Edit Profile', 'cbox-openlab-core' ); ?></a></li><!--
+			--><li<?php if ( 'edit-details' == $current_tab || empty( $current_tab ) ) : ?> class="current-menu-item"<?php endif; ?>><a href="<?php echo bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug ?>/admin/edit-details"><?php esc_html_e( 'Edit Profile', 'openlab-theme' ); ?></a></li><!--
 		<?php } ?>
 
 		<?php if ( ! (int) bp_get_option( 'bp-disable-avatar-uploads' ) ) : ?>
-			--><li<?php if ( 'group-avatar' == $current_tab ) : ?> class="current-menu-item"<?php endif; ?>><a href="<?php echo bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug ?>/admin/group-avatar"><?php esc_html_e( 'Change Avatar', 'cbox-openlab-core' ); ?></a></li><!--
+			--><li<?php if ( 'group-avatar' == $current_tab ) : ?> class="current-menu-item"<?php endif; ?>><a href="<?php echo bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug ?>/admin/group-avatar"><?php esc_html_e( 'Change Avatar', 'openlab-theme' ); ?></a></li><!--
 		<?php endif; ?>
 
-		--><li<?php if ( 'group-settings' == $current_tab ) : ?> class="current-menu-item"<?php endif; ?>><a href="<?php echo bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug ?>/admin/group-settings"><?php esc_html_e( 'Privacy Settings', 'cbox-openlab-core' ); ?></a></li>
+		--><li<?php if ( 'group-settings' == $current_tab ) : ?> class="current-menu-item"<?php endif; ?>><a href="<?php echo bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug ?>/admin/group-settings"><?php esc_html_e( 'Privacy Settings', 'openlab-theme' ); ?></a></li>
 
-		<li class="delete-button <?php if ( 'delete-group' == $current_tab ) : ?> current-menu-item<?php endif; ?>" ><span class="fa fa-minus-circle"></span><a href="<?php echo bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug ?>/admin/delete-group"><?php esc_html_e( 'Delete Portfolio', 'cbox-openlab-core' ); ?></a></li><!--
+		<li class="delete-button <?php if ( 'delete-group' == $current_tab ) : ?> current-menu-item<?php endif; ?>" ><span class="fa fa-minus-circle"></span><a href="<?php echo bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug ?>/admin/delete-group"><?php esc_html_e( 'Delete Portfolio', 'openlab-theme' ); ?></a></li><!--
 
 	<?php else : ?>
 
 		<?php if ( $bp->is_item_admin || $bp->is_item_mod ) { ?>
-			--><li<?php if ( 'edit-details' == $current_tab || empty( $current_tab ) ) : ?> class="current-menu-item"<?php endif; ?>><a href="<?php echo bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug ?>/admin/edit-details"><?php _e( 'Edit Profile', 'buddypress' ); ?></a></li><!--
+			--><li<?php if ( 'edit-details' == $current_tab || empty( $current_tab ) ) : ?> class="current-menu-item"<?php endif; ?>><a href="<?php echo bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug ?>/admin/edit-details"><?php _e( 'Edit Profile', 'openlab-theme' ); ?></a></li><!--
 		<?php } ?>
 
 		<?php
@@ -1024,9 +1024,9 @@ function openlab_group_admin_tabs( $group = false ) {
 		}
 		?>
 
-		--><li<?php if ( 'group-avatar' == $current_tab ) : ?> class="current-menu-item"<?php endif; ?>><a href="<?php echo bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug ?>/admin/group-avatar"><?php _e( 'Change Avatar', 'buddypress' ); ?></a></li><!--
+		--><li<?php if ( 'group-avatar' == $current_tab ) : ?> class="current-menu-item"<?php endif; ?>><a href="<?php echo bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug ?>/admin/group-avatar"><?php _e( 'Change Avatar', 'openlab-theme' ); ?></a></li><!--
 
-		--><li<?php if ( 'group-settings' == $current_tab ) : ?> class="current-menu-item"<?php endif; ?>><a href="<?php echo bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug ?>/admin/group-settings"><?php _e( 'Settings', 'buddypress' ); ?></a></li><!--
+		--><li<?php if ( 'group-settings' == $current_tab ) : ?> class="current-menu-item"<?php endif; ?>><a href="<?php echo bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug ?>/admin/group-settings"><?php _e( 'Settings', 'openlab-theme' ); ?></a></li><!--
 
 		<?php if ( $group_type->get_is_course() ) : ?>
 			<?php
@@ -1034,15 +1034,15 @@ function openlab_group_admin_tabs( $group = false ) {
 				'group_type' => $group_type->get_slug(),
 				'clone' => bp_get_current_group_id(),
 			), bp_get_groups_directory_permalink() . 'create/step/group-details/' ); ?>
-			--><li class="clone-button <?php if ( 'clone-group' == $current_tab ) : ?>current-menu-item<?php endif; ?>" ><span class="fa fa-plus-circle"></span><a href="<?php echo esc_url( $clone_link ); ?>"><?php esc_html_e( 'Clone', 'cbox-openlab-core' ); ?></a></li><!--
+			--><li class="clone-button <?php if ( 'clone-group' == $current_tab ) : ?>current-menu-item<?php endif; ?>" ><span class="fa fa-plus-circle"></span><a href="<?php echo esc_url( $clone_link ); ?>"><?php esc_html_e( 'Clone', 'openlab-theme' ); ?></a></li><!--
 		<?php endif ?>
 
-		--><li class="delete-button last-item <?php if ( 'delete-group' == $current_tab ) : ?>current-menu-item<?php endif; ?>" ><span class="fa fa-minus-circle"></span><a href="<?php echo bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug ?>/admin/delete-group"><?php esc_html_e( 'Delete', 'cbox-openlab-core' ); ?></a></li><!--
+		--><li class="delete-button last-item <?php if ( 'delete-group' == $current_tab ) : ?>current-menu-item<?php endif; ?>" ><span class="fa fa-minus-circle"></span><a href="<?php echo bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug ?>/admin/delete-group"><?php esc_html_e( 'Delete', 'openlab-theme' ); ?></a></li><!--
 
 		<?php if ( $group_type->get_is_portfolio() ) : ?>
 			<li class="portfolio-displayname pull-right"><span class="highlight"><?php echo bp_core_get_userlink( openlab_get_user_id_from_portfolio_group_id( bp_get_group_id() ) ); ?></span></li>
 		<?php else : ?>
-			<li class="info-line pull-right"><span class="timestamp info-line-timestamp visible-lg"><span class="fa fa-undo"></span> <?php printf( __( 'active %s', 'buddypress' ), bp_get_group_last_active() ) ?></span></li>
+			<li class="info-line pull-right"><span class="timestamp info-line-timestamp visible-lg"><span class="fa fa-undo"></span> <?php printf( __( 'active %s', 'openlab-theme' ), bp_get_group_last_active() ) ?></span></li>
 		<?php endif; ?>
 
 	<?php endif ?>
@@ -1066,25 +1066,25 @@ function openlab_group_membership_tabs( $group = false ) {
 	?>
 	<!--
 	<?php if ( $bp->is_item_admin || $bp->is_item_mod ) : ?>
-		--><li<?php if ( $current_tab == 'manage-members' ) : ?> class="current-menu-item"<?php endif; ?>><a href="<?php echo bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug ?>/admin/manage-members"><?php _e( 'Membership', 'buddypress' ); ?></a></li><!--
+		--><li<?php if ( $current_tab == 'manage-members' ) : ?> class="current-menu-item"<?php endif; ?>><a href="<?php echo bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug ?>/admin/manage-members"><?php esc_html_e( 'Membership', 'openlab-theme' ); ?></a></li><!--
 
 		<?php if ( $group->status == 'private' ) : ?>
-			--><li<?php if ( 'membership-requests' == $current_tab ) : ?> class="current-menu-item"<?php endif; ?>><a href="<?php echo bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug ?>/admin/membership-requests"><?php _e( 'Member Requests', 'buddypress' ); ?></a></li><!--
+			--><li<?php if ( 'membership-requests' == $current_tab ) : ?> class="current-menu-item"<?php endif; ?>><a href="<?php echo bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug ?>/admin/membership-requests"><?php esc_html_e( 'Member Requests', 'openlab-theme' ); ?></a></li><!--
 		<?php endif; ?>
 	<?php else : ?>
-		--><li<?php if ( $bp->current_action == 'members' ) : ?> class="current-menu-item"<?php endif; ?>><a href="<?php echo bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug ?>/members"><?php _e( 'Membership', 'buddypress' ); ?></a></li><!--
+		--><li<?php if ( $bp->current_action == 'members' ) : ?> class="current-menu-item"<?php endif; ?>><a href="<?php echo bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug ?>/members"><?php esc_html_e( 'Membership', 'openlab-theme' ); ?></a></li><!--
 	<?php endif; ?>
 
 	<?php if ( bp_group_is_member() && invite_anyone_access_test() && openlab_is_admin_truly_member() ) : ?>
-		--><li<?php if ( $bp->current_action == 'invite-anyone' ) : ?> class="current-menu-item"<?php endif; ?>><a href="<?php echo bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug ?>/invite-anyone"><?php _e( 'Invite New Members', 'buddypress' ); ?></a></li><!--
+		--><li<?php if ( $bp->current_action == 'invite-anyone' ) : ?> class="current-menu-item"<?php endif; ?>><a href="<?php echo bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug ?>/invite-anyone"><?php esc_html_e( 'Invite New Members', 'openlab-theme' ); ?></a></li><!--
 	<?php endif; ?>
 
 	<?php if ( $bp->is_item_admin || $bp->is_item_mod ) : ?>
-		--><li<?php if ( 'notifications' == $current_tab ) : ?> class="current-menu-item"<?php endif; ?>><a href="<?php echo bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug ?>/admin/notifications"><?php _e( 'Email Members', 'buddypress' ); ?></a></li><!--
+		--><li<?php if ( 'notifications' == $current_tab ) : ?> class="current-menu-item"<?php endif; ?>><a href="<?php echo bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug ?>/admin/notifications"><?php esc_html_e( 'Email Members', 'openlab-theme' ); ?></a></li><!--
 	<?php endif; ?>
 
 	<?php if ( bp_group_is_member() && openlab_is_admin_truly_member() ) : ?>
-		--><li<?php if ( $bp->current_action == 'notifications' ) : ?> class="current-menu-item"<?php endif; ?>><a href="<?php echo bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug ?>/notifications"><?php _e( 'Your Email Options', 'buddypress' ); ?></a></li><!--
+		--><li<?php if ( $bp->current_action == 'notifications' ) : ?> class="current-menu-item"<?php endif; ?>><a href="<?php echo bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug ?>/notifications"><?php esc_html_e( 'Your Email Options', 'openlab-theme' ); ?></a></li><!--
 	<?php endif; ?>
 	-->
 	<?php
