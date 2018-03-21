@@ -8,6 +8,8 @@
  * Set up Customizer panels.
  */
 function openlab_customizer_setup( $wp_customize ) {
+	require __DIR__ . '/class-customize-footer-section.php';
+
 	// Color Scheme
 	$wp_customize->remove_section( 'colors' );
 	$wp_customize->add_section( 'openlab_section_color_scheme', array(
@@ -100,15 +102,41 @@ function openlab_customizer_setup( $wp_customize ) {
 		$wp_customize->add_section( $c );
 	}
 
-	// Footer
-	$footer_section = $wp_customize->get_section( 'sidebar-widgets-footer' );
-	if ( $footer_section ) {
-		$c = clone( $footer_section );
-		$wp_customize->remove_section( 'sidebar-widgets-footer' );
+	$wp_customize->add_section( 'openlab_section_footer', array(
+		'title' => __( 'Community-wide Footer', 'openlab-theme' ),
+		'description' => __( 'This works', 'openlab-theme' ),
+	) );
 
-		$c->panel = '';
-		$c->priority = 160;
-		$wp_customize->add_section( $c );
+	$wp_customize->add_setting( 'openlab_footer_left', array(
+		'type' => 'theme_mod',
+//		'sanitize_callback' => 'openlab_sanitize_customizer_setting_intval',
+	) );
+
+	$wp_customize->add_setting( 'openlab_footer_middle', array(
+		'type' => 'theme_mod',
+//		'sanitize_callback' => 'openlab_sanitize_customizer_setting_intval',
+	) );
+
+	$wp_customize->add_control( new OpenLab_Footer_Section_Control(
+		$wp_customize,
+		'openlab_footer_left',
+		array(
+			'label' => __( 'Footer - Left', 'openlab-theme' ),
+			'section' => 'openlab_section_footer',
+		)
+	) );
+
+		wp_enqueue_editor();
+		wp_enqueue_media();
+	add_action( 'customize_controls_print_footer_scripts', function() {
+		do_action( 'admin_print_footer_scripts' );
+	}, 100 );
+
+	// If there are no more sidebars, remove the top-level Widgets area altogether.
+	// @todo this causes PHP notices due to hardcoded stuff in WP. Consider hiding with CSS.
+	$widget_panel = $wp_customize->get_panel( 'widgets' );
+	if ( $widget_panel && empty( $widget_panel->sections ) ) {
+	//	$wp_customize->remove_panel( 'widgets' );
 	}
 }
 add_action( 'customize_register', 'openlab_customizer_setup', 200 );

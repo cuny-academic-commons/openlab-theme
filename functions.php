@@ -346,15 +346,6 @@ function openlab_register_sidebars() {
 		'description' => __( 'The main section of the home page. Generally used for group type widgets.', 'openlab-theme' ),
 		'id' => 'home-main',
 	) );
-
-	// Sitewide footer.
-	register_sidebar( array(
-		'name' => __( 'Footer', 'openlab-theme' ),
-		'description' => __( 'The footer that appears across the network.', 'openlab-theme' ),
-		'id' => 'footer',
-		'before_widget' => '<div id="%1$s" class="footer-widget %2$s">',
-		'after_widget' => '</div>',
-	) );
 }
 
 /**
@@ -462,10 +453,12 @@ function openlab_profile_field_input_attributes() {
  * Fetch the sitewide footer markup, storing in a transient if necessary.
  */
 function openlab_site_footer() {
-	$footer = get_site_transient( 'cboxol_network_footer' );
+//	$footer = get_site_transient( 'cboxol_network_footer' );
+$footer = '';
 
 	if ( $footer ) {
 		echo $footer;
+		return;
 	}
 
 	ob_start(); ?>

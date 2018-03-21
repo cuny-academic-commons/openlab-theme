@@ -9,5 +9,8 @@
 				$el.addClass( 'color-scheme-' + colorScheme );
 			} );
 		} );
+
+		wp.editor.initialize( 'openlab_footer_left' );
+		wp.editor.initialize( 'openlab_footer_right' );
 	} );
 } )( wp, jQuery );
