@@ -74,8 +74,6 @@
     };
 
     $(document).ready(function () {
-        console.log('go');
         OpenLab.admin.init();
-
     });
 })(jQuery);
