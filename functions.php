@@ -453,8 +453,7 @@ function openlab_profile_field_input_attributes() {
  * Fetch the sitewide footer markup, storing in a transient if necessary.
  */
 function openlab_site_footer() {
-//	$footer = get_site_transient( 'cboxol_network_footer' );
-$footer = '';
+	$footer = get_site_transient( 'cboxol_network_footer' );
 
 	if ( $footer ) {
 		echo $footer;
@@ -500,3 +499,10 @@ $footer = '';
 
 	echo $footer;
 }
+
+/**
+ * Bust the footer markup transient when it's modified.
+ */
+add_action( 'update_option_theme_mods_' . get_option( 'stylesheet' ), function() {
+	delete_site_transient( 'cboxol_network_footer' );
+} );
