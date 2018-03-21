@@ -484,7 +484,7 @@ $footer = '';
 					</div>
 
 					<div id="footer-right" class="footer-right footer-section col-md-4">
-						Powered by
+						<p><?php esc_html_e( 'Powered by:', 'openlab-theme' ); ?></p>
 					</div>
 				</div>
 			</div>

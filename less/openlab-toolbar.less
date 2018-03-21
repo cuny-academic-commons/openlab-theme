@@ -769,6 +769,8 @@
             }
         }
         .row{
+			display: table;
+			padding-bottom: 40px;
             h2{
                 color: #333;
                 margin: 0 auto 22px;
@@ -777,6 +779,24 @@
                     margin: 0 auto 8px;
                 }
             }
+			[class*="col-"] {
+				border-radius: 0;
+			}
+			.footer-section {
+				float: none;
+				display: table-cell;
+				padding: 0 30px;
+				border-right: 1px solid #aaa;
+
+				&:first-child {
+					padding-left: 0;
+				}
+
+				&:last-child {
+					border-right: none;
+					padding-right: 0;
+				}
+			}
 	    h3{
 		font-size: 13px;
 		text-decoration: underline;

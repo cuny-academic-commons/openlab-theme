@@ -7704,6 +7704,10 @@ button.oplb-bs .close {
     width: 95%;
   }
 }
+.oplb-bs#openlab-footer .row {
+  display: table;
+  padding-bottom: 40px;
+}
 .oplb-bs#openlab-footer .row h2 {
   color: #333;
   margin: 0 auto 22px;
@@ -7713,6 +7717,22 @@ button.oplb-bs .close {
   .oplb-bs#openlab-footer .row h2 {
     margin: 0 auto 8px;
   }
+}
+.oplb-bs#openlab-footer .row [class*="col-"] {
+  border-radius: 0;
+}
+.oplb-bs#openlab-footer .row .footer-section {
+  float: none;
+  display: table-cell;
+  padding: 0 30px;
+  border-right: 1px solid #aaa;
+}
+.oplb-bs#openlab-footer .row .footer-section:first-child {
+  padding-left: 0;
+}
+.oplb-bs#openlab-footer .row .footer-section:last-child {
+  border-right: none;
+  padding-right: 0;
 }
 .oplb-bs#openlab-footer .row h3 {
   font-size: 13px;
