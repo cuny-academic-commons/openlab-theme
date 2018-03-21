@@ -7682,7 +7682,7 @@ button.oplb-bs .close {
 }
 .oplb-bs#openlab-footer p,
 .oplb-bs#openlab-footer a {
-  font-size: 12px;
+  font-size: 14px;
 }
 .oplb-bs#openlab-footer p,
 .oplb-bs#openlab-footer a,
@@ -7707,6 +7707,7 @@ button.oplb-bs .close {
 .oplb-bs#openlab-footer .row h2 {
   color: #333;
   margin: 0 auto 22px;
+  text-size: 20px;
 }
 @media (max-width: 767px) {
   .oplb-bs#openlab-footer .row h2 {

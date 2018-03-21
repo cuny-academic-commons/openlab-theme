@@ -461,6 +461,9 @@ $footer = '';
 		return;
 	}
 
+	$left_heading = get_theme_mod( 'openlab_footer_left_heading' );
+	$left_content = get_theme_mod( 'openlab_footer_left_content' );
+
 	ob_start(); ?>
 
 <div id="openlab-footer" class="oplb-bs page-table-row">
@@ -468,7 +471,18 @@ $footer = '';
 		<div class="footer-wrapper">
 			<div class="container-fluid footer-desktop">
 				<div class="row row-footer">
-					<?php dynamic_sidebar( 'footer' ); ?>
+					<div id="footer-left" class="footer-left footer-section col-md-12">
+						<h2 id="footer-left-heading"><?php echo esc_html( $left_heading ); ?></h2>
+						<div id="footer-left-content"><?php echo $left_content; ?></div>
+					</div>
+
+					<div id="footer-middle" class="footer-middle footer-section col-md-8">
+						Twelve
+					</div>
+
+					<div id="footer-right" class="footer-right footer-section col-md-4">
+						Powered by
+					</div>
 				</div>
 			</div>
 		</div>

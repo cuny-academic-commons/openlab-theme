@@ -102,35 +102,63 @@ function openlab_customizer_setup( $wp_customize ) {
 		$wp_customize->add_section( $c );
 	}
 
-	$wp_customize->add_section( 'openlab_section_footer', array(
+	$wp_customize->add_panel( 'openlab_panel_footer', array(
 		'title' => __( 'Community-wide Footer', 'openlab-theme' ),
 		'description' => __( 'This works', 'openlab-theme' ),
 	) );
 
-	$wp_customize->add_setting( 'openlab_footer_left', array(
+	$wp_customize->add_section( 'openlab_section_footer_left', array(
+		'title' => __( 'Footer - Left', 'openlab-theme' ),
+		'panel' => 'openlab_panel_footer',
+		'description' => __( 'Controls the text on the left-hand side of the community-wide footer.', 'openlab-theme' ),
+	) );
+
+	$wp_customize->add_section( 'openlab_section_footer_middle', array(
+		'title' => __( 'Footer - Right', 'openlab-theme' ),
+		'panel' => 'openlab_panel_footer',
+	) );
+
+	$wp_customize->add_setting( 'openlab_footer_left_heading', array(
 		'type' => 'theme_mod',
+		'transport' => 'postMessage',
 //		'sanitize_callback' => 'openlab_sanitize_customizer_setting_intval',
 	) );
 
-	$wp_customize->add_setting( 'openlab_footer_middle', array(
+	$wp_customize->add_setting( 'openlab_footer_left_content', array(
 		'type' => 'theme_mod',
+		'transport' => 'postMessage',
 //		'sanitize_callback' => 'openlab_sanitize_customizer_setting_intval',
+	) );
+
+	$wp_customize->add_control( 'openlab_footer_left_heading', array(
+		'type' => 'text',
+		'label' => __( 'Heading', 'openlab-theme' ),
+		'section' => 'openlab_section_footer_left',
 	) );
 
 	$wp_customize->add_control( new OpenLab_Footer_Section_Control(
 		$wp_customize,
-		'openlab_footer_left',
+		'openlab_footer_left_content',
 		array(
-			'label' => __( 'Footer - Left', 'openlab-theme' ),
-			'section' => 'openlab_section_footer',
+			'label' => __( 'Content', 'openlab-theme' ),
+			'section' => 'openlab_section_footer_left',
 		)
 	) );
 
-		wp_enqueue_editor();
-		wp_enqueue_media();
-	add_action( 'customize_controls_print_footer_scripts', function() {
-		do_action( 'admin_print_footer_scripts' );
-	}, 100 );
+	$wp_customize->add_control( new OpenLab_Footer_Section_Control(
+		$wp_customize,
+		'openlab_footer_middle',
+		array(
+			'label' => __( 'Footer - Middle', 'openlab-theme' ),
+			'section' => 'openlab_section_footer_middle',
+			'description' => __( 'Controls the text in the middle of the community-wide footer.', 'openlab-theme' ),
+		)
+	) );
+
+	wp_enqueue_editor();
+	wp_enqueue_media();
+
+	wp_enqueue_style( 'openlab-customizer', get_template_directory_uri() . '/css/customizer.css' );
 
 	// If there are no more sidebars, remove the top-level Widgets area altogether.
 	// @todo this causes PHP notices due to hardcoded stuff in WP. Consider hiding with CSS.
@@ -138,8 +166,24 @@ function openlab_customizer_setup( $wp_customize ) {
 	if ( $widget_panel && empty( $widget_panel->sections ) ) {
 	//	$wp_customize->remove_panel( 'widgets' );
 	}
+
+	if ( $wp_customize->is_preview() && ! is_admin() ) {
+//		add_action( 'wp_footer', 'openlab_customize_preview' );
+	}
 }
 add_action( 'customize_register', 'openlab_customizer_setup', 200 );
+
+function openlab_enqueue_customizer_preview_script() {
+	global $wp_customize;
+
+	if ( empty( $wp_customize ) || ! $wp_customize->is_preview() ) {
+		return;
+	}
+
+	wp_enqueue_script( 'openlab-customizer-preview', get_template_directory_uri() . '/js/customizer-preview.js', array( 'jquery' ), false, true );
+}
+add_action( 'wp_enqueue_scripts', 'openlab_enqueue_customizer_preview_script' );
+
 
 function openlab_customizer_styles() {
 	$color_schemes = openlab_color_schemes();
