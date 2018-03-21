@@ -125,7 +125,7 @@ jQuery(document).ready(function($){
 
 	function showHideAssociatedSitePrivacy() {
 		var $associatedSitePrivacyPanel = $('#associated-site-privacy-panel');
-		if ( setuptoggle.is(':checked') ) {
+		if ( setuptoggle.is(':checked') || $('#current-group-site').is(':visible') ) {
 			$associatedSitePrivacyPanel.show();
 		} else {
 			$associatedSitePrivacyPanel.hide();

@@ -16,8 +16,7 @@ function openlab_bp_enqueue_scripts() {
 		wp_enqueue_script( 'password-strength-meter' );
 	}
 
-	if ( bp_is_group_create()
-	     || ( bp_is_group_admin_page() && bp_is_action_variable( 'edit-details', 0 ) ) ) {
+	if ( bp_is_group_create() || bp_is_group_admin_page() ) {
 		wp_enqueue_script( 'openlab-group-create', get_template_directory_uri() . '/js/group-create.js', array( 'jquery' ) );
 
 		wp_localize_script( 'openlab-group-create', 'OLGroupCreate', array(

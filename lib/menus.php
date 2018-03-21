@@ -1004,6 +1004,8 @@ function openlab_group_admin_tabs( $group = false ) {
 			--><li<?php if ( 'edit-details' == $current_tab || empty( $current_tab ) ) : ?> class="current-menu-item"<?php endif; ?>><a href="<?php echo bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug ?>/admin/edit-details"><?php echo esc_html( $group_type->get_label( 'group_details' ) ); ?></a></li><!--
 		<?php } ?>
 
+		--><li<?php if ( 'site-details' === $current_tab ) : ?> class="current-menu-item"<?php endif; ?>><a href="<?php echo bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug ?>/admin/site-details"><?php echo esc_html_x( 'Site', 'Group admin nav item', 'openlab-theme' ); ?></a></li><!--
+
 		<?php if ( ! (int) bp_get_option( 'bp-disable-avatar-uploads' ) ) : ?>
 			--><li<?php if ( 'group-avatar' == $current_tab ) : ?> class="current-menu-item"<?php endif; ?>><a href="<?php echo bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug ?>/admin/group-avatar"><?php esc_html_e( 'Change Avatar', 'openlab-theme' ); ?></a></li><!--
 		<?php endif; ?>
@@ -1023,6 +1025,8 @@ function openlab_group_admin_tabs( $group = false ) {
 			return false;
 		}
 		?>
+
+		--><li<?php if ( 'site-details' === $current_tab ) : ?> class="current-menu-item"<?php endif; ?>><a href="<?php echo bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug ?>/admin/site-details"><?php echo esc_html_x( 'Site', 'Group admin nav item', 'openlab-theme' ); ?></a></li><!--
 
 		--><li<?php if ( 'group-avatar' == $current_tab ) : ?> class="current-menu-item"<?php endif; ?>><a href="<?php echo bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug ?>/admin/group-avatar"><?php _e( 'Change Avatar', 'openlab-theme' ); ?></a></li><!--
 

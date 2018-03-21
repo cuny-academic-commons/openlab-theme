@@ -176,6 +176,15 @@ openlab_group_admin_js_data( $group_type );
 
 		<?php endif; ?>
 
+		<?php if ( bp_is_group_admin_screen( 'site-details' ) ) : ?>
+			<?php do_action( 'template_notices' ) ?>
+
+			<?php openlab_group_site_markup(); ?>
+			<?php openlab_group_site_privacy_settings_markup(); ?>
+
+			<p><input class="btn btn-primary" type="submit" value="<?php _e( 'Save Changes', 'openlab-theme' ) ?> &#xf138;" id="save" name="save" /></p>
+		<?php endif; ?>
+
 		<?php /* Group Avatar Settings */ ?>
 		<?php if ( bp_is_group_admin_screen( 'group-avatar' ) ) : ?>
 

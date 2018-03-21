@@ -145,7 +145,7 @@ function openlab_group_site_markup() {
 						}
 						?>
 						<p><?php printf( esc_html__( 'This group is currently associated with the site "%s"', 'openlab-theme' ), $group_site_text ) ?></p>
-						<ul id="change-group-site"><li><?php echo $group_site_url_out ?> <a class="button underline confirm" href="<?php echo wp_nonce_url( bp_get_group_permalink( groups_get_current_group() ) . 'admin/edit-details/unlink-site/', 'unlink-site' ) ?>" id="change-group-site-toggle"><?php esc_html_e( 'Unlink', 'openlab-theme' ); ?></a></li></ul>
+						<ul id="change-group-site"><li><?php echo $group_site_url_out ?> <a class="button underline confirm" href="<?php echo wp_nonce_url( bp_get_group_permalink( groups_get_current_group() ) . 'admin/site-details/unlink-site/', 'unlink-site' ) ?>" id="change-group-site-toggle"><?php esc_html_e( 'Unlink', 'openlab-theme' ); ?></a></li></ul>
 
 					</div>
 
@@ -1422,6 +1422,60 @@ HTML;
 }
 
 add_filter( 'bp_get_options_nav_nav-invite-anyone', 'cuny_send_invite_fac_only' );
+
+/**
+ * Add the 'Site' subnav to group admin.
+ */
+function openlab_add_site_subnav_to_group_admin() {
+	if ( bp_is_item_admin() ) {
+		$nav_params = array(
+			'name'              => _x( 'Site', 'Group admin nav item', 'openlab-theme' ),
+			'slug'              => 'site-details',
+			'position'          => 15,
+			'parent_url'        => bp_get_group_permalink( groups_get_current_group() ) . 'admin/',
+			'parent_slug'       => bp_get_current_group_slug() . '_manage',
+			'screen_function'   => 'openlab_group_site_settings',
+			'user_has_access'   => bp_is_item_admin(),
+			'show_in_admin_bar' => true,
+		);
+
+		bp_core_new_subnav_item( $nav_params, 'groups' );
+	}
+}
+add_action( 'groups_setup_nav', 'openlab_add_site_subnav_to_group_admin' );
+
+/**
+ * Handle the display of a group's admin/site-settings page.
+ */
+function openlab_group_site_settings() {
+	if ( 'site-details' !== bp_get_group_current_admin_tab() ) {
+		return false;
+	}
+
+	$bp = buddypress();
+
+	// If the edit form has been submitted, save the edited details.
+	if ( isset( $_POST['save'] ) ) {
+		openlab_save_group_site();
+		openlab_save_group_site_settings();
+
+		bp_core_add_message( __( 'Site settings successfully saved.', 'openlab-theme' ) );
+
+		bp_core_redirect( bp_get_group_permalink( groups_get_current_group() ) . 'admin/site-details/' );
+	}
+
+	/**
+	 * Fires before the loading of the group admin/group-settings page template.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param int $id ID of the group that is being displayed.
+	 */
+	do_action( 'groups_screen_group_admin_settings', $bp->groups->current_group->id );
+
+	bp_core_load_template( apply_filters( 'groups_template_group_admin_settings', 'groups/single/home' ) );
+}
+add_action( 'bp_screens', 'openlab_group_site_settings' );
 
 function cuny_send_invite_fac_only( $subnav_item ) {
 	global $bp;
