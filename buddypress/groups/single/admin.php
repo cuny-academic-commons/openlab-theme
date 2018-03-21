@@ -69,6 +69,8 @@ openlab_group_admin_js_data( $group_type );
 				</div>
 			</div>
 
+			<?php openlab_group_avatar_markup(); ?>
+
 			<?php do_action( 'bp_after_group_details_admin' ); ?>
 
 			<p><input class="btn btn-primary" type="submit" value="<?php _e( 'Save Changes', 'openlab-theme' ) ?> &#xf138;" id="save" name="save" /></p>

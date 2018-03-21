@@ -7539,6 +7539,9 @@ a:hover .cyan-circle {
   color: #a9280e;
 }
 /**custom tags**/
+body #avatar-panel .padded-img {
+  border-width: 18px;
+}
 body .no-gutter.no-gutter-right {
   padding-right: 0;
 }
