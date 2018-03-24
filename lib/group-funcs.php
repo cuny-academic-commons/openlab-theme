@@ -222,7 +222,7 @@ function openlab_group_site_markup() {
 							<div class="row">
 								<div class="radio <?php if ( ! $is_clone ) : ?>disabled-opt<?php endif; ?>">
 									<label>
-										<input type="radio" class="noo_radio" name="new_or_old" id="new_or_old_clone" value="clone" <?php disabled( ! $is_clone ); ?> <?php selected( $is_clone ); ?> />
+										<input type="radio" class="noo_radio" name="new_or_old" id="new_or_old_clone" value="clone" <?php disabled( ! $is_clone ); ?> <?php checked( $is_clone ); ?> />
 										<?php esc_html_e( 'Name your cloned site:', 'openlab-theme' ); ?>
 									</label>
 								</div>
@@ -242,7 +242,7 @@ function openlab_group_site_markup() {
 									</div>
 								<?php endif; ?>
 
-								<input name="blog-id-to-clone" value="<?php echo esc_attr( $clone_source_site_id ); ?>" type="hidden" />
+								<input id="blog-id-to-clone" name="blog-id-to-clone" value="<?php echo esc_attr( $clone_source_site_id ); ?>" type="hidden" />
 							</div><!-- /.row -->
 
 							<p id="cloned-site-url"></p>
@@ -255,7 +255,7 @@ function openlab_group_site_markup() {
 						<div id="noo_new_options-div" class="row">
 							<div class="radio">
 								<label>
-									<input type="radio" class="noo_radio" name="new_or_old" id="new_or_old_new" value="new" <?php selected( ! $is_clone ); ?> />
+									<input type="radio" class="noo_radio" name="new_or_old" id="new_or_old_new" value="new" <?php checked( ! $is_clone ); ?> />
 									<?php esc_html_e( 'Create a new site:', 'openlab-theme' ); ?>
 								</label>
 							</div>
