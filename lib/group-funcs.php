@@ -240,17 +240,36 @@ function openlab_group_site_markup() {
 								</label>
 							</div>
 
-							<div class="site-label site-path">
-								<span>
-								<?php
-								$suggested_path = $group_type->get_is_portfolio() ? openlab_suggest_portfolio_path() : '';
-								// @todo Subdomains
-								echo $current_site->domain . $current_site->path
-								?>
-								</span>
+							<?php
 
-								<input id="new-site-domain" class="form-control domain-validate" size="40" name="blog[domain]" type="text" title="<?php esc_html_e( 'Domain', 'openlab-theme' ) ?>" value="<?php echo esc_html( $suggested_path ) ?>" />
-							</div>
+							if ( $group_type->get_is_portfolio() ) {
+								$suggested_path = openlab_suggest_portfolio_path();
+							} else {
+								$suggested_path = groups_get_current_group()->slug;
+							}
+
+							?>
+
+							<?php if ( is_subdomain_install() ) : ?>
+								<div class="site-label site-path site-path-subdomain">
+									<input id="new-site-domain" class="form-control domain-validate" size="40" name="blog[domain]" type="text" title="<?php esc_html_e( 'Domain', 'openlab-theme' ) ?>" value="<?php echo esc_html( $suggested_path ) ?>" />
+
+									<span>.<?php echo cboxol_get_subdomain_base(); ?></span>
+								</div>
+
+							<?php else : ?>
+								<div class="site-label site-path site-path-subdirectory">
+									<span>
+									<?php
+									// @todo Subdomains
+									echo $current_site->domain . $current_site->path
+									?>
+									</span>
+
+									<input id="new-site-domain" class="form-control domain-validate" size="40" name="blog[domain]" type="text" title="<?php esc_html_e( 'Domain', 'openlab-theme' ) ?>" value="<?php echo esc_html( $suggested_path ) ?>" />
+								</div>
+							<?php endif; ?>
+
 						</div><!-- #noo_new_options-div -->
 					</div><!-- #noo_new_options -->
 				</div><!-- #wds-website -->
