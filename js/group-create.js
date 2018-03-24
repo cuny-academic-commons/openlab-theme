@@ -267,7 +267,11 @@ jQuery(document).ready(function($){
 	}
 
 	// setup
-	new_old_switch( 'new' );
+	if ( $('#blog-id-to-clone').val() ) {
+		new_old_switch( 'clone' );
+	} else {
+		new_old_switch( 'new' );
+	}
 
 	if ( CBOXOL_Group_Create.is_course ) {
 		var $create_or_clone, create_or_clone, group_id_to_clone, new_create_or_clone;
