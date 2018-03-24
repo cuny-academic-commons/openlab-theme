@@ -252,31 +252,6 @@ jQuery(document).ready(function($){
 
 				// Additional Description
 				$('#additional-desc-html').val(r.additional_description);
-
-				// Associated site
-				if ( r.site_id ) {
-					// Un-grey the website clone options
-					$('#wds-website-clone .radio').removeClass('disabled-opt');
-					$('#wds-website-clone input[name="new_or_old"]').removeAttr('disabled');
-
-					// Auto-select the "Name your cloned site" option,
-					// and trigger setup JS
-					$('#new_or_old_clone').attr('checked', true);
-					$('#new_or_old_clone').trigger('click');
-
-					// Site URL
-					$('#cloned-site-url').html( 'Your original address was: ' + r.site_url );
-					$('#blog-id-to-clone').val( r.site_id );
-				} else {
-					// Grey out the website clone options
-					$('#wds-website-clone .radio').addClass('disabled-opt');
-					$('#wds-website-clone input[name="new_or_old"]').attr('disabled','disabled');
-
-					// Pre-select "Create a new site"
-					$('#new_or_old_new').attr('checked', true);
-					$('#new_or_old_new').trigger('click');
-				}
-
 			}
 		});
 	}
