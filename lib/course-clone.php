@@ -53,25 +53,26 @@ function openlab_clone_create_form_catcher() {
 
 				groups_update_groupmeta( $new_group_id, 'clone_source_group_id', $clone_source_group_id );
 				openlab_clone_course_group( $new_group_id, $clone_source_group_id );
-
-				if ( isset( $_POST['new_or_old'] ) && ( 'clone' === $_POST['new_or_old'] ) && isset( $_POST['blog-id-to-clone'] ) && isset( $_POST['set-up-site-toggle'] ) ) {
-					$clone_source_blog_id = cboxol_get_group_site_id( $clone_source_group_id );
-					cboxol_set_group_site_id( $new_group_id, $clone_source_blog_id );
-
-					// @todo validation
-					$clone_destination_path = wp_unslash( $_POST['clone-destination-path'] );
-					groups_update_groupmeta( $new_group_id, 'clone_destination_path', $clone_destination_path );
-
-					openlab_clone_course_site( $new_group_id, $clone_source_group_id, $clone_source_blog_id, $clone_destination_path );
-				}
 			}
 			break;
 
-		case 'group-settings' :
+		case 'site-details' :
 			$clone_source_group_id = intval( groups_get_groupmeta( $new_group_id, 'clone_source_group_id' ) );
 
 			if ( ! $clone_source_group_id ) {
 				return;
+			}
+
+			// @todo Move
+			if ( isset( $_POST['new_or_old'] ) && ( 'clone' === $_POST['new_or_old'] ) && isset( $_POST['blog-id-to-clone'] ) && isset( $_POST['set-up-site-toggle'] ) ) {
+				$clone_source_blog_id = cboxol_get_group_site_id( $clone_source_group_id );
+				cboxol_set_group_site_id( $new_group_id, $clone_source_blog_id );
+
+				// @todo validation
+				$clone_destination_path = wp_unslash( $_POST['clone-destination-path'] );
+				groups_update_groupmeta( $new_group_id, 'clone_destination_path', $clone_destination_path );
+
+				openlab_clone_course_site( $new_group_id, $clone_source_group_id, $clone_source_blog_id, $clone_destination_path );
 			}
 
 			break;
@@ -167,6 +168,16 @@ function openlab_clone_course_group( $group_id, $source_group_id ) {
 function openlab_clone_course_site( $group_id, $source_group_id, $source_site_id, $clone_destination_path ) {
 	$c = new Openlab_Clone_Course_Site( $group_id, $source_group_id, $source_site_id, $clone_destination_path );
 	$c->go();
+}
+
+/**
+ * Get the group ID of a group's clone source.
+ *
+ * @param int $group_id
+ * @return int $group_id
+ */
+function openlab_get_clone_source_group_id( $group_id ) {
+	return (int) groups_get_groupmeta( $group_id, 'clone_source_group_id' );
 }
 
 /** CLASSES ******************************************************************/

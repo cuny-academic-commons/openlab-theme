@@ -168,6 +168,24 @@ function openlab_group_site_markup() {
 						}
 					}
 					$user_blogs = array_values( $user_blogs );
+
+					$is_clone = false;
+					if ( $group_type->get_can_be_cloned() ) {
+						$clone_source_group_id = openlab_get_clone_source_group_id( $the_group_id );
+						if ( $clone_source_group_id ) {
+							$clone_source_site_id = cboxol_get_group_site_id( $clone_source_group_id );
+							if ( $clone_source_site_id ) {
+								$is_clone = true;
+							}
+						}
+					}
+
+					if ( $group_type->get_is_portfolio() ) {
+						$suggested_path = openlab_suggest_portfolio_path();
+					} else {
+						$suggested_path = groups_get_current_group()->slug;
+					}
+
 					?>
 					<style type="text/css">
 						.disabled-opt {
@@ -202,27 +220,29 @@ function openlab_group_site_markup() {
 					<div id="wds-website-clone" class="form-field form-required" style="display:<?php echo $show_website; ?>">
 						<div id="noo_clone_options">
 							<div class="row">
-								<div class="radio disabled-opt">
+								<div class="radio <?php if ( ! $is_clone ) : ?>disabled-opt<?php endif; ?>">
 									<label>
-										<input type="radio" class="noo_radio" name="new_or_old" id="new_or_old_clone" value="clone" disabled />
+										<input type="radio" class="noo_radio" name="new_or_old" id="new_or_old_clone" value="clone" <?php disabled( ! $is_clone ); ?> <?php selected( $is_clone ); ?> />
 										<?php esc_html_e( 'Name your cloned site:', 'openlab-theme' ); ?>
 									</label>
 								</div>
 
-								<div class="site-label site-path<?php if ( is_subdomain_install() ) : ?> site-path-subdomain<?php endif; ?>">
-									<?php if ( is_subdomain_install() ) : ?>
+								<?php if ( is_subdomain_install() ) : ?>
+									<div class="site-label site-path site-path-subdomain">
+										<input id="clone-destination-path" class="form-control domain-validate" size="40" name="clone-destination-path" type="text" title="<?php esc_html_e( 'Domain', 'openlab-theme' ) ?>" value="<?php echo esc_html( $suggested_path ) ?>" />
 
-									<?php else : ?>
-										<?php global $current_site ?>
-										<span>
-											<?php echo $current_site->domain . $current_site->path ?>
-										</span>
-										<input class="form-control domain-validate" size="40" id="clone-destination-path" name="clone-destination-path" type="text" title="<?php _e( 'Path', 'openlab-theme' ) ?>" value="" />
+										<span>.<?php echo cboxol_get_subdomain_base(); ?></span>
+									</div>
 
-									<?php endif; ?>
-								</div><!-- /.site-label -->
+								<?php else : ?>
+									<div class="site-label site-path site-path-subdirectory">
+										<span><?php echo $current_site->domain . $current_site->path ?></span>
 
-								<input name="blog-id-to-clone" value="" type="hidden" />
+										<input class="form-control domain-validate" size="40" id="clone-destination-path" name="clone-destination-path" type="text" title="<?php esc_html_e( 'Domain', 'openlab-theme' ) ?>" value="<?php echo esc_html( $suggested_path ) ?>" />
+									</div>
+								<?php endif; ?>
+
+								<input name="blog-id-to-clone" value="<?php echo esc_attr( $clone_source_site_id ); ?>" type="hidden" />
 							</div><!-- /.row -->
 
 							<p id="cloned-site-url"></p>
@@ -235,20 +255,10 @@ function openlab_group_site_markup() {
 						<div id="noo_new_options-div" class="row">
 							<div class="radio">
 								<label>
-									<input type="radio" class="noo_radio" name="new_or_old" id="new_or_old_new" value="new" />
+									<input type="radio" class="noo_radio" name="new_or_old" id="new_or_old_new" value="new" <?php selected( ! $is_clone ); ?> />
 									<?php esc_html_e( 'Create a new site:', 'openlab-theme' ); ?>
 								</label>
 							</div>
-
-							<?php
-
-							if ( $group_type->get_is_portfolio() ) {
-								$suggested_path = openlab_suggest_portfolio_path();
-							} else {
-								$suggested_path = groups_get_current_group()->slug;
-							}
-
-							?>
 
 							<?php if ( is_subdomain_install() ) : ?>
 								<div class="site-label site-path site-path-subdomain">
@@ -259,12 +269,7 @@ function openlab_group_site_markup() {
 
 							<?php else : ?>
 								<div class="site-label site-path site-path-subdirectory">
-									<span>
-									<?php
-									// @todo Subdomains
-									echo $current_site->domain . $current_site->path
-									?>
-									</span>
+									<span><?php echo $current_site->domain . $current_site->path ?></span>
 
 									<input id="new-site-domain" class="form-control domain-validate" size="40" name="blog[domain]" type="text" title="<?php esc_html_e( 'Domain', 'openlab-theme' ) ?>" value="<?php echo esc_html( $suggested_path ) ?>" />
 								</div>

@@ -204,11 +204,6 @@ jQuery(document).ready(function($){
 			if ( ! group_id_to_clone ) {
 				group_id_to_clone = $.urlParam( 'clone' );
 			}
-
-			// Ensure that the "Set up a site" section is visible
-			if ( ! $(setuptoggle).is( ':checked' ) ) {
-				$(setuptoggle).trigger('click');
-			}
 		} else {
 			// Check "Create a course" near the top
 			$('#create-or-clone-create').attr('checked', true);
