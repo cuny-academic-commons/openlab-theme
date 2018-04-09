@@ -7179,8 +7179,9 @@ blockquote .h6 {
 }
 .pagination li a:hover,
 .pagination li span:hover {
-  color: #a9280e;
   background-color: inherit;
+  color: #333333;
+  text-decoration: underline;
 }
 /**structural**/
 .container-fluid {
