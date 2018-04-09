@@ -7028,8 +7028,8 @@ a {
 }
 a:hover,
 a:focus {
-  color: #a9280e;
-  text-decoration: underline;
+  color: #333333;
+  text-decoration: none;
 }
 a.no-deco {
   text-decoration: none;
