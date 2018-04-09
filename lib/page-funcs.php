@@ -91,6 +91,8 @@ function cuny_home_login() {
 function openlab_registration_page() {
 	do_action( 'bp_before_register_page' );
 
+	$registration_form_settings = cboxol_get_registration_form_settings();
+
 	$ajaxurl = bp_core_ajax_url();
 	$site_name = bp_get_option( 'blogname' );
 
@@ -282,8 +284,7 @@ function openlab_registration_page() {
 				<?php do_action( 'bp_before_registration_submit_buttons' ) ?>
 
 				<p class="sign-up-terms">
-					<?php /* @todo What to do about this? */ ?>
-					By clicking "Complete Sign Up", I agree to the <a class="underline" href="<?php echo home_url( 'about/terms-of-service' ) ?>" target="_blank">OpenLab Terms of Use</a> and <a class="underline" href="http://cuny.edu/website/privacy.html" target="_blank">Privacy Policy</a>.
+					<?php echo $registration_form_settings['confirmationText']; ?>
 				</p>
 
 				<p id="submitSrMessage" class="sr-only submit-alert" aria-live="polite"></p>
