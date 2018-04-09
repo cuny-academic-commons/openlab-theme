@@ -7093,7 +7093,7 @@ blockquote .h6 {
 }
 .nav.nav-inline li a,
 .nav.nav-inline li span {
-  color: #000000;
+  color: #333;
   display: inline-block;
   padding: 0;
 }
@@ -7104,10 +7104,6 @@ blockquote .h6 {
 }
 .nav.nav-inline li.current-menu-item {
   font-weight: 700;
-}
-.nav.nav-inline li.current-menu-item,
-.nav.nav-inline li:hover {
-  color: #1d5f7b;
 }
 .nav.nav-inline li.current-menu-item a,
 .nav.nav-inline li:hover a,
