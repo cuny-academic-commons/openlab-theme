@@ -391,40 +391,21 @@ function openlab_group_site_privacy_settings_markup() {
 						</div>
 					</div>
 
-					<?php if ( ! cboxol_is_portfolio() && ( ! isset( $_GET['group_type'] ) || 'portfolio' != $_GET['group_type'] ) ) : ?>
+					<h5><?php esc_html_e( 'Private', 'openlab-theme' ) ?></h5>
+					<div class="row">
+						<div class="col-sm-23 col-sm-offset-1">
+							<p><label for="blog-private-1"><input id="blog-private-1" type="radio" name="blog_public" value="-1" <?php checked( '-1', $blog_public ); ?>><?php esc_html_e( 'I would like my site to be visible only to members of this community.', 'openlab-theme' ); ?></label></p>
 
-						<h5><?php esc_html_e( 'Private', 'openlab-theme' ) ?></h5>
-						<div class="row">
-							<div class="col-sm-23 col-sm-offset-1">
-								<p><label for="blog-private-1"><input id="blog-private-1" type="radio" name="blog_public" value="-1" <?php checked( '-1', $blog_public ); ?>><?php esc_html_e( 'I would like my site to be visible only to members of this community.', 'openlab-theme' ); ?></label></p>
-
-								<p><label for="blog-private-2"><input id="blog-private-2" type="radio" name="blog_public" value="-2" <?php checked( '-2', $blog_public ); ?>><?php esc_html_e( 'I would like my site to be visible to community members with a role on the associated site.', 'openlab-theme' ); ?></label></p>
-							</div>
+							<p><label for="blog-private-2"><input id="blog-private-2" type="radio" name="blog_public" value="-2" <?php checked( '-2', $blog_public ); ?>><?php esc_html_e( 'I would like my site to be visible to community members with a role on the associated site.', 'openlab-theme' ); ?></label></p>
 						</div>
+					</div>
 
-						<h5><?php esc_html_e( 'Hidden', 'openlab-theme' ) ?></h5>
-						<div class="row">
-							<div class="col-sm-23 col-sm-offset-1">
-								<p><label for="blog-private-3"><input id="blog-private-3" type="radio" name="blog_public" value="-3" <?php checked( '-3', $blog_public ); ?>><?php esc_html_e( 'I would like my site to be visible only to those members with an administrative role on the associated site.' ); ?></label></p>
-							</div>
+					<h5><?php esc_html_e( 'Hidden', 'openlab-theme' ) ?></h5>
+					<div class="row">
+						<div class="col-sm-23 col-sm-offset-1">
+							<p><label for="blog-private-3"><input id="blog-private-3" type="radio" name="blog_public" value="-3" <?php checked( '-3', $blog_public ); ?>><?php esc_html_e( 'I would like my site to be visible only to those members with an administrative role on the associated site.' ); ?></label></p>
 						</div>
-
-					<?php else : ?>
-
-						<?php /* Portfolios */ ?>
-						<h5><?php esc_html_e( 'Private', 'openlab-theme' ); ?></h5>
-						<div class="row">
-							<div class="col-sm-23 col-sm-offset-1">
-								<p><label for="blog-private-1"><input id="blog-private-1" type="radio" name="blog_public" value="-1" <?php checked( '-1', $blog_public ); ?>><?php esc_html_e( 'I would like my site to be visible only to registered users of the network.', 'openlab-theme' ); ?></label></p>
-
-								<p><label for="blog-private-2"><input id="blog-private-2" type="radio" name="blog_public" value="-2" <?php checked( '-2', $blog_public ); ?>><?php esc_html_e( 'I would like my site to be visible only to registered users that I have granted access.', 'openlab-theme' ); ?></label></p>
-								<p class="description private-portfolio-gloss italics note"><?php esc_html_e( 'Note: If you would like your site to be visible to people who are not members of this network, you will need to make your site public.', 'openlab-theme' ); ?></p>
-
-								<p><label for="blog-private-3"><input id="blog-private-3" type="radio" name="blog_public" value="-3" <?php checked( '-3', $blog_public ); ?>><?php esc_html_e( 'I would like my site to be visible only to me.', 'openlab-theme' ); ?></label></p>
-							</div>
-						</div>
-
-					<?php endif; ?>
+					</div>
 				</div>
 			</div>
 		</div>
