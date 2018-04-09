@@ -484,6 +484,10 @@ function openlab_site_footer() {
 
 					<div id="footer-right" class="footer-right footer-section col-md-4">
 						<p><?php esc_html_e( 'Powered by:', 'openlab-theme' ); ?></p>
+
+						<div class="cboxol-footer-logo">
+							<a href="https://commonsinabox.org/"><img src="<?php echo get_template_directory_uri() ?>/images/cboxol-logo-noicon.png" alt="<?php esc_attr_e( 'CBOX-OL Logo', 'openlab-theme' ); ?>" /></a>
+						</div>
 					</div>
 				</div>
 			</div>

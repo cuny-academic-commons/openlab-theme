@@ -7679,6 +7679,9 @@ button.oplb-bs .close {
 .oplb-bs#openlab-footer .cuny-logo {
   max-width: 74px !important;
 }
+.oplb-bs#openlab-footer .cboxol-footer-logo img {
+  margin-left: -5px;
+}
 .oplb-bs#openlab-footer p,
 .oplb-bs#openlab-footer a {
   font-size: 14px;
