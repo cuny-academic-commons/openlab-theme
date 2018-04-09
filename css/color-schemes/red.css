@@ -7034,6 +7034,10 @@ a:focus {
 a.no-deco {
   text-decoration: none;
 }
+a.no-deco:hover,
+a.no-deco:focus {
+  text-decoration: underline;
+}
 a.btn-primary {
   color: #ffffff;
 }
