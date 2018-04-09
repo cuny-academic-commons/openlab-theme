@@ -7447,7 +7447,8 @@ input[type="submit"] {
 }
 .navbar-default .container-fluid ul.nav li a:hover,
 .navbar-default .container-fluid ul.nav li a:focus {
-  color: #b6d498;
+  color: #333333;
+  text-decoration: underline;
 }
 @media (max-width: 991px) {
   .navbar-default .container-fluid ul.nav li a {
