@@ -22,7 +22,7 @@
 
 			<?php do_action( 'template_notices' ) ?>
 
-			<label><?php _e( 'Search for members to invite:', 'bp-invite-anyone' ) ?></label>
+			<label><?php echo esc_html( $group_type->get_label( 'search_for_members_to_invite_to_group' ) ); ?>:</label>
 
 			<ul class="first acfb-holder invite-search inline-element-list">
 				<li>
