@@ -14,7 +14,12 @@
 	}
 
 	// @todo Redirect away if course and user cannot create courses.
-	$group_type = cboxol_get_group_type( $gt );
+	if ( bp_get_current_group_id() ) {
+		$group_type = cboxol_get_group_group_type( bp_get_current_group_id() );
+	} else {
+		$group_type = cboxol_get_group_type( $gt );
+	}
+
 	if ( is_wp_error( $group_type ) ) {
 		$group_types = cboxol_get_group_types( array(
 			'exclude_portfolio' => true,
