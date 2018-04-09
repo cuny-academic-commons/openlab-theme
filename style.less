@@ -1787,10 +1787,15 @@ body form{
 	a {
 		display: block;
 	}
+
+	.cyan-circle{
+		color: @darkHighlight;
+	}
 	&:hover, &:focus{
 		> a{
 			background: @navLinkBackgroundColor;
 			color: @navLinkTextColor;
+			text-decoration: none;
 
 			.cyan-circle{
 				color: @navLinkTextColor;

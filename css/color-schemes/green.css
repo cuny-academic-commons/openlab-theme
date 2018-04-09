@@ -8733,10 +8733,14 @@ body form .checkbox-list-container {
 .portfolio-site-link a {
   display: block;
 }
+.portfolio-site-link .cyan-circle {
+  color: #9fd764;
+}
 .portfolio-site-link:hover > a,
 .portfolio-site-link:focus > a {
   background: #b6d498;
   color: #333;
+  text-decoration: none;
 }
 .portfolio-site-link:hover > a .cyan-circle,
 .portfolio-site-link:focus > a .cyan-circle {
