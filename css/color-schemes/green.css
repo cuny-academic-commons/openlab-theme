@@ -7773,8 +7773,22 @@ body #ubpfattach-message.err {
 body .bp-template-notice.updated,
 body .bbp-template-notice.updated,
 body #ubpfattach-message.updated {
-  background: #b6d498;
-  border-color: #b6d498;
+  background: #ff5959;
+  border-color: #ff5959;
+  color: #ffffff;
+}
+body .bp-template-notice.updated.btn-default.btn-primary .fa,
+body .bbp-template-notice.updated.btn-default.btn-primary .fa,
+body #ubpfattach-message.updated.btn-default.btn-primary .fa,
+body .bp-template-notice.updated.btn-default:hover.btn-primary .fa,
+body .bbp-template-notice.updated.btn-default:hover.btn-primary .fa,
+body #ubpfattach-message.updated.btn-default:hover.btn-primary .fa {
+  color: #ffffff;
+}
+body .bp-template-notice.updated p,
+body .bbp-template-notice.updated p,
+body #ubpfattach-message.updated p {
+  color: #ffffff;
 }
 body .bp-template-notice.margin-bottom,
 body .bbp-template-notice.margin-bottom,

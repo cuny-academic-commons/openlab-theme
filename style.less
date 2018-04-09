@@ -802,8 +802,20 @@ body{
             color: @80gray;
         }
         &.updated{
-            background: @primaryColor;
-            border-color: @primaryColor;
+            background: #ff5959;
+            border-color: #ff5959;
+			color: @white;
+
+			&.btn-default.btn-primary,
+			&.btn-default:hover.btn-primary {
+				.fa {
+					color: @white;
+				}
+			}
+
+			p {
+				color: @white;
+			}
         }
         &.margin-bottom{
             margin-bottom: 17px;
