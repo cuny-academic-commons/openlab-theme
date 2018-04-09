@@ -10,14 +10,14 @@
 
 <?php do_action( 'bp_before_group_send_invites_content' ) ?>
 
-<?php $group_type = openlab_get_group_type( bp_get_current_group_id() ); ?>
+<?php $group_type = cboxol_get_group_group_type( bp_get_current_group_id() ); ?>
 
 <?php if ( ! bp_get_new_group_id() ) : ?>
 	<form action="<?php bp_group_permalink( groups_get_current_group() ) ?>/invite-anyone/send/" method="post" class="form-panel" id="send-invite-form">
 	<?php endif; ?>
 
 	<div id="topgroupinvite" class="panel panel-default">
-		<div class="panel-heading semibold"><?php esc_html_e( 'Invite Members', 'openlab-theme' ); ?></div>
+		<div class="panel-heading semibold"><?php echo esc_html( $group_type->get_label( 'invite_community_members_to_group' ) ); ?></div>
 		<div class="panel-body">
 
 			<?php do_action( 'template_notices' ) ?>
