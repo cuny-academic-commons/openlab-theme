@@ -1768,6 +1768,27 @@ body form{
 }
 .portfolio-site-link {
 	font-size: 1.1em;
+	a {
+		display: block;
+	}
+	&:hover, &:focus{
+		> a{
+			background: @navLinkBackgroundColor;
+			color: @navLinkTextColor;
+
+			.cyan-circle{
+				color: @navLinkTextColor;
+			}
+		}
+	}
+}
+.portfolio-dashboard-link {
+	&:hover, &:focus {
+		a {
+			color: @80gray;	
+			text-decoration: none;
+		}
+	}
 }
 .mobile-group-site-links {
 	margin-top: 30px;
@@ -1908,11 +1929,13 @@ body form{
             }
         }
         ul.sidebar-sublinks{
-            padding: 6% 5%;
+            padding: 10px 0;
             li{
-                margin-bottom: 10px;
-                &:last-child{
-                    margin-bottom: 0;
+				a {
+					padding: 7px 5%;
+				}
+                &:last-child a {
+					padding-bottom: 0;
                 }
             }
             &.group-event-activity{

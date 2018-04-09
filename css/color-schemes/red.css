@@ -8712,6 +8712,23 @@ body form .checkbox-list-container {
 .portfolio-site-link {
   font-size: 1.1em;
 }
+.portfolio-site-link a {
+  display: block;
+}
+.portfolio-site-link:hover > a,
+.portfolio-site-link:focus > a {
+  background: #a9280e;
+  color: #fff;
+}
+.portfolio-site-link:hover > a .cyan-circle,
+.portfolio-site-link:focus > a .cyan-circle {
+  color: #fff;
+}
+.portfolio-dashboard-link:hover a,
+.portfolio-dashboard-link:focus a {
+  color: #333333;
+  text-decoration: none;
+}
 .mobile-group-site-links {
   margin-top: 30px;
 }
@@ -8836,13 +8853,13 @@ body form .checkbox-list-container {
   }
 }
 .sidebar .sidebar-block ul.sidebar-sublinks {
-  padding: 6% 5%;
+  padding: 10px 0;
 }
-.sidebar .sidebar-block ul.sidebar-sublinks li {
-  margin-bottom: 10px;
+.sidebar .sidebar-block ul.sidebar-sublinks li a {
+  padding: 7px 5%;
 }
-.sidebar .sidebar-block ul.sidebar-sublinks li:last-child {
-  margin-bottom: 0;
+.sidebar .sidebar-block ul.sidebar-sublinks li:last-child a {
+  padding-bottom: 0;
 }
 .sidebar .sidebar-block ul.sidebar-sublinks.group-event-activity li {
   margin-bottom: 14px;
