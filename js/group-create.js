@@ -125,7 +125,7 @@ jQuery(document).ready(function($){
 
 	function showHideAssociatedSitePrivacy() {
 		var $associatedSitePrivacyPanel = $('#associated-site-privacy-panel');
-		if ( setuptoggle.is(':checked') || $('#current-group-site').is(':visible') ) {
+		if ( setuptoggle.is(':checked') || $('#current-group-site').is(':visible') || CBOXOL_Group_Create.group_type_requires_site ) {
 			$associatedSitePrivacyPanel.show();
 		} else {
 			$associatedSitePrivacyPanel.hide();
