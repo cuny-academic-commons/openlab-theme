@@ -487,7 +487,7 @@ function openlab_create_group_menu( \CBOX\OL\GroupType $group_type ) {
 			$step_name = __( 'Step Two: Associated Site Creation', 'openlab-theme' );
 			break;
 		case 'invite-anyone' :
-			$step_name = __( 'Step Three: Invite Members', 'openlab-theme' );
+			$step_name = sprintf( __( 'Step One: %s', 'openlab-theme' ), esc_html( $group_type->get_label( 'invite_members_to_group' ) ) );
 			break;
 		case 'group-details' :
 		default:
