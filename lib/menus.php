@@ -1007,7 +1007,7 @@ function openlab_group_admin_tabs( $group = false ) {
 
 		--><li<?php if ( 'site-details' === $current_tab ) : ?> class="current-menu-item"<?php endif; ?>><a href="<?php echo bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug ?>/admin/site-details"><?php echo esc_html_x( 'Site', 'Group admin nav item', 'openlab-theme' ); ?></a></li><!--
 
-		--><li<?php if ( 'group-settings' == $current_tab ) : ?> class="current-menu-item"<?php endif; ?>><a href="<?php echo bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug ?>/admin/group-settings"><?php esc_html_e( 'Privacy Settings', 'openlab-theme' ); ?></a></li>
+		--><li<?php if ( 'group-settings' == $current_tab ) : ?> class="current-menu-item"<?php endif; ?>><a href="<?php echo bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug ?>/admin/group-settings"><?php esc_html_e( 'Settings', 'openlab-theme' ); ?></a></li>
 
 		<li class="delete-button <?php if ( 'delete-group' == $current_tab ) : ?> current-menu-item<?php endif; ?>" ><span class="fa fa-minus-circle"></span><a href="<?php echo bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug ?>/admin/delete-group"><?php esc_html_e( 'Delete Portfolio', 'openlab-theme' ); ?></a></li><!--
 

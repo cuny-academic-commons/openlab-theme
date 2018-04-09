@@ -60,7 +60,7 @@ function openlab_group_privacy_settings_markup() {
 	?>
 
 	<div class="panel panel-default">
-		<div class="panel-heading semibold"><?php esc_html_e( 'Privacy Settings', 'openlab-theme' ); ?></div>
+		<div class="panel-heading semibold"><?php esc_html_e( 'Settings', 'openlab-theme' ); ?></div>
 
 		<div class="radio group-profile panel-body">
 
