@@ -80,7 +80,7 @@ add_filter( 'wp_nav_menu_objects', 'openlab_wp_menu_customizations', 11, 2 );
  * Hooked to bp_screens at 1 because apparently BP is broken??
  */
 function openlab_modify_options_nav() {
-	if ( bp_is_group() && cboxol_is_portfolio() && ! bp_is_group_create() ) {
+	if ( bp_is_group() && ! bp_is_group_create() ) {
 		$group_type = cboxol_get_group_group_type( bp_get_current_group_id() );
 		buddypress()->groups->nav->edit_nav(
 			array(
@@ -90,12 +90,14 @@ function openlab_modify_options_nav() {
 			bp_get_current_group_slug()
 		);
 
-		// Keep the following tabs as-is
-		$keepers = array( 'home', 'admin', 'members' );
-		$nav_items = buddypress()->groups->nav->get_secondary( array( 'parent_slug' => bp_get_current_group_slug() ) );
-		foreach ( $nav_items as $nav_item ) {
-			if ( ! in_array( $nav_item->slug, $keepers ) ) {
-				buddypress()->groups->nav->delete_nav( $nav_item->slug, bp_get_current_group_slug() );
+		if ( cboxol_is_portfolio() ) {
+			// Keep the following tabs as-is
+			$keepers = array( 'home', 'admin', 'members' );
+			$nav_items = buddypress()->groups->nav->get_secondary( array( 'parent_slug' => bp_get_current_group_slug() ) );
+			foreach ( $nav_items as $nav_item ) {
+				if ( ! in_array( $nav_item->slug, $keepers ) ) {
+					buddypress()->groups->nav->delete_nav( $nav_item->slug, bp_get_current_group_slug() );
+				}
 			}
 		}
 	}
@@ -697,8 +699,7 @@ function openlab_filter_subnav_home( $subnav_item ) {
 
 	// Intentionally use the 'buddypress' text domain.
 	if ( bp_is_group() ) {
-		$group_type = cboxol_get_group_group_type( bp_get_current_group_id() );
-		$new_item = str_replace( __( 'Home', 'buddypress' ), esc_html__( $group_type->get_label( 'group_home' ) ), $subnav_item );
+		$new_item = $subnav_item;
 	} else {
 		$new_item = str_replace( __( 'Home', 'buddypress' ), esc_html__( 'Profile', 'cbox-openlab-core' ), $subnav_item );
 	}
