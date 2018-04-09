@@ -1795,11 +1795,9 @@ body form{
 	}
 }
 .portfolio-dashboard-link {
-	&:hover, &:focus {
-		a {
-			color: @80gray;	
-			text-decoration: none;
-		}
+	a:hover, a:focus {
+		color: @80gray;
+		text-decoration: none;
 	}
 }
 .mobile-group-site-links {
@@ -1941,15 +1939,33 @@ body form{
             }
         }
         ul.sidebar-sublinks{
-            padding: 10px 0;
+            padding: 6% 5%;
             li{
+				margin-bottom: 10px;
+				&.portfolio-site-link {
+					margin-bottom: 6px;
+				}
+				&:last-child {
+					margin-bottom: 0;
+				}
+            }
+			&.portfolio-sublinks {
+				padding: 10px 0 18px;
 				a {
 					padding: 7px 5%;
 				}
-                &:last-child a {
-					padding-bottom: 0;
-                }
-            }
+
+				.portfolio-dashboard-link {
+					margin-left: 5%;
+				}
+				.portfolio-dashboard-link a {
+					padding: 7px 0;
+
+					&:last-child {
+						padding-left: 0;
+					}
+				}
+			}
             &.group-event-activity{
                 li{
                     margin-bottom: 14px;

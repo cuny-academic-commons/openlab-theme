@@ -287,7 +287,7 @@ function openlab_members_sidebar_blocks( $mobile_hide = false ) {
 
 			<ul class="sidebar-sublinks portfolio-sublinks inline-element-list">
 
-				<li class="portfolio-profile-link bold">
+				<li class="portfolio-site-link">
 					<a class="bold no-deco" href="<?php openlab_user_portfolio_url() ?>">
 						<?php if ( openlab_is_my_profile() ) : ?>
 							<?php echo esc_html( $portfolio_group_type->get_label( 'my_portfolio_site' ) ); ?>
@@ -298,10 +298,9 @@ function openlab_members_sidebar_blocks( $mobile_hide = false ) {
 					</a>
 				</li>
 
-				<li class="portfolio-site-link">
+				<li class="portfolio-dashboard-link">
 					<a href="<?php openlab_user_portfolio_profile_url() ?>">Profile</a>
-					<?php if ( openlab_is_my_profile() && openlab_user_portfolio_site_is_local() ) : ?>
-						| <a class="portfolio-dashboard-link" href="<?php openlab_user_portfolio_url() ?>/wp-admin">Dashboard</a>
+					<?php if ( openlab_is_my_profile() && openlab_user_portfolio_site_is_local() ) : ?> | <a href="<?php openlab_user_portfolio_url() ?>/wp-admin">Dashboard</a>
 					<?php endif ?>
 				</li>
 
