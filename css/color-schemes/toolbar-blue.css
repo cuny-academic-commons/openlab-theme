@@ -7651,6 +7651,9 @@ button.oplb-bs .close {
 .oplb-bs .see-all a {
   text-decoration: underline;
 }
+.oplb-bs .see-all a:hover {
+  text-decoration: none;
+}
 .oplb-bs#openlab-footer {
   position: absolute;
   bottom: 0;
