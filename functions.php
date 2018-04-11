@@ -510,3 +510,12 @@ function openlab_site_footer() {
 add_action( 'update_option_theme_mods_' . get_option( 'stylesheet' ), function() {
 	delete_site_transient( 'cboxol_network_footer' );
 } );
+
+/**
+ * Bust the sitewide nav item transient when it's edited.
+ */
+function openlab_bust_sitewide_nav_menu_cache() {
+	delete_site_transient( 'cboxol_network_nav_items' );
+}
+add_action( 'wp_update_nav_menu', 'openlab_bust_sitewide_nav_menu_cache' );
+add_action( 'wp_update_nav_menu_item', 'openlab_bust_sitewide_nav_menu_cache' );
