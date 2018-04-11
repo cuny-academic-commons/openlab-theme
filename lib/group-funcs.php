@@ -52,9 +52,11 @@ function openlab_group_privacy_settings_markup() {
 		return;
 	}
 
+
+	$the_group = groups_get_current_group();
 	$group_status = 'public';
-	if ( bp_is_group() && ! bp_is_group_create() ) {
-		$group_status = groups_get_current_group()->status;
+	if ( $the_group ) {
+		$group_status = $the_group->status;
 	}
 
 	?>
@@ -423,9 +425,12 @@ function openlab_group_url_markup() {
 		return;
 	}
 
+	$the_group = groups_get_current_group();
 	$the_group_id = null;
-	if ( bp_is_group() ) {
-		$the_group_id = bp_get_current_group_id();
+	$the_group_slug = '';
+	if ( $the_group ) {
+		$the_group_id = $the_group->id;
+		$the_group_slug = $the_group->slug;
 	}
 
 	wp_enqueue_script( 'openlab-group-url', get_template_directory_uri() . '/js/group-url.js', array( 'jquery' ), null, true );
@@ -444,7 +449,7 @@ function openlab_group_url_markup() {
 				</span>
 
 				<div class="group-url-path">
-					<input class="form-control" type="text" name="group-url" id="group-url" required value="" />
+					<input class="form-control" type="text" name="group-url" id="group-url" required value="<?php echo esc_attr( $the_group_slug ); ?>" />
 					<span id="group-url-status" class="fa group-url-status"></span>
 				</div>
 			</div>
@@ -473,9 +478,10 @@ function openlab_group_avatar_markup() {
 		return;
 	}
 
+	$the_group = groups_get_current_group();
 	$the_group_id = null;
-	if ( bp_is_group() ) {
-		$the_group_id = bp_get_current_group_id();
+	if ( $the_group ) {
+		$the_group_id = $the_group->id;
 	}
 
 	$scripts = array( 'bp-plupload', 'bp-avatar', 'bp-webcam' );
@@ -499,7 +505,7 @@ function openlab_group_avatar_markup() {
 				<div class="col-sm-8">
 					<div id="avatar-wrapper">
 						<div class="padded-img">
-							<?php if ( bp_is_group() && ! bp_is_group_create() && bp_get_group_avatar() ) :  ?>
+							<?php if ( $the_group && bp_get_group_avatar() ) :  ?>
 								<img class="img-responsive padded" src ="<?php echo bp_core_fetch_avatar( array( 'item_id' => bp_get_group_id(), 'object' => 'group', 'type' => 'full', 'html' => false ) ) ?>" alt="<?php echo bp_get_group_name(); ?>"/>
 							<?php else : ?>
 								<img class="img-responsive padded" src="<?php echo esc_url( cboxol_default_avatar( 'full' ) ); ?>" alt="avatar-blank" />
@@ -758,6 +764,7 @@ function openlab_group_privacy_settings( $group_type ) {
 			$clone_source_blog_status = get_blog_option( $clone_source_site_id, 'blog_public' );
 		}
 	}
+
 	?>
 
 	<div class="panel panel-default">
@@ -827,12 +834,15 @@ function openlab_group_privacy_settings( $group_type ) {
 }
 
 /**
- *
+ * AJAX handler for group slugs.
  */
 function openlab_ajax_group_url_validate() {
 	$url = wp_unslash( $_GET['url'] );
+	$group_id = intval( $_GET['groupId'] );
 
-	if ( groups_get_id( $url ) ) {
+	$found = groups_get_id( $url );
+
+	if ( $found && $found !== $group_id ) {
 		// Try to get a unique slug for the group.
 		wp_send_json_error();
 	} else {

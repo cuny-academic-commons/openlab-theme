@@ -54,6 +54,7 @@
 			$.ajax( ajaxurl, {
 				data: {
 					action: 'openlab_group_url_validate',
+					groupId: $('#group_id').val(),
 					name: $('group-name').val(),
 					url: $urlField.val()
 				},
