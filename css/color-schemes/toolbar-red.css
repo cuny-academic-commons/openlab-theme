@@ -7732,6 +7732,14 @@ button.oplb-bs .close {
   padding: 0 30px;
   border-right: 1px solid #aaa;
 }
+@media (max-width: 767px) {
+  .oplb-bs#openlab-footer .row .footer-section {
+    display: block;
+    padding-left: 0;
+    padding-right: 0;
+    padding-bottom: 30px;
+  }
+}
 .oplb-bs#openlab-footer .row .footer-section:first-child {
   padding-left: 0;
 }
