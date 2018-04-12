@@ -495,6 +495,18 @@ function openlab_group_avatar_markup() {
 
 	wp_enqueue_script( 'openlab-avatar-upload', get_template_directory_uri() . '/js/avatar-upload.js', array( 'bp-avatar' ), null, true );
 
+	$existing_avatar = null;
+	if ( $the_group_id ) {
+		$existing_avatar = bp_core_fetch_avatar(
+			array(
+				'item_id' => $the_group_id,
+				'object'  => 'group',
+				'type'    => 'full',
+				'html'    => false,
+			)
+		);
+	}
+
 	?>
 
 	<div class="panel panel-default" id="avatar-panel">
@@ -505,8 +517,8 @@ function openlab_group_avatar_markup() {
 				<div class="col-sm-8">
 					<div id="avatar-wrapper">
 						<div class="padded-img">
-							<?php if ( $the_group && bp_get_group_avatar() ) :  ?>
-								<img class="img-responsive padded" src ="<?php echo bp_core_fetch_avatar( array( 'item_id' => bp_get_group_id(), 'object' => 'group', 'type' => 'full', 'html' => false ) ) ?>" alt="<?php echo bp_get_group_name(); ?>"/>
+							<?php if ( $existing_avatar ) :  ?>
+								<img class="img-responsive padded" src ="<?php echo esc_url( $existing_avatar ); ?>" alt="<?php echo esc_attr( $the_group->name ); ?>"/>
 							<?php else : ?>
 								<img class="img-responsive padded" src="<?php echo esc_url( cboxol_default_avatar( 'full' ) ); ?>" alt="avatar-blank" />
 							<?php endif; ?>
