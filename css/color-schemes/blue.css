@@ -7102,7 +7102,7 @@ blockquote .h6 {
   padding: 0;
 }
 .nav.nav-inline li.no-link {
-  color: #49cabe;
+  color: #333333;
   font-weight: 700;
   padding: 0;
 }
@@ -7393,10 +7393,10 @@ input[type="submit"] {
   margin-right: 7px;
 }
 .has-menu-items.is-mol-menu .submenu-text {
-  color: #49cabe;
+  color: #333333;
 }
 .has-menu-items.is-mol-menu .submenu-text a {
-  color: #49cabe;
+  color: #333333;
 }
 .has-menu-items.is-mol-menu .submenu-text a.display-as-menu-item {
   color: #000000;
@@ -8565,7 +8565,7 @@ body form .checkbox-list-container {
   line-height: 90%;
 }
 .home-page .widget.new-members .new-members-wrapper .btn .fa:hover {
-  color: #49cabe;
+  color: #333333;
 }
 .home-page .widget.new-members .new-members-wrapper .btn.prev {
   padding-right: 0;
@@ -9456,10 +9456,10 @@ body.membership-requests .group-list {
   border-radius: 4px 4px 0 0;
 }
 .doc-content .tmce-active .switch-tmce {
-  color: #49cabe;
+  color: #333333;
 }
 .doc-content .html-active .switch-html {
-  color: #49cabe;
+  color: #333333;
 }
 .doc-content .wp-editor-container {
   border: 1px solid #dddddd;
@@ -9983,7 +9983,7 @@ body.single-event #content .eo-event-venue-map {
   margin: 0;
 }
 #member-header .btn.is_friend.friendship-button:hover {
-  color: #49cabe;
+  color: #333333;
 }
 @media (max-width: 767px) {
   #member-header {
@@ -10076,11 +10076,11 @@ body.single-event #content .eo-event-venue-map {
   margin: 12px 0 35px;
 }
 .col-help .page-title span {
-  color: #49cabe;
+  color: #333333;
 }
 .col-help span.page-title {
   font-weight: 600;
-  color: #49cabe;
+  color: #333333;
   margin: auto;
   padding: 0 7px;
 }
@@ -10108,7 +10108,7 @@ body.single-event #content .eo-event-venue-map {
 }
 #help-title-nav a:hover,
 #help-title-nav a:focus {
-  color: #49cabe;
+  color: #333333;
   text-decoration: underline;
 }
 #help-title-nav .fa {
