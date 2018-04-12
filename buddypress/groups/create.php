@@ -158,51 +158,34 @@
 
 			<?php endif; ?>
 
-			<?php /* Group creation step 3: Avatar Uploads */ ?>
+			<?php do_action( 'groups_custom_create_steps' ) // Allow plugins to add custom group creation steps  ?>
 
-			<?php if ( bp_is_group_creation_step( 'invite-anyone' ) ) : ?>
+			<?php do_action( 'bp_before_group_creation_step_buttons' ); ?>
 
-				<?php /*
-				<?php do_action( 'bp_before_group_avatar_creation_step' ); ?>
+			<?php /* Previous Button */ ?>
+			<?php if ( ! bp_is_first_group_creation_step() && 'group-settings' !== bp_get_groups_current_create_step() ) : ?>
+				<input class="btn btn-primary prev-btn btn-margin btn-margin-top" type="button" value="&#xf137; <?php _e( 'Previous Step', 'openlab-theme' ) ?>" id="group-creation-previous" name="previous" onclick="location.href = '<?php bp_group_creation_previous_link() ?>'" />
+			<?php endif; ?>
 
-				<?php if ( ! bp_get_avatar_admin_step() || 'upload-image' == bp_get_avatar_admin_step() ) : ?>
+			<?php /* Next Button */ ?>
+			<?php if ( ! bp_is_last_group_creation_step() && ! bp_is_first_group_creation_step() ) : ?>
+				<input class="btn btn-primary btn-margin btn-margin-top" type="submit" value="<?php _e( 'Next Step', 'openlab-theme' ) ?> &#xf138;" id="group-creation-next" name="save" />
+			<?php endif; ?>
 
+			<?php /* Create Button */ ?>
+			<?php if ( bp_is_first_group_creation_step() ) : ?>
+				<input class="btn btn-primary btn-margin btn-margin-top" type="submit" value="<?php _e( 'Create and Continue', 'openlab-theme' ); ?> &#xf138;" id="group-creation-create" name="save" />
+			<?php endif; ?>
 
-					<?php endif; ?>
+			<?php /* Finish Button */ ?>
+			<?php if ( bp_is_last_group_creation_step() ) : ?>
+				<input class="btn btn-primary btn-margin btn-margin-top" type="submit" value="<?php _e( 'Finish', 'openlab-theme' ) ?> &#xf138;" id="group-creation-finish" name="save" />
+			<?php endif; ?>
 
-				*/ ?>
-				<?php endif; ?>
-
-				<?php do_action( 'groups_custom_create_steps' ) // Allow plugins to add custom group creation steps  ?>
-
-				<?php do_action( 'bp_before_group_creation_step_buttons' ); ?>
-
-					<?php if ( 'crop-image' != bp_get_avatar_admin_step() ) : ?>
-						<?php /* Previous Button */ ?>
-						<?php if ( ! bp_is_first_group_creation_step() && 'group-settings' !== bp_get_groups_current_create_step() ) : ?>
-							<input class="btn btn-primary prev-btn btn-margin btn-margin-top" type="button" value="&#xf137; <?php _e( 'Previous Step', 'buddypress' ) ?>" id="group-creation-previous" name="previous" onclick="location.href = '<?php bp_group_creation_previous_link() ?>'" />
-						<?php endif; ?>
-
-						<?php /* Next Button */ ?>
-						<?php if ( ! bp_is_last_group_creation_step() && ! bp_is_first_group_creation_step() ) : ?>
-							<input class="btn btn-primary btn-margin btn-margin-top" type="submit" value="<?php _e( 'Next Step', 'openlab-theme' ) ?> &#xf138;" id="group-creation-next" name="save" />
-						<?php endif; ?>
-
-						<?php /* Create Button */ ?>
-						<?php if ( bp_is_first_group_creation_step() ) : ?>
-							<input class="btn btn-primary btn-margin btn-margin-top" type="submit" value="<?php _e( 'Create and Continue', 'openlab-theme' ); ?> &#xf138;" id="group-creation-create" name="save" />
-						<?php endif; ?>
-
-						<?php /* Finish Button */ ?>
-						<?php if ( bp_is_last_group_creation_step() ) : ?>
-							<input class="btn btn-primary btn-margin btn-margin-top" type="submit" value="<?php _e( 'Finish', 'openlab-theme' ) ?> &#xf138;" id="group-creation-finish" name="save" />
-					<?php endif; ?>
-				<?php endif; ?>
-
-				<?php do_action( 'bp_after_group_creation_step_buttons' ); ?>
+			<?php do_action( 'bp_after_group_creation_step_buttons' ); ?>
 
 <?php /* Don't leave out this hidden field */ ?>
-				<input type="hidden" name="group_id" id="group_id" value="<?php bp_new_group_id() ?>" />
+			<input type="hidden" name="group_id" id="group_id" value="<?php bp_new_group_id() ?>" />
 
 <?php do_action( 'bp_directory_groups_content' ) ?>
 
