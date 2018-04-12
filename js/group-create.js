@@ -185,9 +185,10 @@ jQuery(document).ready(function($){
 	}
 
 	function toggle_clone_options( on_or_off ) {
-		var $group_to_clone, group_id_to_clone;
+		var $group_to_clone, group_id_to_clone, group_id;
 
 		$group_to_clone = $('#group-to-clone');
+		group_id = $('#group_id').val();
 
 		if ( 'on' == on_or_off ) {
 			// Check "Clone a course" near the top
@@ -216,7 +217,10 @@ jQuery(document).ready(function($){
 			group_id_to_clone = 0;
 		}
 
-		fetch_clone_source_details( group_id_to_clone );
+		// Don't fetch details if there's already a current group.
+		if ( ! group_id ) {
+			fetch_clone_source_details( group_id_to_clone );
+		}
 	}
 
 	function fetch_clone_source_details( group_id ) {

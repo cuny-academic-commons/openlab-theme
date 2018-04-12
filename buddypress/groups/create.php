@@ -32,6 +32,13 @@
 		$group_id_to_clone = intval( $_GET['clone'] );
 	}
 
+	$the_group = null;
+	$the_description = '';
+	if ( groups_get_current_group() ) {
+		$the_group = groups_get_current_group();
+		$the_description = $the_group->description;
+	}
+
 	openlab_group_admin_js_data( $group_type ); ?>
 
 	<h1 class="entry-title mol-title"><?php echo esc_html( $group_type->get_label( 'create_clone_item' ) ); ?></h1>
@@ -136,7 +143,7 @@
 				<div class="panel panel-default">
 					<div class="panel-heading semibold"><label for="group-desc"><?php esc_html_e( 'Description', 'openlab-theme' ); ?> <?php esc_html_e( '(required)', 'openlab-theme' ) ?></label></div>
 					<div class="panel-body">
-						<textarea class="form-control" name="group-desc" id="group-desc" required><?php bp_new_group_description() ?></textarea>
+						<textarea class="form-control" name="group-desc" id="group-desc" required><?php echo esc_textarea( $the_description ); ?></textarea>
 					</div>
 				</div>
 

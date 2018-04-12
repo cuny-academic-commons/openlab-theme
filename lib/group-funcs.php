@@ -2479,7 +2479,10 @@ add_action( 'groups_group_after_save', 'openlab_course_information_save' );
 
 function openlab_group_academic_units_edit_markup() {
 	$selected_academic_units = array();
-	if ( bp_is_group_create() ) {
+
+	$the_group = groups_get_current_group();
+
+	if ( ! $the_group ) {
 		$group_type = cboxol_get_group_type( $_GET['group_type'] );
 		if ( is_wp_error( $group_type ) ) {
 			$group_types = cboxol_get_group_types( array(
