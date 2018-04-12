@@ -51,6 +51,11 @@ function openlab_clone_create_form_catcher() {
 					return;
 				}
 
+				// Don't do anything if this is a reprocess of an existing group.
+				if ( ! empty( $_POST['existing-group-id'] ) ) {
+					return;
+				}
+
 				groups_update_groupmeta( $new_group_id, 'clone_source_group_id', $clone_source_group_id );
 				openlab_clone_course_group( $new_group_id, $clone_source_group_id );
 			}

@@ -27,16 +27,20 @@
 		$group_type = reset( $group_types );
 	}
 
-	$group_id_to_clone = 0;
-	if ( $group_type->get_is_course() && ! empty( $_GET['clone'] ) ) {
-		$group_id_to_clone = intval( $_GET['clone'] );
-	}
-
 	$the_group = null;
 	$the_description = '';
+	$the_group_clone_source = null;
 	if ( groups_get_current_group() ) {
 		$the_group = groups_get_current_group();
 		$the_description = $the_group->description;
+		$the_group_clone_source = groups_get_groupmeta( $the_group->id, 'clone_source_group_id', true );
+	}
+
+	$group_id_to_clone = 0;
+	if ( $group_type->get_is_course() && ! empty( $_GET['clone'] ) ) {
+		$group_id_to_clone = intval( $_GET['clone'] );
+	} elseif ( $the_group_clone_source ) {
+		$group_id_to_clone = intval( $the_group_clone_source );
 	}
 
 	openlab_group_admin_js_data( $group_type ); ?>
@@ -55,6 +59,10 @@
 			<?php do_action( 'template_notices' ) ?>
 
 			<input type="hidden" id="new-group-type" value="<?php echo esc_attr( $group_type->get_slug() ); ?>" />
+
+			<?php if ( $the_group ) : ?>
+				<input type="hidden" name="existing-group-id" value="<?php echo esc_attr( $the_group->id ); ?>" />
+			<?php endif; ?>
 
 			<?php /* Group creation step 1: Basic group details */ ?>
 			<?php if ( bp_is_group_creation_step( 'group-details' ) ) : ?>

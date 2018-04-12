@@ -190,6 +190,11 @@ jQuery(document).ready(function($){
 		$group_to_clone = $('#group-to-clone');
 		group_id = $('#group_id').val();
 
+		// Don't fetch details if there's already a current group.
+		if ( group_id ) {
+			return;
+		}
+
 		if ( 'on' == on_or_off ) {
 			// Check "Clone a course" near the top
 			$('#create-or-clone-clone').attr('checked', true);
@@ -217,10 +222,7 @@ jQuery(document).ready(function($){
 			group_id_to_clone = 0;
 		}
 
-		// Don't fetch details if there's already a current group.
-		if ( ! group_id ) {
-			fetch_clone_source_details( group_id_to_clone );
-		}
+		fetch_clone_source_details( group_id_to_clone );
 	}
 
 	function fetch_clone_source_details( group_id ) {
