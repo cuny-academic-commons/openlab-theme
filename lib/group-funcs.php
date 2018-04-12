@@ -1516,18 +1516,20 @@ function cuny_send_invite_fac_only( $subnav_item ) {
 }
 
 /**
- * Add the group type to the Previous Step button during group creation
- *
- * @see http://openlab.citytech.cuny.edu/redmine/issues/397
+ * Add the group type to the Previous Step button during group creation.
  */
 function openlab_previous_step_type( $url ) {
 	if ( ! empty( $_GET['group_type'] ) ) {
-		$url = add_query_arg( 'group_type', $_GET['group_type'], $url );
+		$group_type_slug = wp_unslash( $_GET['group_type'] );
+	} elseif ( groups_get_current_group() ) {
+		$group_type = cboxol_get_group_group_type( bp_get_current_group_id() );
+		$group_type_slug = $group_type->get_slug();
 	}
+
+	$url = add_query_arg( 'group_type', $group_type_slug, $url );
 
 	return $url;
 }
-
 add_filter( 'bp_get_group_creation_previous_link', 'openlab_previous_step_type' );
 
 /**
