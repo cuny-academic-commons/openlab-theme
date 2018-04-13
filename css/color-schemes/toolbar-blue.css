@@ -6992,6 +6992,9 @@ button.oplb-bs .close {
   line-height: 1;
   margin: 0 4px;
 }
+.oplb-bs #wpadminbar .btn-default:hover {
+  color: #333333;
+}
 .oplb-bs #wpadminbar #wp-toolbar {
   line-height: normal;
   margin: 0 auto;
