@@ -662,6 +662,12 @@ function openlab_save_new_group_url() {
 		return;
 	}
 
+	// Sanity check: Don't allow grabbing another group slug.
+	$found = groups_get_id( $url );
+	if ( $found && $found !== $new_group_id ) {
+		return;
+	}
+
 	$group = groups_get_group( $new_group_id );
 
 	$group_args = array(
