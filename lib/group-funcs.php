@@ -174,6 +174,7 @@ function openlab_group_site_markup() {
 					$is_clone = false;
 					if ( $group_type->get_can_be_cloned() ) {
 						$clone_source_group_id = openlab_get_clone_source_group_id( $the_group_id );
+						$clone_source_site_id = '';
 						if ( $clone_source_group_id ) {
 							$clone_source_site_id = cboxol_get_group_site_id( $clone_source_group_id );
 							if ( $clone_source_site_id ) {
