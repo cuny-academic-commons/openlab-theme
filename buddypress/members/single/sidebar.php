@@ -43,9 +43,9 @@ $activity_args = array(
 ?>
 
 <?php if ( bp_is_user_friends() ) : ?>
-	<h2 class="sidebar-header">Recent Friend Activity</h2>
+	<h3 class="sidebar-header"><?php esc_html_e( 'Recent Friend Activity', 'openlab-theme' ); ?></h3>
 <?php else : ?>
-	<h2 class="sidebar-header">Recent Activity</h2>
+	<h3 class="sidebar-header"><?php esc_html_e( 'Recent Activity', 'openlab-theme' ); ?></h3>
 <?php endif ?>
 
 <div class="activity-wrapper">

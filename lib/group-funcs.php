@@ -1283,7 +1283,7 @@ function openlab_group_profile_activity_list() {
 						<div class="col-sm-12">
 							<div class="recent-discussions">
 								<div class="recent-posts">
-									<h2 class="title activity-title"><a class="no-deco" href="<?php site_url(); ?>/groups/<?php echo $group_slug; ?>/forum/"><?php esc_html_e( 'Recent Discussions', 'openlab-theme' ); ?><span class="fa fa-chevron-circle-right" aria-hidden="true"></span></a></h2>
+									<h3 class="title activity-title"><a class="no-deco" href="<?php site_url(); ?>/groups/<?php echo $group_slug; ?>/forum/"><?php esc_html_e( 'Recent Discussions', 'openlab-theme' ); ?><span class="fa fa-chevron-circle-right" aria-hidden="true"></span></a></h3>
 									<?php
 									$forum_id = null;
 									$forum_ids = bbp_get_group_forum_ids( bp_get_current_group_id() );
@@ -1329,7 +1329,7 @@ function openlab_group_profile_activity_list() {
 						<div class="col-sm-12">
 							<div id="recent-docs">
 								<div class="recent-posts">
-									<h2 class="title activity-title"><a class="no-deco" href="<?php site_url(); ?>/groups/<?php echo $group_slug; ?>/docs/"><?php esc_html_e( 'Recent Docs', 'openlab-theme' ); ?><span class="fa fa-chevron-circle-right" aria-hidden="true"></span></a></h2>
+									<h3 class="title activity-title"><a class="no-deco" href="<?php site_url(); ?>/groups/<?php echo $group_slug; ?>/docs/"><?php esc_html_e( 'Recent Docs', 'openlab-theme' ); ?><span class="fa fa-chevron-circle-right" aria-hidden="true"></span></a></h3>
 									<?php
 
 									$docs_query = new BP_Docs_Query( array(
@@ -1372,7 +1372,7 @@ function openlab_group_profile_activity_list() {
 						endif;
 						?>
 
-						<h2 class="title activity-title"><a class="no-deco" href="<?php echo $href; ?>">Members<span class="fa fa-chevron-circle-right" aria-hidden="true"></span></a></h2>
+						<h3 class="title activity-title"><a class="no-deco" href="<?php echo $href; ?>"><?php esc_html_e( 'Members', 'openlab-theme' ); ?><span class="fa fa-chevron-circle-right" aria-hidden="true"></span></a></h3>
 						<?php $member_arg = array( 'exclude_admins_mods' => false ); ?>
 						<?php if ( bp_group_has_members( $member_arg ) ) : ?>
 
@@ -1888,7 +1888,7 @@ function openlab_show_site_posts_and_comments() {
 			<div class="col-sm-12">
 				<div id="recent-course">
 					<div class="recent-posts">
-						<h2 class="title activity-title"><a class="no-deco" href="<?php echo esc_attr( $site_url ) ?>"><?php esc_html_e( 'Recent Posts', 'openlab-theme' ); ?><span class="fa fa-chevron-circle-right" aria-hidden="true"></span></a></h2>
+						<h3 class="title activity-title"><a class="no-deco" href="<?php echo esc_attr( $site_url ) ?>"><?php esc_html_e( 'Recent Posts', 'openlab-theme' ); ?><span class="fa fa-chevron-circle-right" aria-hidden="true"></span></a></h3>
 
 
 						<?php foreach ( $posts as $post ) : ?>
@@ -1909,7 +1909,7 @@ function openlab_show_site_posts_and_comments() {
 			<div class="col-sm-12">
 				<div id="recent-site-comments">
 					<div class="recent-posts">
-						<h2 class="title activity-title"><a class="no-deco" href="<?php echo esc_attr( $site_url ) ?>"><?php esc_html_e( 'Recent Comments', 'openlab-theme' ); ?><span class="fa fa-chevron-circle-right" aria-hidden="true"></span></a></h2>
+						<h3 class="title activity-title"><a class="no-deco" href="<?php echo esc_attr( $site_url ) ?>"><?php esc_html_e( 'Recent Comments', 'openlab-theme' ); ?><span class="fa fa-chevron-circle-right" aria-hidden="true"></span></a></h3>
 						<?php if ( ! empty( $comments ) ) : ?>
 							<?php foreach ( $comments as $comment ) : ?>
 								<div class="panel panel-default">

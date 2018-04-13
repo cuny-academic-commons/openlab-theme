@@ -81,7 +81,6 @@ function openlab_group_sidebar( $mobile = false ) {
 
 	if ( bp_has_groups() ) : while ( bp_groups() ) : bp_the_group(); ?>
 		<div class="sidebar-widget sidebar-widget-wrapper" id="portfolio-sidebar-widget">
-			<h2 class="sidebar-header group-single top-sidebar-header">&nbsp;</h2>
 			<div class="wrapper-block">
 				<?php openlab_bp_group_site_pages( $mobile ); ?>
 			</div>
@@ -259,9 +258,9 @@ function openlab_members_sidebar_blocks( $mobile_hide = false ) {
 
 	if ( is_user_logged_in() && openlab_is_my_profile() ) :
 		?>
-		<h2 class="sidebar-header top-sidebar-header hidden-xs"><?php esc_html_e( 'My Profile', 'openlab-theme' ); ?></h2>
+		<h3 class="sidebar-header top-sidebar-header hidden-xs"><?php esc_html_e( 'My Profile', 'openlab-theme' ); ?></h3>
 	<?php else : ?>
-		<h2 class="sidebar-header top-sidebar-header hidden-xs">Member Profile</h2>
+		<h3 class="sidebar-header top-sidebar-header hidden-xs">Member Profile</h3>
 	<?php endif; ?>
 
 	<?php
@@ -277,9 +276,9 @@ function openlab_members_sidebar_blocks( $mobile_hide = false ) {
 
 		<?php if ( ! $mobile_hide ) : ?>
 			<?php if ( is_user_logged_in() && openlab_is_my_profile() ) : ?>
-				<h2 class="sidebar-header top-sidebar-header visible-xs">My <?php echo (xprofile_get_field_data( 'Account Type', bp_displayed_user_id() ) == 'Student' ? 'ePortfolio' : 'Portfolio') ?></h2>
+				<h3 class="sidebar-header top-sidebar-header visible-xs">My <?php echo (xprofile_get_field_data( 'Account Type', bp_displayed_user_id() ) == 'Student' ? 'ePortfolio' : 'Portfolio') ?></h3>
 			<?php else : ?>
-				<h2 class="sidebar-header top-sidebar-header visible-xs">Member <?php echo (xprofile_get_field_data( 'Account Type', bp_displayed_user_id() ) == 'Student' ? 'ePortfolio' : 'Portfolio') ?></h2>
+				<h3 class="sidebar-header top-sidebar-header visible-xs">Member <?php echo (xprofile_get_field_data( 'Account Type', bp_displayed_user_id() ) == 'Student' ? 'ePortfolio' : 'Portfolio') ?></h3>
 			<?php endif; ?>
 		<?php endif; ?>
 
@@ -315,7 +314,7 @@ function openlab_members_sidebar_blocks( $mobile_hide = false ) {
 		<div class="sidebar-widget" id="portfolio-sidebar-widget">
 
 			<?php if ( is_user_logged_in() && openlab_is_my_profile() ) : ?>
-				<h2 class="sidebar-header top-sidebar-header visible-xs">My <?php echo esc_html( $portfolio_group_type->get_label( 'my_portfolio' ) ); ?></h2>
+				<h3 class="sidebar-header top-sidebar-header visible-xs">My <?php echo esc_html( $portfolio_group_type->get_label( 'my_portfolio' ) ); ?></h3>
 			<?php endif; ?>
 
 			<div class="sidebar-block<?php echo $block_classes ?>">
