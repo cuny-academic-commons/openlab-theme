@@ -377,7 +377,7 @@ function cuny_student_profile() {
 
 		<?php if ( $friend_ids ) { ?>
 
-					<h2 class="title activity-title"><a class="no-deco" href="<?php echo $bp->displayed_user->domain . $bp->friends->slug; ?>"><?php bp_word_or_name( __( 'My Friends', 'buddypress' ), __( "%s's Friends", 'buddypress' ) ); ?><span class="fa fa-chevron-circle-right font-size font-18" aria-hidden="true"></span></a></h2>
+					<h3 class="title activity-title"><a class="no-deco" href="<?php echo $bp->displayed_user->domain . $bp->friends->slug; ?>"><?php bp_word_or_name( __( 'My Friends', 'buddypress' ), __( "%s's Friends", 'buddypress' ) ); ?><span class="fa fa-chevron-circle-right font-size font-16" aria-hidden="true"></span></a></h3>
 
 					<ul id="member-list" class="inline-element-list">
 
@@ -405,7 +405,7 @@ function cuny_student_profile() {
 					</ul>
 		<?php } else { ?>
 
-					<h2 class="title activity-title"><?php bp_word_or_name( __( 'My Friends', 'buddypress' ), __( "%s's Friends", 'buddypress' ) ); ?></h2>
+					<h3 class="title activity-title"><?php bp_word_or_name( __( 'My Friends', 'buddypress' ), __( "%s's Friends", 'buddypress' ) ); ?></h3>
 
 					<div id="message" class="info">
 						<p><?php bp_word_or_name( __( "You haven't added any friend connections yet.", 'buddypress' ), __( "%s hasn't created any friend connections yet.", 'buddypress' ) ); ?></p>
@@ -442,7 +442,7 @@ function openlab_profile_group_type_activity_block( \CBOX\OL\GroupType $type ) {
 			$href = add_query_arg( 'group_type', $type->get_slug(), bp_displayed_user_domain() . 'groups/' );
 			?>
 			<?php ;/* @todo font awesome is loaded from openlab-toolbar.php */ ?>
-		 <h2 class="title activity-title"><a class="no-deco" href="<?php echo $href; ?>"><?php echo esc_html( $title ); ?><span class="fa fa-chevron-circle-right font-size font-18" aria-hidden="true"></span></a></h2>
+		 <h3 class="title activity-title"><a class="no-deco" href="<?php echo $href; ?>"><?php echo esc_html( $title ); ?><span class="fa fa-chevron-circle-right font-size font-16" aria-hidden="true"></span></a></h3>
 			<?php $x = 0; ?>
 			<?php
 			while ( bp_groups() ) :
