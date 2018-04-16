@@ -186,10 +186,3 @@ var OLAcadUnits = ' . wp_json_encode( $academic_unit_map ) . ';
 		</div><!--archive search-->
 	</div><!--filter-->
 </div>
-<?php
-
-function slug_maker( $full_string ) {
-	$slug_val = str_replace( ' ', '-', $full_string );
-	$slug_val = strtolower( $slug_val );
-	return $slug_val;
-}
