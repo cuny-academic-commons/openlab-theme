@@ -1,5 +1,5 @@
 <div class="sidebar-widget" id="group-member-portfolio-sidebar-widget">
-    <h3 class="sidebar-header"><?php esc_html_e( 'Upcoming Events', 'openlab-theme' ); ?></h3>
+    <h2 class="sidebar-header">Upcoming Events</h2>
 
     <div class="sidebar-block">
 

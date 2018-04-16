@@ -99,9 +99,7 @@ remove_action( 'bp_group_manage_members_admin_item', 'ass_manage_members_email_s
 add_action( 'bp_group_manage_members_admin_item', 'openlab_manage_members_email_status' );
 
 // remove status from group profile pages
-add_action( 'bp_screens', function() {
-	remove_action( 'bp_group_header_meta', 'ass_group_subscribe_button' );
-}, 0 );
+remove_action( 'bp_group_header_meta', 'ass_group_subscribe_button' );
 
 
 /**

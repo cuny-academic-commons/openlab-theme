@@ -7467,9 +7467,6 @@ input[type="submit"] {
 }
 @media (min-width: 992px) {
 }
-body.single-item.groups #sidebar {
-  margin-top: 49px;
-}
 @media (max-width: 767px) {
   .sidebar-mobile-dropdown .navbar.navbar-default {
     margin-bottom: 59px;
@@ -7678,7 +7675,7 @@ body .activity-title {
 body .activity-title .fa {
   margin-left: 10px;
   color: #333333;
-  font-size: 16px;
+  font-size: 18px;
 }
 body .tag-btn {
   padding: 0 2%;
@@ -8778,25 +8775,20 @@ body form .checkbox-list-container {
     margin: 0;
   }
 }
-.sidebar #sidebar-menu-wrapper .sidebar-block:first-child {
-  margin-top: 0;
-}
 .sidebar h2.sidebar-title,
+.sidebar h2.sidebar-header {
+  font-weight: 700;
+  margin-bottom: 4px;
+}
 .sidebar h2.sidebar-header {
   margin-top: 26px;
 }
-.sidebar h2.sidebar-title.top-sidebar-header,
 .sidebar h2.sidebar-header.top-sidebar-header {
   margin-bottom: 6px;
   margin-top: 20px;
 }
-.sidebar h2.sidebar-title.top-sidebar-header.group-single,
 .sidebar h2.sidebar-header.top-sidebar-header.group-single {
   margin-top: 18px;
-}
-.sidebar h3.sidebar-header {
-  font-weight: 700;
-  margin-bottom: 4px;
 }
 .sidebar .cc-gloss {
   font-size: 11px;
@@ -8820,9 +8812,6 @@ body form .checkbox-list-container {
 .sidebar .sidebar-block:first-of-type {
   margin: 0;
   border-top: 1px solid #bbbbbb;
-}
-.sidebar .sidebar-block:first-of-type.group-site-links {
-  margin-bottom: 15px;
 }
 .sidebar .sidebar-block.activity-block {
   padding: 6%;
