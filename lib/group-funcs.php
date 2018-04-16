@@ -1825,27 +1825,6 @@ function openlab_show_site_posts_and_comments() {
 				'status' => 'any',
 			) );
 			if ( $private_comments ) {
-				$user_id = bp_loggedin_user_id();
-
-				/*
-				 * Filter out the ones that are written by the logged-in user, as well
-				 * as those that are attached to a post that the user is the author of.
-				 */
-				foreach ( $private_comments as $private_comment ) {
-					if ( $user_id && ! empty( $private_comment->user_id ) && $user_id == $private_comment->user_id ) {
-						continue;
-					}
-
-					if ( $user_id ) {
-						$comment_post = get_post( $private_comment->comment_post_ID );
-						if ( $user_id == $comment_post->post_author ) {
-							continue;
-						}
-					}
-
-					$comment__not_in[] = $private_comment->comment_ID;
-				}
-
 				$comment__not_in = wp_parse_id_list( $comment__not_in );
 
 				if ( $comment__not_in ) {
