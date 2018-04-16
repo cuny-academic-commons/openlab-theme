@@ -102,6 +102,7 @@ var OLAcadUnits = ' . wp_json_encode( $academic_unit_map ) . ';
 					) );
 					?>
 					<div class="custom-select academic-unit-type-select" id="academic-unit-type-select-<?php echo esc_attr( $academic_unit_type->get_slug() ); ?>">
+						<label for="<?php echo esc_attr( $academic_unit_type->get_slug() ); ?>-select" class="sr-only"><?php echo esc_html( sprintf( __( 'Select: %s', 'openlab-theme' ), $academic_unit_type->get_name() ) ); ?></label>
 						<select name="<?php echo esc_attr( $url_param ); ?>" class="last-select <?php echo esc_attr( $color_class ); ?>-text" id="<?php echo esc_attr( $academic_unit_type->get_slug() ); ?>-select" data-unittype="<?php echo esc_attr( $academic_unit_type->get_slug() ); ?>">
 							<option class="academic-unit" value="" data-parent="" <?php selected( '', $current_unit ) ?>><?php echo esc_html( $academic_unit_type->get_name() ); ?></option>
 							<option class="academic-unit" value="all" data-parent="" <?php selected( 'all', $current_unit ) ?>><?php esc_html_e( 'All', 'openlab-theme' ); ?></option>
@@ -120,6 +121,7 @@ var OLAcadUnits = ' . wp_json_encode( $academic_unit_map ) . ';
 						<?php if ( $group_terms && ! empty( $group_terms ) ) :  ?>
 
 							<div class="custom-select">
+								<label for="bp-group-categories-select" class="sr-only"><?php echo esc_html_e( 'Select: Category', 'openlab-theme' ); ?></label>
 								<select name="cat" class="last-select <?php echo $bpcgc_color; ?>-text" id="bp-group-categories-select">
 									<option value="" <?php selected( '', $option_value_bpcgc ) ?>><?php esc_html_e( 'Category', 'openlab-theme' ); ?></option>
 									<option value='cat_all' <?php selected( 'cat_all', $option_value_bpcgc ) ?>><?php esc_html_e( 'All', 'openlab-theme' ); ?></option>
@@ -136,7 +138,8 @@ var OLAcadUnits = ' . wp_json_encode( $academic_unit_map ) . ';
 
 				<?php if ( bp_is_groups_directory() && $group_type_object && $group_type_object->get_is_course() ) :  ?>
 					<div class="custom-select">
-						<select name="term" class="last-select <?php echo $term_color; ?>-text">
+						<label for="course-term-select" class="sr-only"><?php echo esc_html_e( 'Select: Term', 'openlab-theme' ); ?></label>
+						<select name="term" class="last-select <?php echo $term_color; ?>-text" id="course-term-select">
 							<option value='' <?php selected( '', $current_term ) ?>><?php esc_html_e( 'Term', 'openlab-theme' ); ?></option>
 							<option value='term_all' <?php selected( 'term_all', $current_term ) ?>><?php esc_html_e( 'All', 'openlab-theme' ); ?></option>
 							<?php foreach ( openlab_get_active_terms() as $term ) : ?>
@@ -148,7 +151,8 @@ var OLAcadUnits = ' . wp_json_encode( $academic_unit_map ) . ';
 
 				<?php if ( ( bp_is_groups_directory() && $group_type_object && ! is_wp_error( $group_type_object ) && $group_type_object->get_is_portfolio() ) || bp_is_members_directory() ) :  ?>
 					<div class="custom-select">
-						<select name="member_type" class="last-select <?php echo $user_color; ?>-text">
+						<label for="portfolio-user-member-type-select" class="sr-only"><?php echo esc_html_e( 'Select: User Type', 'openlab-theme' ); ?></label>
+						<select name="member_type" class="last-select <?php echo $user_color; ?>-text" id="portfolio-user-member-type-select">
 							<option value='' <?php selected( '', $member_type_slug ) ?>><?php esc_html_e( 'User Type', 'openlab-theme' ); ?></option>
 							<?php foreach ( cboxol_get_member_types() as $member_type ) : ?>
 								<option value='<?php echo esc_attr( $member_type->get_slug() ); ?>' <?php selected( $member_type->get_slug(), $member_type_slug ) ?>><?php echo esc_html( $member_type->get_label( 'singular' ) ); ?></option>
@@ -158,7 +162,8 @@ var OLAcadUnits = ' . wp_json_encode( $academic_unit_map ) . ';
 					</div>
 				<?php endif; ?>
 				<div class="custom-select">
-					<select name="group_sequence" class="last-select <?php echo $sort_color; ?>-text">
+					<label for="sequence-select" class="sr-only"><?php echo esc_html_e( 'Select: Order', 'openlab-theme' ); ?></label>
+					<select name="group_sequence" class="last-select <?php echo $sort_color; ?>-text" id="sequence-select">
 						<option <?php selected( $option_value, 'alphabetical' ) ?> value='alphabetical'>Alphabetical</option>
 						<option <?php selected( $option_value, 'newest' ) ?>  value='newest'>Newest</option>
 						<option <?php selected( $option_value, 'active' ) ?> value='active'>Last Active</option>
