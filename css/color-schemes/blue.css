@@ -7324,10 +7324,10 @@ input[type="submit"] {
   font-weight: 700;
 }
 .btn-default:hover {
-  color: #333333;
+  color: #8ccae4;
 }
 .btn-default:hover.btn-primary {
-  color: #333333;
+  color: #8ccae4;
 }
 .form-inline.btn-combo .form-control {
   width: 82%;
@@ -8192,6 +8192,9 @@ body form .checkbox-list-container {
 .home-page .row-home-top .login .log-box#open-lab-join .link-btn {
   margin-bottom: 7px;
   color: #ffffff;
+}
+.home-page .row-home-top .login .log-box#open-lab-join .link-btn:hover {
+  color: #8ccae4;
 }
 .home-page .row-home-top .login .log-box#open-lab-login {
   border-bottom: 13px solid #8ccae4;
