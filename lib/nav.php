@@ -131,9 +131,11 @@ add_filter( 'bp_has_members', 'openlab_loop_pagination_links_filter' );
 function openlab_toggle_button( $target = '#menu', $backgroundonly = false ) {
 	$button_out = '';
 
+	$toggle_text = esc_html__( 'Toggle navigation', 'openlab-theme' );
+
 	$button = <<<HTML
             <button data-target="{$target}" data-backgroundonly="{$backgroundonly}" class="mobile-toggle direct-toggle pull-right visible-xs" type="button">
-                <span class="sr-only">Toggle navigation</span>
+                <span class="sr-only">{$toggle_text}</span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>

@@ -10,7 +10,7 @@ $type_object = cboxol_get_group_type( $type );
 	<?php openlab_bp_sidebar( 'groups', true ); ?>
 	<div <?php post_class( 'col-sm-18 col-xs-24' ); ?>>
 		<div id="openlab-main-content" class="content-wrapper">
-			<h1 class="entry-title"><?php echo esc_html( $type_object->get_label( 'plural' ) ); ?><button data-target="#sidebar" data-backgroundonly="true" class="mobile-toggle direct-toggle pull-right visible-xs" type="button"><span class="sr-only"><?php esc_html( 'Search', 'openlab-theme' ); ?></span><span class="fa fa-binoculars"></span></button></h1>
+			<h1 class="entry-title"><?php echo esc_html( $type_object->get_label( 'plural' ) ); ?><button data-target="#sidebar" data-backgroundonly="true" class="mobile-toggle direct-toggle pull-right visible-xs" type="button"><span class="sr-only"><?php esc_html_e( 'Search', 'openlab-theme' ); ?></span><span class="fa fa-binoculars"></span></button></h1>
 
 			<div class="entry-content">
 				<?php bp_get_template_part( 'groups/groups-loop' ); ?>

@@ -992,7 +992,7 @@ function openlab_group_profile_header() {
 			<span class="profile-type pull-right hidden-xs"><?php echo esc_html( $status_label ); ?></span>
 		<?php endif; ?>
 		<button data-target="#sidebar-menu-wrapper" data-backgroundonly="true" class="mobile-toggle direct-toggle pull-right visible-xs" type="button">
-			<span class="sr-only">Toggle navigation</span>
+			<span class="sr-only"><?php esc_html_e( 'Toggle navigation', 'openlab-theme' ); ?></span>
 			<span class="icon-bar"></span>
 			<span class="icon-bar"></span>
 			<span class="icon-bar"></span>

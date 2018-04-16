@@ -30,7 +30,7 @@
 						<h1 class="entry-title"><span class="profile-name"><?php the_title(); ?></span>
 							<?php if ( $is_about_or_calendar ) :  ?>
 								<button data-target="#sidebar-mobile" class="mobile-toggle direct-toggle pull-right visible-xs" type="button">
-									<span class="sr-only">Toggle navigation</span>
+									<span class="sr-only"><?php esc_html_e( 'Toggle navigation', 'openlab-theme' ); ?></span>
 									<span class="icon-bar"></span>
 									<span class="icon-bar"></span>
 									<span class="icon-bar"></span>

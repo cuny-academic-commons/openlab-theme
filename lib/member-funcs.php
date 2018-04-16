@@ -717,7 +717,7 @@ function openlab_member_header() {
 		<span class="profile-name"><?php bp_displayed_user_fullname(); ?>&rsquo;s Profile</span>
 		<span class="profile-type pull-right hidden-xs"><?php echo esc_html( $account_type ); ?></span>
 		<button data-target="#sidebar-mobile" class="mobile-toggle direct-toggle pull-right visible-xs" type="button">
-			<span class="sr-only">Toggle navigation</span>
+			<span class="sr-only"><?php esc_html_e( 'Toggle navigation', 'openlab-theme' ); ?></span>
 			<span class="icon-bar"></span>
 			<span class="icon-bar"></span>
 			<span class="icon-bar"></span>
