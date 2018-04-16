@@ -276,7 +276,7 @@
 				calendarButtonCustomization: function (view, element) {
 
             //add sr-only text for accessibility
-            var buttons = $('#openlabCalendar .fc-button-group');
+            var buttons = $('.eo-fullcalendar .fc-button-group');
 
             //get viewtype
             var viewLabel = 'Month';
