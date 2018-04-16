@@ -8206,10 +8206,6 @@ body form .checkbox-list-container {
 .home-page .row-home-top .login .log-box#open-lab-login h1 {
   padding-right: 5px;
 }
-.home-page .row-home-top .login .log-box#open-lab-login a:hover,
-.home-page .row-home-top .login .log-box#open-lab-login a:active {
-  color: #000;
-}
 .home-page .row-home-top .login .log-box#open-lab-login #user-info {
   height: 86px;
   margin-bottom: 23px;
