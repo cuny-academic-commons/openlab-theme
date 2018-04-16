@@ -1081,7 +1081,7 @@ h2,
 }
 h3,
 .h3 {
-  font-size: 16px;
+  font-size: 24px;
 }
 h4,
 .h4 {
@@ -7669,9 +7669,6 @@ body ol.inline-element-list {
   margin: 0;
   list-style-type: none;
 }
-body .activity-title {
-  font-weight: 600;
-}
 body .activity-title .fa {
   margin-left: 10px;
   color: #333333;
@@ -9957,10 +9954,10 @@ body.single-event #content .eo-event-venue-map {
 .profile-type {
   background: #f0f0f0;
   color: #444444;
-  font-size: 12.5px;
+  font-size: 14px;
   font-weight: 600;
   height: 30px;
-  line-height: 255%;
+  line-height: 220%;
   margin-bottom: -5px;
   padding: 0 19px;
 }
