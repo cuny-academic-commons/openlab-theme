@@ -1089,6 +1089,9 @@ function openlab_group_membership_tabs( $group = false ) {
 	<?php
 }
 
+/**
+ * Tabs for BuddyPress Docs navigation.
+ */
 function openlab_docs_tabs() {
 	global $bp, $groups_template;
 
@@ -1100,15 +1103,14 @@ function openlab_docs_tabs() {
 	}
 	?>
 
-	<li <?php echo (bp_docs_current_view() == 'list' ? 'class="current-menu-item"' : ''); ?> ><a href="<?php echo bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug ?>/docs/">View Docs</a></li><!--
-	<?php if ( current_user_can( 'bp_docs_create' ) ) : ?>
-		--><li <?php echo ( bp_docs_current_view() == 'create' ? 'class="current-menu-item"' : '' ); ?> ><a href="<?php echo bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug ?>/docs/create">New Doc</a></li><!--
+	<li <?php echo ( bp_docs_current_view() == 'list' ? 'class="current-menu-item"' : '' ); ?> ><a href="<?php echo bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . esc_url( $group->slug ) ?>/docs/"><?php esc_html_e( 'View Docs', 'openlab-theme' ); ?></a></li>
+	<?php if ( current_user_can( 'bp_docs_create' ) && current_user_can( 'bp_docs_associate_with_group', bp_get_current_group_id() ) ) : ?>
+		<li <?php echo ( bp_docs_current_view() == 'create' ? 'class="current-menu-item"' : '' ); ?> ><a href="<?php echo bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . esc_url( $group->slug ) ?>/docs/create"><?php esc_html_e( 'New Doc', 'openlab-theme' ); ?></a></li>
 	<?php endif; ?>
-	<?php if ( (bp_docs_current_view() == 'edit' || bp_docs_current_view() == 'single') && bp_docs_is_existing_doc() ) : ?>
+	<?php if ( ( bp_docs_current_view() == 'edit' || bp_docs_current_view() == 'single' ) && bp_docs_is_existing_doc() ) : ?>
 		<?php $doc_obj = bp_docs_get_current_doc(); ?>
-		--><li class="current-menu-item"><?php echo $doc_obj->post_title; ?></li><!--
+		<li class="current-menu-item"><?php echo esc_html( $doc_obj->post_title ); ?></li>
 	<?php endif; ?>
-	-->
 	<?php
 }
 
