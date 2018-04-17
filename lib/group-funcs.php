@@ -1815,7 +1815,7 @@ function openlab_show_site_posts_and_comments() {
 			 * no way to use that function directly inside switch_to_blog().
 			 */
 			$comment__not_in = array();
-			$private_comments = get_comments( array(
+			$pc_query = new WP_Comment_Query( array(
 				'meta_query' => array(
 					array(
 						'key'   => 'olgc_is_private',
@@ -1824,7 +1824,13 @@ function openlab_show_site_posts_and_comments() {
 				),
 				'status' => 'any',
 			) );
+			$private_comments = $pc_query->comments;
+
 			if ( $private_comments ) {
+				foreach ( $private_comments as $private_comment ) {
+					$comment__not_in[] = $private_comment->comment_ID;
+				}
+
 				$comment__not_in = wp_parse_id_list( $comment__not_in );
 
 				if ( $comment__not_in ) {
