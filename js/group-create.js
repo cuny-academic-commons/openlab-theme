@@ -191,7 +191,7 @@ jQuery(document).ready(function($){
 		group_id = $('#group_id').val();
 
 		// Don't fetch details if there's already a current group.
-		if ( group_id ) {
+		if ( group_id != 0 ) {
 			return;
 		}
 
@@ -258,6 +258,9 @@ jQuery(document).ready(function($){
 
 				// Additional Description
 				$('#additional-desc-html').val(r.additional_description);
+
+				// Term
+				$('#academic-term').val(r.term);
 			}
 		});
 	}

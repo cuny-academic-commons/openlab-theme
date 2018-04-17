@@ -2558,7 +2558,7 @@ function openlab_group_term_edit_markup() {
 		<div class="panel-heading"><?php esc_html_e( 'Term', 'openlab-theme' ) ?></div>
 		<div class="panel-body">
 			<label for="academic-term"><?php esc_html_e( 'Academic term for this course', 'openlab-theme' ); ?></label>
-			<input class="form-control" type="text" name="academic-term" value="<?php echo esc_attr( $term ); ?>" />
+			<input class="form-control" type="text" id="academic-term" name="academic-term" value="<?php echo esc_attr( $term ); ?>" />
 			<?php wp_nonce_field( 'openlab_academic_term', '_openlab-term-nonce', false ); ?>
 		</div>
 	</div>

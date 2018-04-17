@@ -127,6 +127,7 @@ function openlab_group_clone_details( $group_id ) {
 		'site_id'                => '',
 		'site_url'               => '',
 		'site_path'              => '',
+		'term'                   => '',
 	);
 
 	if ( $group_id ) {
@@ -160,6 +161,8 @@ function openlab_group_clone_details( $group_id ) {
 		$retval['site_id'] = cboxol_get_group_site_id( $group_id );
 		$retval['site_url'] = get_blog_option( $retval['site_id'], 'home' );
 		$retval['site_path'] = str_replace( bp_get_root_domain(), '', $retval['site_url'] );
+
+		$retval['term'] = openlab_get_group_term( $group_id );
 	}
 
 	return $retval;
