@@ -2005,6 +2005,10 @@ function openlab_bp_group_site_pages( $mobile = false ) {
 	$group_id = bp_get_current_group_id();
 	$group_type = cboxol_get_group_group_type( $group_id );
 
+	if ( is_wp_error( $group_type ) ) {
+		return;
+	}
+
 	$group_site_settings = openlab_get_group_site_settings( $group_id );
 
 	$responsive_class = $mobile ? 'visible-xs' : 'hidden-xs';
