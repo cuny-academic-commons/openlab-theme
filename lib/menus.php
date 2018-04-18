@@ -82,13 +82,15 @@ add_filter( 'wp_nav_menu_objects', 'openlab_wp_menu_customizations', 11, 2 );
 function openlab_modify_options_nav() {
 	if ( bp_is_group() && ! bp_is_group_create() ) {
 		$group_type = cboxol_get_group_group_type( bp_get_current_group_id() );
-		buddypress()->groups->nav->edit_nav(
-			array(
-				'name' => $group_type->get_label( 'group_home' ),
-			),
-			'home',
-			bp_get_current_group_slug()
-		);
+		if ( ! is_wp_error( $group_type ) ) {
+			buddypress()->groups->nav->edit_nav(
+				array(
+					'name' => $group_type->get_label( 'group_home' ),
+				),
+				'home',
+				bp_get_current_group_slug()
+			);
+		}
 
 		if ( cboxol_is_portfolio() ) {
 			// Keep the following tabs as-is

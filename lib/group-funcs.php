@@ -977,6 +977,10 @@ function openlab_group_profile_header() {
 	global $bp;
 	$group_type = cboxol_get_group_group_type( bp_get_current_group_id() );
 
+	if ( is_wp_error( $group_type ) ) {
+		return;
+	}
+
 	$status_label = null;
 	if ( bp_group_is_admin() ) {
 		$status_label = __( 'Admin', 'openlab-theme' );
@@ -1036,6 +1040,10 @@ function openlab_get_privacy_icon() {
 
 function cuny_group_single() {
 	$group_type = cboxol_get_group_group_type( bp_get_current_group_id() );
+	if ( is_wp_error( $group_type ) ) {
+		return;
+	}
+
 	$group_slug = bp_get_group_slug();
 
 	// group page vars
