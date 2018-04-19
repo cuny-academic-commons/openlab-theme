@@ -168,16 +168,36 @@ openlab_group_admin_js_data( $group_type );
 
 						<label for="group-portfolio-list-heading"><?php esc_html_e( 'List Heading', 'openlab-theme' ); ?></label>
 						<input name="group-portfolio-list-heading" id="group-portfolio-list-heading" class="form-control" type="text" value="<?php echo esc_attr( $portfolio_list_heading ) ?>" />
+
+						<?php wp_nonce_field( 'dirt_settings', 'dirt-settings-nonce', false ); ?>
+					</div>
+				</div>
+			<?php endif; ?>
+
+			<?php /* DiRT Directory Client settings */ ?>
+			<?php if ( function_exists( 'ddc_include' ) ) : ?>
+				<div class="panel panel-default panel-dirt">
+					<div class="panel-heading"><?php esc_html_e( 'Digital Research Tools Settings', 'openlab-theme' ); ?></div>
+					<div class="panel-body">
+						<p><?php _e( 'The Digital Research Tools tab helps members share the tools that they use from the <a href="https://dirtdirectory.org">DiRT Directory</a>, and provides an interface for discovering new tools.', 'openlab-theme' ); ?></p>
+
+						<?php
+						$dirt_settings = groups_get_groupmeta( bp_get_current_group_id(), 'ddc_settings' );
+						$dirt_enabled  = ! empty( $dirt_settings['enabled'] );
+						?>
+						<div class="checkbox">
+							<label><input type="checkbox" name="group-enable-dirt" id="group-enable-dirt" value="1" <?php checked( $dirt_enabled ) ?> /> <?php esc_html_e( 'Enable "Digital Research Tools" tab?', 'openlab-theme' ); ?></label>
+						</div>
 					</div>
 				</div>
 
-				<?php // Output some default BP fields so that the default routine runs properly.  ?>
-				<input type="hidden" name="group-status" value="<?php echo esc_attr( groups_get_current_group()->status ); ?>" />
-
-				<p><input class="btn btn-primary" type="submit" value="<?php _e( 'Save Changes', 'openlab-theme' ) ?> &#xf138;" id="save" name="save" /></p>
-				<?php wp_nonce_field( 'groups_edit_group_settings' ) ?>
-
 			<?php endif; ?>
+
+			<?php // Output some default BP fields so that the default routine runs properly.  ?>
+			<input type="hidden" name="group-status" value="<?php echo esc_attr( groups_get_current_group()->status ); ?>" />
+
+			<p><input class="btn btn-primary" type="submit" value="<?php _e( 'Save Changes', 'openlab-theme' ) ?> &#xf138;" id="save" name="save" /></p>
+			<?php wp_nonce_field( 'groups_edit_group_settings' ) ?>
 
 		<?php endif; ?>
 

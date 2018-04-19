@@ -566,6 +566,7 @@ function openlab_group_avatar_markup() {
  * Post group-save actions.
  */
 add_action( 'groups_group_after_save', 'openlab_save_group_status' );
+add_action( 'groups_group_after_save', 'openlab_save_dirt_status', 30 );
 add_action( 'groups_create_group_step_save_group-details', 'openlab_move_avatar_after_group_create' );
 add_action( 'groups_create_group_step_save_group-details', 'openlab_save_new_group_url' );
 add_action( 'groups_create_group_step_save_site-details', 'openlab_save_group_site' );
@@ -610,6 +611,28 @@ function openlab_save_group_status( BP_Groups_Group $group ) {
 	remove_action( 'groups_group_after_save', 'openlab_save_group_status' );
 	$saved = groups_create_group( $group_args );
 	add_action( 'groups_group_after_save', 'openlab_save_group_status' );
+}
+
+/**
+ * Save a group's DiRT status.
+ *
+ * @param BP_Groups_Group $group_id
+ */
+function openlab_save_dirt_status( $group ) {
+	if ( ! isset( $_POST['dirt-settings-nonce'] ) ) {
+		return;
+	}
+
+	check_admin_referer( 'dirt_settings', 'dirt-settings-nonce' );
+
+	$enabled  = ! empty( $_POST['group-enable-dirt'] );
+	$settings = groups_get_groupmeta( $group->id, 'ddc_settings', true );
+	if ( ! is_array( $settings ) ) {
+		$settings = array();
+	}
+
+	$settings['enabled'] = $enabled;
+	groups_update_groupmeta( $group->id, 'ddc_settings', $settings );
 }
 
 /**
