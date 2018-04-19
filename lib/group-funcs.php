@@ -23,7 +23,7 @@ function openlab_set_group_creation_steps() {
 	);
 	buddypress()->groups->group_creation_steps = $steps;
 }
-add_action( 'bp_actions', 'openlab_set_group_creation_steps', 5 );
+add_action( 'bp_actions', 'openlab_set_group_creation_steps', 9 );
 
 /** SETTINGS MARKUP FUNCTIONS ************************************************/
 
