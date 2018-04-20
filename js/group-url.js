@@ -1,7 +1,9 @@
 (function($){
 	var $errorFormat, $errorTaken, $nameField, $urlField, $urlFieldParent;
+	var isValid, isTaken;
 
 	$(document).ready(function(){
+		isValid = isAvailable = false;
 		$ajaxStatus = $('#group-url-status');
 		$errorFormat = $('#url-error-format');
 		$errorTaken = $('#url-error-taken');
@@ -29,12 +31,13 @@
 			var url = $urlField.val();
 
 			if ( url.match( /[^a-z0-9\-_]/ ) ) {
-				$urlFieldParent.addClass('has-error');
+				isValid = false;
 				$errorFormat.removeAttr( 'aria-hidden' );
 			} else {
-				$urlFieldParent.removeClass('has-error');
+				isValid = true;
 				$errorFormat.attr( 'aria-hidden', 'true' );
 			}
+			toggleError();
 		});
 
 		// Only run the AJAX request on blur.
@@ -62,20 +65,25 @@
 					$urlFieldParent.removeClass('ajax-in-progress');
 					$ajaxStatus.removeClass('fa-spinner fa-pulse');
 					if ( response.success ) {
-						$urlFieldParent.removeClass('has-error').addClass('ajax-success');
-						$ajaxStatus.removeClass('fa-exclamation-circle').addClass('fa-check');
+						isAvailable = true;
 						$errorTaken.attr( 'aria-hidden', 'true' );
 					} else {
-						$urlFieldParent.addClass('has-error').addClass('ajax-error');
-						$ajaxStatus.removeClass('fa-check').addClass('fa-exclamation-circle');
+						isAvailable = false;
 						$errorTaken.removeAttr( 'aria-hidden' );
 					}
+					toggleError();
 				}
 			} );
-			var url = $urlField.val();
-			console.log('blurred: ' + url);
-
 		});
+
+		var toggleError = function() {
+			if ( isAvailable && isValid ) {
+				$urlFieldParent.removeClass('has-error').removeClass('ajax-error');
+				$ajaxStatus.addClass('fa-check').removeClass('fa-exclamation-circle');
+			} else {
+				$urlFieldParent.addClass('has-error').addClass('ajax-error');
+				$ajaxStatus.removeClass('fa-check').addClass('fa-exclamation-circle');
+			}
+		}
 	});
-	console.log('ok');
 }(jQuery));

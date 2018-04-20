@@ -456,7 +456,7 @@ function openlab_group_url_markup() {
 			</div>
 
 			<div id="url-error-format" class="bp-template-notice url-error error clearfix" aria-hidden="true">
-				<?php esc_html_e( 'Group URLs can contain only lowercase characters, numbers, hyphens, and underscores.', 'openlab-theme' ); ?>
+				<?php esc_html_e( 'URLs can contain only lowercase characters, numbers, hyphens, and underscores.', 'openlab-theme' ); ?>
 			</div>
 
 			<div id="url-error-taken" class="bp-template-notice url-error error clearfix" aria-hidden="true">
