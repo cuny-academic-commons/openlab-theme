@@ -456,7 +456,12 @@ function openlab_group_url_markup() {
 			</div>
 
 			<div id="url-error-format" class="bp-template-notice url-error error clearfix" aria-hidden="true">
-				<?php esc_html_e( 'URLs can contain only lowercase characters, numbers, hyphens, and underscores.', 'openlab-theme' ); ?>
+				<p><?php esc_html_e( 'URLs must meet the following criteria:', 'openlab-theme' ); ?></p>
+				<ul>
+					<li><?php esc_html_e( 'Can contain only lowercase characters, numbers, hyphens, and underscores.', 'openlab-theme' ); ?>
+					<li><?php esc_html_e( 'Cannot begin or end with a non-alphanumeric character.', 'openlab-theme' ); ?></li>
+					<li><?php esc_html_e( 'Must be at least 3 characters long.', 'openlab-theme' ); ?></li>
+				</ul>
 			</div>
 
 			<div id="url-error-taken" class="bp-template-notice url-error error clearfix" aria-hidden="true">

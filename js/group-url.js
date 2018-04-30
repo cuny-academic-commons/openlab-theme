@@ -30,7 +30,12 @@
 		$urlField.on( 'keyup', function() {
 			var url = $urlField.val();
 
-			if ( url.match( /[^a-z0-9\-_]/ ) ) {
+			var hasIllegalCharacters = url.match( /[^a-z0-9\-_]/ );
+			var hasLegalStart = url.match( /^[a-z0-9]/ );
+			var hasLegalEnd = url.match( /[a-z0-9]$/ );
+			var hasEnoughCharacters = url.length >= 3;
+
+			if ( ! hasLegalStart || ! hasLegalEnd || hasIllegalCharacters || ! hasEnoughCharacters ) {
 				isValid = false;
 				$errorFormat.removeAttr( 'aria-hidden' );
 			} else {
