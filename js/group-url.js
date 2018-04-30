@@ -22,7 +22,7 @@
 					.replace( /\-{2,}/g, '-' );				// resulting double-hyphens
 
 				$urlField.val(suggestedUrl);
-				$urlField.trigger('blur');
+				$urlField.trigger('blur').trigger('keyup');
 			}
 		} );
 
