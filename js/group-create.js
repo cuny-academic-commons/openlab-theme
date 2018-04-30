@@ -346,8 +346,10 @@ jQuery(document).ready(function($){
 		});
 	}
 
-	$( '.domain-validate' ).on( 'change', function() {
+	$( '.domain-validate' ).on( 'change', function( e ) {
 		form_validated = false;
+	} ).on( 'keyup', function( e ) {
+		$( e.target ).val( e.target.value.toLowerCase() );
 	} );
 
 	// Schools/Departments are required fields for Courses.
