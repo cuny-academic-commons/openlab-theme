@@ -30,6 +30,10 @@
 		$urlField.on( 'keyup', function() {
 			var url = $urlField.val();
 
+			// Force URL to lowercase.
+			url = url.toLowerCase();
+			$urlField.val( url );
+
 			var hasIllegalCharacters = url.match( /[^a-z0-9\-_]/ );
 			var hasLegalStart = url.match( /^[a-z0-9]/ );
 			var hasLegalEnd = url.match( /[a-z0-9]$/ );
