@@ -138,16 +138,19 @@ function openlab_group_site_markup() {
 						$maybe_site_id = openlab_get_site_id_by_group_id( $the_group_id );
 
 						if ( $maybe_site_id ) {
+							$site_is_external = false;
 							$group_site_name = get_blog_option( $maybe_site_id, 'blogname' );
 							$group_site_text = '<strong>' . esc_html( $group_site_name ) . '</strong>';
 							$group_site_url_out = '<a class="bold" href="' . esc_url( $group_site_url ) . '">' . esc_html( $group_site_url ) . '</a>';
 						} else {
+							$site_is_external = true;
 							$group_site_text = esc_url( $group_site_url );
 							$group_site_url_out = '<a class="bold" href="' . esc_url( $group_site_url ) . '">' . esc_html( $group_site_url ) . '</a>';
 						}
 						?>
 						<p><?php printf( esc_html__( 'This group is currently associated with the site "%s"', 'openlab-theme' ), $group_site_text ) ?></p>
 						<ul id="change-group-site"><li><?php echo $group_site_url_out ?> <a class="button underline confirm" href="<?php echo wp_nonce_url( bp_get_group_permalink( groups_get_current_group() ) . 'admin/site-details/unlink-site/', 'unlink-site' ) ?>" id="change-group-site-toggle"><?php esc_html_e( 'Unlink', 'openlab-theme' ); ?></a></li></ul>
+						<input type="hidden" id="site-is-external" value="<?php echo intval( $site_is_external ); ?>" />
 
 					</div>
 

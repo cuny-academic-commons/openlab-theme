@@ -131,7 +131,8 @@ jQuery(document).ready(function($){
 		var $associatedSitePrivacyPanel = $('#associated-site-privacy-panel');
 
 		var $externalInput = $('#new_or_old_external');
-		var siteIsExternal = $externalInput.length && $externalInput.is(':checked');
+		var $siteIsExternal = $('#site-is-external');
+		var siteIsExternal = ( $externalInput.length && $externalInput.is(':checked') ) || ( $siteIsExternal.length && $siteIsExternal.val() > 0 );
 
 		var show = setuptoggle.is(':checked') || $('#current-group-site').is(':visible') || CBOXOL_Group_Create.group_type_requires_site;
 		if ( show && siteIsExternal ) {
