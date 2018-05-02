@@ -450,7 +450,12 @@ jQuery(document).ready(function($){
 			},
 			function( response ) {
 				if ( ! response.success ) {
-					$domain_field.after('<div class="ajax-warning bp-template-notice error">' + response.data.error + '</div>');
+					$( '#groupblog-url-error' ).remove();
+					$domain_field.after('<div class="ajax-warning bp-template-notice error" id="groupblog-url-error">' + response.data.error + '</div>');
+
+					$('html,body').animate({
+						scrollTop: $domain_field.offset().top - 100
+					}, 1000);
 					return false;
 				} else {
 					// We're done validating.
