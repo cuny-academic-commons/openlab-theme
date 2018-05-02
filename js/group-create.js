@@ -25,6 +25,8 @@ jQuery(document).ready(function($){
 		$gc_submit = $( '#group-creation-create' ),
 		$required_fields;
 
+	var setuptoggle = $('input[name="set-up-site-toggle"]');
+
 	if ( $body.hasClass( 'group-admin' ) ) {
 		form_type = 'admin';
 		form = document.getElementById( 'openlab-group-settings-form' );
@@ -93,6 +95,8 @@ jQuery(document).ready(function($){
 		} else {
 			$(efr).hide();
 		}
+
+		showHideAssociatedSitePrivacy();
 	}
 
 	function disable_gc_form() {
@@ -125,7 +129,16 @@ jQuery(document).ready(function($){
 
 	function showHideAssociatedSitePrivacy() {
 		var $associatedSitePrivacyPanel = $('#associated-site-privacy-panel');
-		if ( setuptoggle.is(':checked') || $('#current-group-site').is(':visible') || CBOXOL_Group_Create.group_type_requires_site ) {
+
+		var $externalInput = $('#new_or_old_external');
+		var siteIsExternal = $externalInput.length && $externalInput.is(':checked');
+
+		var show = setuptoggle.is(':checked') || $('#current-group-site').is(':visible') || CBOXOL_Group_Create.group_type_requires_site;
+		if ( show && siteIsExternal ) {
+			show = false;
+		}
+
+		if ( show ) {
 			$associatedSitePrivacyPanel.show();
 		} else {
 			$associatedSitePrivacyPanel.hide();
@@ -319,7 +332,6 @@ jQuery(document).ready(function($){
 	} );
 
 	/* "Set up a site" toggle */
-	var setuptoggle = $('input[name="set-up-site-toggle"]');
 	$(setuptoggle).on( 'click', function(){
 		showHideAll();
 		showHideAssociatedSitePrivacy();
