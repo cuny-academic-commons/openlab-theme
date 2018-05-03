@@ -7894,6 +7894,7 @@ body .account-type-select-ui .form-control::-webkit-input-placeholder {
   color: #f00;
 }
 body .panel-body .bp-template-notice {
+  clear: both;
   margin-top: 0;
   margin-bottom: 17px;
 }

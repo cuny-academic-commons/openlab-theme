@@ -281,6 +281,7 @@ jQuery(document).ready(function($){
 
 	$('.noo_radio').click(function(el){
 		var whichid = $(el.target).prop('id').split('_').pop();
+		$('.url-field-error').remove();
 		new_old_switch(whichid);
 	});
 
@@ -425,16 +426,26 @@ jQuery(document).ready(function($){
 		// Different fields require different validation.
 		switch ( new_or_old ) {
 			case 'old' :
-
-				// do something
+				$domain_field = $( '#groupblog-blogid' );
+				domain = $domain_field.find( ':selected' ).val();
+				if ( 0 == domain ) {
+					domain = '';
+				}
 				break;
 
 			case 'clone' :
 				$domain_field = $( '#clone-destination-path' );
+				domain = $domain_field.val();
 				break;
 
 			case 'new' :
 				$domain_field = $( '#new-site-domain' );
+				domain = $domain_field.val();
+				break;
+
+			case 'external' :
+				$domain_field = $( '#external-site-url' );
+				domain = $domain_field.val();
 				break;
 		}
 
@@ -444,16 +455,26 @@ jQuery(document).ready(function($){
 
 		event.preventDefault();
 
-		domain = $domain_field.val();
-
 		var warn = $domain_field.siblings( '.ajax-warning' );
 		if ( warn.length > 0 ) {
 			warn.remove();
 		}
 
 		if ( 0 == domain.length ) {
-			$domain_field.after('<div class="ajax-warning bp-template-notice error">' + OLGroupCreate.strings.fieldCannotBeBlank + '</div>');
+			$('.url-field-error').remove();
+			$domain_field.after('<div class="ajax-warning url-field-error bp-template-notice error">' + OLGroupCreate.strings.fieldCannotBeBlank + '</div>');
+			$('html,body').animate({
+				scrollTop: $domain_field.offset().top - 100
+			}, 1000);
 			return false;
+		}
+
+		// No further validation needed for external or existing sites.
+		if ( 'old' === new_or_old || 'external' === new_or_old ) {
+			form_validated = true;
+			$form.append( '<input name="save" value="1" type="hidden" />' );
+			$form.submit();
+			return true;
 		}
 
 		$.post( ajaxurl,
@@ -463,8 +484,9 @@ jQuery(document).ready(function($){
 			},
 			function( response ) {
 				if ( ! response.success ) {
+					$('.url-field-error').remove();
 					$( '#groupblog-url-error' ).remove();
-					$domain_field.after('<div class="ajax-warning bp-template-notice error" id="groupblog-url-error">' + response.data.error + '</div>');
+					$domain_field.after('<div class="ajax-warning url-field-error bp-template-notice error" id="groupblog-url-error">' + response.data.error + '</div>');
 
 					$('html,body').animate({
 						scrollTop: $domain_field.offset().top - 100
