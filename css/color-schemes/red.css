@@ -10314,6 +10314,12 @@ input.help-search {
 .wpcf7 .wpcf7-form-control-wrap textarea {
   max-width: 100%;
 }
+/* Braille */
+.message-braille-actions {
+  position: absolute;
+  right: 0;
+  top: 0;
+}
 /**Custom media query items**/
 @media (max-width: 767px) {
   .group-subscription-div {

@@ -174,6 +174,9 @@ openlab_group_admin_js_data( $group_type );
 				</div>
 			<?php endif; ?>
 
+			<?php /* Braille settings */ ?>
+			<?php openlab_group_braille_toggle_markup(); ?>
+
 			<?php /* DiRT Directory Client settings */ ?>
 			<?php if ( function_exists( 'ddc_include' ) ) : ?>
 				<div class="panel panel-default panel-dirt">

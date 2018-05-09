@@ -33,6 +33,7 @@ add_action( 'bp_actions', 'openlab_set_group_creation_steps', 9 );
 add_action( 'bp_after_group_details_creation_step', 'openlab_group_academic_units_edit_markup', 3 );
 add_action( 'bp_after_group_details_creation_step', 'openlab_group_term_edit_markup', 4 );
 add_action( 'bp_after_group_details_creation_step', 'openlab_group_contact_field', 5 );
+add_action( 'bp_after_group_details_creation_step', 'openlab_group_braille_toggle_markup', 7 );
 add_action( 'bp_after_group_details_creation_step', 'openlab_course_information_edit_panel', 8 );
 add_action( 'bp_after_group_details_creation_step', 'openlab_group_privacy_settings_markup', 12 );
 
@@ -575,6 +576,7 @@ function openlab_group_avatar_markup() {
  */
 add_action( 'groups_group_after_save', 'openlab_save_group_status' );
 add_action( 'groups_group_after_save', 'openlab_save_dirt_status', 30 );
+add_action( 'groups_group_after_save', 'openlab_save_braille_status', 40 );
 add_action( 'groups_create_group_step_save_group-details', 'openlab_move_avatar_after_group_create' );
 add_action( 'groups_create_group_step_save_group-details', 'openlab_save_new_group_url' );
 add_action( 'groups_create_group_step_save_site-details', 'openlab_save_group_site' );
@@ -624,7 +626,7 @@ function openlab_save_group_status( BP_Groups_Group $group ) {
 /**
  * Save a group's DiRT status.
  *
- * @param BP_Groups_Group $group_id
+ * @param BP_Groups_Group $group
  */
 function openlab_save_dirt_status( $group ) {
 	if ( ! isset( $_POST['dirt-settings-nonce'] ) ) {
@@ -641,6 +643,21 @@ function openlab_save_dirt_status( $group ) {
 
 	$settings['enabled'] = $enabled;
 	groups_update_groupmeta( $group->id, 'ddc_settings', $settings );
+}
+
+/**
+ * Save a group's Braille status.
+ *
+ * @param BP_Groups_Group $group
+ */
+function openlab_save_braille_status( $group ) {
+	_b( $group );
+	if ( ! function_exists( 'get_braille' ) ) {
+		return;
+	}
+
+	$enable = isset( $_POST['group-enable-braille'] ) ? 1 : 0;
+	$updated = groups_update_groupmeta( (int) $group->id, 'group_enable_braille', $enable );
 }
 
 /**
@@ -2412,6 +2429,35 @@ function openlab_group_contact_save( $group ) {
 	}
 }
 add_action( 'groups_group_after_save', 'openlab_group_contact_save' );
+
+/**
+ * Markup for Braille toggle.
+ */
+function openlab_group_braille_toggle_markup() {
+	// @todo Replace with proper Braille functionality check.
+	if ( ! function_exists( 'get_braille' ) ) {
+		return;
+	}
+
+	$group = groups_get_current_group();
+	$braille_enabled = (bool) groups_get_groupmeta( (int) $group->id , 'group_enable_braille', true );
+
+	?>
+
+	<div class="panel panel-default">
+		<div class="panel-heading"><?php esc_html_e( 'Braille Settings', 'openlab-theme' ); ?></div>
+
+		<div class="panel-body">
+			<p><?php esc_html_e( 'Adds a "Braille" toggle to each discussion thread item, enabling members to read discussion content in SimBraille, a visual representation of Braille text.', 'openlab-theme' ); ?></p>
+
+			<div class="checkbox">
+				<label><input type="checkbox" name="group-enable-braille" id="group-braille" value="1"<?php checked( $braille_enabled ) ?> /> <?php _e( 'Enable Braille toggle for discussion content?', 'openlab-theme' ) ?></label>
+			</div>
+		</div>
+	</div>
+
+	<?php
+}
 
 /**
  * Markup for the Course Information section when editing/creating a course.

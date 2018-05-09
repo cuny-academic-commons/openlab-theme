@@ -55,6 +55,38 @@ do_action( 'bp_before_member_settings_template' );
 
 			</div>
 		</div>
+
+		<?php if ( function_exists( 'get_braille' ) ) : ?>
+<?php /* todo this is temporary! */ ?>
+<script type="text/javascript">
+jQuery(document).ready(function(){
+	var brailleEls = jQuery('label[for="bp-messages-braille"]').get();
+	for ( var i in brailleEls ) {
+		if ( jQuery(brailleEls[i]).closest('.panel').length > 0 ) {
+			continue;
+		}
+
+		jQuery(brailleEls[i]).remove();
+	}
+});
+</script>
+
+			<div class="panel panel-default">
+				<div class="panel-heading"><?php esc_html_e( 'Braille Settings', 'openlab-theme' ); ?></div>
+
+				<div class="panel-body">
+					<p><?php esc_html_e( 'Enable the Braille toggle to allow you to your private messages in SimBraille, a visual representation of Braille text.', 'openlab-theme' ); ?></p>
+					<div class="checkbox">
+						<label for="bp-messages-braille">
+							<?php $show_braille = (bool) bp_get_user_meta( bp_displayed_user_id(), 'bp_messages_braille', true ); ?>
+							<input type="checkbox" name="bp-messages-braille" id="bp-messages-braille" value="1" <?php checked( $show_braille ); ?> />
+							<?php esc_html_e( 'Show Braille toggle for private messages?', 'bp-braille' ); ?>
+						</label>
+					</div>
+				</div>
+			</div>
+		<?php endif; ?>
+
 		<?php do_action( 'bp_core_general_settings_before_submit' ); ?>
 
 		<div class="submit">
