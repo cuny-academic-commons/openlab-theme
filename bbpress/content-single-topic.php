@@ -94,9 +94,11 @@
 
 		// Previous is +1.
 		if ( $this_topic_index < $last_topic_index ) {
-			$prev_topic_id = $group_topics->posts[ $this_topic_index + 1 ];
-			$prev_url = get_permalink( $prev_topic_id );
-			$prev_link = '<a class="btn btn-primary link-btn" href="' . $prev_url . '"><span class="fa fa-chevron-circle-left"></span> Previous Topic</a>';
+			if ( isset( $group_topics->posts[ $this_topic_index + 1 ] ) ) {
+				$prev_topic_id = $group_topics->posts[ $this_topic_index + 1 ];
+				$prev_url = get_permalink( $prev_topic_id );
+				$prev_link = '<a class="btn btn-primary link-btn" href="' . $prev_url . '"><span class="fa fa-chevron-circle-left"></span> Previous Topic</a>';
+			}
 		}
 
 		// Next is -1.
