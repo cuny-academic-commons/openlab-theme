@@ -40,6 +40,8 @@ class OpenLab_Group_Type_Widget extends WP_Widget {
 			'group_type' => $type->get_slug(),
 		);
 
+		ob_start();
+
 		if ( bp_has_groups( $groups_args ) ) :
 			?>
 
@@ -53,8 +55,6 @@ class OpenLab_Group_Type_Widget extends WP_Widget {
 				$group_ids[] = $g->id;
 			}
 			$group_ids_sql = implode( ',', $group_ids );
-
-			ob_start();
 			?>
 
 			<div class="col-sm-6 activity-list <?php echo $type->get_slug(); ?>-list">
