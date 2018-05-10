@@ -472,6 +472,10 @@ add_action( 'init', 'openlab_log_out_social_accounts', 0 );
  * Remove bp-braille native settings UI.
  */
 add_action( 'bp_init', function() {
+	if ( ! class_exists( '\HardG\BpBraille\Plugin' ) ) {
+		return;
+	}
+
 	$instance = \HardG\BpBraille\Plugin::get_instance();
 
 	remove_action( 'bp_core_general_settings_before_submit', [ $instance->messages->settings, 'render' ] );
