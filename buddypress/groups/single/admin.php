@@ -172,11 +172,11 @@ openlab_group_admin_js_data( $group_type );
 				</div>
 			<?php endif; ?>
 
-			<?php /* Braille settings */ ?>
-			<?php openlab_group_braille_toggle_markup(); ?>
-
 			<?php /* DiRT Directory Client settings */ ?>
 			<?php openlab_group_dirt_toggle_markup(); ?>
+
+			<?php /* Braille settings */ ?>
+			<?php openlab_group_braille_toggle_markup(); ?>
 
 			<?php // Output some default BP fields so that the default routine runs properly.  ?>
 			<input type="hidden" name="group-status" value="<?php echo esc_attr( groups_get_current_group()->status ); ?>" />
