@@ -652,7 +652,6 @@ function openlab_save_dirt_status( $group ) {
  * @param BP_Groups_Group $group
  */
 function openlab_save_braille_status( $group ) {
-	_b( $group );
 	if ( ! function_exists( 'get_braille' ) ) {
 		return;
 	}
