@@ -33,6 +33,7 @@ add_action( 'bp_actions', 'openlab_set_group_creation_steps', 9 );
 add_action( 'bp_after_group_details_creation_step', 'openlab_group_academic_units_edit_markup', 3 );
 add_action( 'bp_after_group_details_creation_step', 'openlab_group_term_edit_markup', 4 );
 add_action( 'bp_after_group_details_creation_step', 'openlab_group_contact_field', 5 );
+add_action( 'bp_after_group_details_creation_step', 'openlab_group_dirt_toggle_markup', 5 );
 add_action( 'bp_after_group_details_creation_step', 'openlab_group_braille_toggle_markup', 7 );
 add_action( 'bp_after_group_details_creation_step', 'openlab_course_information_edit_panel', 8 );
 add_action( 'bp_after_group_details_creation_step', 'openlab_group_privacy_settings_markup', 12 );
@@ -2431,6 +2432,38 @@ function openlab_group_contact_save( $group ) {
 add_action( 'groups_group_after_save', 'openlab_group_contact_save' );
 
 /**
+ * Markup for DiRT toggle.
+ */
+function openlab_group_dirt_toggle_markup() {
+	if ( ! function_exists( 'ddc_include' ) ) {
+		return;
+	}
+
+	if ( bp_is_group() ) {
+		$dirt_settings = groups_get_groupmeta( bp_get_current_group_id(), 'ddc_settings' );
+		$dirt_enabled  = ! empty( $dirt_settings['enabled'] );
+	} else {
+		$dirt_enabled = false;
+	}
+
+	?>
+
+	<div class="panel panel-default panel-dirt">
+		<div class="panel-heading"><?php esc_html_e( 'Digital Research Tools Settings', 'openlab-theme' ); ?></div>
+		<div class="panel-body">
+			<p><?php _e( 'The Digital Research Tools tab helps members share the tools that they use from the <a href="https://dirtdirectory.org">DiRT Directory</a>, and provides an interface for discovering new tools.', 'openlab-theme' ); ?></p>
+
+			<div class="checkbox">
+				<label><input type="checkbox" name="group-enable-dirt" id="group-enable-dirt" value="1" <?php checked( $dirt_enabled ) ?> /> <?php esc_html_e( 'Enable "Digital Research Tools" tab?', 'openlab-theme' ); ?></label>
+			</div>
+		</div>
+	</div>
+
+	<?php wp_nonce_field( 'dirt_settings', 'dirt-settings-nonce', false ); ?>
+	<?php
+}
+
+/**
  * Markup for Braille toggle.
  */
 function openlab_group_braille_toggle_markup() {
@@ -2439,8 +2472,12 @@ function openlab_group_braille_toggle_markup() {
 		return;
 	}
 
-	$group = groups_get_current_group();
-	$braille_enabled = (bool) groups_get_groupmeta( (int) $group->id , 'group_enable_braille', true );
+	if ( bp_is_group() ) {
+		$group = groups_get_current_group();
+		$braille_enabled = (bool) groups_get_groupmeta( (int) $group->id , 'group_enable_braille', true );
+	} else {
+		$braille_enabled = false;
+	}
 
 	?>
 
