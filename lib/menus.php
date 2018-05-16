@@ -431,8 +431,12 @@ function openlab_profile_settings_submenu() {
 		$dud . 'profile/change-avatar'   => __( 'Change Avatar', 'openlab-theme' ),
 		$settings_slug                   => __( 'Account Settings', 'openlab-theme' ),
 		$dud . 'settings/notifications'  => __( 'Email Notifications', 'openlab-theme' ),
-		$dud . 'settings/delete-account' => __( 'Delete Account', 'openlab-theme' ),
 	);
+
+	if ( ! is_super_admin( bp_displayed_user_id() ) && ( ( ! bp_disable_account_deletion() && bp_is_my_profile() ) || bp_current_user_can( 'delete_users' ) ) ) {
+
+		$menu_list[ $dud . 'settings/delete-account' ] = __( 'Delete Account', 'openlab-theme' );
+	}
 	return openlab_submenu_gen( $menu_list, true );
 }
 
