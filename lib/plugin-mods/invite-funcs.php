@@ -225,7 +225,7 @@ function openlab_invite_anyone_screen_one_content() {
 			<input type="submit" name="invite-anyone-submit" id="invite-anyone-submit" class="btn btn-primary btn-margin btn-margin-top" value="<?php _e( 'Send Invites', 'buddypress' ) ?> " />
 		</div>
 
-
+		<?php wp_nonce_field( 'invite_anyone_send_by_email', 'ia-send-by-email-nonce' ); ?>
 	</form>
 	<?php
 }
