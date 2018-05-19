@@ -3,9 +3,9 @@
  * 404 template
  *
  */
- 
+
   get_header(); ?>
-  
+
   <div id="content" class="hfeed">
   			<div <?php post_class(); ?>>
             	<?php cuny_404(); ?>
