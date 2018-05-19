@@ -18,9 +18,9 @@ function cuny_404() { ?>
 
 	<div class="post hentry">
 
-		<h1 class="entry-title">Page Not Found</h1>
+		<h1 class="entry-title"><?php esc_html_e( 'Page Not Found', 'openlab-theme' ); ?></h1>
 		<div id="openlab-main-content" class="entry-content">
-			<p>The page you requested could not be found. Please use the menu above to find the page you need.</p>
+			<p><?php esc_html_e( 'The page you requested could not be found. Please use the menu above to find the page you need.', 'openlab-theme' ); ?></p>
 
 		</div><!-- end .entry-content -->
 

@@ -31,12 +31,12 @@ get_header();
 
     <div class="col-sm-18 col-xs-24">
 
-        <h1 class="entry-title"><span class="profile-name">OpenLab Calendar: Event</span></h1>
+        <h1 class="entry-title"><span class="profile-name"><?php esc_html_e( 'OpenLab Calendar: Event', 'openlab-theme' ); ?></span></h1>
 
         <div class="action-events">
             <div id="item-body">
                 <div class="submenu">
-                    <div class="submenu-text pull-left bold">Calendar:</div>
+                    <div class="submenu-text pull-left bold"><?php esc_html_e( 'Calendar:', 'openlab-theme' ); ?></div>
                     <ul class="nav nav-inline"><!--
                         <?php $menu_items = openlab_calendar_submenu(); ?>
                         <?php foreach ($menu_items as $item): ?>
