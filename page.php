@@ -27,16 +27,20 @@
 			<?php if ( ! strstr( get_the_title(), 'My' ) ) :  ?>
 				<div <?php post_class( 'col-sm-18 col-xs-24' ); ?>>
 					<div id="openlab-main-content"  class="content-wrapper">
-						<h1 class="entry-title"><span class="profile-name"><?php the_title(); ?></span>
+						<div class="entry-title">
+							<h1><span class="profile-name"><?php the_title(); ?></span></h1>
+
 							<?php if ( $is_about_or_calendar ) :  ?>
-								<button data-target="#sidebar-mobile" class="mobile-toggle direct-toggle pull-right visible-xs" type="button">
-									<span class="sr-only"><?php esc_html_e( 'Toggle navigation', 'openlab-theme' ); ?></span>
-									<span class="icon-bar"></span>
-									<span class="icon-bar"></span>
-									<span class="icon-bar"></span>
-								</button>
+								<div class="directory-title-meta">
+									<button data-target="#sidebar-mobile" class="mobile-toggle direct-toggle pull-right visible-xs" type="button">
+										<span class="sr-only"><?php esc_html_e( 'Toggle navigation', 'openlab-theme' ); ?></span>
+										<span class="icon-bar"></span>
+										<span class="icon-bar"></span>
+										<span class="icon-bar"></span>
+									</button>
+								</div>
 							<?php endif; ?>
-						</h1>
+						</div>
 						<div class="entry-content"><?php the_content(); ?></div>
 					</div>
 				</div><!--hentry-->

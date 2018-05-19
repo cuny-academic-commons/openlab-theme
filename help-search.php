@@ -9,11 +9,13 @@ $pag_page = isset( $_GET['hs-page'] ) ? intval( $_GET['hs-page'] ) : 1;
 		<div class="col-sm-18 col-xs-24 col-help">
 			<div id="openlab-main-content" class="content-wrapper">
 
-			<h1 class="entry-title help-entry-title">Search Help</h1>
+			<div class="entry-title">
+				<h1 class="help-entry-title"><?php esc_html_e( 'Search Help', 'openlab-theme' ); ?></h1>
+			</div>
 
 			<div id="help-title">
 				<h2 class="page-title clearfix submenu">
-					<div class="subenu-text pull-left bold">Results: </div>
+					<div class="subenu-text pull-left bold"><?php esc_html_e( 'Results:', 'openlab-theme' ); ?></div>
 				</h2>
 			</div>
 

@@ -7482,19 +7482,46 @@ input[type="submit"] {
   margin-top: 1px;
 }
 /**page**/
-h1.entry-title {
+.entry-title {
   border-bottom: 1px solid #bbbbbb;
+  height: 50px;
   margin-bottom: 10px;
-  margin-top: 18px;
+  margin-top: -3px;
+  overflow: hidden;
   padding-bottom: 6px;
   position: relative;
+  vertical-align: bottom;
 }
-h1.entry-title .profile-name-group-type {
+.entry-title h1 {
+  position: absolute;
+}
+@media (max-width: 767px) {
+  .entry-title h1 {
+    bottom: -13px;
+  }
+}
+.entry-title .directory-title-meta {
+  bottom: 5px;
+  position: absolute;
+  right: 0;
+}
+.entry-title .directory-title-meta a {
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+}
+.entry-title .directory-title-meta a:hover {
+  text-decoration: underline;
+}
+.entry-title .directory-title-meta button.direct-toggle {
+  font-size: 18px;
+}
+.entry-title .profile-name-group-type {
   font-weight: normal;
 }
-h1.entry-title .direct-toggle {
+.entry-title .direct-toggle {
   background: #d1d1d1;
-  height: 47px;
+  height: 50px;
   border: none;
   color: #ff5959;
   position: absolute;
@@ -7502,7 +7529,7 @@ h1.entry-title .direct-toggle {
   right: 0;
   z-index: 1;
 }
-h1.entry-title .direct-toggle .icon-bar {
+.entry-title .direct-toggle .icon-bar {
   background: #ff5959;
   border-radius: 1px;
   display: block;
@@ -7511,11 +7538,17 @@ h1.entry-title .direct-toggle .icon-bar {
   width: 22px;
 }
 @media (max-width: 767px) {
-  h1.entry-title {
-    margin-top: 12px;
+  .entry-title .direct-toggle {
+    top: -42px;
+  }
+}
+@media (max-width: 767px) {
+  .entry-title {
+    height: 54px;
+    margin-top: -17px;
     padding-bottom: 2px;
   }
-  h1.entry-title .profile-name {
+  .entry-title .profile-name {
     display: inline-block;
     max-width: 74%;
   }

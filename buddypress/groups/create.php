@@ -45,7 +45,9 @@
 
 	openlab_group_admin_js_data( $group_type ); ?>
 
-	<h1 class="entry-title mol-title"><?php echo esc_html( $group_type->get_label( 'create_clone_item' ) ); ?></h1>
+	<div class="entry-title">
+		<h1 class="mol-title"><?php echo esc_html( $group_type->get_label( 'create_clone_item' ) ); ?></h1>
+	</div>
 
 	<?php echo openlab_create_group_menu( $group_type ); ?>
 

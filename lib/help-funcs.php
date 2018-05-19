@@ -84,9 +84,14 @@ function openlab_help_loop() {
 		?>
 
 		<?php if ( $help_cats ) : ?>
-<h1 class="entry-title help-entry-title"><a class="no-deco" href="<?php echo get_term_link( $parent_cat ); ?>"><span class="profile-name hyphenate"><?php echo $parent_cat_name; ?></span></a>
-				<?php echo openlab_toggle_button( '#sidebar-menu-wrapper', true ); ?>
-				<span class="print-link pull-right hidden-xs"><a class="print-page" href="#"><span class="fa fa-print"></span> Print this page</a></span></h1>
+			<div class="entry-title">
+				<h1 class="help-entry-title"><a class="no-deco" href="<?php echo get_term_link( $parent_cat ); ?>"><span class="profile-name hyphenate"><?php echo $parent_cat_name; ?></span></a>
+
+				<div class="directory-title-meta">
+					<?php echo openlab_toggle_button( '#sidebar-menu-wrapper', true ); ?>
+					<span class="print-link pull-right hidden-xs"><a class="print-page" href="#"><span class="fa fa-print"></span> <?php esc_html_e( 'Print this page', 'openlab-theme' ); ?></a></span></h1>
+				</div>
+			</div>
 
 			<?php
 			$nav_links = array(
@@ -115,14 +120,23 @@ function openlab_help_loop() {
 	    </div>
 
 		<?php elseif ( $post->post_name == 'openlab-help' ) : ?>
-			<h1 class="entry-title"><span class="profile-name hyphenate"><?php echo the_title(); ?></span>
-				<?php echo openlab_toggle_button( '#sidebar-menu-wrapper', true ); ?>
-			</h1>
-			<div id="help-title"><h2 class="page-title"><?php _e( 'Do you have a question? You\'re in the right place!', 'buddypress' ) ?></h2></div>
+			<div class="entry-title">
+				<h1><span class="profile-name hyphenate"><?php echo the_title(); ?></span></h1>
+
+				<div class="directory-title-meta">
+					<?php echo openlab_toggle_button( '#sidebar-menu-wrapper', true ); ?>
+				</div>
+			</div>
+
+			<div id="help-title"><h2 class="page-title"><?php _e( 'Do you have a question? You\'re in the right place!', 'openlab-theme' ) ?></h2></div>
 		<?php else : ?>
-			<h1 class="entry-title"><span class="profile-name hyphenate"><?php echo the_title(); ?></span>
-				<?php echo openlab_toggle_button( '#sidebar-menu-wrapper', true ); ?>
-			</h1>
+			<div class="entry-title">
+				<h1><span class="profile-name hyphenate"><?php echo the_title(); ?></span></h1>
+
+				<div class="directory-title-meta">
+					<?php echo openlab_toggle_button( '#sidebar-menu-wrapper', true ); ?>
+				</div>
+			</div>
 		<?php endif; ?>
 
 		<div class="entry-content">
@@ -175,9 +189,13 @@ function openlab_help_tags_loop() {
 	$tags_query = new WP_Query( $args );
 	?>
 
-	<h1 class="parent-cat entry-title"><span class="profile-name hyphenate">Tag Archive for: "<?php echo $parent_cat_name; ?>"</span>
-		<?php echo openlab_toggle_button( '#sidebar-menu-wrapper', true ); ?>
-	</h1>
+	<div class="entry-title">
+		<h1 class="parent-cat"><span class="profile-name hyphenate"><?php echo esc_html( sprintf( __( 'Tag Archive for: %s', 'openlab-theme' ), $parent_cat_name ) ); ?></span></h1>
+
+		<div class="directory-title-meta">
+			<?php echo openlab_toggle_button( '#sidebar-menu-wrapper', true ); ?>
+		</div>
+	</div>
 
 	<?php
 	while ( $tags_query->have_posts() ) : $tags_query->the_post();
@@ -235,9 +253,14 @@ function openlab_help_cats_loop() {
 	?>
 
 	<?php if ( $parent_term->parent == 0 ) : ?>
-	<h1 class="parent-cat entry-title"><span class="profile-name hyphenate"><?php echo $parent_cat_name; ?></span>
-			<?php echo openlab_toggle_button( '#sidebar-menu-wrapper', true ); ?>
-		</h1>
+		<div class="entry-title">
+			<h1 class="parent-cat entry-title"><span class="profile-name hyphenate"><?php echo $parent_cat_name; ?></span></h1>
+
+			<div class="directory-title-meta">
+				<?php echo openlab_toggle_button( '#sidebar-menu-wrapper', true ); ?>
+			</div>
+		</div>
+
 	<div id="help-title">
 	    <h2 class="page-title clearfix submenu"><div class="submenu-text pull-left bold">Topics: </div></h2>
 	</div>
@@ -245,9 +268,14 @@ function openlab_help_cats_loop() {
 	else :
 		$head_term = get_term_by( 'id', $parent_term->parent, 'help_category' );
 		?>
-	<h1 class="parent-cat entry-title"><a class="no-deco" href="<?php echo get_term_link( $head_term ) ?>"><span class="profile-name hyphenate"><?php echo $head_term->name ?></span></a>
-			<?php echo openlab_toggle_button( '#sidebar-menu-wrapper', true ); ?>
-		</h1>
+		<div class="entry-title">
+			<h1 class="parent-cat"><a class="no-deco" href="<?php echo get_term_link( $head_term ) ?>"><span class="profile-name hyphenate"><?php echo $head_term->name ?></span></a></h1>
+
+			<div class="directory-title-meta">
+				<?php echo openlab_toggle_button( '#sidebar-menu-wrapper', true ); ?>
+			</div>
+		</div>
+
 	<div id="help-title">
 	    <h2 class="page-title clearfix submenu">
 				<div class="submenu-text pull-left bold">Topics: </div><span><?php echo esc_html( $parent_term->name ) ?></span>
@@ -371,9 +399,11 @@ function openlab_glossary_cats_loop() {
 	$cat_query = new WP_Query( $args );
 	?>
 
-	<h1 class="parent-cat entry-title"><span class="profile-name hyphenate">Glossary</span>
-		<?php echo openlab_toggle_button( '#sidebar-menu-wrapper', true ); ?>
-	</h1>
+	<div class="entry-title">
+		<h1 class="parent-cat entry-title"><span class="profile-name hyphenate">Glossary</span>
+			<?php echo openlab_toggle_button( '#sidebar-menu-wrapper', true ); ?>
+		</h1>
+	</div>
 	<div class="glossary-description"><p><?php echo $parent_term->description; ?></p></div>
 
 	<?php

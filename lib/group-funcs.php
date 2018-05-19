@@ -1039,16 +1039,21 @@ function openlab_group_profile_header() {
 	}
 
 	?>
-	<h1 class="entry-title group-title clearfix"><span class="profile-name-group-type"><?php echo esc_html( $group_type->get_label( 'singular' ) ); ?>:</span> <span class="profile-name hyphenate"><?php echo bp_group_name(); ?></span>
-		<?php if ( $status_label ) : ?>
-			<span class="profile-type pull-right hidden-xs"><?php echo esc_html( $status_label ); ?></span>
-		<?php endif; ?>
-		<button data-target="#sidebar-menu-wrapper" data-backgroundonly="true" class="mobile-toggle direct-toggle pull-right visible-xs" type="button">
-			<span class="sr-only"><?php esc_html_e( 'Toggle navigation', 'openlab-theme' ); ?></span>
-			<span class="icon-bar"></span>
-			<span class="icon-bar"></span>
-			<span class="icon-bar"></span>
-		</button></h1>
+	<div class="entry-title">
+		<h1 class="group-title clearfix"><span class="profile-name-group-type"><?php echo esc_html( $group_type->get_label( 'singular' ) ); ?>:</span> <span class="profile-name hyphenate"><?php echo bp_group_name(); ?></span></h1>
+
+		<div class="directory-title-meta">
+			<?php if ( $status_label ) : ?>
+				<span class="profile-type pull-right hidden-xs"><?php echo esc_html( $status_label ); ?></span>
+			<?php endif; ?>
+			<button data-target="#sidebar-menu-wrapper" data-backgroundonly="true" class="mobile-toggle direct-toggle pull-right visible-xs" type="button">
+				<span class="sr-only"><?php esc_html_e( 'Toggle navigation', 'openlab-theme' ); ?></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+		</div>
+	</div>
 	<?php if ( bp_is_group_home() || (bp_is_group_admin_page() && ! $bp->is_item_admin) ) : ?>
 		<div class="clearfix">
 			<?php if ( ! $group_type->get_is_portfolio() ) : ?>

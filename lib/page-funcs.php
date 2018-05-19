@@ -117,7 +117,9 @@ function openlab_registration_page() {
 
 		<div id="openlab-main-content"></div>
 
-		<h1 class="entry-title"><?php _e( 'Create an Account', 'openlab-theme' ) ?></h1>
+		<div class="entry-title">
+			<h1><?php _e( 'Create an Account', 'openlab-theme' ) ?></h1>
+		</div>
 
 		<form action="" name="signup_form" id="signup_form" class="standard-form form-panel" method="post" enctype="multipart/form-data" data-parsley-trigger="blur">
 

@@ -713,16 +713,20 @@ function openlab_member_header() {
 
 	?>
 
-	<h1 class="entry-title profile-title clearfix">
-		<span class="profile-name"><?php echo esc_html( sprintf( __( '%s&rsquo;s Profile', 'openlab-theme' ), bp_get_displayed_user_fullname() ) ); ?></span>
-		<span class="profile-type pull-right hidden-xs"><?php echo esc_html( $account_type ); ?></span>
-		<button data-target="#sidebar-mobile" class="mobile-toggle direct-toggle pull-right visible-xs" type="button">
-			<span class="sr-only"><?php esc_html_e( 'Toggle navigation', 'openlab-theme' ); ?></span>
-			<span class="icon-bar"></span>
-			<span class="icon-bar"></span>
-			<span class="icon-bar"></span>
-		</button>
-	</h1>
+	<div class="entry-title">
+		<h1 class="profile-title clearfix"><span class="profile-name"><?php echo esc_html( sprintf( __( '%s&rsquo;s Profile', 'openlab-theme' ), bp_get_displayed_user_fullname() ) ); ?></span></h1>
+
+		<div class="directory-title-meta">
+			<span class="profile-type pull-right hidden-xs"><?php echo esc_html( $account_type ); ?></span>
+			<button data-target="#sidebar-mobile" class="mobile-toggle direct-toggle pull-right visible-xs" type="button">
+				<span class="sr-only"><?php esc_html_e( 'Toggle navigation', 'openlab-theme' ); ?></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+		</div>
+	</div>
+
 	<?php if ( bp_is_user_activity() ) : ?>
 		<div class="clearfix hidden-xs">
 			<div class="info-line pull-right"><span class="timestamp info-line-timestamp"><span class="fa fa-undo" aria-hidden="true"></span> <?php bp_last_activity( bp_displayed_user_id() ); ?></span></div>

@@ -31,7 +31,9 @@ get_header();
 
     <div class="col-sm-18 col-xs-24">
 
-        <h1 class="entry-title"><span class="profile-name"><?php esc_html_e( 'OpenLab Calendar: Event', 'openlab-theme' ); ?></span></h1>
+		<div class="entry-title">
+			<h1><span class="profile-name"><?php esc_html_e( 'OpenLab Calendar: Event', 'openlab-theme' ); ?></span></h1>
+		</div>
 
         <div class="action-events">
             <div id="item-body">

@@ -497,12 +497,43 @@ input[type="submit"]{
     }
 }
 /**page**/
-h1.entry-title{
+.entry-title{
     border-bottom: 1px solid @30gray;
+	height: 50px;
     margin-bottom: 10px;
-    margin-top: 18px;
+    margin-top: -3px;
+	overflow: hidden;
     padding-bottom: 6px;
     position: relative;
+	vertical-align: bottom;
+
+	h1 {
+		position: absolute;
+
+		@media (max-width: @screen-xs-max){
+			bottom: -13px;
+		}
+	}
+
+	.directory-title-meta {
+		bottom: 5px;
+		position: absolute;
+		right: 0;
+
+		a {
+			font-size: 14px;
+			font-weight: 600;
+			text-decoration: none;
+
+			&:hover {
+				text-decoration: underline;
+			}
+		}
+
+		button.direct-toggle {
+			font-size: 18px;
+		}
+	}
 
 	.profile-name-group-type {
 		font-weight: normal;
@@ -510,7 +541,7 @@ h1.entry-title{
 
     .direct-toggle{
         background: darken(@10gray,4.7%);
-        height: 47px;
+        height: 50px;
         border: none;
         color: @magenta;
         position: absolute;
@@ -525,9 +556,14 @@ h1.entry-title{
             margin: 4px auto;
             width: 22px;
         }
+
+		@media (max-width: @screen-xs-max){
+			top: -42px;
+		}
     }
     @media (max-width: @screen-xs-max){
-        margin-top: 12px;
+		height: 54px;
+        margin-top: -17px;
         padding-bottom: 2px;
         .profile-name{
             display: inline-block;
