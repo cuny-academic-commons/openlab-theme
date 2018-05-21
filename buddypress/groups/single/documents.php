@@ -85,7 +85,7 @@
 								}
 								?></a> &nbsp;
 
-							<span class="group-documents-meta"><?php printf( __( 'Uploaded by %1$s on %1$s', 'bp-group-documents' ), bp_core_get_userlink( $document->user_id ), date( get_option( 'date_format' ), $document->created_ts ) ); ?></span>
+							<span class="group-documents-meta"><?php printf( __( 'Uploaded by %1$s on %2$s', 'bp-group-documents' ), bp_core_get_userlink( $document->user_id ), date( get_option( 'date_format' ), $document->created_ts ) ); ?></span>
 
 							<?php
 							if ( BP_GROUP_DOCUMENTS_SHOW_DESCRIPTIONS && $document->description ) {
