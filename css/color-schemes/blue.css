@@ -7324,7 +7324,7 @@ input[type="submit"] {
   font-weight: 700;
 }
 .btn-default:hover {
-  color: #8ccae4;
+  color: #333333;
 }
 .btn-default:hover.btn-primary {
   color: #8ccae4;
