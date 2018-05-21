@@ -7,6 +7,10 @@
  */
 ?>
 
+<?php
+$group_type = cboxol_get_group_group_type( bp_get_current_group_id() );
+?>
+
 <div id="bbpress-forums">
 
 	<?php bbp_breadcrumb(); ?>
@@ -60,7 +64,7 @@
 
 			<div class="bbp-back-to-course-discussion">
 				<?php /* Trick: use the buddypress string so it gets translated */ ?>
-				<p><a class="btn btn-primary link-btn" href="<?php bp_group_permalink() ?>forum/"><span class="fa fa-chevron-circle-left"></span> <?php _e( 'Group Forum', 'buddypress' ) ?></a></p>
+				<p><a class="btn btn-primary link-btn" href="<?php bp_group_permalink() ?>forum/"><span class="fa fa-chevron-circle-left"></span> <?php echo esc_html( $group_type->get_label( 'group_discussion' ) ); ?></a></p>
 			</div>
 
 			<div class="panel panel-default">
