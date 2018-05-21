@@ -8631,6 +8631,9 @@ body form .checkbox-list-container {
 .home-page .activity-list .activity-wrapper {
   border-radius: inherit;
 }
+.home-page .activity-list .activity-wrapper .group-widget-empty {
+  margin: 2em 0;
+}
 .home-page .activity-list .activity-wrapper .activity-item {
   border: 1px solid #dddddd;
   border-radius: inherit;

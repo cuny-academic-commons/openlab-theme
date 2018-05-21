@@ -42,27 +42,16 @@ class OpenLab_Group_Type_Widget extends WP_Widget {
 
 		ob_start();
 
-		if ( bp_has_groups( $groups_args ) ) :
-			?>
+		?>
+		<div class="col-sm-6 activity-list <?php echo $type->get_slug(); ?>-list">
+			<div class="activity-wrapper">
+				<div class="title-wrapper">
+					<h2 class="title activity-title"><a class="no-deco" href="<?php echo bp_get_group_type_directory_permalink( $type->get_slug() ); ?>"><?php echo esc_html( $r['title'] ); ?><span class="fa fa-chevron-circle-right" aria-hidden="true"></span></a></h2>
+				</div><!--title-wrapper-->
 
-			<?php
-			/* Let's save some queries and get the most recent activity in one fell swoop */
-
-			global $groups_template;
-
-			$group_ids = array();
-			foreach ( $groups_template->groups as $g ) {
-				$group_ids[] = $g->id;
-			}
-			$group_ids_sql = implode( ',', $group_ids );
-			?>
-
-			<div class="col-sm-6 activity-list <?php echo $type->get_slug(); ?>-list">
-				<div class="activity-wrapper">
-					<div class="title-wrapper">
-						<h2 class="title activity-title"><a class="no-deco" href="<?php echo bp_get_group_type_directory_permalink( $type->get_slug() ); ?>"><?php echo esc_html( $r['title'] ); ?><span class="fa fa-chevron-circle-right" aria-hidden="true"></span></a></h2>
-					</div><!--title-wrapper-->
+				<?php if ( bp_has_groups( $groups_args ) ) : ?>
 					<?php
+					global $groups_template;
 					while ( bp_groups() ) : bp_the_group();
 						$group = $groups_template->group;
 
@@ -86,15 +75,14 @@ class OpenLab_Group_Type_Widget extends WP_Widget {
 							</p>
 						</div>
 					</div>
-					<?php
-					$i++;
-				endwhile;
-				?>
+					<?php $i++; ?>
+					<?php endwhile; ?>
+				<?php else : ?>
+					<p class="group-widget-empty"><?php esc_html_e( 'Nothing to show.', 'openlab-theme' ); ?></p>
+				<?php endif; ?>
 			</div>
-			</div><!--activity-list-->
-
-			<?php
-		endif;
+		</div><!--activity-list-->
+		<?php
 
 		$html = ob_get_clean();
 
