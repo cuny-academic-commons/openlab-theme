@@ -390,28 +390,28 @@ function openlab_group_site_privacy_settings_markup() {
 				<div class="radio group-site">
 
 					<h5><?php _e( 'Public', 'buddypress' ) ?></h5>
-					<p id="search-setting-note" class="italics note"><?php esc_html_e( 'Note: These options will NOT block access to your site. It is up to search engines to honor your request.', 'openlab-theme' ); ?></p>
+					<p id="search-setting-note" class="italics note"><?php esc_html_e( 'Note: These options will NOT block access to the site. It is up to search engines to honor your request.', 'openlab-theme' ); ?></p>
 					<div class="row">
 						<div class="col-sm-23 col-sm-offset-1">
-							<p><label for="blog-private1"><input id="blog-private1" type="radio" name="blog_public" value="1" <?php checked( '1', $blog_public ); ?> /><?php _e( 'Allow search engines to index this site. Your site will show up in web search results.', 'openlab-theme' ); ?></label></p>
+							<p><label for="blog-private1"><input id="blog-private1" type="radio" name="blog_public" value="1" <?php checked( '1', $blog_public ); ?> /><?php _e( 'Allow search engines to index this site. The site will show up in web search results.', 'openlab-theme' ); ?></label></p>
 
-							<p><label for="blog-private0"><input id="blog-private0" type="radio" name="blog_public" value="0" <?php checked( '0', $blog_public ); ?> /><?php _e( 'Ask search engines not to index this site. Your site should not show up in web search results.', 'openlab-theme' ); ?></label></p>
+							<p><label for="blog-private0"><input id="blog-private0" type="radio" name="blog_public" value="0" <?php checked( '0', $blog_public ); ?> /><?php _e( 'Ask search engines not to index this site. The site should not show up in web search results.', 'openlab-theme' ); ?></label></p>
 						</div>
 					</div>
 
 					<h5><?php esc_html_e( 'Private', 'openlab-theme' ) ?></h5>
 					<div class="row">
 						<div class="col-sm-23 col-sm-offset-1">
-							<p><label for="blog-private-1"><input id="blog-private-1" type="radio" name="blog_public" value="-1" <?php checked( '-1', $blog_public ); ?>><?php esc_html_e( 'I would like my site to be visible only to members of this community.', 'openlab-theme' ); ?></label></p>
+							<p><label for="blog-private-1"><input id="blog-private-1" type="radio" name="blog_public" value="-1" <?php checked( '-1', $blog_public ); ?>><?php esc_html_e( 'I would like the site to be visible only to members of this community.', 'openlab-theme' ); ?></label></p>
 
-							<p><label for="blog-private-2"><input id="blog-private-2" type="radio" name="blog_public" value="-2" <?php checked( '-2', $blog_public ); ?>><?php esc_html_e( 'I would like my site to be visible to community members with a role on the associated site.', 'openlab-theme' ); ?></label></p>
+							<p><label for="blog-private-2"><input id="blog-private-2" type="radio" name="blog_public" value="-2" <?php checked( '-2', $blog_public ); ?>><?php esc_html_e( 'I would like the site to be visible to community members with a role on the associated site.', 'openlab-theme' ); ?></label></p>
 						</div>
 					</div>
 
 					<h5><?php esc_html_e( 'Hidden', 'openlab-theme' ) ?></h5>
 					<div class="row">
 						<div class="col-sm-23 col-sm-offset-1">
-							<p><label for="blog-private-3"><input id="blog-private-3" type="radio" name="blog_public" value="-3" <?php checked( '-3', $blog_public ); ?>><?php esc_html_e( 'I would like my site to be visible only to those members with an administrative role on the associated site.' ); ?></label></p>
+							<p><label for="blog-private-3"><input id="blog-private-3" type="radio" name="blog_public" value="-3" <?php checked( '-3', $blog_public ); ?>><?php esc_html_e( 'I would like my site to be visible only to those members with an administrator role on the associated site.' ); ?></label></p>
 						</div>
 					</div>
 				</div>
