@@ -2,7 +2,9 @@
 
     if (window.OpenLab === undefined) {
         var OpenLab = {};
-    }
+    } else {
+			OpenLab = window.OpenLab;
+		}
 
     var resizeTimer;
 
