@@ -87,12 +87,12 @@
 
 	<?php if ( invite_anyone_access_test() && ! bp_is_group_create() ) : ?>
 		<div class="panel panel-default">
-			<div class="panel-heading semibold"><?php _e( 'Invite new members by email:' ); ?></div>
+			<div class="panel-heading semibold"><?php esc_html_e( 'Invite new members by email:', 'openlab-theme' ); ?></div>
 			<div class="panel-body">
 
-				<p class="invite-copy"><?php esc_html_e( 'This link will take you to My Invitations, where you may invite people to join the OpenLab and this group.', 'openlab-theme' )?></p>
+				<p class="invite-copy"><?php esc_html_e( 'This link will take you to My Invitations, where you may invite people to join the community and this group.', 'openlab-theme' )?></p>
 
-				<p><a class="btn btn-primary no-deco" href="<?php echo bp_loggedin_user_domain() . BP_INVITE_ANYONE_SLUG . '/invite-new-members/group-invites/' . bp_get_group_id() ?>"><?php _e( 'Invite New Members to OpenLab.', 'bp-invite-anyone' ) ?></a></p>
+				<p><a class="btn btn-primary no-deco" href="<?php echo bp_loggedin_user_domain() . BP_INVITE_ANYONE_SLUG . '/invite-new-members/group-invites/' . bp_get_group_id() ?>"><?php esc_html_e( 'Invite New Members to This Community', 'openlab-theme' ) ?></a></p>
 
 			</div>
 		</div>
