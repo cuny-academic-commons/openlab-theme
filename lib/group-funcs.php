@@ -1241,11 +1241,12 @@ function cuny_group_single() {
 
 							<?php
 							$group_contacts = groups_get_groupmeta( $group_id, 'group_contact', false );
+							$group_contact_label = $group_type->get_label( 'group_contact' );
 							?>
 
 							<?php if ( $group_contacts ) : ?>
 								<div class="table-row row">
-									<div class="bold col-sm-7"><?php echo _n( 'Group Contact', 'Group Contacts', count( $group_contacts ), 'openlab-theme' ); ?></div>
+									<div class="bold col-sm-7"><?php echo esc_html( $group_contact_label ); ?></div>
 									<div class="col-sm-17 row-content"><?php echo implode( ', ', array_map( 'bp_core_get_userlink', $group_contacts ) ); ?></div>
 								</div>
 							<?php endif; ?>
@@ -2306,22 +2307,24 @@ function openlab_group_contact_field() {
 
 	wp_localize_script( 'openlab-group-contact', 'OL_Group_Contact_Existing', $existing_contacts_data );
 
+	$group_type_label = $group_type->get_label( 'group_contact' );
+
 	?>
 
 	<div id="group-contact-admin" class="panel panel-default">
-		<div class="panel-heading"><label for="group-contact-autocomplete"><?php esc_html_e( 'Group Contact', 'openlab-theme' ); ?></label></div>
+		<div class="panel-heading"><label for="group-contact-autocomplete"><?php echo esc_html( $group_type_label ); ?></label></div>
 
 		<div class="panel-body">
-			<p><?php esc_html_e( 'By default, you are the Group Contact. You may add or remove Contacts once your group has more members.', 'openlab-theme' ); ?></p>
+			<p><?php echo esc_html( $group_type->get_label( 'group_contact_help_text' ) ); ?></p>
 
-			<label for="group-contact-autocomplete"><?php esc_html_e( 'Group Contact', 'openlab-theme' ); ?></label>
+			<label for="group-contact-autocomplete"><?php echo esc_html( $group_type_label ); ?></label>
 			<input class="hide-if-no-js form-control" type="textbox" id="group-contact-autocomplete" value="" <?php disabled( bp_is_group_create() ); ?> />
 			<?php wp_nonce_field( 'openlab_group_contact_autocomplete', '_ol_group_contact_nonce', false ) ?>
 			<input type="hidden" name="group-contact-group-id" id="group-contact-group-id" value="<?php echo intval( $group_id ); ?>" />
 
 			<ul id="group-contact-list" class="inline-element-list"></ul>
 
-			<label class="sr-only hide-if-js" for="group-contacts"><?php esc_html_e( 'Group Contacts', 'openlab-theme' ); ?></label>
+			<label class="sr-only hide-if-js" for="group-contacts"><?php echo esc_html( $group_type_label ); ?></label>
 			<input class="hide-if-js" type="textbox" name="group-contacts" id="group-contacts" value="<?php echo esc_attr( implode( ', ', $existing_contacts ) ) ?>" />
 
 		</div>
