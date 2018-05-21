@@ -8767,9 +8767,6 @@ body form .checkbox-list-container {
 .portfolio-site-link a {
   display: block;
 }
-.portfolio-site-link .cyan-circle {
-  color: #8c210b;
-}
 .portfolio-site-link:hover > a,
 .portfolio-site-link:focus > a {
   background: #a9280e;
