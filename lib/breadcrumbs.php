@@ -47,10 +47,10 @@ function openlab_specific_blog_breadcrumb( $crumb, $args ) {
 		}
 
 		if ( $term_link && ! is_wp_error( $term_link ) ) {
-			$crumb .= ' / <a href="' . esc_url( $term_link ) . '">' . esc_html( $current_term->name ) . '</a>';
+			$crumb .= ' <span class="breadcrumb-sep">/</span> <a href="' . esc_url( $term_link ) . '">' . esc_html( $current_term->name ) . '</a>';
 		}
 
-		$crumb .= ' / ' . bp_create_excerpt( $post->post_title, 50, array(
+		$crumb .= ' <span class="breadcrumb-sep">/</span> ' . bp_create_excerpt( $post->post_title, 50, array(
 			'ending' => __( '&hellip;', 'openlab-theme' ),
 		) );
 	}
@@ -74,10 +74,10 @@ function openlab_specific_archive_breadcrumb($crumb, $args) {
             $parent_term = get_term_by('id', $term->parent, 'help_category');
             $parent_link = get_term_link($parent_term, 'help_category');
             if (!is_wp_error($parent_link)) {
-                $crumb .= ' / <a href="' . $parent_link . '">' . $parent_term->name . '</a>';
+                $crumb .= ' <span class="breadcrumb-sep">/</span> <a href="' . $parent_link . '">' . $parent_term->name . '</a>';
             }
         }
-        $crumb .= ' / ' . $term->name;
+        $crumb .= ' <span class="breadcrumb-sep">/</span> ' . $term->name;
     }
 
     if (bp_is_group()) {
@@ -97,11 +97,11 @@ function openlab_specific_archive_breadcrumb($crumb, $args) {
     if (!empty($bp->displayed_user->id)) {
         $account_type = xprofile_get_field_data('Account Type', $bp->displayed_user->id);
         if ($account_type == "Staff") {
-            $b1 = '<a href="' . site_url() . '/people/">People</a> / <a href="' . site_url() . '/people/staff/">Staff</a>';
+            $b1 = '<a href="' . site_url() . '/people/">People</a> <span class="breadcrumb-sep">/</span> <a href="' . site_url() . '/people/staff/">Staff</a>';
         } elseif ($account_type == "Faculty") {
-            $b1 = '<a href="' . site_url() . '/people/">People</a> / <a href="' . site_url() . '/people/faculty/">Faculty</a>';
+            $b1 = '<a href="' . site_url() . '/people/">People</a> <span class="breadcrumb-sep">/</span> <a href="' . site_url() . '/people/faculty/">Faculty</a>';
         } elseif ($account_type == "Student") {
-            $b1 = '<a href="' . site_url() . '/people/">People</a> / <a href="' . site_url() . '/people/students/">Students</a>';
+            $b1 = '<a href="' . site_url() . '/people/">People</a> <span class="breadcrumb-sep">/</span> <a href="' . site_url() . '/people/students/">Students</a>';
         } else {
             $b1 = '<a href="' . site_url() . '/people/">People</a>';
         }
@@ -109,7 +109,7 @@ function openlab_specific_archive_breadcrumb($crumb, $args) {
         $b2 = ucfirst($bp->displayed_user->fullname); //.''.ucfirst( $last_name )
     }
     if (bp_is_group() || !empty($bp->displayed_user->id)) {
-        $crumb = $b1 . ' / ' . $b2;
+        $crumb = $b1 . ' <span class="breadcrumb-sep">/</span> ' . $b2;
     }
 
     return $crumb;
@@ -156,7 +156,7 @@ class Openlab_Breadcrumb {
         /** Default arguments * */
         $this->args = array(
             'home' => __('Home', 'openlab-theme'),
-            'sep' => ' / ',
+            'sep' => ' <span class="breadcrumb-sep">/</span> ',
             'list_sep' => ', ',
             'prefix' => '<div class="breadcrumb">',
             'suffix' => '</div>',

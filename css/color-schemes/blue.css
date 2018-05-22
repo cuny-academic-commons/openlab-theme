@@ -9014,6 +9014,7 @@ body form .checkbox-list-container {
 }
 @media (max-width: 767px) {
   .sidebar.mobile-enabled {
+    margin-bottom: 20px;
     position: static;
   }
   .sidebar.mobile-enabled .sidebar-widget-wrapper {
@@ -10265,6 +10266,9 @@ input.help-search {
   #breadcrumb-container .breadcrumb-wrapper {
     width: 91%;
   }
+}
+#breadcrumb-container .breadcrumb-sep {
+  margin: 0 5px;
 }
 #breadcrumb-container .breadcrumb-col {
   color: #fff;

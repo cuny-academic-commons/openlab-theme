@@ -87,7 +87,7 @@ function openlab_page_crumb_overrides( $crumb, $args ) {
 		if ( ! is_wp_error( $group_type ) ) {
 			$type_directory_url = bp_get_group_type_directory_permalink( $group_type->get_slug() );
 			if ( $type_directory_url ) {
-				$crumb = '<a href="' . esc_url( $type_directory_url ) . '">' . $group_type->get_label( 'plural' ) . '</a> / ' . esc_html( $group->name );
+				$crumb = '<a href="' . esc_url( $type_directory_url ) . '">' . $group_type->get_label( 'plural' ) . '</a> <span class="breadcrumb-sep">/</span> ' . esc_html( $group->name );
 			}
 		}
 	}
@@ -96,18 +96,18 @@ function openlab_page_crumb_overrides( $crumb, $args ) {
 		$account_type = xprofile_get_field_data( 'Account Type', $bp->displayed_user->id );
 		// @todo Account type switch does not need to be hardcoded.
 		if ( 'Staff' === $account_type ) {
-			$b1 = '<a href="' . site_url() . '/people/">People</a> / <a href="' . site_url() . '/people/staff/">Staff</a>';
+			$b1 = '<a href="' . site_url() . '/people/">People</a> <span class="breadcrumb-sep">/</span> <a href="' . site_url() . '/people/staff/">Staff</a>';
 		} elseif ( 'Faculty' === $account_type ) {
-			$b1 = '<a href="' . site_url() . '/people/">People</a> / <a href="' . site_url() . '/people/faculty/">Faculty</a>';
+			$b1 = '<a href="' . site_url() . '/people/">People</a> <span class="breadcrumb-sep">/</span> <a href="' . site_url() . '/people/faculty/">Faculty</a>';
 		} elseif ( 'Student' === $account_type ) {
-			$b1 = '<a href="' . site_url() . '/people/">People</a> / <a href="' . site_url() . '/people/students/">Students</a>';
+			$b1 = '<a href="' . site_url() . '/people/">People</a> <span class="breadcrumb-sep">/</span> <a href="' . site_url() . '/people/students/">Students</a>';
 		} else {
 			$b1 = '<a href="' . site_url() . '/people/">People</a>';
 		}
 		$last_name = xprofile_get_field_data( 'Last Name', $bp->displayed_user->id );
 		$b2 = ucfirst( $bp->displayed_user->fullname ); //.''.ucfirst( $last_name )
 
-		$crumb = $b1 . ' / ' . $b2;
+		$crumb = $b1 . ' <span class="breadcrumb-sep">/</span> ' . $b2;
 	}
 
 	return $crumb;
