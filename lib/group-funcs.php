@@ -2139,8 +2139,12 @@ function openlab_get_faculty_list() {
 
 		$faculty = array();
 		foreach ( $faculty_ids as $id ) {
-
-			array_push( $faculty, bp_core_get_user_displayname( $id ) );
+			$faculty_link = sprintf(
+				'<a href="%s">%s</a>',
+				esc_url( bp_core_get_user_domain( $id ) ),
+				esc_html( bp_core_get_user_displayname( $id ) )
+			);
+			array_push( $faculty, $faculty_link );
 		}
 
 		$faculty = array_unique( $faculty );
