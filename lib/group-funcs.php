@@ -539,9 +539,9 @@ function openlab_group_avatar_markup() {
 
 				<div class="col-sm-16">
 
-					<p class="italics"><?php echo esc_html( $group_type->get_label( 'avatar_help_text' ) ); ?></p>
+					<p><?php echo esc_html( $group_type->get_label( 'avatar_help_text' ) ); ?></p>
 
-					<p class="italics"><?php echo esc_html( sprintf( __( 'The maximum upload size is %s.', 'openlab-theme' ), size_format( wp_max_upload_size() ) ) ); ?></p>
+					<p><?php echo esc_html( sprintf( __( 'The maximum upload size is %s.', 'openlab-theme' ), size_format( wp_max_upload_size() ) ) ); ?></p>
 
 					<p id="avatar-upload">
 					<div class="form-group form-inline avatar-upload-form">
