@@ -7369,9 +7369,6 @@ input[type="submit"] {
 .form-panel .panel-body .radio {
   margin-top: 0;
 }
-.form-panel .panel-body .radio label {
-  margin-bottom: 15px;
-}
 .panel-button-group .panel:last-of-type {
   margin-bottom: 20px;
 }
