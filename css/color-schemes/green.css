@@ -8106,10 +8106,8 @@ body form .checkbox-list-container {
 .page-loading #sidebarCustomSelect {
   visibility: hidden;
 }
-@media (min-width: 768px) {
-  #sidebarCustomSelect {
-    min-height: 171px;
-  }
+#sidebarCustomSelect {
+  margin-bottom: 1em;
 }
 .custom-select,
 .hidden-custom-select {
