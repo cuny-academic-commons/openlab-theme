@@ -55,7 +55,6 @@ if ( function_exists( 'openlab_eo_is_event_detail_screen' ) && openlab_eo_is_eve
 					</div>
 
 				<?php else : ?>
-
 					<ul class="nav nav-inline">
 						<?php do_action( 'bp_group_plugin_options_nav' ); ?>
 					</ul>
