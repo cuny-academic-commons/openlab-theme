@@ -786,7 +786,7 @@
                 margin: 0 auto 22px;
 				text-size: 20px;
                 @media (max-width: @screen-xs-max){
-                    margin: 0 auto 8px;
+                    margin: 0 auto 8px 7.5px;
                 }
             }
 			[class*="col-"] {
@@ -799,6 +799,7 @@
 				border-right: 1px solid #aaa;
 
 				@media (max-width: @screen-xs-max){
+					border-right: none;
 					display: block;
 					padding-left: 0;
 					padding-right: 0;
@@ -812,6 +813,16 @@
 				&:last-child {
 					border-right: none;
 					padding-right: 0;
+				}
+
+				.cboxol-footer-image {
+					@media (max-width: @screen-xs-max){
+						width: 76px;
+					}
+				}
+
+				&.footer-right {
+					margin-left: 7.5px;
 				}
 			}
 	    h3{

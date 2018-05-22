@@ -3266,7 +3266,9 @@ input.help-search {
         }
     }
 	.breadcrumb-sep {
-		margin: 0 5px;
+        @media (max-width: @screen-xs-max){
+			margin: 0 5px;
+		}
 	}
     .breadcrumb-col{
         color: @coloredBackgroundTextColor;

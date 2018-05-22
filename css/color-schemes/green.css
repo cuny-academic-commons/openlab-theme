@@ -10267,8 +10267,10 @@ input.help-search {
     width: 91%;
   }
 }
-#breadcrumb-container .breadcrumb-sep {
-  margin: 0 5px;
+@media (max-width: 767px) {
+  #breadcrumb-container .breadcrumb-sep {
+    margin: 0 5px;
+  }
 }
 #breadcrumb-container .breadcrumb-col {
   color: #333;
