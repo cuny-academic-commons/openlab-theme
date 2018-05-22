@@ -522,6 +522,6 @@ add_action( 'bp_init', function() {
 
 	$instance = \HardG\BpBraille\Plugin::get_instance();
 
-	remove_action( 'bp_core_general_settings_before_submit', [ $instance->messages->settings, 'render' ] );
-	remove_action( 'bp_after_group_details_admin', [ $instance->groups->settings, 'render' ] );
+	remove_action( 'bp_core_general_settings_before_submit', array( $instance->messages->settings, 'render' ) );
+	remove_action( 'bp_after_group_details_admin', array( $instance->groups->settings, 'render' ) );
 } );
