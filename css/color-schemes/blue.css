@@ -7749,6 +7749,7 @@ body .site-visibility .fa {
 body .mol-count.gray,
 body .site-visibility .fa.gray {
   background: #444444;
+  color: #fff;
 }
 body .skip-link {
   position: absolute;
