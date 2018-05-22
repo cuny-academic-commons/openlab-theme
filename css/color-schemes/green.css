@@ -10117,6 +10117,9 @@ body.single-event #content .eo-event-venue-map {
 #settings-form #group-email-settings .table {
   margin-bottom: 0;
 }
+.notify-settings .radio label {
+  margin-right: 20px;
+}
 /**help**/
 .col-help {
   /* Unsure whether this is needed */
