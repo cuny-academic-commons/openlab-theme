@@ -2523,56 +2523,25 @@ function openlab_course_information_edit_panel() {
 
 	<div class="panel panel-default">
 		<div class="panel-heading"><?php echo esc_html( $group_type->get_label( 'course_information' ) ); ?></div>
-		<div class="panel-body"><table>
+		<div class="panel-body">
 
-			<tr><td colspan="2"><p class="ol-tooltip"><?php echo esc_html( $group_type->get_label( 'course_information_description' ) ); ?></p></td></tr>
+			<p class="ol-tooltip"><?php echo esc_html( $group_type->get_label( 'course_information_description' ) ); ?></p>
 
-			<tr class="additional-field course-code-field">
-				<td class="additional-field-label"><label class="passive" for="course-code"><?php echo esc_html( $group_type->get_label( 'course_code' ) ); ?></label></td>
-				<td><input class="form-control" type="text" id="course-code" name="course-code" value="<?php echo esc_attr( $course_code ); ?>" /></td>
-			</tr>
+			<div class="additional-field course-code-field">
+				<label for="course-code"><?php echo esc_html( $group_type->get_label( 'course_code' ) ); ?></label>
+				<input class="form-control" type="text" id="course-code" name="course-code" value="<?php echo esc_attr( $course_code ); ?>" />
+			</div>
 
-			<tr class="additional-field section-code-field">
-				<td class="additional-field-label"><label class="passive" for="section-code"><?php echo esc_html( $group_type->get_label( 'section_code' ) ); ?></label></td>
-				<td><input class="form-control" type="text" id="section-code" name="section-code" value="<?php echo esc_attr( $section_code ); ?>" /></td>
-			</tr>
+			<div class="additional-field section-code-field">
+				<label for="section-code"><?php echo esc_html( $group_type->get_label( 'section_code' ) ); ?></label>
+				<input class="form-control" type="text" id="section-code" name="section-code" value="<?php echo esc_attr( $section_code ); ?>" />
+			</div>
 
-			<?php /*
-			<tr class="additional-field semester-field">
-			<td class="additional-field-label"><label class="passive" for="wds_semester">Semester:</label></td>
-			<td><select class="form-control" id="wds_semester" name="wds_semester">
-			<option value="">--select one--
-
-			$checked = $Spring = $Summer = $Fall = $Winter = '';
-
-			if ( $wds_semester == 'Spring' ) {
-			$Spring = 'selected';
-			} elseif ( $wds_semester == 'Summer' ) {
-			$Summer = 'selected';
-			} elseif ( $wds_semester == 'Fall' ) {
-			$Fall = 'selected';
-			} elseif ( $wds_semester == 'Winter' ) {
-			$Winter = 'selected';
-			}
-
-			<option value="Spring" ' . $Spring . '>Spring
-			<option value="Summer" ' . $Summer . '>Summer
-			<option value="Fall" ' . $Fall . '>Fall
-			<option value="Winter" ' . $Winter . '>Winter
-			</select></td>
-			</tr>
-
-			<tr class="additional-field year-field">
-			<td class="additional-field-label"><label class="passive" for="wds_year">Year:</label></td>
-			<td><input class="form-control" type="text" id="wds_year" name="wds_year" value="' . $wds_year . '"></td>
-			</tr>
-
-			*/ ?>
-			<tr class="additional-field additional-description-field">
-				<td colspan="2" class="additional-field-label"><label class="passive" for="additional-desc-html"><?php esc_html_e( 'Additional Description/HTML:', 'openlab-theme' ); ?></label></td></tr>
-				<tr><td colspan="2"><textarea class="form-control" name="additional-desc-html" id="additional-desc-html"><?php echo esc_textarea( $additional_desc_html ); ?></textarea></td></tr>
-				</tr>
-		</table></div>
+			<div class="additional-field additional-description-field">
+				<label for="additional-desc-html"><?php esc_html_e( 'Additional Description/HTML', 'openlab-theme' ); ?></label>
+				<textarea class="form-control" name="additional-desc-html" id="additional-desc-html"><?php echo esc_textarea( $additional_desc_html ); ?></textarea>
+			</div>
+		</div>
 
 		<?php wp_nonce_field( 'openlab_course_information', '_ol_course_information_nonce', false ); ?>
 	</div><!--.panel-->
