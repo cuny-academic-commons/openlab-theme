@@ -7053,8 +7053,8 @@ button.oplb-bs .close {
   margin: 0 auto;
 }
 .oplb-bs #wpadminbar #wp-toolbar > ul > li .toolbar-item-count {
-  background: #ff5959;
-  color: #fff;
+  background: #ff7a7a;
+  color: #000;
   border-radius: 8px;
   display: inline-block;
   font-size: 10px;
