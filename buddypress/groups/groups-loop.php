@@ -111,7 +111,9 @@ if ( ! empty( $_GET['group_sequence'] ) ) {
 
 	<div class="row group-archive-header-row">
 		<?php if ( bp_is_groups_directory() ) : ?>
-			<?php openlab_current_directory_filters(); ?>
+			<div class="current-group-filters current-portfolio-filters col-md-18 col-sm-16">
+				<?php openlab_current_directory_filters(); ?>
+			</div>
 		<?php elseif ( openlab_is_my_profile() ) : ?>
 			<?php echo openlab_submenu_markup( 'groups', $group_type, false ); ?>
 		<?php endif; ?>
