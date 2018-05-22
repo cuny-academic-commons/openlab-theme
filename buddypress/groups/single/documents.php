@@ -99,7 +99,7 @@
 
 			<?php } else { ?>
 				<div id="message" class="info">
-					<p class="bold"><?php _e( 'There have been no documents uploaded for this group', 'bp-group-documents' ) ?></p>
+					<p class="bold"><?php _e( 'There are no files to view.', 'openlab-theme' ) ?></p>
 				</div>
 
 			<?php } ?>
