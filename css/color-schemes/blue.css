@@ -10378,6 +10378,10 @@ input.help-search {
   right: 0;
   top: 0;
 }
+.message-content .braille {
+  display: inline-block;
+  margin-top: 20px;
+}
 /**Custom media query items**/
 @media (max-width: 767px) {
   .group-subscription-div {
