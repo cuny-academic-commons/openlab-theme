@@ -16,7 +16,7 @@ do_action( 'bp_before_member_settings_template' );
 	<form action="<?php echo bp_displayed_user_domain() . bp_get_settings_slug() . '/general'; ?>" method="post" class="standard-form form-panel" id="settings-form">
 
 		<div class="panel panel-default">
-			<div class="panel-heading"><?php esc_html_e( 'Update Settings', 'openlab-theme' ); ?></div>
+			<div class="panel-heading"><?php esc_html_e( 'Account Settings', 'openlab-theme' ); ?></div>
 				<div class="panel-body">
 	            	<?php do_action( 'template_notices' ); ?>
 
