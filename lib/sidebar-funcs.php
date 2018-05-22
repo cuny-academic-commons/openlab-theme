@@ -298,7 +298,7 @@ function openlab_members_sidebar_blocks( $mobile_hide = false ) {
 		<div class="sidebar-widget" id="portfolio-sidebar-widget">
 
 			<?php if ( is_user_logged_in() && openlab_is_my_profile() ) : ?>
-				<h2 class="sidebar-header top-sidebar-header visible-xs">My <?php echo esc_html( $portfolio_group_type->get_label( 'my_portfolio' ) ); ?></h2>
+				<h2 class="sidebar-header top-sidebar-header visible-xs"><?php echo esc_html( $portfolio_group_type->get_label( 'my_portfolio' ) ); ?></h2>
 			<?php endif; ?>
 
 			<div class="sidebar-block<?php echo $block_classes ?>">
