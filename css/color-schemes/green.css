@@ -10380,7 +10380,7 @@ input.help-search {
 }
 .message-content .braille {
   display: inline-block;
-  margin-top: 20px;
+  margin: 20px 0;
 }
 /**Custom media query items**/
 @media (max-width: 767px) {
