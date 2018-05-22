@@ -8459,6 +8459,9 @@ body form .checkbox-list-container {
 .home-page .row-home-bottom .left-box {
   margin-top: 36px;
 }
+.home-page .row-home-bottom .left-box:first-child {
+  margin-top: 20px;
+}
 .home-page .left-block-content {
   border: 1px solid #dddddd;
   border-radius: 4px;
