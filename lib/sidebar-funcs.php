@@ -78,14 +78,20 @@ function openlab_bp_mobile_sidebar( $type ) {
  * Output the sidebar content for a single group
  */
 function openlab_group_sidebar( $mobile = false ) {
+	$group_site_settings = openlab_get_group_site_settings( $group_id );
+	$has_site = ! empty( $group_site_settings['site_url'] );
 
 	if ( bp_has_groups() ) : while ( bp_groups() ) : bp_the_group(); ?>
 		<div class="sidebar-widget sidebar-widget-wrapper" id="portfolio-sidebar-widget">
 			<h2 class="sidebar-header group-single top-sidebar-header">&nbsp;</h2>
-			<div class="wrapper-block">
-				<?php openlab_bp_group_site_pages( $mobile ); ?>
-			</div>
-			<div id="sidebar-menu-wrapper" class="sidebar-menu-wrapper wrapper-block">
+
+			<?php if ( $has_site ) : ?>
+				<div class="wrapper-block group-sidebar-subsection">
+					<?php openlab_bp_group_site_pages( $mobile ); ?>
+				</div>
+			<?php endif; ?>
+
+			<div id="sidebar-menu-wrapper" class="group-sidebar-subsection sidebar-menu-wrapper wrapper-block">
 				<div id="item-buttons" class="profile-nav sidebar-block clearfix">
 					<ul class="sidebar-nav clearfix">
 						<?php bp_get_options_nav(); ?>

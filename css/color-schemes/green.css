@@ -9021,6 +9021,9 @@ body form .checkbox-list-container {
     margin: 0 auto;
   }
 }
+.sidebar #sidebar-menu-wrapper.group-sidebar-subsection:first-of-type .sidebar-block {
+  margin-top: 0;
+}
 .sidebar-widget .bpeo-upcoming-event-title {
   padding-left: 0;
 }
