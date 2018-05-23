@@ -35,10 +35,10 @@
 
 				<p><?php _e( 'Please provide a valid activation key.', 'buddypress' ) ?></p>
 
-				<form action="" method="get" class="standard-form form" id="activation-form">
+				<form action="" method="post" class="standard-form form" id="activation-form">
 
 					<label for="key"><?php _e( 'Activation Key:', 'buddypress' ) ?></label>
-					<input class="form-control" type="text" name="key" id="key" value="" />
+					<input class="form-control" type="text" name="key" id="key" value="<?php echo esc_attr( bp_get_current_activation_key() ); ?>" />
 
 					<p class="submit">
 						<input class="btn btn-primary btn-margin btn-margin-top" type="submit" name="submit" value="<?php _e( 'Activate', 'buddypress' ) ?> &#xf138;" />
