@@ -7711,6 +7711,10 @@ button.oplb-bs .close {
   .oplb-bs#openlab-footer .footer-wrapper {
     width: 95%;
   }
+  .oplb-bs#openlab-footer .footer-wrapper .cboxol-footer-middle-para {
+    padding-left: 7.5px;
+    padding-right: 7.5px;
+  }
 }
 .oplb-bs#openlab-footer .row {
   display: table;
