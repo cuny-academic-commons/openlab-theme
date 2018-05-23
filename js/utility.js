@@ -26,6 +26,12 @@
             OpenLab.utility.eventValidation();
             OpenLab.utility.refreshActivity();
 
+						// Home page column adjustments.
+						var groupTypeWidgets = $('#home-right .activity-list');
+						if ( groupTypeWidgets.length > 0 && groupTypeWidgets.length < 4 ) {
+							groupTypeWidgets.removeClass('col-sm-6').addClass('col-sm-8');
+						}
+
             //EO Calendar JS filtering
             if (typeof wp !== 'undefined' && typeof wp.hooks !== 'undefined') {
                 wp.hooks.addFilter('eventorganiser.fullcalendar_options', OpenLab.utility.calendarFiltering);
