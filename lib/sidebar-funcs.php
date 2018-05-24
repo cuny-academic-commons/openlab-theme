@@ -78,14 +78,25 @@ function openlab_bp_mobile_sidebar( $type ) {
  * Output the sidebar content for a single group
  */
 function openlab_group_sidebar( $mobile = false ) {
-	$group_site_settings = openlab_get_group_site_settings( $group_id );
-	$has_site = ! empty( $group_site_settings['site_url'] );
+	$group_id = bp_get_current_group_id();
+
+	$site_id = openlab_get_site_id_by_group_id( $group_id );
+	if ( $site_id ) {
+		$site_url = get_blog_option( $site_id, 'siteurl' );
+	} else {
+		$site_url = openlab_get_external_site_url_by_group_id( $group_id );
+	}
+
+	$show_site = ! empty( $site_url );
+	if ( $site_id ) {
+		$show_site = cboxol_site_can_be_viewed( $group_id );
+	}
 
 	if ( bp_has_groups() ) : while ( bp_groups() ) : bp_the_group(); ?>
 		<div class="sidebar-widget sidebar-widget-wrapper" id="portfolio-sidebar-widget">
 			<h2 class="sidebar-header group-single top-sidebar-header">&nbsp;</h2>
 
-			<?php if ( $has_site ) : ?>
+			<?php if ( $show_site ) : ?>
 				<div class="wrapper-block group-sidebar-subsection">
 					<?php openlab_bp_group_site_pages( $mobile ); ?>
 				</div>
