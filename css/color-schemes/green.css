@@ -9412,6 +9412,9 @@ h3#message-subject {
 .message-content p {
   margin-top: 20px;
 }
+.message-star-actions {
+  display: none;
+}
 .bp-widget > h4 {
   margin-top: 25px;
   font-size: 16px;
