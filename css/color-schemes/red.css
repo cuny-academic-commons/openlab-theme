@@ -10378,6 +10378,10 @@ input.help-search {
   right: 0;
   top: 0;
 }
+.message-starred .message-braille-actions,
+.message-not-starred .message-braille-actions {
+  right: 30px;
+}
 .message-content .braille {
   display: inline-block;
   margin: 20px 0;
