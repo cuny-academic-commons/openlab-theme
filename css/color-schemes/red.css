@@ -7813,9 +7813,9 @@ body #ubpfattach-message.err {
 body .bp-template-notice.updated,
 body .bbp-template-notice.updated,
 body #ubpfattach-message.updated {
-  background: #ff5959;
-  border-color: #ff5959;
-  color: #ffffff;
+  background: #ff7a7a;
+  border-color: #ff7a7a;
+  color: #000;
 }
 body .bp-template-notice.updated.btn-default.btn-primary .fa,
 body .bbp-template-notice.updated.btn-default.btn-primary .fa,
@@ -7828,7 +7828,7 @@ body #ubpfattach-message.updated.btn-default:hover.btn-primary .fa {
 body .bp-template-notice.updated p,
 body .bbp-template-notice.updated p,
 body #ubpfattach-message.updated p {
-  color: #ffffff;
+  color: #000;
 }
 body .bp-template-notice.margin-bottom,
 body .bbp-template-notice.margin-bottom,
