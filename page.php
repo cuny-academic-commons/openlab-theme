@@ -7,16 +7,9 @@
 	$postID = $post->ID;
 	$parent = $post->post_parent;
 
-	$is_about_or_calendar = cboxol_is_brand_page( 'about' );
+	$show_about_sidebar = cboxol_is_brand_page( 'about' ) || cboxol_is_brand_page( 'terms-of-use' ) || cboxol_is_brand_page( 'contact-us' );
 
-	// @todo This should not be hardcoded.
-	/*
-	$about_page_obj = get_page_by_path( 'about' );
-	$calendar_page_obj = get_page_by_path( 'about/calendar' );
-	$is_about_or_calendar = ( $about_page_obj && ( $postID == $about_page_obj->ID || $parent == $about_page_obj->ID ) ) || ( $calendar_page_obj && $parent == $calendar_page_obj->ID );
-	*/
-
-	if ( $is_about_or_calendar ) {
+	if ( $show_about_sidebar ) {
 		openlab_bp_mobile_sidebar( 'about' );
 	}
 	?>
@@ -30,7 +23,7 @@
 						<div class="entry-title">
 							<h1><span class="profile-name"><?php the_title(); ?></span></h1>
 
-							<?php if ( $is_about_or_calendar ) :  ?>
+							<?php if ( $show_about_sidebar ) :  ?>
 								<div class="directory-title-meta">
 									<button data-target="#sidebar-mobile" class="mobile-toggle direct-toggle pull-right visible-xs" type="button">
 										<span class="sr-only"><?php esc_html_e( 'Toggle navigation', 'openlab-theme' ); ?></span>
@@ -53,7 +46,7 @@
 
 	<?php
 	//add the about-page sidebar to just the about page and any child about page
-	if ( $is_about_or_calendar ) {
+	if ( $show_about_sidebar ) {
 		openlab_bp_sidebar( 'about' );
 	}
 	?>
