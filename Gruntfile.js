@@ -70,6 +70,8 @@ module.exports = function (grunt) {
 		colorSchemeTasks.push( 'less:' + color );
 	};
 
+	var timestamp = new Date().getTime();
+
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
         htmlclean: {
@@ -123,16 +125,25 @@ module.exports = function (grunt) {
                     nospawn: true
                 }
             }
-        }
+        },
+				setPHPConstant: {
+					version: {
+						constant: 'OPENLAB_VERSION',
+						value: '<%= pkg.version %>-' + timestamp,
+						file: 'functions.php'
+					}
+				},
     });
     grunt.loadNpmTasks('grunt-htmlclean');
     grunt.loadNpmTasks('grunt-contrib-less');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-watch');
+    grunt.loadNpmTasks('grunt-php-set-constant');
 
-	var taskList = ['concat', 'htmlclean', 'watch', 'less'];
-	taskList = taskList.concat( colorSchemeTasks );
+		var taskList = ['concat', 'htmlclean', 'watch', 'less', 'setPHPConstant'];
+		taskList = taskList.concat( colorSchemeTasks );
 
-    grunt.registerTask('default', colorSchemeTasks);
+		var defaultTasks = ['concat', 'htmlclean', 'less', 'setPHPConstant'];
+    grunt.registerTask('default', defaultTasks);
 };

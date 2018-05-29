@@ -1,12 +1,12 @@
 {
-  "name": "openlab_ea",
+  "name": "openlab_theme",
   "version": "1.0.0",
   "main": "Gruntfile.js",
   "private": true,
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Early Adopter",
+  "author": "OpenLab Team",
   "license": "ISC",
   "devDependencies": {
     "grunt": "^0.4.5",
@@ -20,6 +20,8 @@
   },
   "description": "",
   "dependencies": {
-    "grunt-log": "^1.0.0"
+    "grunt-gitinfo": "^0.1.8",
+    "grunt-log": "^1.0.0",
+    "grunt-php-set-constant": "0.0.15"
   }
 }
