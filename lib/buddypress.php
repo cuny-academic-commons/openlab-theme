@@ -12,12 +12,14 @@ add_filter( 'openlab_page_crumb', 'openlab_page_crumb_overrides', 10, 2 );
  * @since 1.0.0
  */
 function openlab_bp_enqueue_scripts() {
+	$ver = openlab_get_asset_version();
+
 	if ( bp_is_register_page() ) {
 		wp_enqueue_script( 'password-strength-meter' );
 	}
 
 	if ( bp_is_group_create() || bp_is_group_admin_page() ) {
-		wp_enqueue_script( 'openlab-group-create', get_template_directory_uri() . '/js/group-create.js', array( 'jquery' ) );
+		wp_enqueue_script( 'openlab-group-create', get_template_directory_uri() . '/js/group-create.js', array( 'jquery' ), $ver );
 
 		wp_localize_script( 'openlab-group-create', 'OLGroupCreate', array(
 			'strings' => array(
@@ -32,7 +34,7 @@ function openlab_bp_enqueue_scripts() {
 	}
 
 	if ( bp_is_register_page() ) {
-		wp_enqueue_script( 'openlab-registration', get_template_directory_uri() . '/js/register.js', array( 'jquery', 'parsley' ) );
+		wp_enqueue_script( 'openlab-registration', get_template_directory_uri() . '/js/register.js', array( 'jquery', 'parsley' ), $ver );
 
 		wp_localize_script('openlab-registration', 'OLReg', array(
 			'account_type_field' => xprofile_get_field_id_from_name( 'Account Type ' ),

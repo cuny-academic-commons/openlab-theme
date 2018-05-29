@@ -174,7 +174,7 @@ function openlab_customizer_setup( $wp_customize ) {
 	wp_enqueue_editor();
 	wp_enqueue_media();
 
-	wp_enqueue_style( 'openlab-customizer', get_template_directory_uri() . '/css/customizer.css' );
+	wp_enqueue_style( 'openlab-customizer', get_template_directory_uri() . '/css/customizer.css', array(), openlab_get_asset_version() );
 
 	// If there are no more sidebars, remove the top-level Widgets area altogether.
 	// @todo this causes PHP notices due to hardcoded stuff in WP. Consider hiding with CSS.
@@ -196,7 +196,7 @@ function openlab_enqueue_customizer_preview_script() {
 		return;
 	}
 
-	wp_enqueue_script( 'openlab-customizer-preview', get_template_directory_uri() . '/js/customizer-preview.js', array( 'jquery' ), false, true );
+	wp_enqueue_script( 'openlab-customizer-preview', get_template_directory_uri() . '/js/customizer-preview.js', array( 'jquery' ), openlab_get_asset_version(), true );
 }
 add_action( 'wp_enqueue_scripts', 'openlab_enqueue_customizer_preview_script' );
 
@@ -232,7 +232,7 @@ function openlab_customizer_styles() {
 add_action( 'customize_controls_print_styles', 'openlab_customizer_styles' );
 
 function openlab_customizer_scripts() {
-	wp_enqueue_script( 'openlab-theme-customizer', get_template_directory_uri() . '/js/customizer.js', array( 'customize-controls' ) );
+	wp_enqueue_script( 'openlab-theme-customizer', get_template_directory_uri() . '/js/customizer.js', array( 'customize-controls' ), openlab_get_asset_version() );
 }
 add_action( 'customize_controls_enqueue_scripts', 'openlab_customizer_scripts' );
 

@@ -239,8 +239,18 @@ require_once( get_template_directory() . '/lib/widgets.php' );
 require_once( get_template_directory() . '/lib/customizer.php' );
 require_once( get_template_directory() . '/lib/buddypress.php' );
 
+/**
+ * Gets a version string for assets.
+ *
+ * @return string
+ */
+function openlab_get_asset_version() {
+	return apply_filters( 'openlab_get_asset_version', OPENLAB_VERSION );
+}
+
 function openlab_load_scripts() {
 	$stylesheet_dir_uri = get_template_directory_uri();
+	$ver = openlab_get_asset_version();
 
 	/**
 	 * scripts, additional functionality
@@ -248,27 +258,27 @@ function openlab_load_scripts() {
 	if ( ! is_admin() ) {
 
 		// google fonts
-		wp_register_style( 'google-open-sans', set_url_scheme( 'http://fonts.googleapis.com/css?family=Open+Sans:400,400italic,600,600italic,700,700italic' ), array(), '2014', 'all' );
+		wp_register_style( 'google-open-sans', set_url_scheme( 'http://fonts.googleapis.com/css?family=Open+Sans:400,400italic,600,600italic,700,700italic' ), array(), $ver, 'all' );
 		wp_enqueue_style( 'google-open-sans' );
 
-		wp_register_style( 'camera-js-styles', $stylesheet_dir_uri . '/css/camera.css', array(), '20130604', 'all' );
+		wp_register_style( 'camera-js-styles', $stylesheet_dir_uri . '/css/camera.css', array(), $ver, 'all' );
 		wp_enqueue_style( 'camera-js-styles' );
 
 		// less compliation via js so we can check styles in firebug via fireless - local dev only
 		if ( CSS_DEBUG ) {
-			wp_register_script( 'less-config-js', $stylesheet_dir_uri . '/js/less.config.js', array( 'jquery' ) );
+			wp_register_script( 'less-config-js', $stylesheet_dir_uri . '/js/less.config.js', array( 'jquery' ), $ver );
 			wp_enqueue_script( 'less-config-js' );
-			wp_register_script( 'less-js', $stylesheet_dir_uri . '/js/less-1.7.4.js', array( 'jquery' ) );
+			wp_register_script( 'less-js', $stylesheet_dir_uri . '/js/less-1.7.4.js', array( 'jquery' ), $ver );
 			wp_enqueue_script( 'less-js' );
 		}
 
-		wp_register_script( 'vendor-js', $stylesheet_dir_uri . '/js/dist/vendor.js', array( 'jquery' ), '1.6.8', true );
+		wp_register_script( 'vendor-js', $stylesheet_dir_uri . '/js/dist/vendor.js', array( 'jquery' ), $ver, true );
 		wp_enqueue_script( 'vendor-js' );
 
-		wp_register_script( 'select2', $stylesheet_dir_uri . '/js/select2.min.js', array( 'jquery' ) );
+		wp_register_script( 'select2', $stylesheet_dir_uri . '/js/select2.min.js', array( 'jquery' ), $ver );
 
 		$utility_deps = array( 'jquery', 'select2', 'hyphenator-js' );
-		wp_register_script( 'utility', $stylesheet_dir_uri . '/js/utility.js', $utility_deps, '1.6.9.8', true );
+		wp_register_script( 'utility', $stylesheet_dir_uri . '/js/utility.js', $utility_deps, $ver, true );
 
 		wp_enqueue_script( 'utility' );
 		wp_localize_script( 'utility', 'localVars', array(
@@ -278,13 +288,13 @@ function openlab_load_scripts() {
 			),
 		) );
 
-		wp_register_script( 'parsley', $stylesheet_dir_uri . '/js/parsley.min.js', array( 'jquery' ) );
+		wp_register_script( 'parsley', $stylesheet_dir_uri . '/js/parsley.min.js', array( 'jquery' ), $ver );
 	}
 }
 add_action( 'wp_enqueue_scripts', 'openlab_load_scripts' );
 
 function openlab_admin_scripts() {
-	wp_register_script( 'utility-admin', get_template_directory_uri() . '/js/utility.admin.js', array( 'jquery', 'jquery-ui-autocomplete' ), '1.6.9.7', true );
+	wp_register_script( 'utility-admin', get_template_directory_uri() . '/js/utility.admin.js', array( 'jquery', 'jquery-ui-autocomplete' ), openlab_get_asset_version(), true );
 	wp_enqueue_script( 'utility-admin' );
 	wp_localize_script('utility-admin', 'localVars', array(
 		'ajaxurl' => admin_url( 'admin-ajax.php' ),
@@ -303,20 +313,21 @@ function openlab_load_scripts_high_priority() {
 	global $post;
 
 	$color_scheme = openlab_get_color_scheme();
+	$ver          = openlab_get_asset_version();
 
 	// less compliation via js so we can check styles in firebug via fireless - local dev only
 	// @to-do: way to enqueue as last item?
 	if ( CSS_DEBUG ) {
-		wp_register_style( 'main-styles', $stylesheet_dir_uri . '/style.less', array(), '1.6.9.5', 'all' );
+		wp_register_style( 'main-styles', $stylesheet_dir_uri . '/style.less', array(), $ver, 'all' );
 		wp_enqueue_style( 'main-styles' );
 	} else {
 
-		wp_register_style( 'main-styles', $stylesheet_dir_uri . '/css/color-schemes/' . $color_scheme . '.css', array(), '1.6.9.5', 'all' );
+		wp_register_style( 'main-styles', $stylesheet_dir_uri . '/css/color-schemes/' . $color_scheme . '.css', array(), $ver, 'all' );
 		wp_enqueue_style( 'main-styles' );
 	}
 
 	if ( isset( $post->post_type ) && 'help' === $post->post_type ) {
-		wp_register_style( 'print-styles', $stylesheet_dir_uri . '/css/print.css', array(), '2015', 'print' );
+		wp_register_style( 'print-styles', $stylesheet_dir_uri . '/css/print.css', array(), $ver, 'print' );
 		wp_enqueue_style( 'print-styles' );
 	}
 }

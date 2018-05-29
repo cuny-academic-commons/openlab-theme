@@ -439,7 +439,7 @@ function openlab_group_url_markup() {
 		$the_group_slug = $the_group->slug;
 	}
 
-	wp_enqueue_script( 'openlab-group-url', get_template_directory_uri() . '/js/group-url.js', array( 'jquery' ), null, true );
+	wp_enqueue_script( 'openlab-group-url', get_template_directory_uri() . '/js/group-url.js', array( 'jquery' ), openlab_get_asset_version(), true );
 
 	?>
 
@@ -504,7 +504,7 @@ function openlab_group_avatar_markup() {
 	bp_attachments_enqueue_scripts( 'BP_Attachment_Avatar' );
 	bp_core_add_cropper_inline_css();
 
-	wp_enqueue_script( 'openlab-avatar-upload', get_template_directory_uri() . '/js/avatar-upload.js', array( 'bp-avatar' ), null, true );
+	wp_enqueue_script( 'openlab-avatar-upload', get_template_directory_uri() . '/js/avatar-upload.js', array( 'bp-avatar' ), openlab_get_asset_version(), true );
 
 	$existing_avatar = null;
 	if ( $the_group_id ) {
@@ -2287,8 +2287,9 @@ function openlab_group_contact_field() {
 	}
 
 	// Enqueue JS and CSS.
-	wp_enqueue_script( 'openlab-group-contact', get_template_directory_uri() . '/js/group-contact.js', array( 'jquery-ui-autocomplete' ) );
-	wp_enqueue_style( 'openlab-group-contact', get_template_directory_uri() . '/css/group-contact.css' );
+	$ver = openlab_get_asset_version();
+	wp_enqueue_script( 'openlab-group-contact', get_template_directory_uri() . '/js/group-contact.js', array( 'jquery-ui-autocomplete' ), $ver );
+	wp_enqueue_style( 'openlab-group-contact', get_template_directory_uri() . '/css/group-contact.css', array(), $ver );
 
 	$existing_contacts = array();
 	if ( $group_id ) {

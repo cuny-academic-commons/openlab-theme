@@ -92,7 +92,7 @@ function openlab_manage_members_email_status( $user_id = '', $group = '' ) {
 
 	echo '</ul>';
 
-	wp_enqueue_script( 'openlab-bpges-js', get_template_directory_uri() . '/js/bpges.js', array( 'jquery' ) );
+	wp_enqueue_script( 'openlab-bpges-js', get_template_directory_uri() . '/js/bpges.js', array( 'jquery' ), openlab_get_asset_version() );
 }
 
 remove_action( 'bp_group_manage_members_admin_item', 'ass_manage_members_email_status' );
