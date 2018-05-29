@@ -6981,6 +6981,12 @@ button.oplb-bs .close {
     display: none !important;
   }
 }
+.oplb-bs a {
+  text-decoration: underline;
+}
+.oplb-bs a:hover {
+  text-decoration: none;
+}
 .oplb-bs #wpadminbar {
   position: absolute;
   font-family: "Open Sans", Helvetica, Arial, sans-serif;
