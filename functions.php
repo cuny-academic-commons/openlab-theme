@@ -9,15 +9,13 @@ if ( ! defined( 'CSS_DEBUG' ) ) {
 // Register sidebars.
 add_action( 'widgets_init', 'openlab_register_sidebars' );
 
+// Force Legacy templates.
+add_action( 'after_setup_theme', function() {
+	add_theme_support( 'buddypress-use-legacy' );
+} );
+
 // Install widgets.
 add_action( 'wp_loaded', 'openlab_maybe_install' );
-
-/**
- * Force Legacy theme package.
- */
-add_filter( 'bp_get_theme_package_id', function() {
-	return 'legacy';
-} );
 
 function openlab_core_setup() {
 	add_theme_support( 'post-thumbnails' );
