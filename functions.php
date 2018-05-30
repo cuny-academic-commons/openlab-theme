@@ -12,6 +12,13 @@ add_action( 'widgets_init', 'openlab_register_sidebars' );
 // Install widgets.
 add_action( 'wp_loaded', 'openlab_maybe_install' );
 
+/**
+ * Force Legacy theme package.
+ */
+add_filter( 'bp_get_theme_package_id', function() {
+	return 'legacy';
+} );
+
 function openlab_core_setup() {
 	add_theme_support( 'post-thumbnails' );
 	global $content_width;
