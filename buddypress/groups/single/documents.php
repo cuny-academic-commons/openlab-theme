@@ -128,6 +128,12 @@
 				} else {
 					$this_id = 'bp-group-documents-edit';
 				}
+
+				$header_text = __( 'Upload a New File', 'openlab-theme' );
+				if ( 'edit' === $template->operation ) {
+					$header_text = __( 'Edit File', 'openlab-theme' );
+				}
+
 				?>
 
 				<div id="<?php echo $this_id; ?>">
@@ -135,7 +141,7 @@
 					<form method="post" id="bp-group-documents-form" class="standard-form form-panel" action="<?php echo $template->action_link; ?>" enctype="multipart/form-data">
 
 						<div class="panel panel-default">
-							<div class="panel-heading"><?php echo $template->header ?></div>
+							<div class="panel-heading"><?php echo esc_html( $header_text ); ?></div>
 							<div class="panel-body">
 
 								<input type="hidden" name="bp_group_documents_operation" value="<?php echo $template->operation; ?>" />
@@ -152,7 +158,7 @@
 
 								<?php if ( BP_GROUP_DOCUMENTS_FEATURED ) { ?>
 									<div class="checkbox">
-										<label class="bp-group-documents-featured-label"><input type="checkbox" name="bp_group_documents_featured" class="bp-group-documents-featured" value="1" <?php if ( $template->featured ) { echo 'checked="checked"';} ?> > <?php _e( 'Featured Document', 'bp-group-documents' ); ?></label>
+										<label class="bp-group-documents-featured-label"><input type="checkbox" name="bp_group_documents_featured" class="bp-group-documents-featured" value="1" <?php if ( $template->featured ) { echo 'checked="checked"';} ?> > <?php esc_html_e( 'Featured File', 'openlab-theme' ); ?></label>
 									</div>
 								<?php } ?>
 
@@ -192,7 +198,7 @@
 
 				<div>
 					<?php if ( $template->operation == 'add' ) { ?>
-						<a class="btn btn-primary link-btn" id="bp-group-documents-upload-button" href="" style="display:none;"><?php _e( 'Upload a New Document', 'bp-group-documents' ); ?></a>
+						<a class="btn btn-primary link-btn" id="bp-group-documents-upload-button" href="" style="display:none;"><?php _e( 'Upload a New File', 'openlab-theme' ); ?></a>
 					<?php } ?>
 				</div>
 

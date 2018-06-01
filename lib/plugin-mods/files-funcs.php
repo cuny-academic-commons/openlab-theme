@@ -94,3 +94,12 @@ add_filter( 'option_bp_group_documents_upload_permission', 'openlab_disable_bp_g
  * Disable BP Group Documents category feature for the time being.
  */
 add_filter( 'option_bp_group_documents_use_categories', '__return_false' );
+
+/**
+ * Filter the success language.
+ */
+add_filter( 'bp_core_render_message_content', function( $message ) {
+	$old = __( 'Document successfully uploaded', 'bp-group-documents' );
+	$new = __( 'File successfully uploaded', 'openlab-theme' );
+	return str_replace( $old, $new, $message );
+} );
