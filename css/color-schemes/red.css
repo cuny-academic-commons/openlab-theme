@@ -8794,6 +8794,9 @@ body form .checkbox-list-container {
 .mobile-group-site-links .portfolio-site-link {
   font-size: 1.75rem;
 }
+#search-setting-note {
+  margin-top: -10px;
+}
 @media (max-width: 767px) {
   .sidebar .sidebar-wrapper {
     width: 95%;
