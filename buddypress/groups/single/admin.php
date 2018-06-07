@@ -172,9 +172,6 @@ openlab_group_admin_js_data( $group_type );
 				</div>
 			<?php endif; ?>
 
-			<?php /* DiRT Directory Client settings */ ?>
-			<?php openlab_group_dirt_toggle_markup(); ?>
-
 			<?php /* Braille settings */ ?>
 			<?php openlab_group_braille_toggle_markup(); ?>
 

@@ -33,7 +33,6 @@ add_action( 'bp_actions', 'openlab_set_group_creation_steps', 9 );
 add_action( 'bp_after_group_details_creation_step', 'openlab_group_academic_units_edit_markup', 3 );
 add_action( 'bp_after_group_details_creation_step', 'openlab_group_term_edit_markup', 4 );
 add_action( 'bp_after_group_details_creation_step', 'openlab_group_contact_field', 5 );
-add_action( 'bp_after_group_details_creation_step', 'openlab_group_dirt_toggle_markup', 5 );
 add_action( 'bp_after_group_details_creation_step', 'openlab_group_braille_toggle_markup', 7 );
 add_action( 'bp_after_group_details_creation_step', 'openlab_course_information_edit_panel', 8 );
 add_action( 'bp_after_group_details_creation_step', 'openlab_group_privacy_settings_markup', 12 );
@@ -576,7 +575,6 @@ function openlab_group_avatar_markup() {
  * Post group-save actions.
  */
 add_action( 'groups_group_after_save', 'openlab_save_group_status' );
-add_action( 'groups_group_after_save', 'openlab_save_dirt_status', 30 );
 add_action( 'groups_group_after_save', 'openlab_save_braille_status', 40 );
 add_action( 'groups_create_group_step_save_group-details', 'openlab_move_avatar_after_group_create' );
 add_action( 'groups_create_group_step_save_group-details', 'openlab_save_new_group_url' );
@@ -622,28 +620,6 @@ function openlab_save_group_status( BP_Groups_Group $group ) {
 	remove_action( 'groups_group_after_save', 'openlab_save_group_status' );
 	$saved = groups_create_group( $group_args );
 	add_action( 'groups_group_after_save', 'openlab_save_group_status' );
-}
-
-/**
- * Save a group's DiRT status.
- *
- * @param BP_Groups_Group $group
- */
-function openlab_save_dirt_status( $group ) {
-	if ( ! isset( $_POST['dirt-settings-nonce'] ) ) {
-		return;
-	}
-
-	check_admin_referer( 'dirt_settings', 'dirt-settings-nonce' );
-
-	$enabled  = ! empty( $_POST['group-enable-dirt'] );
-	$settings = groups_get_groupmeta( $group->id, 'ddc_settings', true );
-	if ( ! is_array( $settings ) ) {
-		$settings = array();
-	}
-
-	$settings['enabled'] = $enabled;
-	groups_update_groupmeta( $group->id, 'ddc_settings', $settings );
 }
 
 /**
@@ -2442,38 +2418,6 @@ function openlab_group_contact_save( $group ) {
 	}
 }
 add_action( 'groups_group_after_save', 'openlab_group_contact_save' );
-
-/**
- * Markup for DiRT toggle.
- */
-function openlab_group_dirt_toggle_markup() {
-	if ( ! function_exists( 'ddc_include' ) ) {
-		return;
-	}
-
-	if ( bp_is_group() ) {
-		$dirt_settings = groups_get_groupmeta( bp_get_current_group_id(), 'ddc_settings' );
-		$dirt_enabled  = ! empty( $dirt_settings['enabled'] );
-	} else {
-		$dirt_enabled = false;
-	}
-
-	?>
-
-	<div class="panel panel-default panel-dirt">
-		<div class="panel-heading"><?php esc_html_e( 'Digital Research Tools Settings', 'openlab-theme' ); ?></div>
-		<div class="panel-body">
-			<p><?php _e( 'The Digital Research Tools tab helps members share the tools that they use from the <a href="https://dirtdirectory.org">DiRT Directory</a>, and provides an interface for discovering new tools.', 'openlab-theme' ); ?></p>
-
-			<div class="checkbox">
-				<label><input type="checkbox" name="group-enable-dirt" id="group-enable-dirt" value="1" <?php checked( $dirt_enabled ) ?> /> <?php esc_html_e( 'Enable "Digital Research Tools" tab?', 'openlab-theme' ); ?></label>
-			</div>
-		</div>
-	</div>
-
-	<?php wp_nonce_field( 'dirt_settings', 'dirt-settings-nonce', false ); ?>
-	<?php
-}
 
 /**
  * Markup for Braille toggle.

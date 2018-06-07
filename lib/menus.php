@@ -890,15 +890,6 @@ function openlab_filter_subnav_forums( $subnav_item ) {
 	return $subnav_item;
 }
 
-/**
- * Ensures that Digital Research Tools nav item has the proper "current" class.
- */
-function openlab_filter_subnav_dirt( $subnav_item ) {
-	$subnav_item = str_replace( 'current selected', 'current-menu-item', $subnav_item );
-	return $subnav_item;
-}
-add_filter( 'bp_get_options_nav_nav-dirt', 'openlab_filter_subnav_dirt' );
-
 // Disable menu items.
 add_filter( 'bp_get_options_nav_nav-invite-anyone',  '__return_empty_string' );
 add_filter( 'bp_get_options_nav_nav-notifications',  '__return_empty_string' );

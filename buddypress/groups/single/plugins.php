@@ -44,16 +44,6 @@ if ( function_exists( 'openlab_eo_is_event_detail_screen' ) && openlab_eo_is_eve
 
 					<?php //do nothing - event sub nav is handled via template override in buddypress/groups/single/subnav-events.php ?>
 
-				<?php elseif ( bp_is_current_action( 'dirt' ) ) : ?>
-
-					<div class="row">
-						<div class="submenu col-sm-17">
-							<ul class="nav nav-inline">
-								<li class="current-menu-item"><a href=""><?php _e( 'Digital Research Tools', 'openlab-theme' ); ?></a></li>
-							</ul>
-						</div>
-					</div>
-
 				<?php else : ?>
 					<ul class="nav nav-inline">
 						<?php do_action( 'bp_group_plugin_options_nav' ); ?>
