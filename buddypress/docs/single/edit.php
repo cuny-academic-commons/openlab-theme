@@ -116,6 +116,8 @@ if ( ! function_exists( 'wp_editor' ) ) {
 						<?php endif ?>
 					</div>
 
+					<?php do_action( 'bp_docs_closing_meta_box', $doc_id ) ?>
+
 					<div style="clear: both"> </div>
 
 					<div id="doc-submit-options">
