@@ -19,7 +19,7 @@ do_action( 'bp_before_member_home_content' );
 ?>
 
 <?php if ( bp_is_user_activity() || 'public' == bp_current_action() ) { ?>
-	<?php cuny_member_profile_header(); ?>
+	<?php bp_get_template_part( 'members/single/header' ); ?>
 	<div id="portfolio-sidebar-inline-widget" class="visible-xs sidebar sidebar-inline"><?php openlab_members_sidebar_blocks(); ?></div>
 <?php } ?>
 
