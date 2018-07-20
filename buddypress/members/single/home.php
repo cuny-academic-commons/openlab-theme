@@ -4,42 +4,47 @@
 	<div class="col-sm-18 col-xs-24 members-single-home">
 		<div id="openlab-main-content" class="content-wrapper">
 
-<?php do_action( 'bp_before_member_body' );
+			<?php
 
-if ( bp_is_user_activity() || ! bp_current_component() ) :
-		cuny_student_profile();
-		elseif ( bp_is_user_blogs() ) :
-			bp_get_template_part( 'members/single/blogs' );
+			do_action( 'bp_before_member_body' );
 
-		elseif ( bp_is_user_friends() ) :
-			bp_get_template_part( 'members/single/friends' );
+			if ( bp_is_user_activity() || ! bp_current_component() ) :
+				cuny_student_profile();
 
-		elseif ( bp_is_user_groups() ) :
-			bp_get_template_part( 'members/single/groups' );
+			elseif ( bp_is_user_blogs() ) :
+				bp_get_template_part( 'members/single/blogs' );
 
-		elseif ( bp_is_user_messages() ) :
-			bp_get_template_part( 'members/single/messages' );
+			elseif ( bp_is_user_friends() ) :
+				bp_get_template_part( 'members/single/friends' );
 
-		elseif ( bp_is_user_profile() ) :
-			bp_get_template_part( 'members/single/profile' );
+			elseif ( bp_is_user_groups() ) :
+				bp_get_template_part( 'members/single/groups' );
 
-		elseif ( bp_is_user_notifications() ) :
-			bp_get_template_part( 'members/single/notifications' );
+			elseif ( bp_is_user_messages() ) :
+				bp_get_template_part( 'members/single/messages' );
 
-		elseif ( bp_is_user_settings() ) :
-			bp_get_template_part( 'members/single/settings' );
+			elseif ( bp_is_user_profile() ) :
+				bp_get_template_part( 'members/single/profile' );
 
-				elseif ( bp_current_action() == 'invite-new-members' || bp_current_action() == 'sent-invites' ) :
-					bp_get_template_part( 'members/single/invite-anyone' );
+			elseif ( bp_is_user_notifications() ) :
+				bp_get_template_part( 'members/single/notifications' );
 
-					// If nothing sticks, load a generic template
-		else :
-			bp_get_template_part( 'members/single/plugins' );
+			elseif ( bp_is_user_settings() ) :
+				bp_get_template_part( 'members/single/settings' );
 
-		endif;
+			elseif ( bp_current_action() == 'invite-new-members' || bp_current_action() == 'sent-invites' ) :
+				bp_get_template_part( 'members/single/invite-anyone' );
 
-		do_action( 'bp_after_member_body' ); ?>
-						</div>
+			else :
+				// If nothing sticks, load a generic template.
+				bp_get_template_part( 'members/single/plugins' );
+
+			endif;
+
+			do_action( 'bp_after_member_body' );
+
+			?>
+		</div>
 	</div>
 
 <?php do_action( 'bp_after_member_home_content' ); ?>
