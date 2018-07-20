@@ -31,7 +31,7 @@ if ( bp_has_groups() ) : while ( bp_groups() ) : bp_the_group();
 						if ( ! empty( $custom_front ) ) : load_template( $custom_front, true );
 
 							// Default to activity
-						elseif ( bp_is_active( 'activity' ) ) : cuny_group_single();
+						elseif ( bp_is_active( 'activity' ) ) : bp_get_template_part( 'groups/single/group-home' );
 
 							// Otherwise show members
 						elseif ( bp_is_active( 'members' ) ) : bp_get_template_part( 'groups/single/members' );
