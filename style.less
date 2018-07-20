@@ -1133,6 +1133,13 @@ body form{
 			span {
 				display: table-cell;
 				width: 1px;
+
+				@media (max-width: @screen-xs-max){
+					& {
+						display: block;
+						width: auto;
+					}
+				}
 			}
 			&.site-path-subdomain span {
 				padding-left: 10px;
@@ -1141,6 +1148,13 @@ body form{
 				display: table-cell;
 				margin-left: 8px;
 				width: 100%;
+
+				@media (max-width: @screen-xs-max){
+					& {
+						display: block;
+						margin-left: 0;
+					}
+				}
 			}
 		}
 
@@ -2172,6 +2186,12 @@ body form{
 .group-url-fields {
 	& > * {
 		display: table-cell;
+
+		@media (max-width: @screen-xs-max){
+			& {
+				display: block;
+			}
+		}
 	}
 
 	.group-url-domain {
@@ -2185,6 +2205,12 @@ body form{
 		padding-left: 8px;
 		position: relative;
 		width: 100%;
+
+		@media (max-width: @screen-xs-max){
+			& {
+				padding-left: 0;
+			}
+		}
 
 		&.did-ajax {
 			.group-url-status {

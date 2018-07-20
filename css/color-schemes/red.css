@@ -8088,6 +8088,12 @@ body form .checkbox-list-container {
   display: table-cell;
   width: 1px;
 }
+@media (max-width: 767px) {
+  .ct-group-meta .groupblog-setup .site-path span {
+    display: block;
+    width: auto;
+  }
+}
 .ct-group-meta .groupblog-setup .site-path.site-path-subdomain span {
   padding-left: 10px;
 }
@@ -8095,6 +8101,12 @@ body form .checkbox-list-container {
   display: table-cell;
   margin-left: 8px;
   width: 100%;
+}
+@media (max-width: 767px) {
+  .ct-group-meta .groupblog-setup .site-path input.form-control {
+    display: block;
+    margin-left: 0;
+  }
 }
 .ct-group-meta .groupblog-setup #noo_external_options .site-path input.form-control {
   margin-left: 0;
@@ -9186,6 +9198,11 @@ body form .checkbox-list-container {
 .group-url-fields > * {
   display: table-cell;
 }
+@media (max-width: 767px) {
+  .group-url-fields > * {
+    display: block;
+  }
+}
 .group-url-fields .group-url-domain {
   padding-top: 5px;
   vertical-align: top;
@@ -9196,6 +9213,11 @@ body form .checkbox-list-container {
   padding-left: 8px;
   position: relative;
   width: 100%;
+}
+@media (max-width: 767px) {
+  .group-url-fields .group-url-path {
+    padding-left: 0;
+  }
 }
 .group-url-fields .group-url-path.did-ajax .group-url-status {
   display: block;
