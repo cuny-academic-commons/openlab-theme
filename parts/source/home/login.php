@@ -33,7 +33,8 @@ if ( isset( $brand_pages['contact-us'] ) ) {
 	<div id="sidebar-me" class="clearfix">
 		<div id="user-info">
 			<a class="avatar" href="<?php echo bp_loggedin_user_domain() ?>">
-				<img class="img-responsive" src="<?php bp_loggedin_user_avatar( array( 'type' => 'full', 'html' => false ) ); ?>" alt="Avatar for <?php echo bp_core_get_user_displayname( bp_loggedin_user_id() ); ?>" />
+				<?php /* translators: user display name */ ?>
+				<img class="img-responsive" src="<?php bp_loggedin_user_avatar( array( 'type' => 'full', 'html' => false ) ); ?>" alt="<?php echo esc_attr( sprintf( __( 'Avatar for %s', 'openlab-theme' ), bp_core_get_user_displayname( bp_loggedin_user_id() ) ) ); ?>" />
 			</a>
 
 			<div class="welcome-link-my-profile">
@@ -41,8 +42,9 @@ if ( isset( $brand_pages['contact-us'] ) ) {
 			</div>
 
 			<ul class="content-list">
-				<li class="no-margin no-margin-bottom"><a class="button logout font-size font-12 roll-over-loss" href="<?php echo wp_logout_url( bp_get_root_domain() ) ?>">Not <?php echo bp_core_get_username( bp_loggedin_user_id() ); ?>?</a></li>
-				<li class="no-margin no-margin-bottom"><a class="button logout font-size font-12 roll-over-loss" href="<?php echo wp_logout_url( bp_get_root_domain() ) ?>"><?php _e( 'Log Out', 'buddypress' ) ?></a></li>
+				<?php /* translators: logged-in user display name */ ?>
+				<li class="no-margin no-margin-bottom"><a class="button logout font-size font-12 roll-over-loss" href="<?php echo wp_logout_url( bp_get_root_domain() ) ?>"><?php printf( esc_html__( 'Not %s?', 'openlab-theme' ), esc_html( bp_core_get_username( bp_loggedin_user_id() ) ) ); ?></a></li>
+				<li class="no-margin no-margin-bottom"><a class="button logout font-size font-12 roll-over-loss" href="<?php echo wp_logout_url( bp_get_root_domain() ) ?>"><?php _e( 'Log Out', 'openlab-theme' ) ?></a></li>
 			</ul>
 			</span><!--user-info-->
 		</div>
