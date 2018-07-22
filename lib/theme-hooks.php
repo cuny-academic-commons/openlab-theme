@@ -241,4 +241,5 @@ function openlab_group_creation_categories() {
 
 	echo $cats_out;
 }
-//add_action( 'openlab_group_creation_extra_meta', 'openlab_group_creation_categories' );
+add_action( 'bp_after_group_details_creation_step', 'openlab_group_creation_categories', 9 );
+add_action( 'bp_after_group_details_admin', 'openlab_group_creation_categories', 9 );
