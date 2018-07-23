@@ -397,6 +397,11 @@ jQuery(document).ready(function($){
 			return true;
 		}
 
+		description = $('#group-desc').val();
+		if ( $.trim( description ) == '' ) {
+			$('#group-desc').val('&nbsp;');
+		}
+
 		// Don't allow submission if avatar is not cropped.
 		var $cropActions = $('#avatar-crop-actions');
 		if ( $cropActions.length > 0 && $cropActions.is( ':visible' ) ) {
