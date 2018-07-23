@@ -272,9 +272,6 @@ jQuery(document).ready(function($){
 
 				// Additional Description
 				$('#additional-desc-html').val(r.additional_description);
-
-				// Term
-				$('#academic-term').val(r.term);
 			}
 		});
 	}
