@@ -10406,6 +10406,11 @@ input.help-search {
   right: 0;
   top: 0;
 }
+@media (max-width: 767px) {
+  .message-braille-actions {
+    top: -14px;
+  }
+}
 .message-starred .message-braille-actions,
 .message-not-starred .message-braille-actions {
   right: 30px;
