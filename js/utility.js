@@ -18,9 +18,6 @@
         customSelectHTML: '',
         init: function () {
 
-            if ($('.truncate-on-the-fly').length) {
-                OpenLab.utility.truncateOnTheFly(true);
-            }
             OpenLab.utility.adjustLoginBox();
             OpenLab.utility.sliderFocusHandler();
             OpenLab.utility.eventValidation();
@@ -361,7 +358,7 @@
 
             $('#home-new-member-wrap').css('visibility', 'visible').hide().fadeIn(700, function () {
 
-                OpenLab.utility.truncateOnTheFly(false, true);
+                OpenLab.truncation.truncateOnTheFly(false, true);
 
             });
         },
@@ -407,116 +404,6 @@
                 });
 
             });
-
-        },
-        truncateOnTheFly: function (onInit, loadDelay) {
-            if (onInit === undefined) {
-                var onInit = false;
-            }
-
-            if (loadDelay === undefined) {
-                var loadDelay = false;
-            }
-
-            $('.truncate-on-the-fly').each(function () {
-
-                var thisElem = $(this);
-
-                if (!loadDelay && thisElem.hasClass('load-delay')) {
-                    return true;
-                }
-
-                var truncationBaseValue = thisElem.data('basevalue');
-                var truncationBaseWidth = thisElem.data('basewidth');
-
-                if (!onInit) {
-                    var originalCopy = thisElem.parent().find('.original-copy').html();
-
-                    thisElem.css('opacity', '1.0');
-                    thisElem.html(originalCopy);
-                }
-
-                var container_w = thisElem.parent().width();
-
-                if (thisElem.data('link')) {
-
-                    var omissionText = localVars.strings.seeMore;
-
-                    //for screen reader only append
-                    //provides screen reader with addtional information in-link
-                    if (thisElem.data('includename')) {
-
-                        var nameTrunc = thisElem.data('includename');
-
-                        //if the groupname is truncated, let's use that
-                        var srprovider = thisElem.closest('.truncate-combo').find('[data-srprovider]');
-
-                        if (srprovider.length) {
-                            nameTrunc = srprovider.text();
-                        }
-
-                        omissionText = omissionText + ' <div class="sr-only sr-only-groupname">' + nameTrunc + '</div>';
-
-                    }
-
-                    var thisOmission = '<a href="' + thisElem.data('link') + '">' + omissionText + '</a>';
-                } else {
-                    var thisOmission = '';
-                }
-
-                if (container_w < truncationBaseWidth) {
-
-                    var truncationValue = truncationBaseValue - (Math.round(((truncationBaseWidth - container_w) / truncationBaseWidth) * 100));
-                    thisElem.find('.omission').remove();
-
-                    if (!onInit) {
-                        OpenLab.utility.truncateMainAction(thisElem, truncationValue, thisOmission);
-                    }
-
-                } else {
-
-                    var truncationValue = truncationBaseValue;
-
-                    if (!onInit) {
-                        OpenLab.utility.truncateMainAction(thisElem, truncationValue, thisOmission);
-                    }
-
-                }
-
-                if (onInit) {
-                    OpenLab.utility.truncateMainAction(thisElem, truncationValue, thisOmission);
-                }
-
-                thisElem.animate({
-                    opacity: '1.0'
-                });
-
-            });
-        },
-        truncateMainAction: function (thisElem, truncationValue, thisOmission) {
-
-            if (thisElem.data('minvalue')) {
-                if (truncationValue < thisElem.data('minvalue')) {
-                    truncationValue = thisElem.data('minvalue');
-                }
-            }
-
-            if (truncationValue > 10) {
-                thisElem.succinct({
-                    size: truncationValue,
-                    omission: '<span class="omission">&hellip; ' + thisOmission + '</span>'
-                });
-
-                //if we have an included groupname in the screen reader only link text
-                //let's truncate it as well
-                if (thisElem.data('srprovider')) {
-                    var srLink = thisElem.closest('.truncate-combo').find('.sr-only-groupname');
-                    srLink.text(thisElem.text());
-                }
-
-            } else {
-                thisElem.html('<span class="omission">' + thisOmission + '</span>');
-            }
 
         },
         customSelects: function (resize) {
@@ -775,7 +662,6 @@
         clearTimeout(resizeTimer);
         resizeTimer = setTimeout(function () {
 
-            OpenLab.utility.truncateOnTheFly();
             OpenLab.utility.adjustLoginBox();
             OpenLab.utility.customSelects(true);
 
