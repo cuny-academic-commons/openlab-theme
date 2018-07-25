@@ -515,6 +515,8 @@ function openlab_site_footer() {
 			</div>
 		</div>
 	</div>
+
+	<a class="visible-xs" id="go-to-top" href="#"><span class="fa fa-chevron-circle-up"></span><br /><?php esc_html_e( 'top', 'openlab-theme' ); ?></a>
 </div>
 
 	<?php
