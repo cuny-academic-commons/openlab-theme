@@ -19,7 +19,7 @@
         init: function () {
 
             if ($('.truncate-on-the-fly').length) {
-                OpenLab.utility.truncateOnTheFly(true);
+                OpenLab.utility.truncateOnTheFly(true,true);
             }
             OpenLab.utility.adjustLoginBox();
             OpenLab.utility.sliderFocusHandler();
@@ -783,7 +783,7 @@
                 OpenLab.utility.setUpNewMembersBox(true);
             }
 
-        }, 250);
+        }, 500);
 
     });
 
