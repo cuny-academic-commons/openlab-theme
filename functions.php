@@ -289,7 +289,8 @@ function openlab_load_scripts() {
 		wp_localize_script( 'utility', 'localVars', array(
 			'nonce' => wp_create_nonce( 'request-nonce' ),
 			'strings' => array(
-				'cancelFriendship' => __( 'Cancel Friendship', 'openlab-theme' ),
+				'cancelFriendship' => esc_html__( 'Cancel Friendship', 'openlab-theme' ),
+				'seeMore' => esc_html__( 'See More', 'openlab-theme' ),
 			),
 		) );
 

@@ -440,7 +440,7 @@
 
                 if (thisElem.data('link')) {
 
-                    var omissionText = 'See More';
+                    var omissionText = localVars.strings.seeMore;
 
                     //for screen reader only append
                     //provides screen reader with addtional information in-link
