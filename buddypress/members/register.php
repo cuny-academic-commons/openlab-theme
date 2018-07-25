@@ -168,7 +168,7 @@
 									<label class="control-label" for="account-type"><?php esc_html_e( 'Account Type', 'openlab-theme' ); ?> <?php esc_html_e( '(required)', 'openlab-theme' ); ?></label>
 									<div class="col-md-24">
 										<div class="col-md-8">
-											<select name="account-type" class="form-control" id="account-type">
+											<select name="account-type" class="form-control" id="account-type" required>
 												<option value=""><?php esc_html_e( '- Select Account Type -', 'openlab-theme' ); ?></option>
 												<?php foreach ( $member_types as $member_type ) : ?>
 													<option value="<?php echo esc_attr( $member_type->get_slug() ); ?>" data-requires-signup-code="<?php echo intval( $member_type->get_requires_signup_code() ); ?>"><?php echo esc_html( $member_type->get_label( 'singular' ) ); ?></option>
