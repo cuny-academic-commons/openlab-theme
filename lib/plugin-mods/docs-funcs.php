@@ -178,6 +178,6 @@ add_filter( 'bp_docs_doc_action_links', 'openlab_docs_action_links', 50, 2 );
  * Otherwise, during group creation, the AJAX query for fetching default access settings will fail.
  */
 function openlab_docs_associated_group_id_field() {
-	printf( '<input type="hidden" id="associated_group_id" value="%s" />', esc_attr( bp_get_current_group_id() ) );
+	printf( '<input type="hidden" name="associated_group_id" id="associated_group_id" value="%s" />', esc_attr( bp_get_current_group_id() ) );
 }
 add_action( 'bp_docs_closing_meta_box', 'openlab_docs_associated_group_id_field' );
