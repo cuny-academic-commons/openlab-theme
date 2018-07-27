@@ -168,6 +168,8 @@ $field_ids = array( 1 );
 				$selectable_types = cboxol_get_selectable_member_types_for_user( bp_displayed_user_id() );
 				$current_type = bp_get_member_type( bp_displayed_user_id() );
 				array_unshift( $selectable_types, $current_type );
+				$selectable_types = array_unique( $selectable_types );
+
 				$selectable_types = array_map( 'cboxol_get_member_type', $selectable_types );
 				?>
 				<?php if ( $selectable_types ) : ?>
