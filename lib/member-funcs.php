@@ -611,6 +611,7 @@ function openlab_get_register_fields( $account_type = '', $post_data = array() )
 				while ( bp_profile_fields() ) :
 					bp_the_profile_field();
 
+					$required = bp_get_the_profile_field_is_required() ? 'required' : '';
 					$return .= '<div class="editfield form-group">';
 					if ( 'textbox' == bp_get_the_profile_field_type() ) :
 						$return .= '<label class="control-label" for="' . bp_get_the_profile_field_input_name() . '">' . bp_get_the_profile_field_name();
@@ -628,6 +629,7 @@ function openlab_get_register_fields( $account_type = '', $post_data = array() )
 						id="' . bp_get_the_profile_field_input_name() . '"
 						value="' . bp_get_the_profile_field_edit_value() . '"
 						' . openlab_profile_field_input_attributes() . '
+						' . $required . '
 						/>';
 					endif;
 					if ( 'textarea' == bp_get_the_profile_field_type() ) :
@@ -719,11 +721,6 @@ function openlab_get_register_fields( $account_type = '', $post_data = array() )
 					$return .= '</div>';
 							endwhile;
 
-				/**
-				 * Left over from WDS, we need to hardcode 3,7,241 in some cases.
-				 *
-				 * @todo Investigate
-				 */
 				$profile_field_ids = bp_get_the_profile_group_field_ids();
 
 				$pfids_a = explode( ',', $profile_field_ids );
@@ -732,11 +729,7 @@ function openlab_get_register_fields( $account_type = '', $post_data = array() )
 					 $profile_field_ids = implode( ',', $pfids_a );
 				}
 
-				if ( isset( $group_id ) && 1 != $group_id ) {
-					 $profile_field_ids = '3,7,241,' . $profile_field_ids;
-				}
-
-				$return .= '<input type="hidden" name="signup_profile_field_ids" id="signup_profile_field_ids" value="3,7,241,' . $profile_field_ids . '" />';
+				$return .= '<input type="hidden" name="signup_profile_field_ids" id="signup_profile_field_ids" value="' . $profile_field_ids . '" />';
 
 		endwhile;
 		endif;
