@@ -163,6 +163,10 @@
 								<p><?php esc_html_e( 'Your responses in the form fields below will be displayed on your profile page, which is open to the public. You can always add, edit, or remove information at a later date.', 'openlab-theme' ); ?></p>
 
 								<?php /* @todo Abstract selector? */ ?>
+								<?php
+								$selected_account_type = isset( $_POST['account-type'] ) ? wp_unslash( $_POST['account-type'] ) : '';
+								$entered_signup_code   = isset( $_POST['account-type-signup-code'] ) ? wp_unslash( $_POST['account-type-signup-code'] ) : '';
+								?>
 								<div class="editfield form-group account-type-select-ui">
 									<?php do_action( 'bp_account_type_errors' ) ?>
 									<label class="control-label" for="account-type"><?php esc_html_e( 'Account Type', 'openlab-theme' ); ?> <?php esc_html_e( '(required)', 'openlab-theme' ); ?></label>
@@ -171,13 +175,13 @@
 											<select name="account-type" class="form-control" id="account-type" required>
 												<option value=""><?php esc_html_e( '- Select Account Type -', 'openlab-theme' ); ?></option>
 												<?php foreach ( $member_types as $member_type ) : ?>
-													<option value="<?php echo esc_attr( $member_type->get_slug() ); ?>" data-requires-signup-code="<?php echo intval( $member_type->get_requires_signup_code() ); ?>"><?php echo esc_html( $member_type->get_label( 'singular' ) ); ?></option>
+													<option value="<?php echo esc_attr( $member_type->get_slug() ); ?>" data-requires-signup-code="<?php echo intval( $member_type->get_requires_signup_code() ); ?>" <?php selected( $selected_account_type, $member_type->get_slug() ); ?> ><?php echo esc_html( $member_type->get_label( 'singular' ) ); ?></option>
 												<?php endforeach; ?>
 											</select>
 										</div>
 
 										<div class="col-md-8">
-											<input class="form-control" name="account-type-signup-code" id="account-type-signup-code" placeholder="<?php esc_attr_e( 'Please enter a sign up code', 'openlab-theme' ); ?>" />
+											<input class="form-control" name="account-type-signup-code" id="account-type-signup-code" placeholder="<?php esc_attr_e( 'Please enter a sign up code', 'openlab-theme' ); ?>" value="<?php if ( $entered_signup_code ) { echo esc_attr( $entered_signup_code ); } ?>" />
 										</div>
 
 										<div class="col-md-8 signup-code-message" id="signup-code-message"></div>
