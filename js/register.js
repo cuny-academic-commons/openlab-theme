@@ -240,6 +240,7 @@ jQuery(document).ready(function() {
                 success: function (response) {
                     $( '#openlab-profile-fields' ).html(response.data);
                     load_error_messages();
+										refresh_field_ids();
                 }
             });
         }
@@ -255,6 +256,20 @@ jQuery(document).ready(function() {
             $('#' + k).before(v);
         });
     }
+
+		/**
+		* Refresh field IDs.
+		*/
+		function refresh_field_ids() {
+			field_ids = [];
+			$('.panel-body input').each( function() {
+				if ( 'field_' === this.id.substr( 0, 6 ) ) {
+					field_ids.push( this.id.substr( 6 ) );
+				}
+			} );
+
+			$('#signup_profile_field_ids').val( field_ids.join(',') );
+		}
 
 	// @todo temp
 	var initValidation = true;
