@@ -42,7 +42,7 @@ function openlab_wp_menu_customizations( $items, $args ) {
 				$items[ $key ]->classes[] = 'external-link';
 			}
 
-			if ( $item->title === 'OpenLab Calendar' ) {
+			if ( $item->title === __( 'Calendar', 'openlab-theme' ) ) {
 
 				$items[ $key ]->classes[] = 'hidden-xs';
 
@@ -62,7 +62,7 @@ function openlab_wp_menu_customizations( $items, $args ) {
 		}
 
 		// then we create the menu item and inject it into the menu items array
-		$new_menu_item = openlab_custom_nav_menu_item( 'OpenLab Calendar', get_permalink( $upcoming_page_obj->ID ), $order, 0, array( 'visible-xs' ) );
+		$new_menu_item = openlab_custom_nav_menu_item( __( 'Calendar', 'openlab-theme' ), get_permalink( $upcoming_page_obj->ID ), $order, 0, array( 'visible-xs' ) );
 
 		$new_items[ $order ] = $new_menu_item;
 		ksort( $new_items );
