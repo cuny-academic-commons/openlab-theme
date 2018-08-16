@@ -2459,6 +2459,8 @@ function openlab_get_active_terms() {
 		// Best we can do is alphabetical ordering.
 		$options = $wpdb->get_col( "SELECT DISTINCT(meta_value) FROM {$bp->groups->table_name_groupmeta} WHERE meta_key = 'openlab_term' ORDER BY meta_value ASC" );
 
+		$options = array_filter( $options );
+
 		set_transient( $tkey, $options );
 	}
 
