@@ -1,13 +1,13 @@
 {
   "name": "openlab_theme",
-  "version": "1.0.0",
+  "version": "1.1.0-beta1",
   "main": "Gruntfile.js",
   "private": true,
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "OpenLab Team",
-  "license": "ISC",
+  "license": "GPLv2",
   "devDependencies": {
     "grunt": "^0.4.5",
     "grunt-contrib-concat": "^0.5.1",
