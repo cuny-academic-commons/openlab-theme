@@ -4,7 +4,6 @@
         <meta http-equiv="Content-Type" content="<?php bloginfo('html_type'); ?>; charset=<?php bloginfo('charset'); ?>" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="robots" content="noodp,noydir" />
-        <link rel="Shortcut Icon" href="<?php echo get_template_directory_uri() ?>/images/favicon.ico" type="image/x-icon" />
         <title><?php bloginfo('name'); ?></title>
 
         <?php // do_action('bp_head') ?>
