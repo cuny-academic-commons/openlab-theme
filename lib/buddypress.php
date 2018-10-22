@@ -23,12 +23,12 @@ function openlab_bp_enqueue_scripts() {
 
 		wp_localize_script( 'openlab-group-create', 'OLGroupCreate', array(
 			'strings' => array(
-				'externalFeedsFieldLabelComments' => __( 'Comments:', 'commons-in-a-box' ),
-				'externalFeedsFieldLabelPosts' => __( 'Posts:', 'commons-in-a-box' ),
-				'externalFeedsFound' => __( 'We found the following feed URLs for your external site, which we\'ll use to pull posts and comments into your activity stream.', 'commons-in-a-box' ),
-				'externalFeedsNotFound' => __( 'We couldn\'t find any feed URLs for your external site, which we use to pull posts and comments into your activity stream. If your site has feeds, you may enter the URLs below.', 'commons-in-a-box' ),
-				'fieldCannotBeBlank' => __( 'This field cannot be blank.', 'commons-in-a-box' ),
-				'incompleteCrop' => __( 'Please crop your image before continuing.', 'commons-in-a-box' ),
+				'externalFeedsFieldLabelComments' => __( 'Comments:', 'openlab-theme' ),
+				'externalFeedsFieldLabelPosts' => __( 'Posts:', 'openlab-theme' ),
+				'externalFeedsFound' => __( 'We found the following feed URLs for your external site, which we\'ll use to pull posts and comments into your activity stream.', 'openlab-theme' ),
+				'externalFeedsNotFound' => __( 'We couldn\'t find any feed URLs for your external site, which we use to pull posts and comments into your activity stream. If your site has feeds, you may enter the URLs below.', 'openlab-theme' ),
+				'fieldCannotBeBlank' => __( 'This field cannot be blank.', 'openlab-theme' ),
+				'incompleteCrop' => __( 'Please crop your image before continuing.', 'openlab-theme' ),
 			),
 		) );
 	}
@@ -41,11 +41,11 @@ function openlab_bp_enqueue_scripts() {
 			'limited_email_domains' => get_site_option( 'limited_email_domains' ),
 			'post_data' => $_POST,
 			'strings' => array(
-				'completeSignUp' => esc_html__( 'Complete Sign Up', 'commons-in-a-box' ),
-				'dashChecking' => esc_html__( '&mdash; Checking', 'commons-in-a-box' ),
-				'dashOK' => esc_html__( '&mdash; OK!', 'commons-in-a-box' ),
-				'enterEmailAddressToContinue' => esc_html__( 'Enter Email Address to Continue', 'commons-in-a-box' ),
-				'dashInvalidCode' => esc_html__( '&mdash; Invalid code', 'commons-in-a-box' ),
+				'completeSignUp' => esc_html__( 'Complete Sign Up', 'openlab-theme' ),
+				'dashChecking' => esc_html__( '&mdash; Checking', 'openlab-theme' ),
+				'dashOK' => esc_html__( '&mdash; OK!', 'openlab-theme' ),
+				'enterEmailAddressToContinue' => esc_html__( 'Enter Email Address to Continue', 'openlab-theme' ),
+				'dashInvalidCode' => esc_html__( '&mdash; Invalid code', 'openlab-theme' ),
 			),
 		) );
 	}

@@ -63,7 +63,7 @@
 						</div>
 
 						<div class="author-info-mobile visible-xs">
-							<span class="bold"><?php esc_html_e( 'Author', 'commons-in-a-box' ); ?>:</span> <a href="<?php bp_docs_order_by_link( 'author' ) ?>"><?php esc_html_e( 'Author', 'commons-in-a-box' ); ?></a>
+							<span class="bold"><?php esc_html_e( 'Author', 'openlab-theme' ); ?>:</span> <a href="<?php bp_docs_order_by_link( 'author' ) ?>"><?php esc_html_e( 'Author', 'openlab-theme' ); ?></a>
 						</div>
 					</td>
 
@@ -101,7 +101,7 @@
 
 	<div id="bp-docs-pagination">
 		<div id="bp-docs-pagination-count">
-			<?php printf( __( 'Viewing %1$s-%2$s of %3$s docs', 'commons-in-a-box' ), bp_docs_get_current_docs_start(), bp_docs_get_current_docs_end(), bp_docs_get_total_docs_num() ) ?>
+			<?php printf( __( 'Viewing %1$s-%2$s of %3$s docs', 'openlab-theme' ), bp_docs_get_current_docs_start(), bp_docs_get_current_docs_end(), bp_docs_get_total_docs_num() ) ?>
 		</div>
 
 		<div id="bp-docs-paginate-links">
@@ -111,9 +111,9 @@
 
 <?php else : ?>
 	<?php if ( groups_is_user_member( get_current_user_id(), bp_get_current_group_id() ) ) :  ?>
-		<p class="no-docs bold"><?php printf( __( 'There are no docs to view. Why not <a href="%s">create one</a>?', 'commons-in-a-box' ), bp_docs_get_item_docs_link() . BP_DOCS_CREATE_SLUG ) ?></p>
+		<p class="no-docs bold"><?php printf( __( 'There are no docs to view. Why not <a href="%s">create one</a>?', 'openlab-theme' ), bp_docs_get_item_docs_link() . BP_DOCS_CREATE_SLUG ) ?></p>
 	<?php else : ?>
-		<p class="no-docs bold"><?php printf( __( 'There are no docs to view.', 'commons-in-a-box' ) ) ?></p>
+		<p class="no-docs bold"><?php printf( __( 'There are no docs to view.', 'openlab-theme' ) ) ?></p>
 	<?php endif; ?>
 
 <?php endif ?>

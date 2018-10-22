@@ -76,7 +76,7 @@
 				<?php /* Create vs Clone for Courses */ ?>
 				<?php if ( $group_type->get_can_be_cloned() ) : ?>
 					<div class="panel panel-default create-or-clone-selector">
-						<div class="panel-heading semibold"><?php esc_html_e( 'Create New or Clone Existing?', 'commons-in-a-box' ); ?></div>
+						<div class="panel-heading semibold"><?php esc_html_e( 'Create New or Clone Existing?', 'openlab-theme' ); ?></div>
 						<div class="panel-body">
 						<?php /* @todo Rephrase?
 						<p class="ol-tooltip clone-course-tooltip" id="clone-course-tooltip-2">If you taught the same course in a previous semester or year, cloning can save you time.</p>
@@ -84,7 +84,7 @@
 
 						<ul class="create-or-clone-options">
 							<li class="radio">
-								<label for="create-or-clone-create"><input type="radio" name="create-or-clone" id="create-or-clone-create" value="create" <?php checked( ! (bool) $group_id_to_clone ) ?> /><?php esc_html_e( 'Create New', 'commons-in-a-box' ); ?></label>
+								<label for="create-or-clone-create"><input type="radio" name="create-or-clone" id="create-or-clone-create" value="create" <?php checked( ! (bool) $group_id_to_clone ) ?> /><?php esc_html_e( 'Create New', 'openlab-theme' ); ?></label>
 							</li>
 
 							<?php
@@ -100,9 +100,9 @@
 							?>
 
 							<li class="disable-if-js form-group radio form-inline">
-								<label for="create-or-clone-clone" <?php echo ( $groups_of_type['total'] < 1 ? 'class="disabled-opt"' : '' ); ?>><input type="radio" name="create-or-clone" id="create-or-clone-clone" value="clone" <?php checked( (bool) $group_id_to_clone ) ?> <?php echo ( $groups_of_type['total'] < 1 ? 'disabled' : '' ); ?> /><?php esc_html_e( 'Clone Existing', 'commons-in-a-box' ) ?></label>
+								<label for="create-or-clone-clone" <?php echo ( $groups_of_type['total'] < 1 ? 'class="disabled-opt"' : '' ); ?>><input type="radio" name="create-or-clone" id="create-or-clone-clone" value="clone" <?php checked( (bool) $group_id_to_clone ) ?> <?php echo ( $groups_of_type['total'] < 1 ? 'disabled' : '' ); ?> /><?php esc_html_e( 'Clone Existing', 'openlab-theme' ) ?></label>
 
-								<label class="sr-only" for="group-to-clone"><?php esc_html_e( 'Choose Clone Source', 'commons-in-a-box' ); ?></label>
+								<label class="sr-only" for="group-to-clone"><?php esc_html_e( 'Choose Clone Source', 'openlab-theme' ); ?></label>
 								<select class="form-control" id="group-to-clone" name="group-to-clone">
 									<option value="" <?php selected( $group_id_to_clone, 0 ) ?>>-</option>
 
@@ -123,7 +123,7 @@
 
 				<div class="panel panel-default">
 					<div class="panel-heading semibold">
-						<label for="group-name"><?php esc_html_e( 'Name', 'commons-in-a-box' ); ?> <?php _e( '(required)', 'commons-in-a-box' ) ?></label>
+						<label for="group-name"><?php esc_html_e( 'Name', 'openlab-theme' ); ?> <?php _e( '(required)', 'openlab-theme' ) ?></label>
 					</div>
 
 					<div class="panel-body">
@@ -132,8 +132,8 @@
 							<p class="ol-tooltip"><?php echo esc_html( $group_type->get_label( 'name_help_text' ) ); ?></p>
 
 							<ul class="ol-tooltip">
-								<li><?php esc_html_e( 'FirstName LastName\'s Portfolio', 'commons-in-a-box' ); ?></li>
-								<li><?php esc_html_e( 'Jane Smith\'s Portfolio (Example)', 'commons-in-a-box' ); ?></li>
+								<li><?php esc_html_e( 'FirstName LastName\'s Portfolio', 'openlab-theme' ); ?></li>
+								<li><?php esc_html_e( 'Jane Smith\'s Portfolio (Example)', 'openlab-theme' ); ?></li>
 							</ul>
 
 							<input class="form-control" size="80" type="text" name="group-name" id="group-name" value="<?php echo esc_attr( bp_get_new_group_name() ) ?>" required />
@@ -151,7 +151,7 @@
 				<?php openlab_group_avatar_markup(); ?>
 
 				<div class="panel panel-default">
-					<div class="panel-heading semibold"><label for="group-desc"><?php esc_html_e( 'Description', 'commons-in-a-box' ); ?> <?php esc_html_e( '(required)', 'commons-in-a-box' ) ?></label></div>
+					<div class="panel-heading semibold"><label for="group-desc"><?php esc_html_e( 'Description', 'openlab-theme' ); ?> <?php esc_html_e( '(required)', 'openlab-theme' ) ?></label></div>
 					<div class="panel-body">
 						<textarea class="form-control" name="group-desc" id="group-desc" required><?php echo esc_textarea( $the_description ); ?></textarea>
 					</div>
@@ -181,22 +181,22 @@
 
 			<?php /* Previous Button */ ?>
 			<?php if ( ! bp_is_first_group_creation_step() && 'group-settings' !== bp_get_groups_current_create_step() ) : ?>
-				<input class="btn btn-primary prev-btn btn-margin btn-margin-top" type="button" value="&#xf137; <?php _e( 'Previous Step', 'commons-in-a-box' ) ?>" id="group-creation-previous" name="previous" onclick="location.href = '<?php bp_group_creation_previous_link() ?>'" />
+				<input class="btn btn-primary prev-btn btn-margin btn-margin-top" type="button" value="&#xf137; <?php _e( 'Previous Step', 'openlab-theme' ) ?>" id="group-creation-previous" name="previous" onclick="location.href = '<?php bp_group_creation_previous_link() ?>'" />
 			<?php endif; ?>
 
 			<?php /* Next Button */ ?>
 			<?php if ( ! bp_is_last_group_creation_step() && ! bp_is_first_group_creation_step() ) : ?>
-				<input class="btn btn-primary btn-margin btn-margin-top" type="submit" value="<?php _e( 'Next Step', 'commons-in-a-box' ) ?> &#xf138;" id="group-creation-next" name="save" />
+				<input class="btn btn-primary btn-margin btn-margin-top" type="submit" value="<?php _e( 'Next Step', 'openlab-theme' ) ?> &#xf138;" id="group-creation-next" name="save" />
 			<?php endif; ?>
 
 			<?php /* Create Button */ ?>
 			<?php if ( bp_is_first_group_creation_step() ) : ?>
-				<input class="btn btn-primary btn-margin btn-margin-top" type="submit" value="<?php _e( 'Create and Continue', 'commons-in-a-box' ); ?> &#xf138;" id="group-creation-create" name="save" />
+				<input class="btn btn-primary btn-margin btn-margin-top" type="submit" value="<?php _e( 'Create and Continue', 'openlab-theme' ); ?> &#xf138;" id="group-creation-create" name="save" />
 			<?php endif; ?>
 
 			<?php /* Finish Button */ ?>
 			<?php if ( bp_is_last_group_creation_step() ) : ?>
-				<input class="btn btn-primary btn-margin btn-margin-top" type="submit" value="<?php _e( 'Finish', 'commons-in-a-box' ) ?> &#xf138;" id="group-creation-finish" name="save" />
+				<input class="btn btn-primary btn-margin btn-margin-top" type="submit" value="<?php _e( 'Finish', 'openlab-theme' ) ?> &#xf138;" id="group-creation-finish" name="save" />
 			<?php endif; ?>
 
 			<?php do_action( 'bp_after_group_creation_step_buttons' ); ?>

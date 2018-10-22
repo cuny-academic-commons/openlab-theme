@@ -32,7 +32,7 @@ function openlab_get_home_slider() {
 		$slider_mup .= '</div>';
 		$slider_sr_mup .= '</ul></div>';
 	} else {
-		$slider_mup .= '<div class="slider-empty">' . esc_html__( 'You haven\'t added any slides yet!', 'commons-in-a-box' ) . '</div>';
+		$slider_mup .= '<div class="slider-empty">' . esc_html__( 'You haven\'t added any slides yet!', 'openlab-theme' ) . '</div>';
 	}
 
 	wp_reset_postdata();

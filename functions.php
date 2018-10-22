@@ -60,12 +60,12 @@ function openlab_maybe_install() {
 	// Slider.
 	$slides = array(
 		array(
-			'title' => __( 'Your Second Sample Slide', 'commons-in-a-box' ),
+			'title' => __( 'Your Second Sample Slide', 'openlab-theme' ),
 			'content' => 'Ex consequatur ipsam iusto id impedit nesciunt. Velit perspiciatis laborum et culpa rem earum. Beatae fugit perspiciatis dolorum. Incidunt voluptate officia cupiditate ipsum. Officiis eius quo incidunt voluptatem vitae deleniti aut. Non dolorem iste qui voluptates id ratione unde accusantium.',
 			'image' => get_template_directory() . '/images/default-slide-1.jpeg',
 		),
 		array(
-			'title' => __( 'Your First Sample Slide', 'commons-in-a-box' ),
+			'title' => __( 'Your First Sample Slide', 'openlab-theme' ),
 			'content' => 'Ipsam et voluptas sed qui vel voluptatem quam. Qui pariatur occaecati consequatur quibusdam reiciendis aut asperiores nam. Esse et et id amet et quis. Beatae quaerat a ea expedita blanditiis quia. Doloremque ad nemo culpa. Quia at qui et.',
 			'image' => get_template_directory() . '/images/default-slide-2.jpeg',
 		),
@@ -126,7 +126,7 @@ function openlab_maybe_install() {
 
 function openlab_create_default_nav_menus() {
 	// Main Menu.
-	$menu_name = wp_slash( __( 'Main Menu', 'commons-in-a-box' ) );
+	$menu_name = wp_slash( __( 'Main Menu', 'cbox-openlab-core' ) );
 	$menu_id = wp_create_nav_menu( $menu_name );
 
 	if ( is_wp_error( $menu_id ) ) {
@@ -191,7 +191,7 @@ function openlab_create_default_nav_menus() {
 
 	// About Menu.
 	if ( isset( $brand_pages['about'] ) ) {
-		$menu_name = wp_slash( __( 'About Menu', 'commons-in-a-box' ) );
+		$menu_name = wp_slash( __( 'About Menu', 'cbox-openlab-core' ) );
 		$menu_id = wp_create_nav_menu( $menu_name );
 
 		if ( is_wp_error( $menu_id ) ) {
@@ -289,8 +289,8 @@ function openlab_load_scripts() {
 		wp_localize_script( 'utility', 'localVars', array(
 			'nonce' => wp_create_nonce( 'request-nonce' ),
 			'strings' => array(
-				'cancelFriendship' => esc_html__( 'Cancel Friendship', 'commons-in-a-box' ),
-				'seeMore' => esc_html__( 'See More', 'commons-in-a-box' ),
+				'cancelFriendship' => esc_html__( 'Cancel Friendship', 'openlab-theme' ),
+				'seeMore' => esc_html__( 'See More', 'openlab-theme' ),
 			),
 		) );
 
@@ -355,8 +355,8 @@ function openlab_register_sidebars() {
 
 	// Home sidebar.
 	register_sidebar( array(
-		'name' => __( 'Home Sidebar', 'commons-in-a-box' ),
-		'description' => __( 'The sidebar at the left side of the home page.', 'commons-in-a-box' ),
+		'name' => __( 'Home Sidebar', 'openlab-theme' ),
+		'description' => __( 'The sidebar at the left side of the home page.', 'openlab-theme' ),
 		'id' => 'home-sidebar',
 		'before_widget' => '<div id="%1$s" class="box-1 left-box widget %2$s">',
 		'after_widget' => '</div>',
@@ -364,8 +364,8 @@ function openlab_register_sidebars() {
 
 	// Home main (group type columns).
 	register_sidebar( array(
-		'name' => __( 'Home Main', 'commons-in-a-box' ),
-		'description' => __( 'The main section of the home page. Generally used for group type widgets.', 'commons-in-a-box' ),
+		'name' => __( 'Home Main', 'openlab-theme' ),
+		'description' => __( 'The main section of the home page. Generally used for group type widgets.', 'openlab-theme' ),
 		'id' => 'home-main',
 	) );
 }
@@ -505,10 +505,10 @@ function openlab_site_footer() {
 					</div>
 
 					<div id="footer-right" class="footer-right footer-section col-md-4">
-						<p><?php esc_html_e( 'Powered by:', 'commons-in-a-box' ); ?></p>
+						<p><?php esc_html_e( 'Powered by:', 'openlab-theme' ); ?></p>
 
 						<div class="cboxol-footer-logo">
-							<a href="https://commonsinabox.org/"><img src="<?php echo get_template_directory_uri() ?>/images/cboxol-logo-noicon.png" alt="<?php esc_attr_e( 'CBOX-OL Logo', 'commons-in-a-box' ); ?>" /></a>
+							<a href="https://commonsinabox.org/"><img src="<?php echo get_template_directory_uri() ?>/images/cboxol-logo-noicon.png" alt="<?php esc_attr_e( 'CBOX-OL Logo', 'openlab-theme' ); ?>" /></a>
 						</div>
 					</div>
 				</div>
@@ -516,7 +516,7 @@ function openlab_site_footer() {
 		</div>
 	</div>
 
-	<a class="visible-xs" id="go-to-top" href="#"><span class="fa fa-chevron-circle-up"></span><br /><?php esc_html_e( 'top', 'commons-in-a-box' ); ?></a>
+	<a class="visible-xs" id="go-to-top" href="#"><span class="fa fa-chevron-circle-up"></span><br /><?php esc_html_e( 'top', 'openlab-theme' ); ?></a>
 </div>
 
 	<?php

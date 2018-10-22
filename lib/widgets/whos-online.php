@@ -15,14 +15,14 @@ class OpenLab_WhosOnline_Widget extends WP_Widget {
 	 */
 	public function __construct() {
 		$this->default_args = array(
-			'title' => __( 'Who\'s Online?', 'commons-in-a-box' ),
+			'title' => __( 'Who\'s Online?', 'openlab-theme' ),
 		);
 
 		$widget_ops = array(
 			'classname'   => 'whos-online',
-			'description' => __( 'Avatars of recently active members.', 'commons-in-a-box' ),
+			'description' => __( 'Avatars of recently active members.', 'openlab-theme' ),
 		);
-		parent::__construct( 'openlab-whos-online', __( 'Who\'s Online?', 'commons-in-a-box' ), $widget_ops );
+		parent::__construct( 'openlab-whos-online', __( 'Who\'s Online?', 'openlab-theme' ), $widget_ops );
 	}
 
 	/**
@@ -113,7 +113,7 @@ class OpenLab_WhosOnline_Widget extends WP_Widget {
 		$r = array_merge( $this->default_args, $instance );
 
 		?>
-		<p><label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php esc_html_e( 'Title:', 'commons-in-a-box' ); ?> <input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $r['title'] ); ?>" style="width: 100%" /></label></p>
+		<p><label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php esc_html_e( 'Title:', 'openlab-theme' ); ?> <input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $r['title'] ); ?>" style="width: 100%" /></label></p>
 		<?php
 	}
 

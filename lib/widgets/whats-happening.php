@@ -15,14 +15,14 @@ class OpenLab_WhatsHappening_Widget extends WP_Widget {
 	 */
 	public function __construct() {
 		$this->default_args = array(
-			'title' => __( 'What\'s Happening?', 'commons-in-a-box' ),
+			'title' => __( 'What\'s Happening?', 'openlab-theme' ),
 		);
 
 		$widget_ops = array(
 			'classname'   => 'whats-happening',
-			'description' => __( 'A list of recent activity items from around the site.', 'commons-in-a-box' ),
+			'description' => __( 'A list of recent activity items from around the site.', 'openlab-theme' ),
 		);
-		parent::__construct( 'openlab-whats-happening', __( 'What\'s Happening', 'commons-in-a-box' ), $widget_ops );
+		parent::__construct( 'openlab-whats-happening', __( 'What\'s Happening', 'openlab-theme' ), $widget_ops );
 	}
 
 	/**
@@ -86,7 +86,7 @@ class OpenLab_WhatsHappening_Widget extends WP_Widget {
 					<div class="row activity-row">
 						<div class="activity-avatar col-sm-24">
 							<div class="activity-header">
-								<p><?php esc_html_e( 'No recent activity', 'commons-in-a-box' ); ?></p>
+								<p><?php esc_html_e( 'No recent activity', 'openlab-theme' ); ?></p>
 							</div>
 						</div>
 					</div>
@@ -115,7 +115,7 @@ class OpenLab_WhatsHappening_Widget extends WP_Widget {
 		$r = array_merge( $this->default_args, $instance );
 
 		?>
-		<p><label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php esc_html_e( 'Title:', 'commons-in-a-box' ); ?> <input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $r['title'] ); ?>" style="width: 100%" /></label></p>
+		<p><label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php esc_html_e( 'Title:', 'openlab-theme' ); ?> <input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $r['title'] ); ?>" style="width: 100%" /></label></p>
 		<?php
 	}
 

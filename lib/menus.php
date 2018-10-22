@@ -8,10 +8,10 @@
 
 // custom menu locations for OpenLab
 register_nav_menus(array(
-	'main' => __( 'Main Menu', 'commons-in-a-box' ),
-	'aboutmenu' => __( 'About Menu', 'commons-in-a-box' ),
-	'helpmenu' => __( 'Help Menu', 'commons-in-a-box' ),
-	'helpmenusec' => __( 'Help Menu Secondary', 'commons-in-a-box' ),
+	'main' => __( 'Main Menu', 'openlab-theme' ),
+	'aboutmenu' => __( 'About Menu', 'openlab-theme' ),
+	'helpmenu' => __( 'Help Menu', 'openlab-theme' ),
+	'helpmenusec' => __( 'Help Menu Secondary', 'openlab-theme' ),
 ));
 
 /**
@@ -42,7 +42,7 @@ function openlab_wp_menu_customizations( $items, $args ) {
 				$items[ $key ]->classes[] = 'external-link';
 			}
 
-			if ( $item->title === __( 'Calendar', 'commons-in-a-box' ) ) {
+			if ( $item->title === __( 'Calendar', 'openlab-theme' ) ) {
 
 				$items[ $key ]->classes[] = 'hidden-xs';
 
@@ -62,7 +62,7 @@ function openlab_wp_menu_customizations( $items, $args ) {
 		}
 
 		// then we create the menu item and inject it into the menu items array
-		$new_menu_item = openlab_custom_nav_menu_item( __( 'Calendar', 'commons-in-a-box' ), get_permalink( $upcoming_page_obj->ID ), $order, 0, array( 'visible-xs' ) );
+		$new_menu_item = openlab_custom_nav_menu_item( __( 'Calendar', 'openlab-theme' ), get_permalink( $upcoming_page_obj->ID ), $order, 0, array( 'visible-xs' ) );
 
 		$new_items[ $order ] = $new_menu_item;
 		ksort( $new_items );
@@ -122,11 +122,11 @@ function openlab_modify_options_nav() {
 			if ( preg_match( '/<span>([0-9]+)<\/span>/', reset( $files_item )['name'], $matches ) ) {
 				$files_name = sprintf(
 					/* translators: 1. count span */
-					__( 'Files %1$s', 'commons-in-a-box' ),
+					__( 'Files %1$s', 'openlab-theme' ),
 					sprintf( '<span class="mol-count pull-right count-%d gray">%d</span>', $matches[1], $matches[1] )
 				);
 			} else {
-				$files_name = __( 'Files', 'commons-in-a-box' );
+				$files_name = __( 'Files', 'openlab-theme' );
 			}
 
 			buddypress()->groups->nav->edit_nav( array(
@@ -146,7 +146,7 @@ function openlab_modify_options_nav() {
 			$group_doc_count = openlab_get_group_doc_count( $current_group->id );
 			$docs_name = sprintf(
 				/* translators: 1. count span */
-				__( 'Docs %1$s', 'commons-in-a-box' ),
+				__( 'Docs %1$s', 'openlab-theme' ),
 				sprintf( '<span class="mol-count pull-right count-%d gray">%d</span>', $group_doc_count, $group_doc_count )
 			);
 			buddypress()->groups->nav->edit_nav( array(
@@ -342,7 +342,7 @@ function openlab_submenu_markup( $type = '', $opt_var = null, $row_wrapper = tru
 
 	switch ( $type ) {
 		case 'invitations':
-			$submenu_text = esc_html__( 'My Invitations', 'commons-in-a-box' ) . '<span aria-hidden="true">:</span> ';
+			$submenu_text = esc_html__( 'My Invitations', 'openlab-theme' ) . '<span aria-hidden="true">:</span> ';
 			$menu = openlab_my_invitations_submenu();
 			break;
 		case 'friends':
@@ -358,7 +358,7 @@ function openlab_submenu_markup( $type = '', $opt_var = null, $row_wrapper = tru
 
 			break;
 		case 'messages':
-			$submenu_text = esc_html__( 'My Messages', 'commons-in-a-box' ) . '<span aria-hidden="true">:</span> ';
+			$submenu_text = esc_html__( 'My Messages', 'openlab-theme' ) . '<span aria-hidden="true">:</span> ';
 			$menu = openlab_my_messages_submenu();
 			break;
 		case 'groups':
@@ -374,7 +374,7 @@ function openlab_submenu_markup( $type = '', $opt_var = null, $row_wrapper = tru
 
 			break;
 		default:
-			$submenu_text = esc_html__( 'My Settings', 'commons-in-a-box' ) . '<span aria-hidden="true">:</span> ';
+			$submenu_text = esc_html__( 'My Settings', 'openlab-theme' ) . '<span aria-hidden="true">:</span> ';
 			$menu = openlab_profile_settings_submenu();
 	}
 
@@ -427,15 +427,15 @@ function openlab_profile_settings_submenu() {
 
 	$settings_slug = $dud . bp_get_settings_slug();
 	$menu_list = array(
-		$dud . 'profile/edit'            => __( 'Edit Profile', 'commons-in-a-box' ),
-		$dud . 'profile/change-avatar'   => __( 'Change Avatar', 'commons-in-a-box' ),
-		$settings_slug                   => __( 'Account Settings', 'commons-in-a-box' ),
-		$dud . 'settings/notifications'  => __( 'Email Notifications', 'commons-in-a-box' ),
+		$dud . 'profile/edit'            => __( 'Edit Profile', 'openlab-theme' ),
+		$dud . 'profile/change-avatar'   => __( 'Change Avatar', 'openlab-theme' ),
+		$settings_slug                   => __( 'Account Settings', 'openlab-theme' ),
+		$dud . 'settings/notifications'  => __( 'Email Notifications', 'openlab-theme' ),
 	);
 
 	if ( ! is_super_admin( bp_displayed_user_id() ) && ( ( ! bp_disable_account_deletion() && bp_is_my_profile() ) || bp_current_user_can( 'delete_users' ) ) ) {
 
-		$menu_list[ $dud . 'settings/delete-account' ] = __( 'Delete Account', 'commons-in-a-box' );
+		$menu_list[ $dud . 'settings/delete-account' ] = __( 'Delete Account', 'openlab-theme' );
 	}
 	return openlab_submenu_gen( $menu_list, true );
 }
@@ -465,12 +465,12 @@ function openlab_my_groups_submenu( \CBOX\OL\GroupType $group_type ) {
 	if ( $group_type->get_is_course() ) {
 		if ( cboxol_user_can_create_courses( bp_loggedin_user_id() ) ) {
 			$menu_list = array(
-				$create_link => __( 'Create / Clone', 'commons-in-a-box' ),
+				$create_link => __( 'Create / Clone', 'openlab-theme' ),
 			);
 		}
 	} else {
 		$menu_list = array(
-			$create_link => __( 'Create New', 'commons-in-a-box' ),
+			$create_link => __( 'Create New', 'openlab-theme' ),
 		);
 	}
 
@@ -490,14 +490,14 @@ function openlab_create_group_menu( \CBOX\OL\GroupType $group_type ) {
 
 	switch ( bp_get_groups_current_create_step() ) {
 		case 'site-details' :
-			$step_name = __( 'Step Two: Associated Site Creation', 'commons-in-a-box' );
+			$step_name = __( 'Step Two: Associated Site Creation', 'openlab-theme' );
 			break;
 		case 'invite-anyone' :
-			$step_name = sprintf( __( 'Step Three: %s', 'commons-in-a-box' ), esc_html( $group_type->get_label( 'invite_members_to_group' ) ) );
+			$step_name = sprintf( __( 'Step Three: %s', 'openlab-theme' ), esc_html( $group_type->get_label( 'invite_members_to_group' ) ) );
 			break;
 		case 'group-details' :
 		default:
-			$step_name = sprintf( __( 'Step One: %s', 'commons-in-a-box' ), esc_html( $group_type->get_label( 'item_creation' ) ) );
+			$step_name = sprintf( __( 'Step One: %s', 'openlab-theme' ), esc_html( $group_type->get_label( 'item_creation' ) ) );
 			break;
 	}
 
@@ -539,7 +539,7 @@ function openlab_my_friends_submenu( $count = true ) {
 
 	if ( $bp->is_item_admin ) {
 		$menu_list = array(
-			$friend_requests => __( 'Requests Received', 'commons-in-a-box' ) . ' ' . $count_span,
+			$friend_requests => __( 'Requests Received', 'openlab-theme' ) . ' ' . $count_span,
 				// '#' => $page_identify,
 		);
 	} else {
@@ -554,7 +554,7 @@ function openlab_my_friends_submenu( $count = true ) {
 
 	$menu_out['menu'] = openlab_submenu_gen( $menu_list );
 
-	$label = bp_is_my_profile() ? __( 'My Friends', 'commons-in-a-box' ) : sprintf( __( '%s\'s Friends', 'commons-in-a-box' ), bp_core_get_user_displayname( bp_displayed_user_id() ) );
+	$label = bp_is_my_profile() ? __( 'My Friends', 'openlab-theme' ) : sprintf( __( '%s\'s Friends', 'openlab-theme' ), bp_core_get_user_displayname( bp_displayed_user_id() ) );
 	$menu_out['submenu_text'] = '<a class="' . esc_attr( $submenu_class ) . '" href="' . esc_url( $my_friends ) . '">' . esc_html( $label ) . '</a>';
 
 	return $menu_out;
@@ -568,9 +568,9 @@ function openlab_my_messages_submenu() {
 	}
 
 	$menu_list = array(
-		$dud . 'messages/inbox/' => __( 'Inbox', 'commons-in-a-box' ),
-		$dud . 'messages/sentbox/' => __( 'Sent', 'commons-in-a-box' ),
-		$dud . 'messages/compose' => __( 'Compose', 'commons-in-a-box' ),
+		$dud . 'messages/inbox/' => __( 'Inbox', 'openlab-theme' ),
+		$dud . 'messages/sentbox/' => __( 'Sent', 'openlab-theme' ),
+		$dud . 'messages/compose' => __( 'Compose', 'openlab-theme' ),
 	);
 	return openlab_submenu_gen( $menu_list );
 }
@@ -583,9 +583,9 @@ function openlab_my_invitations_submenu() {
 	}
 
 	$menu_list = array(
-		$dud . 'groups/invites/' => __( 'Invitations Received', 'commons-in-a-box' ),
-		$dud . 'invite-anyone/' => __( 'Invite New Members', 'commons-in-a-box' ),
-		$dud . 'invite-anyone/sent-invites/' => __( 'Sent Invitations', 'commons-in-a-box' ),
+		$dud . 'groups/invites/' => __( 'Invitations Received', 'openlab-theme' ),
+		$dud . 'invite-anyone/' => __( 'Invite New Members', 'openlab-theme' ),
+		$dud . 'invite-anyone/sent-invites/' => __( 'Sent Invitations', 'openlab-theme' ),
 	);
 	return openlab_submenu_gen( $menu_list );
 }
@@ -634,20 +634,20 @@ function openlab_submenu_gen( $items, $timestamp = false ) {
 		}
 
 		// special case for send invitations page hitting the same time as invitations received
-		if ( $page_identify == 'invites' && $title == __( 'Sent Invitations', 'commons-in-a-box' ) ) {
+		if ( $page_identify == 'invites' && $title == __( 'Sent Invitations', 'openlab-theme' ) ) {
 			$current_check = false;
 		}
 
 		// adding the current-menu-item class - also includes special cases, parsed out to make them easier to identify
 		if ( $current_check !== false ) {
 			$item_classes .= ' current-menu-item';
-		} elseif ( $page_identify == 'general' && $title == __( 'Account Settings', 'commons-in-a-box' ) ) {
+		} elseif ( $page_identify == 'general' && $title == __( 'Account Settings', 'openlab-theme' ) ) {
 			// special case just for account settings page
 			$item_classes .= ' current-menu-item';
-		} elseif ( $page_identify == 'my-friends' && $title == __( 'My Friends', 'commons-in-a-box' ) ) {
+		} elseif ( $page_identify == 'my-friends' && $title == __( 'My Friends', 'openlab-theme' ) ) {
 			// special case just for my friends page
 			$item_classes .= ' current-menu-item bold';
-		} elseif ( $page_identify == 'invite-new-members' && $title == __( 'Invite New Members', 'commons-in-a-box' ) ) {
+		} elseif ( $page_identify == 'invite-new-members' && $title == __( 'Invite New Members', 'openlab-theme' ) ) {
 			// special case just for Invite New Members page
 			$item_classes .= ' current-menu-item';
 		}
@@ -707,7 +707,7 @@ function openlab_filter_subnav_home( $subnav_item ) {
 	if ( bp_is_group() ) {
 		$new_item = $subnav_item;
 	} else {
-		$new_item = str_replace( __( 'Home', 'buddypress' ), esc_html__( 'Profile', 'commons-in-a-box' ), $subnav_item );
+		$new_item = str_replace( __( 'Home', 'buddypress' ), esc_html__( 'Profile', 'cbox-openlab-core' ), $subnav_item );
 	}
 
 	// update "current" class to "current-menu-item" to unify site identification of current menu page
@@ -721,11 +721,11 @@ function openlab_filter_subnav_home( $subnav_item ) {
 	$site_link = '';
 
 	if ( ! empty( $group_site_settings['site_url'] ) && $group_site_settings['is_visible'] ) {
-		$site_link = '<li id="site-groups-li" class="visible-xs"><a href="' . trailingslashit( esc_attr( $group_site_settings['site_url'] ) ) . '" id="site">' . esc_html__( 'Site', 'commons-in-a-box' ) . '</a></li>';
+		$site_link = '<li id="site-groups-li" class="visible-xs"><a href="' . trailingslashit( esc_attr( $group_site_settings['site_url'] ) ) . '" id="site">' . esc_html__( 'Site', 'openlab-theme' ) . '</a></li>';
 
 		if ( $group_site_settings['is_local'] && ((cboxol_is_portfolio() && openlab_is_my_portfolio()) || ( ! cboxol_is_portfolio() && groups_is_user_member( bp_loggedin_user_id(), bp_get_current_group_id() )) || $bp->is_item_admin || is_super_admin()) ) {
 
-			$site_link .= '<li id="site-admin-groups-li" class="visible-xs"><a href="' . trailingslashit( esc_attr( $group_site_settings['site_url'] ) ) . 'wp-admin/" id="site-admin">' . esc_html__( 'Site Dashboard', 'commons-in-a-box' ) . '</a></li>';
+			$site_link .= '<li id="site-admin-groups-li" class="visible-xs"><a href="' . trailingslashit( esc_attr( $group_site_settings['site_url'] ) ) . 'wp-admin/" id="site-admin">' . esc_html__( 'Site Dashboard', 'openlab-theme' ) . '</a></li>';
 		}
 	}
 
@@ -998,11 +998,11 @@ function openlab_group_admin_tabs( $group = false ) {
 			--><li<?php if ( 'edit-details' == $current_tab || empty( $current_tab ) ) : ?> class="current-menu-item"<?php endif; ?>><a href="<?php echo bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug ?>/admin/edit-details"><?php echo esc_html( $group_type->get_label( 'group_details' ) ); ?></a></li><!--
 		<?php } ?>
 
-		--><li<?php if ( 'site-details' === $current_tab ) : ?> class="current-menu-item"<?php endif; ?>><a href="<?php echo bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug ?>/admin/site-details"><?php echo esc_html_x( 'Site', 'Group admin nav item', 'commons-in-a-box' ); ?></a></li><!--
+		--><li<?php if ( 'site-details' === $current_tab ) : ?> class="current-menu-item"<?php endif; ?>><a href="<?php echo bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug ?>/admin/site-details"><?php echo esc_html_x( 'Site', 'Group admin nav item', 'openlab-theme' ); ?></a></li><!--
 
-		--><li<?php if ( 'group-settings' == $current_tab ) : ?> class="current-menu-item"<?php endif; ?>><a href="<?php echo bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug ?>/admin/group-settings"><?php esc_html_e( 'Settings', 'commons-in-a-box' ); ?></a></li>
+		--><li<?php if ( 'group-settings' == $current_tab ) : ?> class="current-menu-item"<?php endif; ?>><a href="<?php echo bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug ?>/admin/group-settings"><?php esc_html_e( 'Settings', 'openlab-theme' ); ?></a></li>
 
-		<li class="delete-button <?php if ( 'delete-group' == $current_tab ) : ?> current-menu-item<?php endif; ?>" ><span class="fa fa-minus-circle"></span><a href="<?php echo bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug ?>/admin/delete-group"><?php esc_html_e( 'Delete Portfolio', 'commons-in-a-box' ); ?></a></li><!--
+		<li class="delete-button <?php if ( 'delete-group' == $current_tab ) : ?> current-menu-item<?php endif; ?>" ><span class="fa fa-minus-circle"></span><a href="<?php echo bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug ?>/admin/delete-group"><?php esc_html_e( 'Delete Portfolio', 'openlab-theme' ); ?></a></li><!--
 
 	<?php else : ?>
 
@@ -1016,9 +1016,9 @@ function openlab_group_admin_tabs( $group = false ) {
 		}
 		?>
 
-		--><li<?php if ( 'site-details' === $current_tab ) : ?> class="current-menu-item"<?php endif; ?>><a href="<?php echo bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug ?>/admin/site-details"><?php echo esc_html_x( 'Site', 'Group admin nav item', 'commons-in-a-box' ); ?></a></li><!--
+		--><li<?php if ( 'site-details' === $current_tab ) : ?> class="current-menu-item"<?php endif; ?>><a href="<?php echo bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug ?>/admin/site-details"><?php echo esc_html_x( 'Site', 'Group admin nav item', 'openlab-theme' ); ?></a></li><!--
 
-		--><li<?php if ( 'group-settings' == $current_tab ) : ?> class="current-menu-item"<?php endif; ?>><a href="<?php echo bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug ?>/admin/group-settings"><?php _e( 'Settings', 'commons-in-a-box' ); ?></a></li><!--
+		--><li<?php if ( 'group-settings' == $current_tab ) : ?> class="current-menu-item"<?php endif; ?>><a href="<?php echo bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug ?>/admin/group-settings"><?php _e( 'Settings', 'openlab-theme' ); ?></a></li><!--
 
 		<?php if ( $group_type->get_is_course() ) : ?>
 			<?php
@@ -1026,15 +1026,15 @@ function openlab_group_admin_tabs( $group = false ) {
 				'group_type' => $group_type->get_slug(),
 				'clone' => bp_get_current_group_id(),
 			), bp_get_groups_directory_permalink() . 'create/step/group-details/' ); ?>
-			--><li class="clone-button <?php if ( 'clone-group' == $current_tab ) : ?>current-menu-item<?php endif; ?>" ><span class="fa fa-plus-circle"></span><a href="<?php echo esc_url( $clone_link ); ?>"><?php esc_html_e( 'Clone', 'commons-in-a-box' ); ?></a></li><!--
+			--><li class="clone-button <?php if ( 'clone-group' == $current_tab ) : ?>current-menu-item<?php endif; ?>" ><span class="fa fa-plus-circle"></span><a href="<?php echo esc_url( $clone_link ); ?>"><?php esc_html_e( 'Clone', 'openlab-theme' ); ?></a></li><!--
 		<?php endif ?>
 
-		--><li class="delete-button last-item <?php if ( 'delete-group' == $current_tab ) : ?>current-menu-item<?php endif; ?>" ><span class="fa fa-minus-circle"></span><a href="<?php echo bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug ?>/admin/delete-group"><?php esc_html_e( 'Delete', 'commons-in-a-box' ); ?></a></li><!--
+		--><li class="delete-button last-item <?php if ( 'delete-group' == $current_tab ) : ?>current-menu-item<?php endif; ?>" ><span class="fa fa-minus-circle"></span><a href="<?php echo bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug ?>/admin/delete-group"><?php esc_html_e( 'Delete', 'openlab-theme' ); ?></a></li><!--
 
 		<?php if ( $group_type->get_is_portfolio() ) : ?>
 			<li class="portfolio-displayname pull-right"><span class="highlight"><?php echo bp_core_get_userlink( openlab_get_user_id_from_portfolio_group_id( bp_get_group_id() ) ); ?></span></li>
 		<?php else : ?>
-			<li class="info-line pull-right"><span class="timestamp info-line-timestamp visible-lg"><span class="fa fa-undo"></span> <?php printf( __( 'active %s', 'commons-in-a-box' ), bp_get_group_last_active() ) ?></span></li>
+			<li class="info-line pull-right"><span class="timestamp info-line-timestamp visible-lg"><span class="fa fa-undo"></span> <?php printf( __( 'active %s', 'openlab-theme' ), bp_get_group_last_active() ) ?></span></li>
 		<?php endif; ?>
 
 	<?php endif ?>
@@ -1058,25 +1058,25 @@ function openlab_group_membership_tabs( $group = false ) {
 	?>
 	<!--
 	<?php if ( $bp->is_item_admin || $bp->is_item_mod ) : ?>
-		--><li<?php if ( $current_tab == 'manage-members' ) : ?> class="current-menu-item"<?php endif; ?>><a href="<?php echo bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug ?>/admin/manage-members"><?php esc_html_e( 'Membership', 'commons-in-a-box' ); ?></a></li><!--
+		--><li<?php if ( $current_tab == 'manage-members' ) : ?> class="current-menu-item"<?php endif; ?>><a href="<?php echo bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug ?>/admin/manage-members"><?php esc_html_e( 'Membership', 'openlab-theme' ); ?></a></li><!--
 
 		<?php if ( $group->status == 'private' ) : ?>
-			--><li<?php if ( 'membership-requests' == $current_tab ) : ?> class="current-menu-item"<?php endif; ?>><a href="<?php echo bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug ?>/admin/membership-requests"><?php esc_html_e( 'Member Requests', 'commons-in-a-box' ); ?></a></li><!--
+			--><li<?php if ( 'membership-requests' == $current_tab ) : ?> class="current-menu-item"<?php endif; ?>><a href="<?php echo bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug ?>/admin/membership-requests"><?php esc_html_e( 'Member Requests', 'openlab-theme' ); ?></a></li><!--
 		<?php endif; ?>
 	<?php else : ?>
-		--><li<?php if ( $bp->current_action == 'members' ) : ?> class="current-menu-item"<?php endif; ?>><a href="<?php echo bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug ?>/members"><?php esc_html_e( 'Membership', 'commons-in-a-box' ); ?></a></li><!--
+		--><li<?php if ( $bp->current_action == 'members' ) : ?> class="current-menu-item"<?php endif; ?>><a href="<?php echo bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug ?>/members"><?php esc_html_e( 'Membership', 'openlab-theme' ); ?></a></li><!--
 	<?php endif; ?>
 
 	<?php if ( bp_group_is_member() && invite_anyone_access_test() && openlab_is_admin_truly_member() ) : ?>
-		--><li<?php if ( $bp->current_action == 'invite-anyone' ) : ?> class="current-menu-item"<?php endif; ?>><a href="<?php echo bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug ?>/invite-anyone"><?php esc_html_e( 'Invite New Members', 'commons-in-a-box' ); ?></a></li><!--
+		--><li<?php if ( $bp->current_action == 'invite-anyone' ) : ?> class="current-menu-item"<?php endif; ?>><a href="<?php echo bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug ?>/invite-anyone"><?php esc_html_e( 'Invite New Members', 'openlab-theme' ); ?></a></li><!--
 	<?php endif; ?>
 
 	<?php if ( $bp->is_item_admin || $bp->is_item_mod ) : ?>
-		--><li<?php if ( 'notifications' == $current_tab ) : ?> class="current-menu-item"<?php endif; ?>><a href="<?php echo bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug ?>/admin/notifications"><?php esc_html_e( 'Email Members', 'commons-in-a-box' ); ?></a></li><!--
+		--><li<?php if ( 'notifications' == $current_tab ) : ?> class="current-menu-item"<?php endif; ?>><a href="<?php echo bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug ?>/admin/notifications"><?php esc_html_e( 'Email Members', 'openlab-theme' ); ?></a></li><!--
 	<?php endif; ?>
 
 	<?php if ( bp_group_is_member() && openlab_is_admin_truly_member() ) : ?>
-		--><li<?php if ( $bp->current_action == 'notifications' ) : ?> class="current-menu-item"<?php endif; ?>><a href="<?php echo bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug ?>/notifications"><?php esc_html_e( 'Your Email Options', 'commons-in-a-box' ); ?></a></li><!--
+		--><li<?php if ( $bp->current_action == 'notifications' ) : ?> class="current-menu-item"<?php endif; ?>><a href="<?php echo bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug ?>/notifications"><?php esc_html_e( 'Your Email Options', 'openlab-theme' ); ?></a></li><!--
 	<?php endif; ?>
 	-->
 	<?php
@@ -1099,9 +1099,9 @@ function openlab_docs_tabs() {
 
 	?>
 
-	<li <?php echo ( bp_docs_current_view() == 'list' ? 'class="current-menu-item"' : '' ); ?> ><a href="<?php echo esc_url( $group_permalink . bp_docs_get_docs_slug() ); ?>/"><?php esc_html_e( 'View Docs', 'commons-in-a-box' ); ?></a></li>
+	<li <?php echo ( bp_docs_current_view() == 'list' ? 'class="current-menu-item"' : '' ); ?> ><a href="<?php echo esc_url( $group_permalink . bp_docs_get_docs_slug() ); ?>/"><?php esc_html_e( 'View Docs', 'openlab-theme' ); ?></a></li>
 	<?php if ( current_user_can( 'bp_docs_create' ) && current_user_can( 'bp_docs_associate_with_group', bp_get_current_group_id() ) ) : ?>
-		<li <?php echo ( bp_docs_current_view() == 'create' ? 'class="current-menu-item"' : '' ); ?> ><a href="<?php echo esc_url( $group_permalink . bp_docs_get_docs_slug() ) ?>/create/"><?php esc_html_e( 'New Doc', 'commons-in-a-box' ); ?></a></li>
+		<li <?php echo ( bp_docs_current_view() == 'create' ? 'class="current-menu-item"' : '' ); ?> ><a href="<?php echo esc_url( $group_permalink . bp_docs_get_docs_slug() ) ?>/create/"><?php esc_html_e( 'New Doc', 'openlab-theme' ); ?></a></li>
 	<?php endif; ?>
 	<?php if ( ( bp_docs_current_view() == 'edit' || bp_docs_current_view() == 'single' ) && bp_docs_is_existing_doc() ) : ?>
 		<?php $doc_obj = bp_docs_get_current_doc(); ?>

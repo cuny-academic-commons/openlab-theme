@@ -21,7 +21,7 @@
 			$led[] = sprintf( '<span class="limited-email-domain">' . esc_html( $d ) . '</span>' );
 		}
 		$limited_email_domains_message = sprintf(
-			esc_html__( 'Allowed email domains: %s', 'commons-in-a-box' ),
+			esc_html__( 'Allowed email domains: %s', 'openlab-theme' ),
 			implode( ', ', $led )
 		);
 	}
@@ -35,7 +35,7 @@
 		<div id="openlab-main-content"></div>
 
 		<div class="entry-title">
-			<h1><?php _e( 'Create an Account', 'commons-in-a-box' ) ?></h1>
+			<h1><?php _e( 'Create an Account', 'openlab-theme' ) ?></h1>
 		</div>
 
 		<form action="" name="signup_form" id="signup_form" class="standard-form form-panel" method="post" enctype="multipart/form-data" data-parsley-trigger="blur">
@@ -43,19 +43,19 @@
 			<?php if ( 'request-details' == bp_get_current_signup_step() ) : ?>
 
 				<div class="panel panel-default">
-					<div class="panel-heading semibold"><?php esc_html_e( 'Account Details', 'commons-in-a-box' ); ?></div>
+					<div class="panel-heading semibold"><?php esc_html_e( 'Account Details', 'openlab-theme' ); ?></div>
 					<div class="panel-body">
 
 						<?php do_action( 'template_notices' ) ?>
 
-						<p><?php printf( esc_html__( 'Registering for %s is easy. Just fill in the fields below and we\'ll get a new account set up for you in no time.', 'commons-in-a-box' ), esc_html( $site_name ) ); ?></p>
+						<p><?php printf( esc_html__( 'Registering for %s is easy. Just fill in the fields below and we\'ll get a new account set up for you in no time.', 'openlab-theme' ), esc_html( $site_name ) ); ?></p>
 
 						<?php do_action( 'bp_before_account_details_fields' ) ?>
 
 						<div class="register-section" id="basic-details-section">
 
 							<div class="form-group">
-								<label class="control-label" for="signup_username"><?php esc_html_e( 'Username', 'commons-in-a-box' ) ?> <?php esc_html_e( '(required)', 'commons-in-a-box' ) ?> <?php esc_html_e( '(lowercase & no special characters)', 'commons-in-a-box' ); ?></label>
+								<label class="control-label" for="signup_username"><?php esc_html_e( 'Username', 'openlab-theme' ) ?> <?php esc_html_e( '(required)', 'openlab-theme' ) ?> <?php esc_html_e( '(lowercase & no special characters)', 'openlab-theme' ); ?></label>
 								<?php do_action( 'bp_signup_username_errors' ) ?>
 								<input
 									class="form-control"
@@ -71,12 +71,12 @@
 										'action' => 'openlab_unique_login_check',
 										'login' => '{value}',
 									), $ajaxurl ); ?>"
-									data-parsley-remote-message="<?php esc_attr_e( 'That username is already taken.', 'commons-in-a-box' ); ?>"
+									data-parsley-remote-message="<?php esc_attr_e( 'That username is already taken.', 'openlab-theme' ); ?>"
 								/>
 							</div>
 
 							<div class="form-group">
-								<label class="control-label" for="signup_email"><?php esc_html_e( 'Email Address (required)', 'commons-in-a-box' ); ?> <?php if ( $limited_email_domains_message ) : ?><div class="email-requirements"><?php echo $limited_email_domains_message; ?></div><?php endif; ?></label>
+								<label class="control-label" for="signup_email"><?php esc_html_e( 'Email Address (required)', 'openlab-theme' ); ?> <?php if ( $limited_email_domains_message ) : ?><div class="email-requirements"><?php echo $limited_email_domains_message; ?></div><?php endif; ?></label>
 								<?php do_action( 'bp_signup_email_errors' ) ?>
 								<input
 									class="form-control"
@@ -92,7 +92,7 @@
 									data-parsley-iff-message=""
 								/>
 
-								<label class="control-label" for="signup_email_confirm"><?php esc_html_e( 'Confirm Email Address (required)', 'commons-in-a-box' ); ?></label>
+								<label class="control-label" for="signup_email_confirm"><?php esc_html_e( 'Confirm Email Address (required)', 'openlab-theme' ); ?></label>
 								<input
 								class="form-control"
 								type="text"
@@ -103,13 +103,13 @@
 								data-parsley-required
 								data-parsley-type="email"
 								data-parsley-iff="#signup_email"
-								data-parsley-iff-message="<?php esc_attr_e( 'Email addresses must match.', 'commons-in-a-box' ); ?>"
+								data-parsley-iff-message="<?php esc_attr_e( 'Email addresses must match.', 'openlab-theme' ); ?>"
 								data-parsley-group="email"
 								/>
 							</div>
 
 							<div data-parsley-children-should-match class="form-group">
-								<label class="control-label" for="signup_password"><?php _e( 'Choose a Password', 'commons-in-a-box' ) ?> <?php _e( '(required)', 'commons-in-a-box' ) ?></label>
+								<label class="control-label" for="signup_password"><?php _e( 'Choose a Password', 'openlab-theme' ) ?> <?php _e( '(required)', 'openlab-theme' ) ?></label>
 								<?php do_action( 'bp_signup_password_errors' ) ?>
 								<div class="password-field">
 									<input
@@ -128,7 +128,7 @@
 									<div id="password-strength-notice" class="password-strength-notice"></div>
 								</div>
 
-								<label class="control-label" for="signup_password_confirm"><?php _e( 'Confirm Password', 'commons-in-a-box' ) ?> <?php _e( '(required)', 'commons-in-a-box' ) ?></label>
+								<label class="control-label" for="signup_password_confirm"><?php _e( 'Confirm Password', 'openlab-theme' ) ?> <?php _e( '(required)', 'openlab-theme' ) ?></label>
 								<?php do_action( 'bp_signup_password_confirm_errors' ) ?>
 								<input
 									class="form-control password-field"
@@ -140,7 +140,7 @@
 									data-parsley-required
 									data-parsley-group="password"
 									data-parsley-iff="#signup_password"
-									data-parsley-iff-message="<?php esc_attr_e( 'Passwords must match.', 'commons-in-a-box' ); ?>"
+									data-parsley-iff-message="<?php esc_attr_e( 'Passwords must match.', 'openlab-theme' ); ?>"
 								/>
 							</div>
 
@@ -153,14 +153,14 @@
 				<?php if ( bp_is_active( 'xprofile' ) ) : ?>
 
 					<div class="panel panel-default">
-						<div class="panel-heading semibold"><?php esc_html_e( 'Public Profile Details', 'commons-in-a-box' ); ?></div>
+						<div class="panel-heading semibold"><?php esc_html_e( 'Public Profile Details', 'openlab-theme' ); ?></div>
 						<div class="panel-body">
 
 							<?php do_action( 'bp_before_signup_profile_fields' ) ?>
 
 							<div class="register-section" id="profile-details-section">
 
-								<p><?php esc_html_e( 'Your responses in the form fields below will be displayed on your profile page, which is open to the public. You can always add, edit, or remove information at a later date.', 'commons-in-a-box' ); ?></p>
+								<p><?php esc_html_e( 'Your responses in the form fields below will be displayed on your profile page, which is open to the public. You can always add, edit, or remove information at a later date.', 'openlab-theme' ); ?></p>
 
 								<?php /* @todo Abstract selector? */ ?>
 								<?php
@@ -169,11 +169,11 @@
 								?>
 								<div class="editfield form-group account-type-select-ui">
 									<?php do_action( 'bp_account_type_errors' ) ?>
-									<label class="control-label" for="account-type"><?php esc_html_e( 'Account Type', 'commons-in-a-box' ); ?> <?php esc_html_e( '(required)', 'commons-in-a-box' ); ?></label>
+									<label class="control-label" for="account-type"><?php esc_html_e( 'Account Type', 'openlab-theme' ); ?> <?php esc_html_e( '(required)', 'openlab-theme' ); ?></label>
 									<div class="col-md-24">
 										<div class="col-md-8">
 											<select name="account-type" class="form-control" id="account-type" required>
-												<option value=""><?php esc_html_e( '- Select Account Type -', 'commons-in-a-box' ); ?></option>
+												<option value=""><?php esc_html_e( '- Select Account Type -', 'openlab-theme' ); ?></option>
 												<?php foreach ( $member_types as $member_type ) : ?>
 													<option value="<?php echo esc_attr( $member_type->get_slug() ); ?>" data-requires-signup-code="<?php echo intval( $member_type->get_requires_signup_code() ); ?>" <?php selected( $selected_account_type, $member_type->get_slug() ); ?> ><?php echo esc_html( $member_type->get_label( 'singular' ) ); ?></option>
 												<?php endforeach; ?>
@@ -181,7 +181,7 @@
 										</div>
 
 										<div class="col-md-8">
-											<input class="form-control" name="account-type-signup-code" id="account-type-signup-code" placeholder="<?php esc_attr_e( 'Please enter a sign up code', 'commons-in-a-box' ); ?>" value="<?php if ( $entered_signup_code ) { echo esc_attr( $entered_signup_code ); } ?>" />
+											<input class="form-control" name="account-type-signup-code" id="account-type-signup-code" placeholder="<?php esc_attr_e( 'Please enter a sign up code', 'openlab-theme' ); ?>" value="<?php if ( $entered_signup_code ) { echo esc_attr( $entered_signup_code ); } ?>" />
 										</div>
 
 										<div class="col-md-8 signup-code-message" id="signup-code-message"></div>

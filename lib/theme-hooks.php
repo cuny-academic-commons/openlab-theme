@@ -122,7 +122,7 @@ function openlab_custom_menu_items( $items, $menu ) {
 				$class = 'class="current-menu-item"';
 			}
 			$opl_link = '<li ' . $class . '>';
-			$opl_link .= '<a href="' . bp_loggedin_user_domain() . '">' . esc_html__( 'My Profile', 'commons-in-a-box' ) . '</a>';
+			$opl_link .= '<a href="' . bp_loggedin_user_domain() . '">' . esc_html__( 'My Profile', 'openlab-theme' ) . '</a>';
 			$opl_link .= '</li>';
 		}
 

@@ -11,9 +11,9 @@ class OpenLab_Group_Type_Widget extends WP_Widget {
 
 		parent::__construct(
 			'openlab_group_type',
-			__( 'Group Type', 'commons-in-a-box' ),
+			__( 'Group Type', 'openlab-theme' ),
 			array(
-				'description' => __( 'Displays recently active groups of a specific Group Type', 'commons-in-a-box' ),
+				'description' => __( 'Displays recently active groups of a specific Group Type', 'openlab-theme' ),
 			)
 		);
 	}
@@ -78,7 +78,7 @@ class OpenLab_Group_Type_Widget extends WP_Widget {
 					<?php $i++; ?>
 					<?php endwhile; ?>
 				<?php else : ?>
-					<p class="group-widget-empty"><?php esc_html_e( 'Nothing to show.', 'commons-in-a-box' ); ?></p>
+					<p class="group-widget-empty"><?php esc_html_e( 'Nothing to show.', 'openlab-theme' ); ?></p>
 				<?php endif; ?>
 			</div>
 		</div><!--activity-list-->
@@ -95,12 +95,12 @@ class OpenLab_Group_Type_Widget extends WP_Widget {
 		$group_types = cboxol_get_group_types();
 
 		?>
-		<p><label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php esc_html_e( 'Title:', 'commons-in-a-box' ); ?> <input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $r['title'] ); ?>" style="width: 100%" /></label></p>
+		<p><label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php esc_html_e( 'Title:', 'openlab-theme' ); ?> <input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $r['title'] ); ?>" style="width: 100%" /></label></p>
 
 		<p>
-			<label for="<?php echo $this->get_field_id( 'group_type' ); ?>"><?php esc_html_e( 'Group Type:', 'commons-in-a-box' ); ?>
+			<label for="<?php echo $this->get_field_id( 'group_type' ); ?>"><?php esc_html_e( 'Group Type:', 'openlab-theme' ); ?>
 				<select class="widefat" id="<?php echo $this->get_field_id( 'group_type' ); ?>" name="<?php echo $this->get_field_name( 'group_type' ); ?>" style="width: 100%">
-					<option value="" <?php selected( ! $r['group_type'] ); ?>><?php esc_html_e( '- Select Group Type -', 'commons-in-a-box' ); ?></option>
+					<option value="" <?php selected( ! $r['group_type'] ); ?>><?php esc_html_e( '- Select Group Type -', 'openlab-theme' ); ?></option>
 
 					<?php foreach ( $group_types as $group_type ) : ?>
 						<option value="<?php echo esc_attr( $group_type->get_slug() ); ?>" <?php selected( $r['group_type'], $group_type->get_slug() ); ?>><?php echo esc_html( $group_type->get_label( 'plural' ) ); ?></option>

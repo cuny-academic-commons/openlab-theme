@@ -31,7 +31,7 @@
 			</ul>
 
 			<div id="searchinvitemembersdescription">
-				<p class="italics"><?php esc_html_e( 'Start typing a few letters of member\'s display name. When a dropdown list appears, select from the list.', 'commons-in-a-box' ); ?></p>
+				<p class="italics"><?php esc_html_e( 'Start typing a few letters of member\'s display name. When a dropdown list appears, select from the list.', 'openlab-theme' ); ?></p>
 
 				<?php /* The ID 'friend-list' is important for AJAX support. */ ?>
 				<ul id="invite-anyone-invite-list" class="item-list inline-element-list row">
@@ -62,12 +62,12 @@
 			</div>
 
 			<p class="invite-copy italics">
-				<?php esc_html_e( 'These members will be sent an invitation.', 'commons-in-a-box' ); ?>
+				<?php esc_html_e( 'These members will be sent an invitation.', 'openlab-theme' ); ?>
 
 				<?php if ( bp_is_group_create() ) : ?>
-					<?php esc_html_e( 'Click \'Finish\' to continue.', 'commons-in-a-box' ); ?>
+					<?php esc_html_e( 'Click \'Finish\' to continue.', 'openlab-theme' ); ?>
 				<?php else : ?>
-					<?php esc_html_e( 'Click the "Send Invites" button to continue.', 'commons-in-a-box' ); ?>
+					<?php esc_html_e( 'Click the "Send Invites" button to continue.', 'openlab-theme' ); ?>
 				<?php endif ?>
 			</p>
 
@@ -87,12 +87,12 @@
 
 	<?php if ( invite_anyone_access_test() && ! bp_is_group_create() ) : ?>
 		<div class="panel panel-default">
-			<div class="panel-heading semibold"><?php esc_html_e( 'Invite new members by email:', 'commons-in-a-box' ); ?></div>
+			<div class="panel-heading semibold"><?php esc_html_e( 'Invite new members by email:', 'openlab-theme' ); ?></div>
 			<div class="panel-body">
 
-				<p class="invite-copy"><?php esc_html_e( 'This link will take you to My Invitations, where you may invite people to join the community and this group.', 'commons-in-a-box' )?></p>
+				<p class="invite-copy"><?php esc_html_e( 'This link will take you to My Invitations, where you may invite people to join the community and this group.', 'openlab-theme' )?></p>
 
-				<p><a class="btn btn-primary no-deco" href="<?php echo bp_loggedin_user_domain() . BP_INVITE_ANYONE_SLUG . '/invite-new-members/group-invites/' . bp_get_group_id() ?>"><?php esc_html_e( 'Invite New Members to This Community', 'commons-in-a-box' ) ?></a></p>
+				<p><a class="btn btn-primary no-deco" href="<?php echo bp_loggedin_user_domain() . BP_INVITE_ANYONE_SLUG . '/invite-new-members/group-invites/' . bp_get_group_id() ?>"><?php esc_html_e( 'Invite New Members to This Community', 'openlab-theme' ) ?></a></p>
 
 			</div>
 		</div>

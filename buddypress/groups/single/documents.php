@@ -99,7 +99,7 @@
 
 			<?php } else { ?>
 				<div id="message" class="info">
-					<p class="bold"><?php _e( 'There are no files to view.', 'commons-in-a-box' ) ?></p>
+					<p class="bold"><?php _e( 'There are no files to view.', 'openlab-theme' ) ?></p>
 				</div>
 
 			<?php } ?>
@@ -129,9 +129,9 @@
 					$this_id = 'bp-group-documents-edit';
 				}
 
-				$header_text = __( 'Upload a New File', 'commons-in-a-box' );
+				$header_text = __( 'Upload a New File', 'openlab-theme' );
 				if ( 'edit' === $template->operation ) {
-					$header_text = __( 'Edit File', 'commons-in-a-box' );
+					$header_text = __( 'Edit File', 'openlab-theme' );
 				}
 
 				?>
@@ -158,7 +158,7 @@
 
 								<?php if ( BP_GROUP_DOCUMENTS_FEATURED ) { ?>
 									<div class="checkbox">
-										<label class="bp-group-documents-featured-label"><input type="checkbox" name="bp_group_documents_featured" class="bp-group-documents-featured" value="1" <?php if ( $template->featured ) { echo 'checked="checked"';} ?> > <?php esc_html_e( 'Featured File', 'commons-in-a-box' ); ?></label>
+										<label class="bp-group-documents-featured-label"><input type="checkbox" name="bp_group_documents_featured" class="bp-group-documents-featured" value="1" <?php if ( $template->featured ) { echo 'checked="checked"';} ?> > <?php esc_html_e( 'Featured File', 'openlab-theme' ); ?></label>
 									</div>
 								<?php } ?>
 
@@ -198,7 +198,7 @@
 
 				<div>
 					<?php if ( $template->operation == 'add' ) { ?>
-						<a class="btn btn-primary link-btn" id="bp-group-documents-upload-button" href="" style="display:none;"><?php _e( 'Upload a New File', 'commons-in-a-box' ); ?></a>
+						<a class="btn btn-primary link-btn" id="bp-group-documents-upload-button" href="" style="display:none;"><?php _e( 'Upload a New File', 'openlab-theme' ); ?></a>
 					<?php } ?>
 				</div>
 

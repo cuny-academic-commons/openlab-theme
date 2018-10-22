@@ -15,7 +15,7 @@ $post_obj = $wp_query->get_queried_object();
 				<h1><?php echo esc_attr( $post_obj->post_title ) ?></h1>
 
 				<div class="directory-title-meta">
-					<button data-target="#sidebar" class="mobile-toggle direct-toggle pull-right visible-xs" type="button"><span class="fa fa-binoculars"></span><span class="sr-only"><?php esc_html_e( 'Search', 'commons-in-a-box' ); ?></span></button>
+					<button data-target="#sidebar" class="mobile-toggle direct-toggle pull-right visible-xs" type="button"><span class="fa fa-binoculars"></span><span class="sr-only"><?php esc_html_e( 'Search', 'openlab-theme' ); ?></span></button>
 				</div>
 			</div>
 

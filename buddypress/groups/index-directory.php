@@ -11,7 +11,7 @@ if ( $type_object->get_is_course() ) {
 	$can_create = ! openlab_user_has_portfolio( bp_loggedin_user_id() );
 }
 
-$create_text = $type_object->get_can_be_cloned() ? __( 'Create / Clone', 'commons-in-a-box' ) : __( 'Create New', 'commons-in-a-box' );
+$create_text = $type_object->get_can_be_cloned() ? __( 'Create / Clone', 'openlab-theme' ) : __( 'Create New', 'openlab-theme' );
 $create_link = bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/create/step/group-details/?group_type=' . $type_object->get_slug() . '&new=true';
 ?>
 
@@ -27,7 +27,7 @@ $create_link = bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/create
 						<span aria-hidden="true" class="fa fa-plus-circle hidden-xs"></span>
 						<a class="hidden-xs" href="<?php echo esc_attr( $create_link ); ?>"><?php echo esc_html( $create_text ); ?></a>
 					<?php endif; ?>
-					<button data-target="#sidebar" data-backgroundonly="true" class="mobile-toggle direct-toggle pull-right visible-xs" type="button"></h1><span class="sr-only"><?php esc_html_e( 'Search', 'commons-in-a-box' ); ?></span><span class="fa fa-binoculars"></span></button>
+					<button data-target="#sidebar" data-backgroundonly="true" class="mobile-toggle direct-toggle pull-right visible-xs" type="button"></h1><span class="sr-only"><?php esc_html_e( 'Search', 'openlab-theme' ); ?></span><span class="fa fa-binoculars"></span></button>
 				</div>
 			</div>
 
