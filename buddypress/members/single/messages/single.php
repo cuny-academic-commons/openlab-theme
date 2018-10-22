@@ -8,7 +8,7 @@
 
 		<p id="message-recipients">
 			<span class="highlight">
-				<?php printf( __( 'Sent between %1$s', 'cbox-openlab-core' ), bp_get_the_thread_recipients() ); ?>
+				<?php printf( __( 'Sent between %1$s', 'commons-in-a-box' ), bp_get_the_thread_recipients() ); ?>
 			</span>
 		</p>
 

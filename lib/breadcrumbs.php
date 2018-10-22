@@ -15,7 +15,7 @@
 add_action( 'bp_before_footer', 'openlab_do_breadcrumbs', 5 );
 
 function custom_breadcrumb_args( $args ) {
-	$args['labels']['prefix'] = '<div class="breadcrumb-inline prefix-label"><div class="breadcrumb-prefix-label">' . esc_html__( 'You are here', 'openlab-theme' ) . '</div><i class="fa fa-caret-right"></i></div><div class="breadcrumb-inline breadcrumbs">';
+	$args['labels']['prefix'] = '<div class="breadcrumb-inline prefix-label"><div class="breadcrumb-prefix-label">' . esc_html__( 'You are here', 'commons-in-a-box' ) . '</div><i class="fa fa-caret-right"></i></div><div class="breadcrumb-inline breadcrumbs">';
 	$args['prefix'] = '<div id="breadcrumb-container"><div class="breadcrumb-col semibold uppercase"><div class="breadcrumb-wrapper">';
 	$args['suffix'] = '</div></div></div></div>';
 	return $args;
@@ -30,7 +30,7 @@ function openlab_specific_blog_breadcrumb( $crumb, $args ) {
 
 	if ( $post->post_type == 'help' ) {
 		// @todo This will not work to build a path.
-		$crumb = '<a title="' . esc_attr__( 'View all Help', 'openlab-theme' ) . '" href="' . site_url( 'help/openlab-help' ) . '">Help</a>';
+		$crumb = '<a title="' . esc_attr__( 'View all Help', 'commons-in-a-box' ) . '" href="' . site_url( 'help/openlab-help' ) . '">Help</a>';
 
 		$post_terms = get_the_terms( $post->ID, 'help_category' );
 		$term = array();
@@ -51,7 +51,7 @@ function openlab_specific_blog_breadcrumb( $crumb, $args ) {
 		}
 
 		$crumb .= ' <span class="breadcrumb-sep">/</span> ' . bp_create_excerpt( $post->post_title, 50, array(
-			'ending' => __( '&hellip;', 'openlab-theme' ),
+			'ending' => __( '&hellip;', 'commons-in-a-box' ),
 		) );
 	}
 
@@ -155,7 +155,7 @@ class Openlab_Breadcrumb {
 
         /** Default arguments * */
         $this->args = array(
-            'home' => __('Home', 'openlab-theme'),
+            'home' => __('Home', 'commons-in-a-box'),
             'sep' => ' <span class="breadcrumb-sep">/</span> ',
             'list_sep' => ', ',
             'prefix' => '<div class="breadcrumb">',
@@ -164,15 +164,15 @@ class Openlab_Breadcrumb {
             'heirarchial_categories' => true,
             'display' => true,
             'labels' => array(
-                'prefix' => __('You are here: ', 'openlab-theme'),
-                'author' => __('Archives for ', 'openlab-theme'),
-                'category' => __('Archives for ', 'openlab-theme'),
-                'tag' => __('Archives for ', 'openlab-theme'),
-                'date' => __('Archives for ', 'openlab-theme'),
-                'search' => __('Search for ', 'openlab-theme'),
-                'tax' => __('Archives for ', 'openlab-theme'),
-                'post_type' => __('Archives for ', 'openlab-theme'),
-                '404' => __('Not found: ', 'openlab-theme')
+                'prefix' => __('You are here: ', 'commons-in-a-box'),
+                'author' => __('Archives for ', 'commons-in-a-box'),
+                'category' => __('Archives for ', 'commons-in-a-box'),
+                'tag' => __('Archives for ', 'commons-in-a-box'),
+                'date' => __('Archives for ', 'commons-in-a-box'),
+                'search' => __('Search for ', 'commons-in-a-box'),
+                'tax' => __('Archives for ', 'commons-in-a-box'),
+                'post_type' => __('Archives for ', 'commons-in-a-box'),
+                '404' => __('Not found: ', 'commons-in-a-box')
             )
         );
     }

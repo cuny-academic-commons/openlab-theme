@@ -44,7 +44,7 @@ $field_ids = array( 1 );
 		<div class="clear"></div>
 
 		<div class="panel panel-default">
-			<div class="panel-heading"><?php esc_html_e( 'Edit Profile', 'openlab-theme' ); ?></div>
+			<div class="panel-heading"><?php esc_html_e( 'Edit Profile', 'commons-in-a-box' ); ?></div>
 			<div class="panel-body">
 
 				<?php do_action( 'template_notices' ); ?>

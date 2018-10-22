@@ -178,6 +178,6 @@ if ( ! empty( $_GET['group_sequence'] ) ) {
 	</div>
 
 	<div class="widget-error">
-		<?php _e( 'There are no items to display', 'openlab-theme' ) ?>
+		<?php _e( 'There are no items to display', 'commons-in-a-box' ) ?>
 	</div>
 <?php endif; ?>
