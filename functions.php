@@ -543,3 +543,11 @@ function openlab_bust_sitewide_nav_menu_cache() {
 }
 add_action( 'wp_update_nav_menu', 'openlab_bust_sitewide_nav_menu_cache' );
 add_action( 'wp_update_nav_menu_item', 'openlab_bust_sitewide_nav_menu_cache' );
+
+/**
+ * Check if Braille is available and the Braille community features are activated.
+ */
+function openlab_braille_is_enabled() {
+	// @todo Add actual check for Braille server.
+	return function_exists( 'get_braille' ) && function_exists( '\HardG\BPBraille\braille_works' ) && \HardG\BPBraille\braille_works();
+}

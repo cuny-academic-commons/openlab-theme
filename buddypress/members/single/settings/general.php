@@ -56,7 +56,7 @@ do_action( 'bp_before_member_settings_template' );
 			</div>
 		</div>
 
-		<?php if ( function_exists( 'get_braille' ) ) : ?>
+		<?php if ( openlab_braille_is_enabled() ) : ?>
 			<div class="panel panel-default">
 				<div class="panel-heading"><?php esc_html_e( 'Braille Settings', 'openlab-theme' ); ?></div>
 

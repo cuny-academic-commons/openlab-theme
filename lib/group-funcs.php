@@ -628,7 +628,7 @@ function openlab_save_group_status( BP_Groups_Group $group ) {
  * @param BP_Groups_Group $group
  */
 function openlab_save_braille_status( $group ) {
-	if ( ! function_exists( 'get_braille' ) ) {
+	if ( ! openlab_braille_is_enabled() ) {
 		return;
 	}
 
@@ -2225,7 +2225,7 @@ add_action( 'groups_group_after_save', 'openlab_group_contact_save' );
  */
 function openlab_group_braille_toggle_markup() {
 	// @todo Replace with proper Braille functionality check.
-	if ( ! function_exists( 'get_braille' ) ) {
+	if ( ! openlab_braille_is_enabled() ) {
 		return;
 	}
 
