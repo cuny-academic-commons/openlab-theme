@@ -204,7 +204,7 @@ add_filter( 'bbp_get_user_subscribe_link', 'openlab_style_bbp_subscribe_link', 1
  * bbPress maps everything onto Participant. We don't want to have to use that.
  */
 function openlab_bbp_map_group_forum_meta_caps( $caps = array(), $cap = '', $user_id = 0, $args = array() ) {
-	if ( ! bp_is_group() ) {
+	if ( ! function_exists( 'bp_is_group' ) || ! bp_is_group() ) {
 		return $caps;
 	}
 	switch ( $cap ) {
