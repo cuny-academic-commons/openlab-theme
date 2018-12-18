@@ -119,7 +119,8 @@ function openlab_modify_options_nav() {
 		) );
 
 		if ( $files_item ) {
-			if ( preg_match( '/<span>([0-9]+)<\/span>/', reset( $files_item )['name'], $matches ) ) {
+			$first_files_item = reset( $files_item );
+			if ( preg_match( '/<span>([0-9]+)<\/span>/', $first_files_item['name'], $matches ) ) {
 				$files_name = sprintf(
 					/* translators: 1. count span */
 					__( 'Files %1$s', 'openlab-theme' ),
