@@ -2475,7 +2475,8 @@ function openlab_get_active_terms() {
  * Yikes.
  */
 function openlab_modify_template_messages() {
-	if ( empty( buddypress()->template_message ) ) {
+	$template_message = isset( buddypress()->template_message ) ? buddypress()->template_message : null;
+	if ( $template_message ) {
 		return;
 	}
 

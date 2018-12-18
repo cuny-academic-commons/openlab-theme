@@ -25,7 +25,7 @@ add_action( 'admin_enqueue_scripts', 'openlab_custom_calendar_assets', 999 );
  * @return boolean
  */
 function openlab_eo_is_event_detail_screen() {
-	if ( ! empty( buddypress()->action_variables ) && ! bp_is_action_variable( 'ical' ) && ! bp_is_action_variable( 'upcoming', 0 ) && ! bpeo_is_action( 'new' ) && ! bpeo_is_action( 'edit' ) && ! bp_is_action_variable( 'calendar', 0 ) ) {
+	if ( bp_action_variables() && ! bp_is_action_variable( 'ical' ) && ! bp_is_action_variable( 'upcoming', 0 ) && ! bpeo_is_action( 'new' ) && ! bpeo_is_action( 'edit' ) && ! bp_is_action_variable( 'calendar', 0 ) ) {
 		return true;
 	} else {
 		return false;
@@ -322,7 +322,8 @@ function _eventorganiser_details_metabox_openlab_custom( $post ) {
 	// $sche_once is used to disable date editing unless the user specifically requests it.
 	// But a new event might be recurring (via filter), and we don't want to 'lock' new events.
 	// See https://wordpress.org/support/topic/wrong-default-in-input-element
-	$sche_once = ( 'once' == $schedule || ! empty( get_current_screen()->action ) );
+	$the_action = isset( get_current_screen()->action ) ? get_current_screen()->action : null;
+	$sche_once = ( 'once' == $schedule || $the_action );
 
 	if ( ! $sche_once ) {
 		$notices = sprintf(
