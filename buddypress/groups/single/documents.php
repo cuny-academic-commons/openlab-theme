@@ -11,7 +11,7 @@
 
 		<?php // -----------------------------------------------------------------------LIST VIEW--  ?>
 
-		<?php if ( $template->document_list && count( $template->document_list >= 1 ) ) { ?>
+		<?php if ( $template->document_list && count( $template->document_list ) >= 1 ) { ?>
 
 			<?php if ( get_option( 'bp_group_documents_use_categories' ) ) { ?>
 				<div id="bp-group-documents-categories">
