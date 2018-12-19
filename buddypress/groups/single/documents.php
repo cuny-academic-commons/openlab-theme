@@ -45,12 +45,7 @@
 				</div>
 			</div>
 
-			<?php if ( '1.1' == substr( BP_VERSION, 0, 3 ) ) { ?>
-				<ul id="forum-topic-list" class="item-list group-list inline-element-list">
-				<?php } else { ?>
-					<ul id="bp-group-documents-list" class="item-list group-list inline-element-list">
-					<?php } ?>
-
+				<ul id="bp-group-documents-list" class="item-list group-list inline-element-list">
 					<?php
 					// loop through each document and display content along with admin options
 					$count = 0;
