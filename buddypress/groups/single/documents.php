@@ -45,64 +45,10 @@
 				</div>
 			</div>
 
-			<?php if ( '1.1' == substr( BP_VERSION, 0, 3 ) ) { ?>
-				<ul id="forum-topic-list" class="item-list group-list inline-element-list">
-				<?php } else { ?>
-					<ul id="bp-group-documents-list" class="item-list group-list inline-element-list">
-					<?php } ?>
+			<div id="message" class="info">
+				<p class="bold"><?php _e( 'There are no files to view.', 'openlab-theme' ) ?></p>
+			</div>
 
-					<?php
-					// loop through each document and display content along with admin options
-					$count = 0;
-					foreach ( $template->document_list as $document_params ) {
-						$document = new BP_Group_Documents( $document_params['id'], $document_params );
-						?>
-
-						<li class="list-group-item <?php if ( ++$count % 2 ) { echo ' alt';} ?>" >
-
-							<?php
-							// show edit and delete options if user is privileged
-							echo '<div class="admin-links pull-right">';
-							if ( $document->current_user_can( 'edit' ) ) {
-								$edit_link = wp_nonce_url( $template->action_link . 'edit/' . $document->id, 'group-documents-edit-link' );
-								echo "<a class='btn btn-primary btn-xs link-btn no-margin no-margin-top' href='$edit_link'>" . __( 'Edit', 'bp-group-documents' ) . '</a> ';
-							}
-							if ( $document->current_user_can( 'delete' ) ) {
-								$delete_link = wp_nonce_url( $template->action_link . 'delete/' . $document->id, 'group-documents-delete-link' );
-								echo "<a class='btn btn-primary btn-xs link-btn no-margin no-margin-top' href='$delete_link' id='bp-group-documents-delete'>" . __( 'Delete', 'bp-group-documents' ) . '</a>';
-							}
-
-							echo '</div>';
-							?>
-
-							<?php if ( get_option( 'bp_group_documents_display_icons' ) ) { $document->icon();} ?>
-
-							<a class="group-documents-title" id="group-document-link-<?php echo $document->id; ?>" href="<?php $document->url(); ?>" target="_blank"><?php echo esc_html( stripslashes( $document->name ) ); ?>
-
-								<?php
-								if ( get_option( 'bp_group_documents_display_file_size' ) ) {
-									echo ' <span class="group-documents-filesize">(' . get_file_size( $document ) . ')</span>';
-								}
-								?></a> &nbsp;
-
-							<span class="group-documents-meta"><?php printf( __( 'Uploaded by %1$s on %2$s', 'bp-group-documents' ), bp_core_get_userlink( $document->user_id ), date( get_option( 'date_format' ), $document->created_ts ) ); ?></span>
-
-							<?php
-							if ( BP_GROUP_DOCUMENTS_SHOW_DESCRIPTIONS && $document->description ) {
-								echo '<br /><span class="group-documents-description">' . nl2br( stripslashes( $document->description ) ) . '</span>';
-							}
-
-							echo '</li>';
-					}
-						?>
-				</ul>
-
-			<?php } else { ?>
-				<div id="message" class="info">
-					<p class="bold"><?php _e( 'There are no files to view.', 'openlab-theme' ) ?></p>
-				</div>
-
-			<?php } ?>
 			<div class="spacer">&nbsp;</div>
 
 			<div class="pagination no-ajax">
