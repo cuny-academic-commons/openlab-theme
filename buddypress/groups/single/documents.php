@@ -3,6 +3,12 @@
 
 	// instanciating the template will do the heavy lifting with all the superglobal variables
 	$template = new BP_Group_Documents_Template();
+
+	$document_list = array;
+	if ( isset( $template->document_list ) && is_array( $template->document_list ) ) {
+		$document_list = $template->document_list;
+	}
+
 	?>
 
 	<div id="bp-group-documents">
@@ -11,7 +17,7 @@
 
 		<?php // -----------------------------------------------------------------------LIST VIEW--  ?>
 
-		<?php if ( $template->document_list && count( $template->document_list >= 1 ) ) { ?>
+		<?php if ( count( $document_list ) >= 1 ) { ?>
 
 			<?php if ( get_option( 'bp_group_documents_use_categories' ) ) { ?>
 				<div id="bp-group-documents-categories">
