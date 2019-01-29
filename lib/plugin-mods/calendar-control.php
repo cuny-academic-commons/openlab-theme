@@ -239,7 +239,7 @@ add_action( 'media_buttons', 'openlab_manage_media_buttons' );
 /**
  * Remove Event Categories
  */
-add_filter( 'eventorganiser_register_taxonomy_event-category', '__return_false' );
+//add_filter( 'eventorganiser_register_taxonomy_event-category', '__return_false' );
 
 /**
  * Remove Event Tags
