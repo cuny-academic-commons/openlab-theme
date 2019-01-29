@@ -9,11 +9,8 @@
  * Google maps API now requires a key
  */
 function openlab_custom_calendar_assets() {
-
-	$key = 'AIzaSyDQrCvCLzpXoahl68dVJmfBxemu36CUsTM';
-
 	wp_deregister_script( 'eo_GoogleMap' );
-	wp_register_script( 'eo_GoogleMap', '//maps.googleapis.com/maps/api/js?key=' . $key . '&sensor=false&language=' . substr( get_locale(), 0, 2 ), array(), openlab_get_asset_version() );
+	wp_register_script( 'eo_GoogleMap', '//maps.googleapis.com/maps/api/js?key=' . eventorganiser_get_google_maps_api_key() . '&sensor=false&language=' . substr( get_locale(), 0, 2 ), array(), openlab_get_asset_version() );
 }
 
 add_action( 'wp_enqueue_scripts', 'openlab_custom_calendar_assets', 999 );
