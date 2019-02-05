@@ -154,7 +154,7 @@
                 //saftey first
                 clearTimeout(OpenLab.utility.menuCheck);
 
-                eovenue.maps.venuemap.map.addListener('center_changed', function () {
+                eovenue.maps.venuemap.map._map.addListener('center_changed', function () {
                     if (latCheck.val() === 'NaN' || parseInt(latCheck.val()) === 0) {
                         venueMap.css('display', 'none');
                     } else {
