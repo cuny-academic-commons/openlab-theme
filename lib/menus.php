@@ -433,6 +433,14 @@ function openlab_profile_settings_submenu() {
 		$dud . 'settings/notifications'  => __( 'Email Notifications', 'openlab-theme' ),
 	);
 
+	/** This filter is documented in /wp-content/plugins/buddypress/bp-settings/classes/class-bp-settings-component.php */
+	$show_data_page = apply_filters( 'bp_settings_show_user_data_page', true );
+
+	// Export Data - only available for BuddyPress 4.0.0.
+	if ( true === $show_data_page && function_exists( 'bp_signup_requires_privacy_policy_acceptance' ) ) {
+		$menu_list[ $dud . 'settings/data' ] = __( 'Export Data', 'openlab-theme' );
+	}
+
 	if ( ! is_super_admin( bp_displayed_user_id() ) && ( ( ! bp_disable_account_deletion() && bp_is_my_profile() ) || bp_current_user_can( 'delete_users' ) ) ) {
 
 		$menu_list[ $dud . 'settings/delete-account' ] = __( 'Delete Account', 'openlab-theme' );
