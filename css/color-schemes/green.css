@@ -10029,6 +10029,9 @@ body.single-event #content .eo-event-venue-map {
   width: auto;
   text-align: center;
 }
+#event-categorydiv {
+  display: none;
+}
 /**member profiles**/
 .profile-type {
   background: #f0f0f0;
@@ -10147,6 +10150,10 @@ body.single-event #content .eo-event-venue-map {
 }
 .notify-settings .radio label {
   margin-right: 20px;
+}
+body.settings.data #item-body h2 {
+  margin-top: -1.5em;
+  visibility: hidden;
 }
 /**help**/
 .col-help {

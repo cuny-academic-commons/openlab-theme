@@ -9,11 +9,13 @@
  * Google maps API now requires a key
  */
 function openlab_custom_calendar_assets() {
-
-	$key = 'AIzaSyDQrCvCLzpXoahl68dVJmfBxemu36CUsTM';
+	// Bail if EO isn't available at this point.
+	if ( ! function_exists( 'eventorganiser_get_google_maps_api_key' ) ) {
+		return;
+	}
 
 	wp_deregister_script( 'eo_GoogleMap' );
-	wp_register_script( 'eo_GoogleMap', '//maps.googleapis.com/maps/api/js?key=' . $key . '&sensor=false&language=' . substr( get_locale(), 0, 2 ), array(), openlab_get_asset_version() );
+	wp_register_script( 'eo_GoogleMap', '//maps.googleapis.com/maps/api/js?key=' . eventorganiser_get_google_maps_api_key() . '&sensor=false&language=' . substr( get_locale(), 0, 2 ), array(), openlab_get_asset_version() );
 }
 
 add_action( 'wp_enqueue_scripts', 'openlab_custom_calendar_assets', 999 );
@@ -239,7 +241,7 @@ add_action( 'media_buttons', 'openlab_manage_media_buttons' );
 /**
  * Remove Event Categories
  */
-add_filter( 'eventorganiser_register_taxonomy_event-category', '__return_false' );
+//add_filter( 'eventorganiser_register_taxonomy_event-category', '__return_false' );
 
 /**
  * Remove Event Tags
@@ -379,7 +381,7 @@ function _eventorganiser_details_metabox_openlab_custom( $post ) {
 		$venue_stored_name = '';
 
 		// check for stored fields when editing
-		if ( in_array( 'edit', bp_action_variables() ) ) {
+		if ( bp_action_variables() && in_array( 'edit', bp_action_variables() ) ) {
 
 			if ( $venue_id && $venue_id > 0 ) {
 				$venue_obj = get_term_by( 'id', $venue_id, 'event-venue' );
