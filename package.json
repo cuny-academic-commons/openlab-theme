@@ -20,7 +20,6 @@
   },
   "description": "",
   "dependencies": {
-    "grunt-gitinfo": "^0.1.8",
     "grunt-log": "^1.0.0",
     "grunt-php-set-constant": "0.0.15"
   }
