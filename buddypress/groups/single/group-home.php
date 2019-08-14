@@ -93,7 +93,7 @@ $academic_unit_data = cboxol_get_object_academic_unit_data_for_display( array(
 						<?php endforeach; ?>
 
 						<div class="table-row row">
-							<div class="bold col-sm-7"><?php esc_html_e( 'Professor(s)', 'openlab-theme' ); ?></div>
+							<div class="bold col-sm-7"><?php esc_html_e( 'Professor', 'openlab-theme' ); ?></div>
 							<div class="col-sm-17 row-content"><?php echo openlab_get_faculty_list() ?></div>
 						</div>
 
