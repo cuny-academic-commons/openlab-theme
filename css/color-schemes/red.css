@@ -9901,6 +9901,9 @@ body.single-post .entry-content {
   margin-bottom: 2em;
   margin-top: 2em;
 }
+body.single-post .comment-form label {
+  display: block;
+}
 /**event organiser**/
 .action-events .submenu-row {
   display: none;
