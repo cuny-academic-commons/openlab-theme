@@ -31,7 +31,8 @@ if ( ! function_exists( 'wp_editor' ) ) {
 
 				<div class="doc-header">
 					<?php if ( bp_docs_is_existing_doc() ) : ?>
-						<input type="hidden" id="existing-doc-id" value="<?php the_ID() ?>" />
+						<input type="hidden" name="existing-doc-id" value="<?php the_ID() ?>" />
+						<input type="hidden" name="doc_id" value="<?php echo esc_attr( $doc_id ); ?>" />
 					<?php endif ?>
 				</div>
 				<div class="doc-content-wrapper">
