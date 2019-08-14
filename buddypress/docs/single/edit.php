@@ -20,7 +20,7 @@ if ( ! function_exists( 'wp_editor' ) ) {
 	<form action="" method="post" class="form-group form-panel" id="doc-form">
 
 		<div class="panel panel-default">
-			<div class="panel-heading"><?php esc_html_e( 'New Doc', 'openlab-theme' ); ?></div>
+			<div class="panel-heading"><?php echo $doc_id ? esc_html( 'Edit Doc', 'openlab-theme' ) : esc_html( 'New Doc', 'openlab-theme' ); ?></div>
 			<div class="panel-body">
 
 				<?php do_action( 'template_notices' ) ?>
