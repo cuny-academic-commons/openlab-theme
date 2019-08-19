@@ -1105,7 +1105,8 @@ function openlab_group_profile_activity_list() {
 		<?php $group_type = cboxol_get_group_group_type( bp_get_current_group_id() ); ?>
 
 		<?php
-		$group = groups_get_current_group();
+		$group     = groups_get_current_group();
+		$group_url = bp_get_group_permalink( $group );
 		?>
 
 		<?php if ( bp_is_group_home() ) { ?>
@@ -1122,7 +1123,7 @@ function openlab_group_profile_activity_list() {
 						<div class="col-sm-12">
 							<div class="recent-discussions">
 								<div class="recent-posts">
-									<h2 class="title activity-title"><a class="no-deco" href="<?php site_url(); ?>/groups/<?php echo $group_slug; ?>/forum/"><?php esc_html_e( 'Recent Discussions', 'openlab-theme' ); ?><span class="fa fa-chevron-circle-right" aria-hidden="true"></span></a></h2>
+									<h2 class="title activity-title"><a class="no-deco" href="<?php echo esc_attr( $group_url ); ?>/forum/"><?php esc_html_e( 'Recent Discussions', 'openlab-theme' ); ?><span class="fa fa-chevron-circle-right" aria-hidden="true"></span></a></h2>
 									<?php
 									$forum_id = null;
 									$forum_ids = bbp_get_group_forum_ids( bp_get_current_group_id() );
@@ -1165,42 +1166,45 @@ function openlab_group_profile_activity_list() {
 							</div>
 						</div>
 						<?php $first_class = ''; ?>
-						<div class="col-sm-12">
-							<div id="recent-docs">
-								<div class="recent-posts">
-									<h2 class="title activity-title"><a class="no-deco" href="<?php site_url(); ?>/groups/<?php echo $group_slug; ?>/docs/"><?php esc_html_e( 'Recent Docs', 'openlab-theme' ); ?><span class="fa fa-chevron-circle-right" aria-hidden="true"></span></a></h2>
-									<?php
+						<?php if ( function_exists( 'bp_docs_get_slug' ) ) : ?>
+							<div class="col-sm-12">
+								<div id="recent-docs">
+									<div class="recent-posts">
+										<h2 class="title activity-title"><a class="no-deco" href="<?php echo esc_attr( $group_url ); ?><?php echo esc_attr( bp_docs_get_slug() ); ?>/"><?php esc_html_e( 'Recent Docs', 'openlab-theme' ); ?><span class="fa fa-chevron-circle-right" aria-hidden="true"></span></a></h2>
+										<?php
 
-									$docs_query = new BP_Docs_Query( array(
-										'group_id' => bp_get_current_group_id(),
-										'orderby' => 'created',
-										'order' => 'DESC',
-										'posts_per_page' => 3,
-									) );
-									$query = $docs_query->get_wp_query();
+										$docs_query = new BP_Docs_Query( array(
+											'group_id' => bp_get_current_group_id(),
+											'orderby' => 'created',
+											'order' => 'DESC',
+											'posts_per_page' => 3,
+										) );
+										$query = $docs_query->get_wp_query();
 
-									global $post;
-									if ( $query->have_posts() ) {
-										while ( $query->have_posts() ) : $query->the_post();
-											$doc_url = bp_docs_get_doc_link( get_the_ID() );
-											?>
-											<div class="panel panel-default">
-												<div class="panel-body">
-													<?php echo openlab_get_group_activity_content( get_the_title(), bp_create_excerpt( strip_tags( $post->post_content ), 250, array( 'ending' => '' ) ), $doc_url ); ?>
+										global $post;
+										if ( $query->have_posts() ) {
+											while ( $query->have_posts() ) : $query->the_post();
+												$doc_url = bp_docs_get_doc_link( get_the_ID() );
+												?>
+												<div class="panel panel-default">
+													<div class="panel-body">
+														<?php echo openlab_get_group_activity_content( get_the_title(), bp_create_excerpt( strip_tags( $post->post_content ), 250, array( 'ending' => '' ) ), $doc_url ); ?>
+													</div>
 												</div>
-											</div>
-											<?php
-										endwhile;
-									} else {
-										echo '<div class="panel panel-default"><div class="panel-body"><p>' . esc_html__( 'No Recent Docs', 'openlab-theme' ) . '</p></div></div>';
-									}
+												<?php
+											endwhile;
+										} else {
+											echo '<div class="panel panel-default"><div class="panel-body"><p>' . esc_html__( 'No Recent Docs', 'openlab-theme' ) . '</p></div></div>';
+										}
 
-									$query->reset_postdata();
-									?>
+										$query->reset_postdata();
+										?>
+									</div>
 								</div>
 							</div>
 						</div>
-					</div>
+					<?php endif; ?>
+
 					<div id="members-list" class="info-group">
 
 						<?php
