@@ -42,26 +42,35 @@ function openlab_list_members( $view ) {
 		$search_terms = $_POST['group_search'];
 	}
 
-	if ( ! empty( $_GET['school'] ) ) {
-		$user_school = urldecode( $_GET['school'] );
-
-		// Sanitize
-		$schools = openlab_get_school_list();
-		if ( ! isset( $schools[ $user_school ] ) ) {
-			$user_school = '';
+	// @todo 'all' needs special treatment once tax queries work without shim.
+	$academic_units = array();
+	foreach ( $_GET as $get_key => $get_value ) {
+		if ( 'academic-unit-' !== substr( $get_key, 0, 14 ) ) {
+			continue;
 		}
+
+		$academic_units[] = urldecode( wp_unslash( $get_value ) );
 	}
 
-	$user_department = null;
-	if ( ! empty( $_GET['department'] ) ) {
-		$user_department = urldecode( $_GET['department'] );
+	$academic_units = array_filter( $academic_units );
+
+	if ( ! empty( $academic_units ) ) {
+		$academic_units_tax_query = cboxol_get_tax_query_for_academic_units( array(
+			'units' => $academic_units,
+			'object_type' => 'group',
+		) );
 	}
 
 	// Set up the bp_has_members() arguments
 	// Note that we're not taking user_type into account. We'll do that with a query filter
 	$args = array(
-		'per_page' => 48,
+		'per_page'  => 48,
+		'tax_query' => array( 'relation' => 'AND' ),
 	);
+
+	if ( ! empty( $academic_units_tax_query ) ) {
+		$args['tax_query']['academic_units'] = $academic_units_tax_query;
+	}
 
 	if ( $sequence_type ) {
 		$args['type'] = $sequence_type;

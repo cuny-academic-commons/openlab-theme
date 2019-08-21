@@ -11,9 +11,9 @@ global $bp;
 
 // Set up the bp_has_groups() args: per_page, page, search_terms
 $group_args = array(
-	'per_page' => 12,
+	'per_page'   => 12,
 	'meta_query' => array(),
-	'tax_query' => array(),
+	'tax_query'  => array( 'relation' => 'AND' ),
 );
 
 $group_type_slug = bp_get_current_group_directory_type();
@@ -83,7 +83,6 @@ if ( ! empty( $_GET['member_type'] ) && 'all' !== $_GET['member_type'] ) {
 }
 
 if ( ! empty( $categories ) ) {
-
 	if ( 'cat_all' === strtolower( $categories ) ) {
 
 		$terms = get_terms( 'bp_group_categories' );
