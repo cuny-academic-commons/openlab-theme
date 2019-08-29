@@ -1141,7 +1141,7 @@ Bootstrap variable overrides
 .oplb-bs mark,
 .oplb-bs .mark {
   background-color: #fcf8e3;
-  padding: 0.2em;
+  padding: .2em;
 }
 .oplb-bs .text-left {
   text-align: left;
@@ -1437,131 +1437,13 @@ a.oplb-bs .bg-danger:hover {
   margin-left: -7.5px;
   margin-right: -7.5px;
 }
-.oplb-bs .col-xs-1,
-.oplb-bs .col-sm-1,
-.oplb-bs .col-md-1,
-.oplb-bs .col-lg-1,
-.oplb-bs .col-xs-2,
-.oplb-bs .col-sm-2,
-.oplb-bs .col-md-2,
-.oplb-bs .col-lg-2,
-.oplb-bs .col-xs-3,
-.oplb-bs .col-sm-3,
-.oplb-bs .col-md-3,
-.oplb-bs .col-lg-3,
-.oplb-bs .col-xs-4,
-.oplb-bs .col-sm-4,
-.oplb-bs .col-md-4,
-.oplb-bs .col-lg-4,
-.oplb-bs .col-xs-5,
-.oplb-bs .col-sm-5,
-.oplb-bs .col-md-5,
-.oplb-bs .col-lg-5,
-.oplb-bs .col-xs-6,
-.oplb-bs .col-sm-6,
-.oplb-bs .col-md-6,
-.oplb-bs .col-lg-6,
-.oplb-bs .col-xs-7,
-.oplb-bs .col-sm-7,
-.oplb-bs .col-md-7,
-.oplb-bs .col-lg-7,
-.oplb-bs .col-xs-8,
-.oplb-bs .col-sm-8,
-.oplb-bs .col-md-8,
-.oplb-bs .col-lg-8,
-.oplb-bs .col-xs-9,
-.oplb-bs .col-sm-9,
-.oplb-bs .col-md-9,
-.oplb-bs .col-lg-9,
-.oplb-bs .col-xs-10,
-.oplb-bs .col-sm-10,
-.oplb-bs .col-md-10,
-.oplb-bs .col-lg-10,
-.oplb-bs .col-xs-11,
-.oplb-bs .col-sm-11,
-.oplb-bs .col-md-11,
-.oplb-bs .col-lg-11,
-.oplb-bs .col-xs-12,
-.oplb-bs .col-sm-12,
-.oplb-bs .col-md-12,
-.oplb-bs .col-lg-12,
-.oplb-bs .col-xs-13,
-.oplb-bs .col-sm-13,
-.oplb-bs .col-md-13,
-.oplb-bs .col-lg-13,
-.oplb-bs .col-xs-14,
-.oplb-bs .col-sm-14,
-.oplb-bs .col-md-14,
-.oplb-bs .col-lg-14,
-.oplb-bs .col-xs-15,
-.oplb-bs .col-sm-15,
-.oplb-bs .col-md-15,
-.oplb-bs .col-lg-15,
-.oplb-bs .col-xs-16,
-.oplb-bs .col-sm-16,
-.oplb-bs .col-md-16,
-.oplb-bs .col-lg-16,
-.oplb-bs .col-xs-17,
-.oplb-bs .col-sm-17,
-.oplb-bs .col-md-17,
-.oplb-bs .col-lg-17,
-.oplb-bs .col-xs-18,
-.oplb-bs .col-sm-18,
-.oplb-bs .col-md-18,
-.oplb-bs .col-lg-18,
-.oplb-bs .col-xs-19,
-.oplb-bs .col-sm-19,
-.oplb-bs .col-md-19,
-.oplb-bs .col-lg-19,
-.oplb-bs .col-xs-20,
-.oplb-bs .col-sm-20,
-.oplb-bs .col-md-20,
-.oplb-bs .col-lg-20,
-.oplb-bs .col-xs-21,
-.oplb-bs .col-sm-21,
-.oplb-bs .col-md-21,
-.oplb-bs .col-lg-21,
-.oplb-bs .col-xs-22,
-.oplb-bs .col-sm-22,
-.oplb-bs .col-md-22,
-.oplb-bs .col-lg-22,
-.oplb-bs .col-xs-23,
-.oplb-bs .col-sm-23,
-.oplb-bs .col-md-23,
-.oplb-bs .col-lg-23,
-.oplb-bs .col-xs-24,
-.oplb-bs .col-sm-24,
-.oplb-bs .col-md-24,
-.oplb-bs .col-lg-24 {
+.oplb-bs .col-xs-1, .col-sm-1, .col-md-1, .col-lg-1, .col-xs-2, .col-sm-2, .col-md-2, .col-lg-2, .col-xs-3, .col-sm-3, .col-md-3, .col-lg-3, .col-xs-4, .col-sm-4, .col-md-4, .col-lg-4, .col-xs-5, .col-sm-5, .col-md-5, .col-lg-5, .col-xs-6, .col-sm-6, .col-md-6, .col-lg-6, .col-xs-7, .col-sm-7, .col-md-7, .col-lg-7, .col-xs-8, .col-sm-8, .col-md-8, .col-lg-8, .col-xs-9, .col-sm-9, .col-md-9, .col-lg-9, .col-xs-10, .col-sm-10, .col-md-10, .col-lg-10, .col-xs-11, .col-sm-11, .col-md-11, .col-lg-11, .col-xs-12, .col-sm-12, .col-md-12, .col-lg-12, .col-xs-13, .col-sm-13, .col-md-13, .col-lg-13, .col-xs-14, .col-sm-14, .col-md-14, .col-lg-14, .col-xs-15, .col-sm-15, .col-md-15, .col-lg-15, .col-xs-16, .col-sm-16, .col-md-16, .col-lg-16, .col-xs-17, .col-sm-17, .col-md-17, .col-lg-17, .col-xs-18, .col-sm-18, .col-md-18, .col-lg-18, .col-xs-19, .col-sm-19, .col-md-19, .col-lg-19, .col-xs-20, .col-sm-20, .col-md-20, .col-lg-20, .col-xs-21, .col-sm-21, .col-md-21, .col-lg-21, .col-xs-22, .col-sm-22, .col-md-22, .col-lg-22, .col-xs-23, .col-sm-23, .col-md-23, .col-lg-23, .col-xs-24, .col-sm-24, .col-md-24, .col-lg-24 {
   position: relative;
   min-height: 1px;
   padding-left: 7.5px;
   padding-right: 7.5px;
 }
-.oplb-bs .col-xs-1,
-.oplb-bs .col-xs-2,
-.oplb-bs .col-xs-3,
-.oplb-bs .col-xs-4,
-.oplb-bs .col-xs-5,
-.oplb-bs .col-xs-6,
-.oplb-bs .col-xs-7,
-.oplb-bs .col-xs-8,
-.oplb-bs .col-xs-9,
-.oplb-bs .col-xs-10,
-.oplb-bs .col-xs-11,
-.oplb-bs .col-xs-12,
-.oplb-bs .col-xs-13,
-.oplb-bs .col-xs-14,
-.oplb-bs .col-xs-15,
-.oplb-bs .col-xs-16,
-.oplb-bs .col-xs-17,
-.oplb-bs .col-xs-18,
-.oplb-bs .col-xs-19,
-.oplb-bs .col-xs-20,
-.oplb-bs .col-xs-21,
-.oplb-bs .col-xs-22,
-.oplb-bs .col-xs-23,
-.oplb-bs .col-xs-24 {
+.oplb-bs .col-xs-1, .col-xs-2, .col-xs-3, .col-xs-4, .col-xs-5, .col-xs-6, .col-xs-7, .col-xs-8, .col-xs-9, .col-xs-10, .col-xs-11, .col-xs-12, .col-xs-13, .col-xs-14, .col-xs-15, .col-xs-16, .col-xs-17, .col-xs-18, .col-xs-19, .col-xs-20, .col-xs-21, .col-xs-22, .col-xs-23, .col-xs-24 {
   float: left;
 }
 .oplb-bs .col-xs-24 {
@@ -1862,30 +1744,7 @@ a.oplb-bs .bg-danger:hover {
   margin-left: 0%;
 }
 @media (min-width: 768px) {
-  .oplb-bs .col-sm-1,
-  .oplb-bs .col-sm-2,
-  .oplb-bs .col-sm-3,
-  .oplb-bs .col-sm-4,
-  .oplb-bs .col-sm-5,
-  .oplb-bs .col-sm-6,
-  .oplb-bs .col-sm-7,
-  .oplb-bs .col-sm-8,
-  .oplb-bs .col-sm-9,
-  .oplb-bs .col-sm-10,
-  .oplb-bs .col-sm-11,
-  .oplb-bs .col-sm-12,
-  .oplb-bs .col-sm-13,
-  .oplb-bs .col-sm-14,
-  .oplb-bs .col-sm-15,
-  .oplb-bs .col-sm-16,
-  .oplb-bs .col-sm-17,
-  .oplb-bs .col-sm-18,
-  .oplb-bs .col-sm-19,
-  .oplb-bs .col-sm-20,
-  .oplb-bs .col-sm-21,
-  .oplb-bs .col-sm-22,
-  .oplb-bs .col-sm-23,
-  .oplb-bs .col-sm-24 {
+  .oplb-bs .col-sm-1, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, .col-sm-10, .col-sm-11, .col-sm-12, .col-sm-13, .col-sm-14, .col-sm-15, .col-sm-16, .col-sm-17, .col-sm-18, .col-sm-19, .col-sm-20, .col-sm-21, .col-sm-22, .col-sm-23, .col-sm-24 {
     float: left;
   }
   .oplb-bs .col-sm-24 {
@@ -2187,30 +2046,7 @@ a.oplb-bs .bg-danger:hover {
   }
 }
 @media (min-width: 992px) {
-  .oplb-bs .col-md-1,
-  .oplb-bs .col-md-2,
-  .oplb-bs .col-md-3,
-  .oplb-bs .col-md-4,
-  .oplb-bs .col-md-5,
-  .oplb-bs .col-md-6,
-  .oplb-bs .col-md-7,
-  .oplb-bs .col-md-8,
-  .oplb-bs .col-md-9,
-  .oplb-bs .col-md-10,
-  .oplb-bs .col-md-11,
-  .oplb-bs .col-md-12,
-  .oplb-bs .col-md-13,
-  .oplb-bs .col-md-14,
-  .oplb-bs .col-md-15,
-  .oplb-bs .col-md-16,
-  .oplb-bs .col-md-17,
-  .oplb-bs .col-md-18,
-  .oplb-bs .col-md-19,
-  .oplb-bs .col-md-20,
-  .oplb-bs .col-md-21,
-  .oplb-bs .col-md-22,
-  .oplb-bs .col-md-23,
-  .oplb-bs .col-md-24 {
+  .oplb-bs .col-md-1, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-md-10, .col-md-11, .col-md-12, .col-md-13, .col-md-14, .col-md-15, .col-md-16, .col-md-17, .col-md-18, .col-md-19, .col-md-20, .col-md-21, .col-md-22, .col-md-23, .col-md-24 {
     float: left;
   }
   .oplb-bs .col-md-24 {
@@ -2512,30 +2348,7 @@ a.oplb-bs .bg-danger:hover {
   }
 }
 @media (min-width: 1200px) {
-  .oplb-bs .col-lg-1,
-  .oplb-bs .col-lg-2,
-  .oplb-bs .col-lg-3,
-  .oplb-bs .col-lg-4,
-  .oplb-bs .col-lg-5,
-  .oplb-bs .col-lg-6,
-  .oplb-bs .col-lg-7,
-  .oplb-bs .col-lg-8,
-  .oplb-bs .col-lg-9,
-  .oplb-bs .col-lg-10,
-  .oplb-bs .col-lg-11,
-  .oplb-bs .col-lg-12,
-  .oplb-bs .col-lg-13,
-  .oplb-bs .col-lg-14,
-  .oplb-bs .col-lg-15,
-  .oplb-bs .col-lg-16,
-  .oplb-bs .col-lg-17,
-  .oplb-bs .col-lg-18,
-  .oplb-bs .col-lg-19,
-  .oplb-bs .col-lg-20,
-  .oplb-bs .col-lg-21,
-  .oplb-bs .col-lg-22,
-  .oplb-bs .col-lg-23,
-  .oplb-bs .col-lg-24 {
+  .oplb-bs .col-lg-1, .col-lg-2, .col-lg-3, .col-lg-4, .col-lg-5, .col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9, .col-lg-10, .col-lg-11, .col-lg-12, .col-lg-13, .col-lg-14, .col-lg-15, .col-lg-16, .col-lg-17, .col-lg-18, .col-lg-19, .col-lg-20, .col-lg-21, .col-lg-22, .col-lg-23, .col-lg-24 {
     float: left;
   }
   .oplb-bs .col-lg-24 {
@@ -5425,7 +5238,7 @@ fieldset[disabled] .oplb-bs .navbar-inverse .btn-link:focus {
 }
 .oplb-bs .label {
   display: inline;
-  padding: 0.2em 0.6em 0.3em;
+  padding: .2em .6em .3em;
   font-size: 75%;
   font-weight: bold;
   line-height: 1;
@@ -5433,7 +5246,7 @@ fieldset[disabled] .oplb-bs .navbar-inverse .btn-link:focus {
   text-align: center;
   white-space: nowrap;
   vertical-align: baseline;
-  border-radius: 0.25em;
+  border-radius: .25em;
 }
 a.oplb-bs .label:hover,
 a.oplb-bs .label:focus {
