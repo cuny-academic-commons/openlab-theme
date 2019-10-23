@@ -127,7 +127,9 @@ if ( ! function_exists( 'wp_editor' ) ) {
 
 						<input class="btn btn-primary" type="submit" name="doc-edit-submit" id="doc-edit-submit" value="<?php _e( 'Save', 'bp-docs' ) ?>"> <a href="<?php bp_docs_cancel_edit_link() ?>" class="action safe btn btn-default no-deco"><?php esc_html_e( 'Cancel', 'openlab-theme' ); ?></a>
 
-						<?php if ( current_user_can( 'bp_docs_manage', $doc_id ) ) : ?><a class="delete-doc-button confirm" href="<?php bp_docs_delete_doc_link() ?>"><?php esc_html_e( 'Delete', 'openlab-theme' ); ?></a><?php endif ?>
+						<?php if ( bp_docs_is_existing_doc() && current_user_can( 'bp_docs_manage', $doc_id ) ) : ?>
+							<a class="delete-doc-button confirm" href="<?php bp_docs_delete_doc_link() ?>"><?php esc_html_e( 'Delete', 'openlab-theme' ); ?></a>
+						<?php endif ?>
 					</div>
 
 					<div style="clear: both"> </div>
