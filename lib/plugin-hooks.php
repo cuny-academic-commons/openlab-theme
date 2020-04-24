@@ -34,7 +34,10 @@ if ( defined( 'BP_GROUP_DOCUMENTS_VERSION' ) ) {
 	require_once( get_template_directory() . '/lib/plugin-mods/files-funcs.php' );
 }
 
-if ( defined( 'BP_DOCS_VERSION' ) ) {
+/**
+ * BuddyPress Docs - Only load on the frontend.
+ */
+if ( defined( 'BP_DOCS_VERSION' ) && ! defined( 'WP_NETWORK_ADMIN' ) ) {
 	require_once( get_template_directory() . '/lib/plugin-mods/docs-funcs.php' );
 }
 
