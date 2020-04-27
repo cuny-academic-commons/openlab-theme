@@ -299,11 +299,12 @@ function openlab_bbp_force_site_public_to_1( $public, $site_id ) {
 add_filter( 'bbp_is_site_public', 'openlab_bbp_force_site_public_to_1', 10, 2 );
 
 /**
- * Handle discussion forum toggling for groups.
+ * Handle feature toggling for groups.
  */
-function openlab_bbp_group_toggle( $group_id ) {
+function openlab_group_feature_toggle( $group_id ) {
+	// Discussion.
 	$enable_forum = ! empty( $_POST['openlab-edit-group-forum'] );
-	$group = groups_get_group( array( 'group_id' => $group_id ) );
+	$group = groups_get_group( $group_id );
 	$group->enable_forum = $enable_forum;
 	$group->save();
 
@@ -311,10 +312,31 @@ function openlab_bbp_group_toggle( $group_id ) {
 		groups_delete_groupmeta( $group_id, 'openlab_disable_forum' );
 	} else {
 		groups_update_groupmeta( $group_id, 'openlab_disable_forum', '1' );
+	}
 
+	// Docs.
+	$enable_docs   = ! empty( $_POST['openlab-edit-group-docs'] );
+	$docs_settings = bp_docs_get_group_settings( $group_id );
+	$docs_settings['group-enable'] = (int) $enable_docs;
+	groups_update_groupmeta( $group_id, 'bp-docs', $docs_settings );
+
+	// Files.
+	$enable_files = ! empty( $_POST['openlab-edit-group-files'] );
+	if ( $enable_files ) {
+		groups_delete_groupmeta( $group_id, 'group_documents_documents_disabled' );
+	} else {
+		groups_update_groupmeta( $group_id, 'group_documents_documents_disabled', 1 );
+	}
+
+	// Calendar.
+	$enable_calendar = ! empty( $_POST['openlab-edit-group-calendar'] );
+	if ( $enable_calendar ) {
+		groups_update_groupmeta( $group_id, 'calendar_is_disabled', '0' );
+	} else {
+		groups_update_groupmeta( $group_id, 'calendar_is_disabled', '1' );
 	}
 }
-add_action( 'groups_settings_updated', 'openlab_bbp_group_toggle' );
+add_action( 'groups_settings_updated', 'openlab_group_feature_toggle' );
 
 /**
  * Failsafe method for determining whether forums should be enabled for a group.

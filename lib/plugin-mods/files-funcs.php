@@ -9,7 +9,6 @@
  * Dequeue inherit styling from plugin
  */
 function openlab_dequeue_bp_files_styles() {
-	global $bp;
 	wp_dequeue_style( 'bp-group-documents' );
 }
 add_action( 'wp_print_styles', 'openlab_dequeue_bp_files_styles', 999 );
@@ -103,3 +102,27 @@ add_filter( 'bp_core_render_message_content', function( $message ) {
 	$new = __( 'File successfully uploaded', 'openlab-theme' );
 	return str_replace( $old, $new, $message );
 } );
+
+// Don't force Files to be active on all groups.
+add_filter( 'pre_option_bp_group_documents_enable_all_groups', '__return_zero' );
+
+/**
+ * Checks whether Files tab is enabled for a group.
+ *
+ * @param int $group_id Group id.
+ * @return bool
+ */
+function openlab_is_files_enabled_for_group( $group_id = null ) {
+	if ( null === $group_id ) {
+		$group_id = bp_get_current_group_id();
+	}
+
+	// Default to true in case no value is found.
+	if ( ! $group_id ) {
+		return true;
+	}
+
+	$is_disabled = groups_get_groupmeta( $group_id, 'group_documents_documents_disabled' );
+
+	return empty( $is_disabled );
+}
