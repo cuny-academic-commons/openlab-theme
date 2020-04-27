@@ -1120,53 +1120,55 @@ function openlab_group_profile_activity_list() {
 
 				<?php if ( ! $group_type->get_is_portfolio() ) : ?>
 					<div class="row group-activity-overview">
-						<div class="col-sm-12">
-							<div class="recent-discussions">
-								<div class="recent-posts">
-									<h2 class="title activity-title"><a class="no-deco" href="<?php echo esc_attr( $group_url ); ?>/forum/"><?php esc_html_e( 'Recent Discussions', 'openlab-theme' ); ?><span class="fa fa-chevron-circle-right" aria-hidden="true"></span></a></h2>
-									<?php
-									$forum_id = null;
-									$forum_ids = bbp_get_group_forum_ids( bp_get_current_group_id() );
+						<?php if ( openlab_is_forum_enabled_for_group( $group->id ) ) : ?>
+							<div class="col-sm-12">
+								<div class="recent-discussions">
+									<div class="recent-posts">
+										<h2 class="title activity-title"><a class="no-deco" href="<?php echo esc_attr( $group_url ); ?>/forum/"><?php esc_html_e( 'Recent Discussions', 'openlab-theme' ); ?><span class="fa fa-chevron-circle-right" aria-hidden="true"></span></a></h2>
+										<?php
+										$forum_id = null;
+										$forum_ids = bbp_get_group_forum_ids( bp_get_current_group_id() );
 
-									// Get the first forum ID
-									if ( ! empty( $forum_ids ) ) {
-										$forum_id = (int) is_array( $forum_ids ) ? $forum_ids[0] : $forum_ids;
-									}
-									?>
+										// Get the first forum ID
+										if ( ! empty( $forum_ids ) ) {
+											$forum_id = (int) is_array( $forum_ids ) ? $forum_ids[0] : $forum_ids;
+										}
+										?>
 
-									<?php if ( $forum_id && bbp_has_topics( 'posts_per_page=3&post_parent=' . $forum_id ) ) : ?>
-										<?php while ( bbp_topics() ) : bbp_the_topic(); ?>
+										<?php if ( $forum_id && bbp_has_topics( 'posts_per_page=3&post_parent=' . $forum_id ) ) : ?>
+											<?php while ( bbp_topics() ) : bbp_the_topic(); ?>
 
 
-											<div class="panel panel-default">
-												<div class="panel-body">
+												<div class="panel panel-default">
+													<div class="panel-body">
 
-													<?php
-													$topic_id = bbp_get_topic_id();
-													$last_reply_id = bbp_get_topic_last_reply_id( $topic_id );
+														<?php
+														$topic_id = bbp_get_topic_id();
+														$last_reply_id = bbp_get_topic_last_reply_id( $topic_id );
 
-													// Oh, bbPress.
-													$last_reply = get_post( $last_reply_id );
-													if ( ! empty( $last_reply->post_content ) ) {
-														$last_topic_content = bp_create_excerpt( strip_tags( $last_reply->post_content ), 250, array(
-															'ending' => '',
-														) );
-													}
-													?>
+														// Oh, bbPress.
+														$last_reply = get_post( $last_reply_id );
+														if ( ! empty( $last_reply->post_content ) ) {
+															$last_topic_content = bp_create_excerpt( strip_tags( $last_reply->post_content ), 250, array(
+																'ending' => '',
+															) );
+														}
+														?>
 
-													<?php echo openlab_get_group_activity_content( bbp_get_topic_title(), $last_topic_content, bbp_get_topic_permalink() ) ?>
+														<?php echo openlab_get_group_activity_content( bbp_get_topic_title(), $last_topic_content, bbp_get_topic_permalink() ) ?>
 
-												</div></div>                                            <?php endwhile; ?>
-									<?php else : ?>
-										<div class="panel panel-default"><div class="panel-body">
-												<p><?php _e( 'Sorry, there were no discussion topics found.', 'buddypress' ) ?></p>
-											</div></div>
-									<?php endif; ?>
-								</div><!-- .recent-post -->
+													</div></div>                                            <?php endwhile; ?>
+										<?php else : ?>
+											<div class="panel panel-default"><div class="panel-body">
+													<p><?php _e( 'Sorry, there were no discussion topics found.', 'buddypress' ) ?></p>
+												</div></div>
+										<?php endif; ?>
+									</div><!-- .recent-post -->
+								</div>
 							</div>
-						</div>
+						<?php endif; // Recent Discussions ?>
 						<?php $first_class = ''; ?>
-						<?php if ( function_exists( 'bp_docs_get_slug' ) ) : ?>
+						<?php if ( function_exists( 'bp_docs_get_slug' ) && openlab_is_docs_enabled_for_group( $group->id ) ) : ?>
 							<div class="col-sm-12">
 								<div id="recent-docs">
 									<div class="recent-posts">
@@ -1203,7 +1205,7 @@ function openlab_group_profile_activity_list() {
 								</div>
 							</div>
 						</div>
-					<?php endif; ?>
+					<?php endif; // Recent Docs ?>
 
 					<div id="members-list" class="info-group">
 
@@ -2004,6 +2006,10 @@ function openlab_get_group_activity_events_feed() {
 	// Non-public groups shouldn't show this to non-members.
 	$group = groups_get_current_group();
 	if ( 'public' !== $group->status && empty( $group->user_has_access ) ) {
+		return $events_out;
+	}
+
+	if ( ! openlab_is_calendar_enabled_for_group() ) {
 		return $events_out;
 	}
 

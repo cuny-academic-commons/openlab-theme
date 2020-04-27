@@ -84,14 +84,24 @@ openlab_group_admin_js_data( $group_type );
 
 			<?php do_action( 'template_notices' ) ?>
 
-			<?php if ( function_exists( 'bbpress' ) && ! cboxol_is_portfolio() ) : ?>
-				<?php $forum_enabled = openlab_is_forum_enabled_for_group() ?>
+			<?php if ( ! cboxol_is_portfolio() ) : ?>
+				<?php
+					$forum_enabled = openlab_is_forum_enabled_for_group();
+					$docs_enabled  = openlab_is_docs_enabled_for_group();
+					$files_enabled = openlab_is_files_enabled_for_group();
+				?>
 				<div class="panel panel-default">
-					<div class="panel-heading"><?php esc_html_e( 'Discussion Settings', 'openlab-theme' ) ?></div>
+					<div class="panel-heading"><?php esc_html_e( 'Discussion, Docs, and Files Settings', 'openlab-theme' ) ?></div>
 					<div class="panel-body">
 						<p id="discussion-settings-tag"><?php echo esc_html( $group_type->get_label( 'settings_help_text_discussion' ) ); ?></p>
-						<div class="checkbox">
-							<label><input type="checkbox" name="openlab-edit-group-forum" id="group-show-forum" value="1"<?php checked( $forum_enabled ) ?> /> <?php _e( 'Enable discussions forum', 'openlab-theme' ) ?></label>
+						<div class="checkbox checkbox-float">
+							<label><input type="checkbox" name="openlab-edit-group-forum" id="group-show-forum" value="1"<?php checked( $forum_enabled ) ?> /> <?php esc_html_e( 'Enable Discussion', 'openlab-theme' ) ?></label>
+						</div>
+						<div class="checkbox checkbox-float">
+							<label><input type="checkbox" name="openlab-edit-group-docs" id="group-show-docs" value="1"<?php checked( $docs_enabled ); ?> /> <?php esc_html_e( 'Enable Docs', 'openlab-theme' ); ?></label>
+						</div>
+						<div class="checkbox checkbox-float">
+							<label><input type="checkbox" name="openlab-edit-group-files" id="group-show-files" value="1"<?php checked( $files_enabled ); ?> /> <?php esc_html_e( 'Enable Files', 'openlab-theme' ); ?></label>
 						</div>
 					</div>
 				</div>
@@ -99,16 +109,25 @@ openlab_group_admin_js_data( $group_type );
 			<?php endif; ?>
 
 			<?php if ( function_exists( 'eo_get_event_fullcalendar' ) && ! cboxol_is_portfolio() ) : ?>
-				<?php $event_create_access = groups_get_groupmeta( bp_get_current_group_id(), 'openlab_bpeo_event_create_access' ); ?>
-				<?php if ( ! $event_create_access ) {
-					$event_create_access = 'admin';
-} ?>
+				<?php
+				$calendar_enabled    = openlab_is_calendar_enabled_for_group();
+				$event_create_access = openlab_get_group_event_create_access_setting( bp_get_current_group_id() );
+				?>
 				<div class="panel panel-default">
 					<div class="panel-heading"><?php esc_html_e( 'Calendar Settings', 'openlab-theme' ); ?></div>
 					<div class="panel-body">
 						<p id="discussion-settings-tag"><?php echo esc_html( $group_type->get_label( 'settings_help_text_calendar' ) ); ?></p>
+
+						<div class="row calendar-settings-toggle">
+							<div class="col-sm-24">
+								<div class="checkbox checkbox-float">
+									<label><input type="checkbox" name="openlab-edit-group-calendar" id="group-show-calendar" value="1"<?php checked( $calendar_enabled ); ?> /> <?php esc_html_e( 'Enable Calendar' ); ?></label>
+								</div>
+							</div>
+						</div>
+
 						<div class="row">
-							<div class="col-sm-23 col-sm-offset-1">
+							<div class="col-sm-23">
 								<div class="radio no-margin no-margin-all spaced-list">
 									<label class="regular"><input type="radio" name="openlab-bpeo-event-create-access" value="members" <?php checked( 'members', $event_create_access ) ?> /> <?php echo esc_html( $group_type->get_label( 'settings_help_text_calendar_members' ) ); ?></label>
 									<label class="regular"><input type="radio" name="openlab-bpeo-event-create-access" value="admin" <?php checked( 'admin', $event_create_access ) ?> /> <?php echo esc_html( $group_type->get_label( 'settings_help_text_calendar_admins' ) ); ?></label>

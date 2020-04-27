@@ -181,3 +181,29 @@ function openlab_docs_associated_group_id_field() {
 	printf( '<input type="hidden" name="associated_group_id" id="associated_group_id" value="%s" />', esc_attr( bp_get_current_group_id() ) );
 }
 add_action( 'bp_docs_closing_meta_box', 'openlab_docs_associated_group_id_field' );
+
+/**
+ * Checks whether Docs is enabled for a group.
+ *
+ * @param int $group_id Group ID.
+ * @return bool
+ */
+function openlab_is_docs_enabled_for_group( $group_id = null ) {
+	if ( null === $group_id ) {
+		$group_id = bp_get_current_group_id();
+	}
+
+	// Default to true in case no value is found.
+	if ( ! $group_id ) {
+		return true;
+	}
+
+	$group_settings = bp_docs_get_group_settings( $group_id );
+
+	// Default to true in case no value is found.
+	if ( ! $group_settings || ! isset( $group_settings['group-enable'] ) ) {
+		return true;
+	}
+
+	return ! empty( $group_settings['group-enable'] );
+}
