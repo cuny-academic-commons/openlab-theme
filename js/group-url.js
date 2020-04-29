@@ -1,6 +1,6 @@
 (function($){
 	var $errorFormat, $errorTaken, $nameField, $urlField, $urlFieldParent;
-	var isValid, isTaken;
+	var isValid, uniqueUrlTimer;
 
 	$(document).ready(function(){
 		isValid = isAvailable = false;
@@ -49,6 +49,11 @@
 			toggleError();
 		});
 
+		// Cancel uniqueURL event if user started typing.
+		$urlField.on( 'keydown', function() {
+			clearTimeout(uniqueUrlTimer);
+		} );
+
 		// Only run the AJAX request on blur.
 		$urlField.on( 'blur', function() {
 			// No value? Nothing to check.
@@ -79,6 +84,8 @@
 					} else {
 						isAvailable = false;
 						$errorTaken.removeAttr( 'aria-hidden' );
+						
+						uniqueUrl( response.data );
 					}
 					toggleError();
 				}
@@ -93,6 +100,18 @@
 				$urlFieldParent.addClass('has-error').addClass('ajax-error');
 				$ajaxStatus.removeClass('fa-check').addClass('fa-exclamation-circle');
 			}
+		}
+
+		var uniqueUrl = function( slug ) {
+			uniqueUrlTimer = setTimeout( function() {
+				$urlField.val( slug );
+				
+				// Remove Error
+				isAvailable = true;
+				isValid = true;
+				$errorTaken.attr( 'aria-hidden', 'true' );
+				toggleError();
+			}, 5000 );
 		}
 	});
 }(jQuery));

@@ -886,8 +886,8 @@ function openlab_ajax_group_url_validate() {
 	$found = groups_get_id( $url );
 
 	if ( $found && $found !== $group_id ) {
-		// Try to get a unique slug for the group.
-		wp_send_json_error();
+		$unique_slug = openlab_unique_group_slug( $url );
+		wp_send_json_error( $unique_slug );
 	} else {
 		wp_send_json_success();
 	}
@@ -1385,7 +1385,6 @@ function openlab_previous_step_type( $url ) {
 add_filter( 'bp_get_group_creation_previous_link', 'openlab_previous_step_type' );
 
 /**
-	>>>>>>> 1.3.x
  * Remove the 'hidden' class from hidden group leave buttons
  *
  * A crummy conflict with wp-ajax-edit-comments causes these items to be
@@ -2638,3 +2637,44 @@ function openlab_group_avatar_script_data( $script_data ) {
 	return $script_data;
 }
 add_filter( 'bp_attachment_avatar_script_data', 'openlab_group_avatar_script_data' );
+
+/**
+ * Generate unique slug for group.
+ *
+ * @param string $slug Desired slug.
+ * @return string      Unique slug for the group.
+ */
+function openlab_unique_group_slug( $slug ) {
+	global $wpdb, $bp;
+
+	$suffix = 2;
+	$slug   = sanitize_title( $slug );
+
+	$group_slugs = $wpdb->get_col( $wpdb->prepare( "SELECT slug FROM {$bp->groups->table_name} WHERE slug LIKE %s", $slug . '%' ) );
+
+	if ( empty( $group_slugs ) ) {
+		return "$slug-$suffix";
+	}
+
+	// Get all suffixes from the group slugs.
+	$suffixes = array_reduce( $group_slugs, function( $carry, $slug ) {
+		$parts = explode( '-', $slug );
+
+		// String will be covnerted to 0.
+		$carry[] = (int) end( $parts );
+
+		return $carry;
+	} );
+	$suffixes = array_filter( array_unique( $suffixes ) );
+
+	// Slugs have no suffixes. Return default suffix (-2).
+	if ( empty( $suffixes ) ) {
+		return "$slug-$suffix";
+	}
+
+	// Assume the highest suffix is the last one.
+	$last   = max( $suffixes );
+	$suffix = ++$last;
+
+	return "$slug-$suffix";
+}
