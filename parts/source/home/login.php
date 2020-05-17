@@ -102,7 +102,7 @@ if ( is_user_logged_in() ) :
 
 			<div id="keep-logged-in" class="small-text clearfix">
 				<div class="password-wrapper">
-					<a class="forgot-password-link small-text roll-over-loss" href="<?php echo site_url( 'wp-login.php?action=lostpassword', 'login' ); ?>"><?php esc_html_e( 'Forgot Password?', 'openlab-theme' ); ?></a>
+					<a class="forgot-password-link small-text roll-over-loss" href="<?php echo esc_attr( wp_lostpassword_url() ); ?>"><?php esc_html_e( 'Forgot Password?', 'openlab-theme' ); ?></a>
 					<span class="keep-logged-in-checkbox"><input class="no-margin no-margin-top" name="rememberme" type="checkbox" id="sidebar-rememberme" value="forever" tabindex="0" /><label class="regular no-margin no-margin-bottom" for="sidebar-rememberme"><?php esc_html_e( 'Keep me logged in', 'openlab-theme' ); ?></label></span>
 				</div>
 				<input class="btn btn-default btn-primary link-btn pull-right semibold" type="submit" name="wp-submit" id="sidebar-wp-submit" value="<?php esc_html_e( 'Log In', 'openlab-theme' ); ?>" tabindex="0" />

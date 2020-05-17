@@ -40,7 +40,7 @@ do_action( 'bp_before_member_settings_template' );
 			$include_acct_type = in_array( $account_type, array( 'Student', 'Alumni' ) ) ? ' account type, ' : ' ';
 			?>
 
-			<p class="description"><?php esc_html_e( 'Required to change email address or password.', 'openlab-theme' ); ?> <a class="underline" href="<?php echo site_url( add_query_arg( array( 'action' => 'lostpassword' ), 'wp-login.php' ), 'login' ); ?>" title="<?php _e( 'Password Lost and Found', 'openlab-theme' ); ?>"><?php _e( 'Lost your password?', 'openlab-theme' ); ?></a></p>
+			<p class="description"><?php esc_html_e( 'Required to change email address or password.', 'openlab-theme' ); ?> <a class="underline" href="<?php echo esc_attr( wp_lostpassword_url() ); ?>" title="<?php _e( 'Password Lost and Found', 'openlab-theme' ); ?>"><?php _e( 'Lost your password?', 'openlab-theme' ); ?></a></p>
 		</div>
 
 		<div class="form-group settings-section change-pw-section">
