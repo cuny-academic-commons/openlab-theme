@@ -16,7 +16,7 @@ $create_link = bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/create
 ?>
 
 <div id="content" class="hfeed row">
-	<?php openlab_bp_sidebar( 'groups', true ); ?>
+	<?php get_template_part( 'parts/sidebar/groups' ); ?>
 	<div <?php post_class( 'col-sm-18 col-xs-24' ); ?>>
 		<div id="openlab-main-content" class="content-wrapper">
 			<div class="entry-title">
