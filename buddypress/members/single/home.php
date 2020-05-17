@@ -49,4 +49,4 @@
 
 <?php do_action( 'bp_after_member_home_content' ); ?>
 
-<?php openlab_bp_sidebar( 'members' ); ?>
+<?php get_template_part( 'parts/sidebar/members' ); ?>

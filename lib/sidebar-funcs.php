@@ -1,7 +1,9 @@
 <?php
 
 /**
- * Sidebar based functionality
+ * Sidebar based functionality.
+ *
+ * @deprecated 1.2.0 Moved to template files. See /parts/sidebar and /parts/source/sidebar.
  */
 function openlab_bp_sidebar( $type, $mobile_dropdown = false, $extra_classes = '' ) {
 
@@ -48,6 +50,8 @@ function openlab_bp_sidebar( $type, $mobile_dropdown = false, $extra_classes = '
 /**
  * Mobile sidebar - for when a piece of the sidebar needs to appear above the content in the mobile space
  *
+ * @deprecated 1.2.0 Moved to template files. See /parts/sidebar and /parts/source/sidebar.
+ *
  * @param type $type
  */
 function openlab_bp_mobile_sidebar( $type ) {
@@ -76,6 +80,8 @@ function openlab_bp_mobile_sidebar( $type ) {
 
 /**
  * Output the sidebar content for a single group
+ *
+ * @deprecated 1.2.0 Moved to template files. See /parts/sidebar/group and /parts/source/sidebar/group.
  */
 function openlab_group_sidebar( $mobile = false ) {
 	$group_id = bp_get_current_group_id();

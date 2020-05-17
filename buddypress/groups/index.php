@@ -31,7 +31,7 @@ global $bp;
 		<?php bp_get_template_part( 'groups/groups', 'loop' ); ?>
 	</div>
 
-	<?php openlab_bp_sidebar( 'members' ); ?>
+	<?php get_template_part( 'parts/sidebar/members' ); ?>
 </div><!--content-->
 
 <?php

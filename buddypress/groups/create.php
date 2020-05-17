@@ -211,4 +211,4 @@
 		</form>
 	</div>
 </div>
-<?php openlab_bp_sidebar( 'members' ); ?>
+<?php get_template_part( 'parts/sidebar/members' ); ?>
