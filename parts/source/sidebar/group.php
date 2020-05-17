@@ -16,7 +16,11 @@ if ( $site_id ) {
 
 <div id="sidebar" class="sidebar col-sm-6 col-xs-24 type-actions mobile-enabled">
 	<div class="sidebar-wrapper">
-		<?php if ( bp_has_groups() ) : while ( bp_groups() ) : bp_the_group(); ?>
+		<?php
+		if ( bp_has_groups() ) :
+			while ( bp_groups() ) :
+				bp_the_group();
+				?>
 			<div class="sidebar-widget sidebar-widget-wrapper" id="portfolio-sidebar-widget">
 				<h2 class="sidebar-header group-single top-sidebar-header">&nbsp;</h2>
 
@@ -34,12 +38,15 @@ if ( $site_id ) {
 						</ul>
 					</div><!-- #item-buttons -->
 				</div>
-				<?php do_action( 'bp_group_options_nav' ) ?>
+				<?php do_action( 'bp_group_options_nav' ); ?>
 
 				<?php if ( ! cboxol_is_portfolio() ) : ?>
 					<?php echo openlab_get_group_activity_events_feed(); ?>
 				<?php endif; ?>
 			</div>
-		<?php endwhile; endif; ?>
+					<?php
+		endwhile;
+endif;
+		?>
 	</div>
 </div>
