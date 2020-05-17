@@ -59,7 +59,7 @@ get_header();
         </div>
     </div>
 
-    <?php openlab_bp_sidebar('about'); ?>
+    <?php get_template_part( 'parts/sidebar/about' ); ?>
 
 </div>
 

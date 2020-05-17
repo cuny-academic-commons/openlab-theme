@@ -10,7 +10,7 @@
 	$show_about_sidebar = cboxol_is_brand_page( 'about' ) || cboxol_is_brand_page( 'terms-of-use' ) || cboxol_is_brand_page( 'contact-us' );
 
 	if ( $show_about_sidebar ) {
-		openlab_bp_mobile_sidebar( 'about' );
+		get_template_part( 'parts/sidebar/about-mobile' );
 	}
 	?>
 
@@ -47,7 +47,7 @@
 	<?php
 	//add the about-page sidebar to just the about page and any child about page
 	if ( $show_about_sidebar ) {
-		openlab_bp_sidebar( 'about' );
+		get_template_part( 'parts/sidebar/about' );
 	}
 	?>
 
