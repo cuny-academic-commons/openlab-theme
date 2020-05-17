@@ -82,6 +82,6 @@ $pag_page = isset( $_GET['hs-page'] ) ? intval( $_GET['hs-page'] ) : 1;
 			</div><!-- .content-wrapper -->
 		</div>
 
-		<?php openlab_bp_sidebar('help', false, ' mobile-enabled'); ?>
+		<?php get_template_part( 'parts/sidebar/help' ); ?>
 	</div>
 <?php get_footer();

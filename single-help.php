@@ -11,7 +11,9 @@ get_header(); ?>
                     <?php openlab_help_loop(); ?>
                 </div>
             </div>
-        <?php openlab_bp_sidebar('help', false, ' mobile-enabled'); ?>
+
+			<?php get_template_part( 'parts/sidebar/help' ); ?>
+
             </div>
 <?php get_footer();
 /**end layout**/
