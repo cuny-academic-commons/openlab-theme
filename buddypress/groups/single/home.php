@@ -101,4 +101,4 @@ if ( bp_has_groups() ) : while ( bp_groups() ) : bp_the_group();
 endif;
 ?>
 
-<?php openlab_bp_sidebar( 'actions', false, ' mobile-enabled' ); ?>
+<?php get_template_part( 'parts/sidebar/group' );
