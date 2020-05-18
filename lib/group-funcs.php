@@ -1914,10 +1914,10 @@ function openlab_get_faculty_list() {
 	$faculty_list = '';
 
 	if ( isset( $bp->groups->current_group->admins ) ) {
-		$faculty_id = $bp->groups->current_group->admins[0]->user_id;
-		$group_id = $bp->groups->current_group->id;
+		$faculty_id = groups_get_current_group()->admins[0]->user_id;
+		$group_id   = bp_get_current_group_id();
 
-		$faculty_ids = groups_get_groupmeta( $group_id, 'additional_faculty', false );
+		$faculty_ids = groups_get_groupmeta( $group_id, 'group_contact', false );
 		array_unshift( $faculty_ids, $faculty_id );
 
 		$faculty = array();
@@ -2060,7 +2060,6 @@ function openlab_group_admin_js_data( \CBOX\OL\GroupType $group_type ) {
  * Render the "Group Contact" field when creating/editing a project or club.
  */
 function openlab_group_contact_field() {
-	// Don't show on courses or portfolios.
 	$group_id = 0;
 	if ( bp_is_group() ) {
 		$group_id = bp_get_current_group_id();
@@ -2068,8 +2067,7 @@ function openlab_group_contact_field() {
 
 	$group_type = cboxol_get_edited_group_group_type();
 
-	// @todo supports additional faculty
-	if ( is_wp_error( $group_type ) || ! $group_type->get_supports_group_contact() ) {
+	if ( is_wp_error( $group_type ) ) {
 		return;
 	}
 
@@ -2081,7 +2079,7 @@ function openlab_group_contact_field() {
 	$existing_contacts = array();
 	if ( $group_id ) {
 		$existing_contacts = groups_get_groupmeta( $group_id, 'group_contact', false );
-		if ( ! is_array( $existing_contacts ) ) {
+		if ( ! $existing_contacts ) {
 			$existing_contacts = array( bp_loggedin_user_id() );
 		}
 	} else {
@@ -2174,9 +2172,6 @@ add_action( 'wp_ajax_openlab_group_contact_autocomplete', 'openlab_group_contact
  * Process the saving of group contacts.
  */
 function openlab_group_contact_save( $group ) {
-	$nonce = '';
-
-	// @todo Courses
 	$group_id = 0;
 	if ( bp_is_group() ) {
 		$group_id = bp_get_current_group_id();
@@ -2184,11 +2179,11 @@ function openlab_group_contact_save( $group ) {
 
 	$group_type = cboxol_get_edited_group_group_type();
 
-	// @todo supports additional faculty
-	if ( is_wp_error( $group_type ) || ! $group_type->get_supports_group_contact() ) {
+	if ( is_wp_error( $group_type ) ) {
 		return;
 	}
 
+	$nonce = '';
 	if ( isset( $_POST['_ol_group_contact_nonce'] ) ) {
 		$nonce = urldecode( $_POST['_ol_group_contact_nonce'] );
 	}
