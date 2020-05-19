@@ -1,412 +1,443 @@
 (function ($) {
 
-    if (window.OpenLab === undefined) {
-        window.OpenLab = {};
-    }
+	if (window.OpenLab === undefined) {
+		window.OpenLab = {};
+	}
 
-    var resizeTimer, select2args;
+	var resizeTimer, select2args;
 
 		var OpenLab = window.OpenLab;
 
-    OpenLab.utility = {
-        newMembers: {},
-        newMembersHTML: {},
-        protect: 0,
-        mapCheck: {},
-        uiCheck: {},
-        selectDisplay: {},
-        customSelectHTML: '',
-        init: function () {
+	OpenLab.utility = {
+		newMembers: {},
+		newMembersHTML: {},
+		protect: 0,
+		mapCheck: {},
+		uiCheck: {},
+		selectDisplay: {},
+		customSelectHTML: '',
+		init: function () {
 
-            OpenLab.utility.adjustLoginBox();
-            OpenLab.utility.sliderFocusHandler();
-            OpenLab.utility.eventValidation();
-            OpenLab.utility.refreshActivity();
+			OpenLab.utility.adjustLoginBox();
+			OpenLab.utility.sliderFocusHandler();
+			OpenLab.utility.eventValidation();
+			OpenLab.utility.refreshActivity();
 
 						// Home page column adjustments.
-						var groupTypeWidgets = $('#home-right .activity-list');
-						if ( groupTypeWidgets.length > 0 && groupTypeWidgets.length < 4 ) {
-							groupTypeWidgets.removeClass('col-sm-6').addClass('col-sm-8');
+						var groupTypeWidgets = $( '#home-right .activity-list' );
+			if ( groupTypeWidgets.length > 0 && groupTypeWidgets.length < 4 ) {
+				groupTypeWidgets.removeClass( 'col-sm-6' ).addClass( 'col-sm-8' );
+			}
+
+			//EO Calendar JS filtering
+			if (typeof wp !== 'undefined' && typeof wp.hooks !== 'undefined') {
+				wp.hooks.addFilter( 'eventorganiser.fullcalendar_options', OpenLab.utility.calendarFiltering );
+			}
+
+			//BP EO Editor tweaks
+			//doing this client-side for now
+			OpenLab.utility.BPEOTweaks();
+
+		},
+		detectZoom: function () {
+
+			var zoom   = detectZoom.zoom();
+			var device = detectZoom.device();
+
+		},
+		adjustLoginBox: function () {
+			if ($( '#user-info' )) {
+
+				var userInfo = $( '#user-info' );
+				var helpInfo = $( '#login-help' )
+				var avatar   = userInfo.find( '.avatar' );
+				if (userInfo.height() > avatar.height()) {
+					userInfo.addClass( 'multi-line' );
+					helpInfo.addClass( 'multi-line' );
+				} else {
+					userInfo.removeClass( 'multi-line' );
+					helpInfo.removeClass( 'multi-line' );
+				}
+
+			}
+		},
+		sliderFocusHandler: function () {
+
+			if ($( '.camera_wrap_sr' ).length) {
+
+				$( '.camera_wrap_sr .camera_content a' ).each(
+					function () {
+
+						var thisLink = $( this );
+						thisLink.on(
+							'focus',
+							function () {
+
+								thisLink.closest( '.camera_content' ).addClass( 'focus' );
+
+							}
+						);
+						thisLink.on(
+							'blur',
+							function () {
+
+								thisLink.closest( '.camera_content' ).removeClass( 'focus' );
+
+							}
+						);
+
+					}
+				);
+
+			}
+
+		},
+		eventValidation: function () {
+
+			var eventPublish       = $( '.action-events #publish' );
+			var groupMetaBox       = $( '#bp_event_organiser_metabox .inside' );
+			var eventDetailMetaBox = $( '#eventorganiser_detail .inside' );
+
+			if (eventPublish.length) {
+
+				eventPublish.on(
+					'click',
+					function (e) {
+
+						//can't submit an event without a group selection
+						var groupSelection = $( '#bp_event_organiser_metabox .select2-selection__rendered .select2-selection__choice' );
+
+						if ( ! groupSelection.length) {
+							e.preventDefault();
+
+							var message = '<div class="bp-template-notice error">Events must be associated with at least one group.</div>';
+							groupMetaBox.prepend( message );
+						} else {
+							groupMetaBox.find( '.bp-template-notice' ).remove();
 						}
 
-            //EO Calendar JS filtering
-            if (typeof wp !== 'undefined' && typeof wp.hooks !== 'undefined') {
-                wp.hooks.addFilter('eventorganiser.fullcalendar_options', OpenLab.utility.calendarFiltering);
-            }
+						//can't submit an event if the end time is *before* the start time (or vice versa)
+						var rawStartTime = eventDetailMetaBox.find( '#eo-start-time' ).val();
+						var rawStartDate = eventDetailMetaBox.find( '#eo-start-date' ).val();
+						var rawEndTime   = eventDetailMetaBox.find( '#eo-end-time' ).val();
+						var rawEndDate   = eventDetailMetaBox.find( '#eo-end-date' ).val();
 
-            //BP EO Editor tweaks
-            //doing this client-side for now
-            OpenLab.utility.BPEOTweaks();
+						var startTime = OpenLab.utility.buildTime( rawStartDate, rawStartTime );
+						var endTime   = OpenLab.utility.buildTime( rawEndDate, rawEndTime );
 
-        },
-        detectZoom: function () {
+						if (startTime > endTime) {
+							e.preventDefault();
+							var message = '<div class="bp-template-notice error">Start Time must be earlier than the End Time.</div>';
 
-            var zoom = detectZoom.zoom();
-            var device = detectZoom.device();
+							//clean up first before adding new error message
+							eventDetailMetaBox.find( '.bp-template-notice' ).remove();
+							eventDetailMetaBox.prepend( message );
+						} else {
+							eventDetailMetaBox.find( '.bp-template-notice' ).remove();
+						}
 
-        },
-        adjustLoginBox: function () {
-            if ($('#user-info')) {
+					}
+				);
 
-                var userInfo = $('#user-info');
-                var helpInfo = $('#login-help')
-                var avatar = userInfo.find('.avatar');
-                if (userInfo.height() > avatar.height()) {
-                    userInfo.addClass('multi-line');
-                    helpInfo.addClass('multi-line');
-                } else {
-                    userInfo.removeClass('multi-line');
-                    helpInfo.removeClass('multi-line');
-                }
+			}
 
-            }
-        },
-        sliderFocusHandler: function () {
+		},
+		venueMapControl: function () {
 
-            if ($('.camera_wrap_sr').length) {
+			var latCheck = $( '#eo_venue_Lat' );
+			var venueMap = $( '#venuemap' );
 
-                $('.camera_wrap_sr .camera_content a').each(function () {
+			//if there is no venue present, time to quit
+			if (typeof eovenue === 'undefined' && ! venueMap.length) {
+				return;
+			}
 
-                    var thisLink = $(this);
-                    thisLink.on('focus', function () {
+			//on initial load, hide map if we have no LatLng values
+			if (latCheck.val() === 'NaN' || parseInt( latCheck.val() ) === 0) {
+				venueMap.css( 'display', 'none' );
+			}
 
-                        thisLink.closest('.camera_content').addClass('focus');
+			OpenLab.utility.protect++;
 
-                    });
-                    thisLink.on('blur', function () {
+			//going to use an interval to pick up on the map obj
+			if (typeof eovenue.maps !== 'undefined' && Object.keys( eovenue.maps ).length > 0) {
 
-                        thisLink.closest('.camera_content').removeClass('focus');
+				//saftey first
+				clearTimeout( OpenLab.utility.menuCheck );
 
-                    });
+				eovenue.maps.venuemap.map._map.addListener(
+					'center_changed',
+					function () {
+						if (latCheck.val() === 'NaN' || parseInt( latCheck.val() ) === 0) {
+							venueMap.css( 'display', 'none' );
+						} else {
+							venueMap.css( 'display', 'block' );
+						}
 
-                });
+					}
+				);
 
-            }
+			} else {
 
-        },
-        eventValidation: function () {
+				if (OpenLab.utility.protect < 2000) {
+					OpenLab.utility.mapCheck = setTimeout( OpenLab.utility.venueMapControl(), 50 );
+				}
 
-            var eventPublish = $('.action-events #publish');
-            var groupMetaBox = $('#bp_event_organiser_metabox .inside');
-            var eventDetailMetaBox = $('#eventorganiser_detail .inside');
+			}
 
-            if (eventPublish.length) {
+		},
+		venueDropdownControl: function () {
 
-                eventPublish.on('click', function (e) {
+			var dropdownSelector = $( '#venue_select' );
 
-                    //can't submit an event without a group selection
-                    var groupSelection = $('#bp_event_organiser_metabox .select2-selection__rendered .select2-selection__choice');
+			OpenLab.utility.protect++;
 
-                    if (!groupSelection.length) {
-                        e.preventDefault();
+			if (dropdownSelector.length) {
 
-                        var message = '<div class="bp-template-notice error">Events must be associated with at least one group.</div>';
-                        groupMetaBox.prepend(message);
-                    } else {
-                        groupMetaBox.find('.bp-template-notice').remove();
-                    }
+				var comboBoxSelector = $( '#venue_select.ui-combobox-input' );
 
-                    //can't submit an event if the end time is *before* the start time (or vice versa)
-                    var rawStartTime = eventDetailMetaBox.find('#eo-start-time').val();
-                    var rawStartDate = eventDetailMetaBox.find('#eo-start-date').val();
-                    var rawEndTime   = eventDetailMetaBox.find('#eo-end-time').val();
-                    var rawEndDate   = eventDetailMetaBox.find('#eo-end-date').val();
+				if (comboBoxSelector.length) {
 
-		    var startTime = OpenLab.utility.buildTime( rawStartDate, rawStartTime );
-		    var endTime   = OpenLab.utility.buildTime( rawEndDate, rawEndTime );
+					//safety first
+					clearTimeout( OpenLab.utility.uiCheck );
 
-                    if (startTime > endTime) {
-                        e.preventDefault();
-                        var message = '<div class="bp-template-notice error">Start Time must be earlier than the End Time.</div>';
+					comboBoxSelector.on(
+						"autocompletesearch",
+						function (event, ui) {
 
-                        //clean up first before adding new error message
-                        eventDetailMetaBox.find('.bp-template-notice').remove();
-                        eventDetailMetaBox.prepend(message);
-                    } else {
-                        eventDetailMetaBox.find('.bp-template-notice').remove();
-                    }
+							event.preventDefault();
 
-                });
+						}
+					);
 
-            }
+				} else {
 
-        },
-        venueMapControl: function () {
+					if (OpenLab.utility.protect < 2000) {
+						OpenLab.utility.uiCheck = setTimeout( OpenLab.utility.venueDropdownControl(), 50 );
+					}
 
-            var latCheck = $('#eo_venue_Lat');
-            var venueMap = $('#venuemap');
+				}
+			}
 
-            //if there is no venue present, time to quit
-            if (typeof eovenue === 'undefined' && !venueMap.length) {
-                return;
-            }
+		},
+		convertTimeToNum: function (time) {
+			var hoursMinutes = time.split( /[.:]/ );
+			var hours        = parseInt( hoursMinutes[0], 10 );
 
-            //on initial load, hide map if we have no LatLng values
-            if (latCheck.val() === 'NaN' || parseInt(latCheck.val()) === 0) {
-                venueMap.css('display', 'none');
-            }
+			var partOfDay = 0;
 
-            OpenLab.utility.protect++;
+			if (hoursMinutes[1].indexOf( 'pm' ) !== -1) {
+				partOfDay = 12;
+			}
 
-            //going to use an interval to pick up on the map obj
-            if (typeof eovenue.maps !== 'undefined' && Object.keys(eovenue.maps).length > 0) {
+			var minutes = hoursMinutes[1] ? parseInt( hoursMinutes[1], 10 ) : 0;
 
-                //saftey first
-                clearTimeout(OpenLab.utility.menuCheck);
+			return partOfDay + hours + minutes / 60;
+		},
+		buildTime: function( date, time ) {
+			var d         = new Date();
+			var dateParts = date.split( '-' );
+			d.setFullYear( dateParts[2] );
+			d.setMonth( dateParts[0] );
+			d.setDate( dateParts[1] );
 
-                eovenue.maps.venuemap.map._map.addListener('center_changed', function () {
-                    if (latCheck.val() === 'NaN' || parseInt(latCheck.val()) === 0) {
-                        venueMap.css('display', 'none');
-                    } else {
-                        venueMap.css('display', 'block');
-                    }
+			var timeParts = time.split( /[.:]/ );
+			var hour      = parseInt( timeParts[0] );
+			var min       = parseInt( timeParts[1].substr( 0, 2 ) );
+			var amOrPm    = timeParts[1].substr( 2 );
 
-                });
+			if ( 'pm' === amOrPm && hour < 12) {
+				hour = hour + 12;
+			} else if ('am' === amOrPm && hour === 12) {
+				//clock strikes midnight
+				hour = 0;
+			}
 
-            } else {
+			d.setHours( hour );
+			d.setMinutes( min );
 
-                if (OpenLab.utility.protect < 2000) {
-                    OpenLab.utility.mapCheck = setTimeout(OpenLab.utility.venueMapControl(), 50);
-                }
+			return d;
+		},
+		calendarFiltering: function (args, calendar) {
 
-            }
+			if (calendar.defaultview === 'agendaWeek') {
+				args.scrollTime = '08:00:00';
+				args.viewRender = function (view, element) {
+					OpenLab.utility.calendarScrollBarPadding( view, element );
+										OpenLab.utility.calendarButtonCustomization( view, element );
+				}
+			} else {
+				args.viewRender = function (view, element) {
+					OpenLab.utility.calendarScrollBarPadding( view, element );
+										OpenLab.utility.calendarButtonCustomization( view, element );
+				}
+			}
 
-        },
-        venueDropdownControl: function () {
+			return args;
 
-            var dropdownSelector = $('#venue_select');
+		},
+		calendarScrollBarPadding: function (view, element) {
 
-            OpenLab.utility.protect++;
+			if (view.name === 'agendaWeek') {
 
-            if (dropdownSelector.length) {
+				var width = OpenLab.utility.getScrollBarWidth();
 
-                var comboBoxSelector = $('#venue_select.ui-combobox-input');
+				console.log( 'width', width );
 
-                if (comboBoxSelector.length) {
+				$( '.eo-fullcalendar .fc-row.fc-widget-header' ).wrap( "<div class='fc-header-wrapper'></div>" );
 
-                    //safety first
-                    clearTimeout(OpenLab.utility.uiCheck);
+				$( '.eo-fullcalendar .fc-day-grid, .eo-fullcalendar .fc-header-wrapper' ).css(
+					{
+						'border-right': width + 'px #f3f3f3 solid'
+					}
+				);
 
-                    comboBoxSelector.on("autocompletesearch", function (event, ui) {
+			}
 
-                        event.preventDefault();
+		},
+		calendarButtonCustomization: function (view, element) {
 
-                    });
+			//add sr-only text for accessibility
+			var buttons = $( '.eo-fullcalendar .fc-button-group' );
 
-                } else {
+			//get viewtype
+			var viewLabel = 'Month';
 
-                    if (OpenLab.utility.protect < 2000) {
-                        OpenLab.utility.uiCheck = setTimeout(OpenLab.utility.venueDropdownControl(), 50);
-                    }
+			if (view.name === 'agendaWeek') {
+				viewLabel = 'Week';
 
-                }
-            }
+				//if this is a week view, also fill in empty table header
+				$( '.fc-agendaWeek-view .fc-axis.fc-widget-header' ).text( 'Time' );
 
-        },
-        convertTimeToNum: function (time) {
-            var hoursMinutes = time.split(/[.:]/);
-            var hours = parseInt(hoursMinutes[0], 10);
+			}
 
-            var partOfDay = 0;
+			buttons.find( '.fc-button' ).each(
+				function () {
 
-            if (hoursMinutes[1].indexOf('pm') !== -1) {
-                partOfDay = 12;
-            }
+					var thisButton = $( this );
+					var direction  = 'Previous';
 
-            var minutes = hoursMinutes[1] ? parseInt(hoursMinutes[1], 10) : 0;
+					if (thisButton.hasClass( 'fc-next-button' )) {
+						direction = 'Next';
+					}
 
-            return partOfDay + hours + minutes / 60;
-        },
-	buildTime: function( date, time ) {
-	    var d = new Date();
-	    var dateParts = date.split( '-' );
-	    d.setFullYear( dateParts[2] );
-	    d.setMonth( dateParts[0] );
-	    d.setDate( dateParts[1] );
+					var label = '<span class="sr-only">' + direction + ' ' + viewLabel + '</span>';
 
-	    var timeParts = time.split( /[.:]/ );
-	    var hour = parseInt( timeParts[0] );
-	    var min = parseInt( timeParts[1].substr( 0, 2 ) );
-	    var amOrPm = timeParts[1].substr( 2 );
+					thisButton.find( '.fc-icon' ).html( label );
 
-	    if ( 'pm' === amOrPm && hour < 12) {
-	        hour = hour + 12;
-	    } else if ('am' === amOrPm && hour === 12){
-                //clock strikes midnight
-                hour = 0;
-            }
-
-	    d.setHours( hour );
-	    d.setMinutes( min );
-
-	    return d;
-	},
-        calendarFiltering: function (args, calendar) {
-
-            if (calendar.defaultview === 'agendaWeek') {
-                args.scrollTime = '08:00:00';
-                args.viewRender = function (view, element) {
-                    OpenLab.utility.calendarScrollBarPadding(view, element);
-										OpenLab.utility.calendarButtonCustomization(view, element);
-                }
-            } else {
-                args.viewRender = function (view, element) {
-                    OpenLab.utility.calendarScrollBarPadding(view, element);
-										OpenLab.utility.calendarButtonCustomization(view, element);
-                }
-            }
-
-            return args;
-
-        },
-        calendarScrollBarPadding: function (view, element) {
-
-            if (view.name === 'agendaWeek') {
-
-                var width = OpenLab.utility.getScrollBarWidth();
-
-                console.log('width', width);
-
-                $('.eo-fullcalendar .fc-row.fc-widget-header').wrap("<div class='fc-header-wrapper'></div>");
-
-                $('.eo-fullcalendar .fc-day-grid, .eo-fullcalendar .fc-header-wrapper').css({
-                    'border-right': width + 'px #f3f3f3 solid'
-                });
-
-            }
-
-        },
-				calendarButtonCustomization: function (view, element) {
-
-            //add sr-only text for accessibility
-            var buttons = $('.eo-fullcalendar .fc-button-group');
-
-            //get viewtype
-            var viewLabel = 'Month';
-
-            if (view.name === 'agendaWeek') {
-                viewLabel = 'Week';
-
-                //if this is a week view, also fill in empty table header
-                $('.fc-agendaWeek-view .fc-axis.fc-widget-header').text('Time');
-
-            }
-
-            buttons.find('.fc-button').each(function () {
-
-                var thisButton = $(this);
-                var direction = 'Previous';
-
-                if (thisButton.hasClass('fc-next-button')) {
-                    direction = 'Next';
-                }
-
-                var label = '<span class="sr-only">' + direction + ' ' + viewLabel + '</span>';
-
-                thisButton.find('.fc-icon').html(label);
-
-            });
-				},
-        getScrollBarWidth: function () {
-
-            var scrollDiv = document.createElement("div");
-            scrollDiv.className = "scrollbar-measure";
-            document.body.appendChild(scrollDiv);
-
-            var scrollbarWidth = scrollDiv.offsetWidth - scrollDiv.clientWidth;
-
-            document.body.removeChild(scrollDiv);
-
-            return scrollbarWidth;
-
-        },
-        BPEOTweaks: function () {
-
-            var bpeo_metabox = $('#bp_event_organiser_metabox');
-
-            if (bpeo_metabox.length) {
-
-                var desc = ' <span class="bold">The event will appear in the OpenLab sitewide calendar unless one or more of the groups selected is private.</span>';
-
-                bpeo_metabox.find('.inside .bp_event_organiser_desc').append(desc);
-                bpeo_metabox.find('.hndle span').text('Display');
-
-            }
-
-        },
-        setUpNewMembersBox: function (resize) {
-
-            if (resize) {
-                //OpenLab.utility.newMembers.html(OpenLab.utility.newMembersHTML);
-                OpenLab.utility.newMembers.trigger('refreshCarousel', '[all]')
-            } else {
-                OpenLab.utility.newMembers = $('#home-new-member-wrap');
-                OpenLab.utility.newMembersHTML = $('#home-new-member-wrap').html();
-
-                //this is for the new OpenLab members slider on the homepage
-                OpenLab.utility.newMembers.jCarouselLite({
-                    circular: true,
-                    btnNext: ".next",
-                    btnPrev: ".prev",
-                    vertical: false,
-                    visible: 2,
-                    auto: true,
-                    speed: 200,
-                    autoWidth: true,
-                });
-            }
-
-            $('#home-new-member-wrap').css('visibility', 'visible').hide().fadeIn(700, function () {
-
-                OpenLab.truncation.truncateOnTheFly(false, true);
-
-            });
-        },
-        refreshActivity: function () {
-
-            var refreshActivity = $('#refreshActivity');
-
-            if (!refreshActivity.length) {
-                return;
-            }
-
-            var activityContainer = $('#whatsHappening');
-
-            //safety first
-            refreshActivity.off('click');
-
-            refreshActivity.on('click', function (e) {
-
-                e.preventDefault();
-                refreshActivity.addClass('fa-spin');
-
-                $.ajax({
-                    type: 'GET',
-                    url: ajaxurl,
-                    data:
-                            {
-                                action: 'openlab_ajax_return_latest_activity',
-                                nonce: localVars.nonce
-                            },
-                    success: function (data, textStatus, XMLHttpRequest)
-                    {
-                        refreshActivity.removeClass('fa-spin');
-                        if (data === 'exit') {
-                            //for right now, do nothing
-                        } else {
-                            activityContainer.html(data);
-                        }
-                    },
-                    error: function (MLHttpRequest, textStatus, errorThrown) {
-                        refreshActivity.removeClass('fa-spin');
-                        console.log(errorThrown);
-                    }
-                });
-
-            });
-
-        },
-        customSelects: function (resize) {
+				}
+			);
+		},
+		getScrollBarWidth: function () {
+
+			var scrollDiv       = document.createElement( "div" );
+			scrollDiv.className = "scrollbar-measure";
+			document.body.appendChild( scrollDiv );
+
+			var scrollbarWidth = scrollDiv.offsetWidth - scrollDiv.clientWidth;
+
+			document.body.removeChild( scrollDiv );
+
+			return scrollbarWidth;
+
+		},
+		BPEOTweaks: function () {
+
+			var bpeo_metabox = $( '#bp_event_organiser_metabox' );
+
+			if (bpeo_metabox.length) {
+
+				var desc = ' <span class="bold">The event will appear in the OpenLab sitewide calendar unless one or more of the groups selected is private.</span>';
+
+				bpeo_metabox.find( '.inside .bp_event_organiser_desc' ).append( desc );
+				bpeo_metabox.find( '.hndle span' ).text( 'Display' );
+
+			}
+
+		},
+		setUpNewMembersBox: function (resize) {
+
+			if (resize) {
+				//OpenLab.utility.newMembers.html(OpenLab.utility.newMembersHTML);
+				OpenLab.utility.newMembers.trigger( 'refreshCarousel', '[all]' )
+			} else {
+				OpenLab.utility.newMembers     = $( '#home-new-member-wrap' );
+				OpenLab.utility.newMembersHTML = $( '#home-new-member-wrap' ).html();
+
+				//this is for the new OpenLab members slider on the homepage
+				OpenLab.utility.newMembers.jCarouselLite(
+					{
+						circular: true,
+						btnNext: ".next",
+						btnPrev: ".prev",
+						vertical: false,
+						visible: 2,
+						auto: true,
+						speed: 200,
+						autoWidth: true,
+					}
+				);
+			}
+
+			$( '#home-new-member-wrap' ).css( 'visibility', 'visible' ).hide().fadeIn(
+				700,
+				function () {
+
+					OpenLab.truncation.truncateOnTheFly( false, true );
+
+				}
+			);
+		},
+		refreshActivity: function () {
+
+			var refreshActivity = $( '#refreshActivity' );
+
+			if ( ! refreshActivity.length) {
+				return;
+			}
+
+			var activityContainer = $( '#whatsHappening' );
+
+			//safety first
+			refreshActivity.off( 'click' );
+
+			refreshActivity.on(
+				'click',
+				function (e) {
+
+					e.preventDefault();
+					refreshActivity.addClass( 'fa-spin' );
+
+					$.ajax(
+						{
+							type: 'GET',
+							url: ajaxurl,
+							data:
+							{
+								action: 'openlab_ajax_return_latest_activity',
+								nonce: localVars.nonce
+							},
+							success: function (data, textStatus, XMLHttpRequest)
+						{
+								refreshActivity.removeClass( 'fa-spin' );
+								if (data === 'exit') {
+									//for right now, do nothing
+								} else {
+									activityContainer.html( data );
+								}
+							},
+							error: function (MLHttpRequest, textStatus, errorThrown) {
+								refreshActivity.removeClass( 'fa-spin' );
+								console.log( errorThrown );
+							}
+						}
+					);
+
+				}
+			);
+
+		},
+		customSelects: function (resize) {
 			select2args = {
 				minimumResultsForSearch: Infinity,
 				width: "100%",
@@ -414,52 +445,61 @@
 					return text;
 				}
 			}
-            //custom select arrows
-            if (resize) {
-                $('.custom-select-parent').html(OpenLab.utility.customSelectHTML);
-                $('.custom-select select').select2( select2args );
-            } else {
-                OpenLab.utility.customSelectHTML = $('.custom-select-parent').html();
-                $('.custom-select select').select2( select2args );
-            }
+			//custom select arrows
+			if (resize) {
+				$( '.custom-select-parent' ).html( OpenLab.utility.customSelectHTML );
+				$( '.custom-select select' ).select2( select2args );
+			} else {
+				OpenLab.utility.customSelectHTML = $( '.custom-select-parent' ).html();
+				$( '.custom-select select' ).select2( select2args );
+			}
 
-			$( '.academic-unit-type-select' ).on( 'select2:select', function() {
-				OpenLab.utility.updateAcademicUnitFilters();
-			} );
+			$( '.academic-unit-type-select' ).on(
+				'select2:select',
+				function() {
+					OpenLab.utility.updateAcademicUnitFilters();
+				}
+			);
 			OpenLab.utility.updateAcademicUnitFilters();
-        },
+		},
 
 		updateAcademicUnitFilters: function() {
-			var selectedSlugs = [];
+			var selectedSlugs  = [];
 			var $selectedUnits = $( '.academic-unit:selected' );
-			$selectedUnits.each( function( k, v ) {
-				if ( v.value.length > 0 ) {
-					if ( 'all' === v.value ) {
-						$(v).siblings( '.academic-unit-nonempty' ).each( function( k, v ) {
-							selectedSlugs.push( v.value );
-						} );
-					} else {
-						selectedSlugs.push( v.value );
+			$selectedUnits.each(
+				function( k, v ) {
+					if ( v.value.length > 0 ) {
+						if ( 'all' === v.value ) {
+							$( v ).siblings( '.academic-unit-nonempty' ).each(
+								function( k, v ) {
+									selectedSlugs.push( v.value );
+								}
+							);
+						} else {
+							 selectedSlugs.push( v.value );
+						}
 					}
 				}
-			} );
+			);
 
 			// Mark all disabled for reenabling later.
 			var $academicUnits = $( '.academic-unit' );
 			$academicUnits.prop( 'disabled', true ).removeClass( 'academic-unit-enabled' );
 
-			$academicUnits.each( function( k, v ) {
-				var $thisFilter = $( v );
-				var thisParent = $thisFilter.data( 'parent' );
+			$academicUnits.each(
+				function( k, v ) {
+						var $thisFilter = $( v );
+						var thisParent  = $thisFilter.data( 'parent' );
 
-				// Enable items with no parent, or those with a selected parent.
-				if ( 'undefined' === typeof thisParent || thisParent.length === 0 || -1 !== selectedSlugs.indexOf( thisParent ) ) {
-					$thisFilter.prop( 'disabled', false );
-					if ( $thisFilter.hasClass( 'academic-unit-nonempty' ) ) {
-						$thisFilter.addClass( 'academic-unit-enabled' );
+						// Enable items with no parent, or those with a selected parent.
+					if ( 'undefined' === typeof thisParent || thisParent.length === 0 || -1 !== selectedSlugs.indexOf( thisParent ) ) {
+						  $thisFilter.prop( 'disabled', false );
+						if ( $thisFilter.hasClass( 'academic-unit-nonempty' ) ) {
+							$thisFilter.addClass( 'academic-unit-enabled' );
+						}
 					}
 				}
-			} );
+			);
 
 			/*
 			TODO!!
@@ -470,362 +510,425 @@
 			// Select2 needs to reinitialize to pickup the 'disabled' changes.
 			var $academicUnitSelectors = $( '.academic-unit-type-select select' );
 			$academicUnitSelectors.prop( 'disabled', false );
-			$academicUnitSelectors.each( function( k, v ) {
-				if ( $( v ).find( '.academic-unit-enabled' ).length === 0 ) {
-					$( v ).prop( 'disabled', true );
+			$academicUnitSelectors.each(
+				function( k, v ) {
+					if ( $( v ).find( '.academic-unit-enabled' ).length === 0 ) {
+						  $( v ).prop( 'disabled', true );
+					}
 				}
-			} );
+			);
 			$academicUnitSelectors.select2( 'destroy' ).select2( select2args );
 		},
 
-        filterAjax: function () {
-
-            //safety first
-            $('#schoolSelect select').off('select2:select');
-
-            //ajax functionality for courses archive
-            $('#schoolSelect select').on('select2:select', function () {
-
-                var school = $(this).val();
-                var nonce = $('#nonce-value').text();
-
-                //disable the dept dropdown
-                $('#dept-select').attr('disabled', 'disabled');
-                $('#dept-select').addClass('processing');
-                $('#dept-select').html('<option value=""></option>');
-
-                if (school == "" || school == "school_all") {
-                    var defaultOption = '<option value="dept_all" selected="selected">All Departments</option>';
-                    $('#dept-select').html(defaultOption);
-                    $('#dept-select').trigger('render');
-                    $('#select2-dept-select-container').text('All Departments');
-                    $('#select2-dept-select-container').attr('title', 'All Departments');
-                    return;
-                }
-
-                $.ajax({
-                    type: 'GET',
-                    url: ajaxurl,
-                    data:
-                            {
-                                action: 'openlab_ajax_return_course_list',
-                                school: school,
-                                nonce: nonce
-                            },
-                    success: function (data, textStatus, XMLHttpRequest)
-                    {
-                        console.log('school', school);
-                        $('#dept-select').removeAttr('disabled');
-                        $('#dept-select').removeClass('processing');
-                        $('#dept-select').html(data);
-                        $('#dept-select').trigger('render');
-                        $('#select2-dept-select-container').text('All Departments');
-                        $('#select2-dept-select-container').attr('title', 'All Departments');
-                    },
-                    error: function (MLHttpRequest, textStatus, errorThrown) {
-                        console.log(errorThrown);
-                    }
-                });
-            });
-        }
-    };
-
-    var related_links_count,
-            $add_new_related_link,
-            $cloned_related_link_fields;
-
-    $(document).ready(function () {
-
-        OpenLab.utility.init();
-
-        // Workshop fields on Contact Us
-        function toggle_workshop_meeting_items() {
-            if (!!contact_us_topic) {
-                if ('Request a Workshop / Meeting' == contact_us_topic.value) {
-                    $workshop_meeting_items.slideDown('fast');
-                } else {
-                    $workshop_meeting_items.slideUp('fast');
-                }
-            }
-        }
-
-        function toggle_other_details() {
-            if ('Other (please specify)' == $reason_for_request.val()) {
-                $other_details.slideDown('fast');
-            } else {
-                $other_details.slideUp('fast');
-            }
-        }
-
-        // + button on Related Links List Settings
-        $add_new_related_link = $('#add-new-related-link');
-        $add_new_related_link.css('display', 'inline-block');
-        $add_new_related_link.on('click', function () {
-            create_new_related_link_field();
-        });
-
-        var contact_us_topic = document.getElementById('contact-us-topic');
-        $workshop_meeting_items = jQuery('#workshop-meeting-items');
-        jQuery('#contact-us-topic').on('change', function () {
-            toggle_workshop_meeting_items();
-        });
-        toggle_workshop_meeting_items();
-
-        // Move the contact form output field to the bottom of the form.
-        var contact_us_response_output = jQuery('.wpcf7-response-output');
-        if (contact_us_response_output.length > 0) {
-            contact_us_response_output.appendTo(contact_us_response_output.closest('form'));
-        }
-
-        $other_details = jQuery('#other-details');
-        $reason_for_request = jQuery('#reason-for-request');
-        $reason_for_request.on('change', function () {
-            toggle_other_details();
-        });
-        toggle_other_details();
-
-        jQuery('#wds-accordion-slider').easyAccordion({
-            autoStart: true,
-            slideInterval: 6000,
-            slideNum: false
-        });
-
-        jQuery("#header #menu-item-40 ul li ul li a").prepend("+ ");
-
-        // this add an onclick event to the "New Topic" button while preserving
-        // the original event; this is so "New Topic" can have a "current" class
-        $('.show-hide-new').click(function () {
-            var origOnClick = $('.show-hide-new').onclick;
-            return function (e) {
-                if (origOnClick != null && !origOnClick()) {
-                    return false;
-                }
-                return true;
-            }
-        });
-
-        window.new_topic_is_visible = $('#new-topic-post').is(":visible");
-        $('.show-hide-new').click(function () {
-            if (window.new_topic_is_visible) {
-                $('.single-forum #message').slideUp(300);
-                window.new_topic_is_visible = false;
-            } else {
-                $('.single-forum #message').slideDown(300);
-                window.new_topic_is_visible = true;
-            }
-        });
-
-        //printing page
-        if ($('.print-page').length) {
-            $('.print-page').on('click', function (e) {
-                e.preventDefault();
-                window.print();
-            });
-        }
-
-        function clear_form() {
-            document.getElementById('group_seq_form').reset();
-        }
-
-        //member profile friend/cancel friend hover fx
-        if ($('.btn.is_friend.friendship-button').length) {
-            var allButtons = $('.btn.is_friend.friendship-button');
-            allButtons.each(function () {
-                var thisButton = $(this);
-                var thisButtonHTML = $(this).html();
-                thisButton.hover(function () {
-                    thisButton.html('<span class="pull-left"><i class="fa fa-user"></i> ' + localVars.strings.cancelFriendship + '</span><i class="fa fa-minus-circle pull-right"></i>');
-                }, function () {
-                    thisButton.html(thisButtonHTML);
-                });
-            });
-        }
-
-        //member notificatoins page - injecting Bootstrap classes
-        if ($('table.notification-settings').length) {
-            $('table.notification-settings').each(function () {
-                $(this).addClass('table');
-            });
-        }
-
-        //clear login form
-        if ($('#user-login').length) {
-            $('#sidebar-user-login, #sidebar-user-pass').on('focus', function () {
-                $(this).attr('placeholder', '');
-            });
-        }
-
-    });//end document.ready
-
-    $(window).on('resize', function (e) {
-
-        clearTimeout(resizeTimer);
-        resizeTimer = setTimeout(function () {
-
-            OpenLab.utility.adjustLoginBox();
-            OpenLab.utility.customSelects(true);
-
-            if ($('#home-new-member-wrap').length) {
-                OpenLab.utility.setUpNewMembersBox(true);
-            }
-
-        }, 250);
-
-    });
-
-    $(window).load(function () {
-
-        $('html').removeClass('page-loading');
-        OpenLab.utility.detectZoom();
-        OpenLab.utility.customSelects(false);
-        OpenLab.utility.venueMapControl();
-        OpenLab.utility.venueDropdownControl();
-
-        //setting equal rows on homepage group list
-        equal_row_height();
-
-        //camera js slider on home
-        if ($('.camera_wrap').length) {
-            $('.camera_wrap').camera({
-                autoAdvance: true,
-                loader: 'none',
-                fx: 'simpleFade',
-                playPause: false,
-                height: '295px',
-                navigation: false,
-                navigationHover: false,
-                onLoaded: function () {
-
-                    var cameraImages = $('.camera_wrap .camera_target');
-                    var cameraSource = $('.camera_src');
-
-                    //have to do this because on first load, the first image is not
-                    //actually 'loaded' per se
-                    if (!cameraImages.hasClass('fully-loaded')) {
-
-                        cameraImages.addClass('fully-loaded');
-                        cameraImages.find('.cameraCont .cameraSlide_0 img').attr('alt', cameraSource.find('div').eq(0).data('alt'));
-
-                    } else {
-
-                        var currentImage = cameraImages.find('.cameraCont .cameracurrent');
-                        currentImage.find('img').attr('alt', cameraSource.find('div').eq(currentImage.index()).data('alt'));
-
-
-                    }
-
-                }
-            });
-        }
-
-        if ($('#home-new-member-wrap').length) {
-            OpenLab.utility.setUpNewMembersBox(false);
-        }
-
-    });
-
-    $(document).ajaxComplete(function () {
-
-        if ($('.wpcf7').length && !$('.wpcf7-mail-sent-ok').length) {
-            $('.wpcf7-form-control-wrap').each(function () {
-                var thisElem = $(this);
-                if (thisElem.find('.wpcf7-not-valid-tip').text()) {
-
-                    thisElem.remove('.wpcf7-not-valid-tip');
-
-                    var thisText = 'Please enter your ' + thisElem.find('.wpcf7-form-control').attr('name');
-                    var newValidTip = '<div class="bp-template-notice error" style="display: none;"><p>' + thisText + '</p></div>';
-
-                    thisElem.prepend(newValidTip);
-                    thisElem.find('.bp-template-notice.error').css('visiblity', 'visible').hide().fadeIn(550);
-
-                }
-            });
-        }
-        if ($('.wpcf7').length && $('.wpcf7-mail-sent-ok').length) {
-            $('.wpcf7-form-control-wrap').each(function () {
-                var thisElem = $(this);
-                if (thisElem.find('.bp-template-notice.error')) {
-                    thisElem.remove('.bp-template-notice.error');
-                }
-            });
-        }
-
-    });
-
-    function create_new_related_link_field() {
-        $cloned_related_link_fields = $add_new_related_link.closest('li').clone();
-
-        // Get count of existing link fields for the iterator
-        related_links_count = $('.related-links-edit-items li').length + 1;
-
-        // Swap label:for and input:id attributes
-        $cloned_related_link_fields.html(function (i, old_html) {
-            return old_html.replace(/(related\-links\-)[0-9]+\-(name|url)/g, '$1' + related_links_count + '-$2');
-        });
-
-        // Swap name iterator
-        $cloned_related_link_fields.html(function (i, old_html) {
-            return old_html.replace(/(related\-links\[)[0-9]+(\])/g, '$1' + related_links_count + '$2');
-        });
-
-        // Remove current button from the DOM, as the cloned fields contain the new one
-        $add_new_related_link.remove();
-
-        // Add new fields to the DOM
-        $('.related-links-edit-items').append($cloned_related_link_fields);
-
-        // Remove values
-        $('#related-links-' + related_links_count + '-name').val('');
-        $('#related-links-' + related_links_count + '-url').val('');
-
-        // Reindex new Add button and bind click event
-        $add_new_related_link = $('#add-new-related-link');
-        $add_new_related_link.on('click', function ( e ) {
-	    e.preventDefault();
-            create_new_related_link_field();
-        });
-    }
-
-    /*this is for the homepage group list, so that cells in each row all have the same height
-     - there is a possiblity of doing this template-side, but requires extensive restructuring of the group list function*/
-    function equal_row_height() {
-        /*first we get the number of rows by finding the column with the greatest number of rows*/
-        var $row_num = 0;
-        $('.activity-list').each(function () {
-            var $row_check = $(this).find('.activity-item').length;
-
-            if ($row_check > $row_num) {
-                $row_num = $row_check;
-            }
-        });
-
-        //build a loop to iterate through each row
-        var $i = 1;
-
-        while ($i <= $row_num) {
-            //check each cell in the row - find the one with the greatest height
-            var $greatest_height = 0;
-
-            $('.row-' + $i).each(function () {
-                var $cell_height = $(this).outerHeight();
-
-                if ($cell_height > $greatest_height) {
-                    $greatest_height = $cell_height;
-                }
-
-            });
-
-            //now apply that height to the other cells in the row
-            $('.row-' + $i).css('height', $greatest_height + 'px');
-
-            //iterate to next row
-            $i++;
-        }
-
-        //there is an inline script that hides the lists from the user on load (just so the adjusment isn't jarring) - this will show the lists
-        $('.activity-list').css('visibility', 'visible').hide().fadeIn(700);
-
-    }
-
-})(jQuery);
+		filterAjax: function () {
+
+			//safety first
+			$( '#schoolSelect select' ).off( 'select2:select' );
+
+			//ajax functionality for courses archive
+			$( '#schoolSelect select' ).on(
+				'select2:select',
+				function () {
+
+					var school = $( this ).val();
+					var nonce  = $( '#nonce-value' ).text();
+
+					//disable the dept dropdown
+					$( '#dept-select' ).attr( 'disabled', 'disabled' );
+					$( '#dept-select' ).addClass( 'processing' );
+					$( '#dept-select' ).html( '<option value=""></option>' );
+
+					if (school == "" || school == "school_all") {
+						var defaultOption = '<option value="dept_all" selected="selected">All Departments</option>';
+						$( '#dept-select' ).html( defaultOption );
+						$( '#dept-select' ).trigger( 'render' );
+						$( '#select2-dept-select-container' ).text( 'All Departments' );
+						$( '#select2-dept-select-container' ).attr( 'title', 'All Departments' );
+						return;
+					}
+
+					$.ajax(
+						{
+							type: 'GET',
+							url: ajaxurl,
+							data:
+							{
+								action: 'openlab_ajax_return_course_list',
+								school: school,
+								nonce: nonce
+							},
+							success: function (data, textStatus, XMLHttpRequest)
+						{
+								console.log( 'school', school );
+								$( '#dept-select' ).removeAttr( 'disabled' );
+								$( '#dept-select' ).removeClass( 'processing' );
+								$( '#dept-select' ).html( data );
+								$( '#dept-select' ).trigger( 'render' );
+								$( '#select2-dept-select-container' ).text( 'All Departments' );
+								$( '#select2-dept-select-container' ).attr( 'title', 'All Departments' );
+							},
+							error: function (MLHttpRequest, textStatus, errorThrown) {
+								console.log( errorThrown );
+							}
+						}
+					);
+				}
+			);
+		}
+	};
+
+	var related_links_count,
+			$add_new_related_link,
+			$cloned_related_link_fields;
+
+	$( document ).ready(
+		function () {
+
+			OpenLab.utility.init();
+
+			// Workshop fields on Contact Us
+			function toggle_workshop_meeting_items() {
+				if ( ! ! contact_us_topic) {
+					if ('Request a Workshop / Meeting' == contact_us_topic.value) {
+						$workshop_meeting_items.slideDown( 'fast' );
+					} else {
+						$workshop_meeting_items.slideUp( 'fast' );
+					}
+				}
+			}
+
+			function toggle_other_details() {
+				if ('Other (please specify)' == $reason_for_request.val()) {
+					$other_details.slideDown( 'fast' );
+				} else {
+					$other_details.slideUp( 'fast' );
+				}
+			}
+
+			// + button on Related Links List Settings
+			$add_new_related_link = $( '#add-new-related-link' );
+			$add_new_related_link.css( 'display', 'inline-block' );
+			$add_new_related_link.on(
+				'click',
+				function () {
+					create_new_related_link_field();
+				}
+			);
+
+			var contact_us_topic    = document.getElementById( 'contact-us-topic' );
+			$workshop_meeting_items = jQuery( '#workshop-meeting-items' );
+			jQuery( '#contact-us-topic' ).on(
+				'change',
+				function () {
+					toggle_workshop_meeting_items();
+				}
+			);
+			toggle_workshop_meeting_items();
+
+			// Move the contact form output field to the bottom of the form.
+			var contact_us_response_output = jQuery( '.wpcf7-response-output' );
+			if (contact_us_response_output.length > 0) {
+				contact_us_response_output.appendTo( contact_us_response_output.closest( 'form' ) );
+			}
+
+			$other_details      = jQuery( '#other-details' );
+			$reason_for_request = jQuery( '#reason-for-request' );
+			$reason_for_request.on(
+				'change',
+				function () {
+					toggle_other_details();
+				}
+			);
+			toggle_other_details();
+
+			jQuery( '#wds-accordion-slider' ).easyAccordion(
+				{
+					autoStart: true,
+					slideInterval: 6000,
+					slideNum: false
+				}
+			);
+
+			jQuery( "#header #menu-item-40 ul li ul li a" ).prepend( "+ " );
+
+			// this add an onclick event to the "New Topic" button while preserving
+			// the original event; this is so "New Topic" can have a "current" class
+			$( '.show-hide-new' ).click(
+				function () {
+					var origOnClick = $( '.show-hide-new' ).onclick;
+					return function (e) {
+						if (origOnClick != null && ! origOnClick()) {
+							return false;
+						}
+						return true;
+					}
+				}
+			);
+
+			window.new_topic_is_visible = $( '#new-topic-post' ).is( ":visible" );
+			$( '.show-hide-new' ).click(
+				function () {
+					if (window.new_topic_is_visible) {
+						$( '.single-forum #message' ).slideUp( 300 );
+						window.new_topic_is_visible = false;
+					} else {
+						$( '.single-forum #message' ).slideDown( 300 );
+						window.new_topic_is_visible = true;
+					}
+				}
+			);
+
+			//printing page
+			if ($( '.print-page' ).length) {
+				$( '.print-page' ).on(
+					'click',
+					function (e) {
+						e.preventDefault();
+						window.print();
+					}
+				);
+			}
+
+			function clear_form() {
+				document.getElementById( 'group_seq_form' ).reset();
+			}
+
+			//member profile friend/cancel friend hover fx
+			if ($( '.btn.is_friend.friendship-button' ).length) {
+				var allButtons = $( '.btn.is_friend.friendship-button' );
+				allButtons.each(
+					function () {
+						var thisButton     = $( this );
+						var thisButtonHTML = $( this ).html();
+						thisButton.hover(
+							function () {
+								thisButton.html( '<span class="pull-left"><i class="fa fa-user"></i> ' + localVars.strings.cancelFriendship + '</span><i class="fa fa-minus-circle pull-right"></i>' );
+							},
+							function () {
+								thisButton.html( thisButtonHTML );
+							}
+						);
+					}
+				);
+			}
+
+			//member notificatoins page - injecting Bootstrap classes
+			if ($( 'table.notification-settings' ).length) {
+				$( 'table.notification-settings' ).each(
+					function () {
+						$( this ).addClass( 'table' );
+					}
+				);
+			}
+
+			//clear login form
+			if ($( '#user-login' ).length) {
+				$( '#sidebar-user-login, #sidebar-user-pass' ).on(
+					'focus',
+					function () {
+						$( this ).attr( 'placeholder', '' );
+					}
+				);
+			}
+
+		}
+	);//end document.ready
+
+	$( window ).on(
+		'resize',
+		function (e) {
+
+			clearTimeout( resizeTimer );
+			resizeTimer = setTimeout(
+				function () {
+
+					OpenLab.utility.adjustLoginBox();
+					OpenLab.utility.customSelects( true );
+
+					if ($( '#home-new-member-wrap' ).length) {
+						OpenLab.utility.setUpNewMembersBox( true );
+					}
+
+				},
+				250
+			);
+
+		}
+	);
+
+	$( window ).load(
+		function () {
+
+			$( 'html' ).removeClass( 'page-loading' );
+			OpenLab.utility.detectZoom();
+			OpenLab.utility.customSelects( false );
+			OpenLab.utility.venueMapControl();
+			OpenLab.utility.venueDropdownControl();
+
+			//setting equal rows on homepage group list
+			equal_row_height();
+
+			//camera js slider on home
+			if ($( '.camera_wrap' ).length) {
+				$( '.camera_wrap' ).camera(
+					{
+						autoAdvance: true,
+						loader: 'none',
+						fx: 'simpleFade',
+						playPause: false,
+						height: '295px',
+						navigation: false,
+						navigationHover: false,
+						onLoaded: function () {
+
+							var cameraImages = $( '.camera_wrap .camera_target' );
+							var cameraSource = $( '.camera_src' );
+
+							//have to do this because on first load, the first image is not
+							//actually 'loaded' per se
+							if ( ! cameraImages.hasClass( 'fully-loaded' )) {
+
+								cameraImages.addClass( 'fully-loaded' );
+								cameraImages.find( '.cameraCont .cameraSlide_0 img' ).attr( 'alt', cameraSource.find( 'div' ).eq( 0 ).data( 'alt' ) );
+
+							} else {
+
+								var currentImage = cameraImages.find( '.cameraCont .cameracurrent' );
+								currentImage.find( 'img' ).attr( 'alt', cameraSource.find( 'div' ).eq( currentImage.index() ).data( 'alt' ) );
+
+							}
+
+						}
+					}
+				);
+			}
+
+			if ($( '#home-new-member-wrap' ).length) {
+				OpenLab.utility.setUpNewMembersBox( false );
+			}
+
+		}
+	);
+
+	$( document ).ajaxComplete(
+		function () {
+
+			if ($( '.wpcf7' ).length && ! $( '.wpcf7-mail-sent-ok' ).length) {
+				$( '.wpcf7-form-control-wrap' ).each(
+					function () {
+						var thisElem = $( this );
+						if (thisElem.find( '.wpcf7-not-valid-tip' ).text()) {
+
+							thisElem.remove( '.wpcf7-not-valid-tip' );
+
+							var thisText    = 'Please enter your ' + thisElem.find( '.wpcf7-form-control' ).attr( 'name' );
+							var newValidTip = '<div class="bp-template-notice error" style="display: none;"><p>' + thisText + '</p></div>';
+
+							thisElem.prepend( newValidTip );
+							thisElem.find( '.bp-template-notice.error' ).css( 'visiblity', 'visible' ).hide().fadeIn( 550 );
+
+						}
+					}
+				);
+			}
+			if ($( '.wpcf7' ).length && $( '.wpcf7-mail-sent-ok' ).length) {
+				$( '.wpcf7-form-control-wrap' ).each(
+					function () {
+						var thisElem = $( this );
+						if (thisElem.find( '.bp-template-notice.error' )) {
+							thisElem.remove( '.bp-template-notice.error' );
+						}
+					}
+				);
+			}
+
+		}
+	);
+
+	function create_new_related_link_field() {
+		$cloned_related_link_fields = $add_new_related_link.closest( 'li' ).clone();
+
+		// Get count of existing link fields for the iterator
+		related_links_count = $( '.related-links-edit-items li' ).length + 1;
+
+		// Swap label:for and input:id attributes
+		$cloned_related_link_fields.html(
+			function (i, old_html) {
+				return old_html.replace( /(related\-links\-)[0-9]+\-(name|url)/g, '$1' + related_links_count + '-$2' );
+			}
+		);
+
+		// Swap name iterator
+		$cloned_related_link_fields.html(
+			function (i, old_html) {
+				return old_html.replace( /(related\-links\[)[0-9]+(\])/g, '$1' + related_links_count + '$2' );
+			}
+		);
+
+		// Remove current button from the DOM, as the cloned fields contain the new one
+		$add_new_related_link.remove();
+
+		// Add new fields to the DOM
+		$( '.related-links-edit-items' ).append( $cloned_related_link_fields );
+
+		// Remove values
+		$( '#related-links-' + related_links_count + '-name' ).val( '' );
+		$( '#related-links-' + related_links_count + '-url' ).val( '' );
+
+		// Reindex new Add button and bind click event
+		$add_new_related_link = $( '#add-new-related-link' );
+		$add_new_related_link.on(
+			'click',
+			function ( e ) {
+				e.preventDefault();
+				create_new_related_link_field();
+			}
+		);
+	}
+
+	/*this is for the homepage group list, so that cells in each row all have the same height
+	 - there is a possiblity of doing this template-side, but requires extensive restructuring of the group list function*/
+	function equal_row_height() {
+		/*first we get the number of rows by finding the column with the greatest number of rows*/
+		var $row_num = 0;
+		$( '.activity-list' ).each(
+			function () {
+				var $row_check = $( this ).find( '.activity-item' ).length;
+
+				if ($row_check > $row_num) {
+					$row_num = $row_check;
+				}
+			}
+		);
+
+		//build a loop to iterate through each row
+		var $i = 1;
+
+		while ($i <= $row_num) {
+			//check each cell in the row - find the one with the greatest height
+			var $greatest_height = 0;
+
+			$( '.row-' + $i ).each(
+				function () {
+					var $cell_height = $( this ).outerHeight();
+
+					if ($cell_height > $greatest_height) {
+						$greatest_height = $cell_height;
+					}
+
+				}
+			);
+
+			//now apply that height to the other cells in the row
+			$( '.row-' + $i ).css( 'height', $greatest_height + 'px' );
+
+			//iterate to next row
+			$i++;
+		}
+
+		//there is an inline script that hides the lists from the user on load (just so the adjusment isn't jarring) - this will show the lists
+		$( '.activity-list' ).css( 'visibility', 'visible' ).hide().fadeIn( 700 );
+
+	}
+
+})( jQuery );
