@@ -170,6 +170,7 @@
 
 				<?php openlab_group_site_markup(); ?>
 				<?php openlab_group_site_privacy_settings_markup(); ?>
+				<?php openlab_group_site_member_role_settings_markup(); ?>
 
 				<?php wp_nonce_field( 'groups_create_save_site-details' ) ?>
 

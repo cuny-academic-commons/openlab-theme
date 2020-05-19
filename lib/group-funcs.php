@@ -358,7 +358,7 @@ function openlab_group_site_markup() {
 /**
  * Outputs the Member Role Settings panel.
  */
-function openlab_group_member_role_settings() {
+function openlab_group_site_member_role_settings_markup() {
 	global $bp;
 
 	$group_type = cboxol_get_edited_group_group_type();
@@ -366,14 +366,13 @@ function openlab_group_member_role_settings() {
 		return;
 	}
 
-	$the_group_id = null;
-	if ( bp_is_group() ) {
-		$the_group_id = bp_get_current_group_id();
-	}
+	$the_group_id = bp_get_current_group_id();
 
-	$site_id = openlab_get_site_id_by_group_id( $the_group_id );
-	if ( ! $site_id ) {
-		return;
+	if ( ! bp_is_group_create() ) {
+		$site_id = openlab_get_site_id_by_group_id( $the_group_id );
+		if ( ! $site_id ) {
+			return;
+		}
 	}
 
 	$site_roles = array(
@@ -700,7 +699,7 @@ add_action( 'groups_create_group_step_save_group-details', 'openlab_move_avatar_
 add_action( 'groups_create_group_step_save_group-details', 'openlab_save_new_group_url' );
 add_action( 'groups_create_group_step_save_site-details', 'openlab_save_group_site' );
 add_action( 'groups_create_group_step_save_site-details', 'openlab_save_group_site_settings', 20 );
-add_action( 'groups_create_group_step_save_site-details', 'openlab_save_group_site_member_role_settings', 30 );
+add_action( 'groups_create_group_step_save_site-details', 'openlab_save_group_site_member_role_settings', 20 );
 
 /**
  * Catches and processes group status setting.
@@ -909,7 +908,7 @@ function openlab_save_group_site_settings() {
 }
 
 /**
- * Catches and processes group site privacy settings.
+ * Catches and processes group member role settings.
  */
 function openlab_save_group_site_member_role_settings() {
 	if ( ! isset( $_POST['openlab-site-member-role-settings-nonce'] ) ) {

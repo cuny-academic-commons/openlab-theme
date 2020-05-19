@@ -207,7 +207,7 @@ openlab_group_admin_js_data( $group_type );
 
 			<?php openlab_group_site_markup(); ?>
 			<?php openlab_group_site_privacy_settings_markup(); ?>
-			<?php openlab_group_member_role_settings(); ?>
+			<?php openlab_group_site_member_role_settings_markup(); ?>
 
 			<p><input class="btn btn-primary" type="submit" value="<?php _e( 'Save Changes', 'openlab-theme' ) ?> &#xf138;" id="save" name="save" /></p>
 		<?php endif; ?>
