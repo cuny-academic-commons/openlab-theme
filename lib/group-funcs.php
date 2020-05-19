@@ -2009,11 +2009,7 @@ function openlab_get_group_activity_events_feed() {
 		return $events_out;
 	}
 
-	if ( ! openlab_is_calendar_enabled_for_group() ) {
-		return $events_out;
-	}
-
-	if ( ! function_exists( 'eo_get_events' ) ) {
+	if ( ! function_exists( 'bpeo_get_events' ) || ! openlab_is_calendar_enabled_for_group() ) {
 		return $events_out;
 	}
 
