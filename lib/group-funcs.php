@@ -356,6 +356,126 @@ function openlab_group_site_markup() {
 }
 
 /**
+ * Outputs the Member Role Settings panel.
+ */
+function openlab_group_member_role_settings() {
+	global $bp;
+
+	$group_type = cboxol_get_edited_group_group_type();
+	if ( is_wp_error( $group_type ) ) {
+		return;
+	}
+
+	$the_group_id = null;
+	if ( bp_is_group() ) {
+		$the_group_id = bp_get_current_group_id();
+	}
+
+	$site_id = openlab_get_site_id_by_group_id( $the_group_id );
+	if ( ! $site_id ) {
+		return;
+	}
+
+	$site_roles = array(
+		'administrator' => __( 'Administrator' ),
+		'editor'        => __( 'Editor' ),
+		'author'        => __( 'Author' ),
+		'contributor'   => __( 'Contributor' ),
+		'subscriber'    => __( 'Subscriber' ),
+	);
+
+	if ( bp_is_group_create() ) {
+		$new_group_id          = bp_get_new_group_id();
+		$clone_source_group_id = groups_get_groupmeta( $new_group_id, 'clone_source_group_id' );
+		if ( $clone_source_group_id ) {
+			$settings = openlab_get_group_member_role_settings( $clone_source_group_id );
+		} else {
+			$settings = array(
+				'admin'  => 'administrator',
+				'mod'    => 'editor',
+				'member' => 'author',
+			);
+		}
+	} else {
+		$settings = openlab_get_group_member_role_settings( $the_group_id );
+	}
+
+	?>
+	<div class="panel panel-default member-roles">
+		<div class="panel-heading semibold"><?php esc_html_e( 'Member Role Settings', 'openlab-theme' ); ?></div>
+
+		<div class="group-profile panel-body">
+			<p><?php esc_html_e( 'These settings control the default member roles on your associated site when members join the group. You may also adjust individual member roles in Membership settings and on the site Dashboard.', 'openlab-theme' ); ?></p>
+
+			<div class="row">
+				<div class="col-sm-24">
+					<ul class="member-role-selectors">
+						<li>
+							<label for="member-role-member"><?php esc_html_e( 'Group members have the following role on the associated site:', 'cbox-openlab-core' ); ?></label>
+							<select class="form-control" name="member_role_member" id="member-role-member">
+								<?php foreach ( $site_roles as $site_role => $site_role_label ) : ?>
+									<option value="<?php echo esc_attr( $site_role ); ?>" <?php selected( $site_role, $settings['member'] ); ?>><?php echo esc_html( $site_role_label ); ?></option>
+								<?php endforeach; ?>
+							</select>
+						</li>
+
+						<li>
+							<label for="member-role-mod"><?php esc_html_e( 'Group moderators have the following role on the associated site:', 'cbox-openlab-core' ); ?></label>
+							<select class="form-control" name="member_role_mod" id="member-role-mod">
+								<?php foreach ( $site_roles as $site_role => $site_role_label ) : ?>
+									<option value="<?php echo esc_attr( $site_role ); ?>" <?php selected( $site_role, $settings['mod'] ); ?>><?php echo esc_html( $site_role_label ); ?></option>
+								<?php endforeach; ?>
+							</select>
+						</li>
+
+						<li>
+							<label for="member-role-admin"><?php esc_html_e( 'Group administrators have the following role on the associated site:', 'cbox-openlab-core' ); ?></label>
+							<select class="form-control" name="member-role-admin">
+								<?php foreach ( $site_roles as $site_role => $site_role_label ) : ?>
+									<option value="<?php echo esc_attr( $site_role ); ?>" <?php selected( $site_role, $settings['admin'] ); ?>><?php echo esc_html( $site_role_label ); ?></option>
+								<?php endforeach; ?>
+							</select>
+						</li>
+					</ul>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="member-role-definition col-sm-24">
+					<div class="member-role-definition-label"><i class="fa fa-caret-square-o-right" aria-hidden="true"></i><?php printf( esc_html__( 'Member Role Definitions: %s', 'openlab-theme' ), esc_html( $group_type->get_label( 'singular' ) ) ); ?></div>
+					<div class="member-role-definition-text">
+						<ul>
+							<li><strong><?php esc_html_e( 'Administrator', 'openlab-theme' ); ?></strong>: <?php esc_html_e( 'Someone who can change group settings (such as changing privacy settings); edit, close, and delete discussion forum topics; and edit and delete docs. They can also change the avatar, manage membership, and delete the group.', 'openlab-theme' ); ?></li>
+							<li><strong><?php esc_html_e( 'Moderator', 'openlab-theme' ); ?></strong>: <?php esc_html_e( 'Someone who can edit edit, close, and delete discussion forum topics, and edit and delete docs.', 'openlab-theme' ); ?></li>
+							<li><strong><?php esc_html_e( 'Member', 'openlab-theme' ); ?></strong>: <?php esc_html_e( 'Someone who can post in discussion forums, edit docs (depending on settings determined by the admin), and upload files.', 'openlab-theme' ); ?></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="member-role-definition col-sm-24">
+					<div class="member-role-definition-label"><i class="fa fa-caret-square-o-right" aria-hidden="true"></i><?php printf( esc_html__( 'Member Role Definitions: %s', 'openlab-theme' ), esc_html__( 'Associated Site', 'openlab-theme' ) ); ?></div>
+					<div class="member-role-definition-text">
+						<ul>
+							<li><strong><?php esc_html_e( 'Administrator' ); ?></strong>: <?php esc_html_e( 'Someone who can control every aspect of a site, from managing content and comments, to choosing site themes to activating widgets and plugins.  In most cases, you should not make another site user an Administrator unless you want them to have equal control over your site content and functions.', 'openlab-theme' ); ?></li>
+							<li><strong><?php esc_html_e( 'Editor' ); ?></strong>: <?php esc_html_e( 'Someone who can write and publish posts, as well as manage the posts of other users.  Editors can also make changes to pages, but cannot change the theme, menu, widgets, plugins, or edit other user roles.', 'openlab-theme' ); ?></li>
+							<li><strong><?php esc_html_e( 'Author' ); ?></strong>: <?php esc_html_e( 'Someone who can publish and edit their own content, but cannot change or delete anything that anyone else has created on the site.  In most cases, if you are adding additional users to your site, making them site Authors is the best choice.', 'openlab-theme' ); ?></li>
+							<li><strong><?php esc_html_e( 'Contributor' ); ?></strong>: <?php esc_html_e( 'Someone who can write and edit their own posts, but can’t publish them.  They can save them as drafts for an Editor or Administrator to publish.', 'openlab-theme' ); ?></li>
+							<li><strong><?php esc_html_e( 'Subscriber' ); ?></strong>: <?php esc_html_e( 'Someone who can only log in and manage their profile, but they can’t post or change anything on the site.', 'openlab-theme' ); ?></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<?php wp_nonce_field( 'openlab_site_member_role_settings', 'openlab-site-member-role-settings-nonce', false ); ?>
+	</div>
+
+	<?php
+}
+
+/**
  * Gets the markup for the group site private settings in group creation/edit.
  */
 function openlab_group_site_privacy_settings_markup() {
@@ -580,6 +700,7 @@ add_action( 'groups_create_group_step_save_group-details', 'openlab_move_avatar_
 add_action( 'groups_create_group_step_save_group-details', 'openlab_save_new_group_url' );
 add_action( 'groups_create_group_step_save_site-details', 'openlab_save_group_site' );
 add_action( 'groups_create_group_step_save_site-details', 'openlab_save_group_site_settings', 20 );
+add_action( 'groups_create_group_step_save_site-details', 'openlab_save_group_site_member_role_settings', 30 );
 
 /**
  * Catches and processes group status setting.
@@ -785,6 +906,45 @@ function openlab_save_group_site_settings() {
 	}
 
 	update_blog_option( $site_id, 'blog_public', $blog_public );
+}
+
+/**
+ * Catches and processes group site privacy settings.
+ */
+function openlab_save_group_site_member_role_settings() {
+	if ( ! isset( $_POST['openlab-site-member-role-settings-nonce'] ) ) {
+		return;
+	}
+
+	check_admin_referer( 'openlab_site_member_role_settings', 'openlab-site-member-role-settings-nonce' );
+
+	$group = groups_get_current_group();
+
+	if ( openlab_get_site_id_by_group_id( $group->id ) ) {
+		$role_map = [
+			'admin'  => 'administrator',
+			'mod'    => 'editor',
+			'member' => 'author',
+		];
+
+		$site_roles = [ 'administrator', 'editor', 'author', 'contributor', 'subscriber' ];
+
+		foreach ( $role_map as $group_role => $site_role ) {
+			$role_key = 'member_role_' . $group_role;
+			if ( ! isset( $_POST[ $role_key ] ) ) {
+				continue;
+			}
+
+			$selected_site_role = $_POST[ $role_key ];
+			if ( ! in_array( $selected_site_role, $site_roles, true ) ) {
+				continue;
+			}
+
+			$role_map[ $group_role ] = $selected_site_role;
+		}
+
+		groups_update_groupmeta( $group->id, 'member_site_roles', $role_map );
+	}
 }
 
 /**
@@ -1339,6 +1499,7 @@ function openlab_group_site_settings() {
 	if ( isset( $_POST['save'] ) ) {
 		openlab_save_group_site();
 		openlab_save_group_site_settings();
+		openlab_save_group_site_member_role_settings();
 
 		bp_core_add_message( __( 'Site settings successfully saved.', 'openlab-theme' ) );
 

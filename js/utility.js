@@ -22,6 +22,7 @@
 			OpenLab.utility.sliderFocusHandler();
 			OpenLab.utility.eventValidation();
 			OpenLab.utility.refreshActivity();
+			OpenLab.utility.initMemberRoleDefinitions();
 
 						// Home page column adjustments.
 						var groupTypeWidgets = $( '#home-right .activity-list' );
@@ -518,6 +519,20 @@
 				}
 			);
 			$academicUnitSelectors.select2( 'destroy' ).select2( select2args );
+		},
+
+		initMemberRoleDefinitions: function() {
+			console.log('going');
+			$( '.member-role-definition-label' ).on(
+				'click',
+				function( e ) {
+					$clicked = $( e.target );
+					$def     = $clicked.closest( '.member-role-definition' );
+
+					$clicked.find( 'i' ).toggleClass( 'fa-caret-square-o-right' ).toggleClass( 'fa-caret-square-o-down' );
+					$clicked.closest( '.member-role-definition' ).toggleClass( 'show-definition-text' );
+				}
+			);
 		},
 
 		filterAjax: function () {
