@@ -41,9 +41,7 @@ $academic_unit_data = cboxol_get_object_academic_unit_data_for_display( array(
 				<img class="img-responsive" src ="<?php echo bp_core_fetch_avatar( array( 'item_id' => $group_id, 'object' => 'group', 'type' => 'full', 'html' => false ) ) ?>" alt="<?php echo esc_attr( $group_name ); ?>"/>
 			</div>
 
-			<?php if ( is_user_logged_in() && $bp->is_item_admin ) : ?>
-				<?php /* null */ ?>
-			<?php elseif ( is_user_logged_in() ) : ?>
+			<?php if ( is_user_logged_in() ) : ?>
 				<div id="group-action-wrapper">
 					<?php do_action( 'bp_group_header_actions' ); ?>
 				</div>
