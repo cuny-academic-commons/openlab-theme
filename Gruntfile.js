@@ -74,18 +74,6 @@ module.exports = function (grunt) {
 
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
-        htmlclean: {
-            options: {
-                unprotect: /(<[^\S\f]*\?[^\S\f]*php\b[\s\S]*)/ig,
-                protect: /(?:#|\/\/)[^\r\n]*|\/\*[\s\S]*?\*\/\n\r\n\r/ig
-            },
-            deploy: {
-                expand: true,
-                cwd: 'parts/source/',
-                src: '**/*.php',
-                dest: 'parts/'
-            }
-        },
         concat: {
             options: {
                 separator: ';'
@@ -117,13 +105,6 @@ module.exports = function (grunt) {
                 options: {
                     nospawn: true
                 }
-            },
-            core: {
-                files: ['parts/source/**/*.php'], // which files to watch
-                tasks: ['htmlclean'],
-                options: {
-                    nospawn: true
-                }
             }
         },
 				setPHPConstant: {
@@ -134,16 +115,15 @@ module.exports = function (grunt) {
 					}
 				},
     });
-    grunt.loadNpmTasks('grunt-htmlclean');
     grunt.loadNpmTasks('grunt-contrib-less');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-php-set-constant');
 
-		var taskList = ['concat', 'htmlclean', 'watch', 'less', 'setPHPConstant'];
+		var taskList = ['concat', 'watch', 'less', 'setPHPConstant'];
 		taskList = taskList.concat( colorSchemeTasks );
 
-		var defaultTasks = ['concat', 'htmlclean', 'less', 'setPHPConstant'];
+		var defaultTasks = ['concat', 'less', 'setPHPConstant'];
     grunt.registerTask('default', defaultTasks);
 };
