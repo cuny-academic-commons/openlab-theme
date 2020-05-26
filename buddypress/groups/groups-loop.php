@@ -14,6 +14,7 @@ $group_args = array(
 	'per_page'   => 12,
 	'meta_query' => array(),
 	'tax_query'  => array( 'relation' => 'AND' ),
+	'type'       => openlab_get_current_filter( 'sort' ),
 );
 
 $group_type_slug = bp_get_current_group_directory_type();
@@ -23,8 +24,8 @@ if ( ! $group_type_slug && ! empty( $_GET['group_type'] ) ) {
 
 $group_type = cboxol_get_group_type( $group_type_slug );
 
-// @todo
-$search_terms = $search_terms_raw = '';
+$search_terms     = '';
+$search_terms_raw = '';
 
 if ( ! empty( $_POST['group_search'] ) ) {
 	$search_terms_raw = $_POST['group_search'];
@@ -60,32 +61,30 @@ if ( ! empty( $academic_units ) ) {
 	}
 }
 
-if ( ! empty( $_GET['cat'] ) ) {
-	$categories = $_GET['cat'];
-}
+$category = openlab_get_current_filter( 'cat' );
+$term     = openlab_get_current_filter( 'term' );
 
 $term = isset( $_GET['term'] ) ? wp_unslash( urldecode( $_GET['term'] ) ) : '';
 
 // Set up filters
 if ( ! empty( $term ) && 'term_all' != strtolower( $term ) ) {
 	$group_args['meta_query'][] = array(
-		'key' => 'openlab_term',
+		'key'   => 'openlab_term',
 		'value' => $term,
 	);
 }
 
-if ( ! empty( $_GET['member_type'] ) && 'all' !== $_GET['member_type'] ) {
-	$member_type = wp_unslash( $_GET['member_type'] );
+$member_type = openlab_get_current_filter( 'member_type' );
+if ( $member_type && 'all' !== $member_type ) {
 	$group_args['meta_query'][] = array(
-		'key' => 'portfolio_user_type',
+		'key'   => 'portfolio_user_type',
 		'value' => $member_type,
 	);
 }
 
-if ( ! empty( $categories ) ) {
-	if ( 'cat_all' === strtolower( $categories ) ) {
-
-		$terms = get_terms( 'bp_group_categories' );
+if ( $category ) {
+	if ( 'cat_all' === $category ) {
+		$terms    = get_terms( 'bp_group_categories' );
 		$term_ids = wp_list_pluck( $terms, 'term_id' );
 	} else {
 		$term_obj = get_term_by( 'slug', $categories, 'bp_group_categories' );
@@ -94,13 +93,9 @@ if ( ! empty( $categories ) ) {
 
 	$group_args['tax_query']['group_categories'] = array(
 		'taxonomy' => 'bp_group_categories',
-		'terms' => $term_ids,
-		'field' => 'term_id',
+		'terms'    => $term_ids,
+		'field'    => 'term_id',
 	);
-}
-
-if ( ! empty( $_GET['group_sequence'] ) ) {
-	$group_args['type'] = $_GET['group_sequence'];
 }
 
 ?>

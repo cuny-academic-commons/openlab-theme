@@ -7710,6 +7710,9 @@ input[type="submit"] {
 .sidebar-mobile-dropdown .navbar.navbar-default.navbar-location-footer .main-nav-wrapper {
   border-top: 1px solid #dddddd;
 }
+.sidebar-filter-search {
+  margin-top: 16px;
+}
 .checkbox.checkbox-float {
   float: left;
   margin-top: 0;
@@ -9502,12 +9505,6 @@ body form .checkbox-list-container {
 .filter .custom-select {
   width: 100%;
   margin-bottom: 5px;
-}
-.filter .archive-search h3 {
-  margin-bottom: 7px;
-}
-.filter .archive-search #search-submit {
-  padding: 8px 3% 9px;
 }
 @media (max-width: 1199px) and (min-width: 768px) {
   .filter .custom-select select {
