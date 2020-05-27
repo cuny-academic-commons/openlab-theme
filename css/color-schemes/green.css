@@ -9372,6 +9372,12 @@ body form .checkbox-list-container {
 .sidebar-filter {
   overflow: hidden;
 }
+.sidebar-filter.sidebar-filter-open-cloneable {
+  margin-top: 8px;
+}
+.sidebar-buttons {
+  padding-bottom: 24px;
+}
 /**group archives**/
 .group-list {
   margin-top: 50px;
