@@ -1925,6 +1925,19 @@ function openlab_show_site_posts_and_comments() {
 }
 
 /**
+ * Generates the 'faculty' line that appears under group names in course directories.
+ *
+ * @param int $group_id ID of the group.
+ * @return string
+ */
+function openlab_output_course_faculty_line( $group_id ) {
+	// The world's laziest technique.
+	$list = strip_tags( openlab_get_faculty_list( $group_id ) );
+
+	return '<span class="truncate-on-the-fly" data-basevalue="35">' . $list . '</span>';
+}
+
+/**
  * Generates the info line that appears under group names in directories.
  *
  * @param int $group_id ID of the group.
@@ -2068,14 +2081,20 @@ function openlab_bp_group_site_pages( $mobile = false ) {
 	} // !empty( $group_site_settings['site_url'] )
 }
 
-function openlab_get_faculty_list() {
+function openlab_get_faculty_list( $group_id = null ) {
 	global $bp;
 
 	$faculty_list = '';
 
-	if ( isset( $bp->groups->current_group->admins ) ) {
-		$faculty_id = groups_get_current_group()->admins[0]->user_id;
-		$group_id   = bp_get_current_group_id();
+	if ( $group_id ) {
+		$group = groups_get_group( $group_id );
+	} else {
+		$group    = groups_get_current_group();
+		$group_id = $group->id;
+	}
+
+	if ( isset( $group->admins ) ) {
+		$faculty_id = $group->admins[0]->user_id;
 
 		$faculty_ids = groups_get_groupmeta( $group_id, 'group_contact', false );
 		array_unshift( $faculty_ids, $faculty_id );
