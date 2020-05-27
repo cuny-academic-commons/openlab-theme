@@ -66,7 +66,9 @@ var OLAcadUnits = ' . wp_json_encode( $academic_unit_map ) . ';
 
 				<?php get_template_part( 'parts/sidebar/filter-sort' ); ?>
 
-				<?php get_template_part( 'parts/sidebar/filter-open-cloneable' ); ?>
+				<?php if ( ! bp_is_members_directory() ) : ?>
+					<?php get_template_part( 'parts/sidebar/filter-open-cloneable' ); ?>
+				<?php endif; ?>
 			</div>
 			<input class="btn btn-primary" type="submit" onchange="document.forms['group_seq_form'].submit();" value="Submit">
 			<input class="btn btn-default" type="button" value="Reset" onClick="window.location.href = '<?php echo esc_url( $reset_url ); ?>'">

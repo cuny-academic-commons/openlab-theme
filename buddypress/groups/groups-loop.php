@@ -82,6 +82,14 @@ if ( $member_type && 'all' !== $member_type ) {
 	);
 }
 
+$is_cloneable = openlab_get_current_filter( 'is_cloneable' );
+if ( $is_cloneable ) {
+	$group_args['meta_query'][] = array(
+		'key'     => 'enable_sharing',
+		'compare' => 'EXISTS',
+	);
+}
+
 if ( $category ) {
 	if ( 'cat_all' === $category ) {
 		$terms    = get_terms( 'bp_group_categories' );
