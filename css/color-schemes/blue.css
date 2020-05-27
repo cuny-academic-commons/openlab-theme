@@ -9282,6 +9282,14 @@ body form .checkbox-list-container {
 .sidebar #sidebar-menu-wrapper.group-sidebar-subsection:first-of-type .sidebar-block {
   margin-top: 0;
 }
+.sidebar-filter-checkbox {
+  float: left;
+  margin-right: 16px;
+  width: calc(50% - 16px);
+}
+.sidebar-filter-checkbox label {
+  margin-left: 4px;
+}
 .sidebar-widget .bpeo-upcoming-event-title {
   padding-left: 0;
 }
