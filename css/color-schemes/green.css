@@ -9369,19 +9369,28 @@ body form .checkbox-list-container {
     position: relative;
   }
 }
+.sidebar-filter {
+  overflow: hidden;
+}
 /**group archives**/
 .group-list {
   margin-top: 50px;
 }
 .group-list .group-site-link {
+  display: block;
   font-size: 10pt;
-  margin-top: 4px;
+  font-weight: bold;
+  margin-top: 8px;
+  text-decoration: none;
+}
+.group-list .group-site-link:hover {
+  text-decoration: underline;
 }
 .group-list .group-item-wrapper {
   border-radius: 4px;
   border: 1px solid #dddddd;
   padding: 1.2% 4% 1.2% 1.2%;
-  height: 180px;
+  height: 210px;
   margin-bottom: 12px;
   color: #666666;
   overflow: hidden;

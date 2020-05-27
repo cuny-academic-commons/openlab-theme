@@ -2176,18 +2176,28 @@ body form{
         }
     }
 }
+.sidebar-filter {
+	overflow: hidden;
+}
 /**group archives**/
 .group-list{
     margin-top: 50px;
 	.group-site-link {
+		display: block;
 		font-size: 10pt;
-		margin-top: 4px;
+		font-weight: bold;
+		margin-top: 8px;
+		text-decoration: none;
+
+		&:hover {
+			text-decoration: underline;
+		}
 	}
     .group-item-wrapper{
         border-radius: @border-radius-base;
         border: 1px solid @10gray;
         padding: 1.2% 4% 1.2% 1.2%;
-        height: 180px;
+        height: 210px;
         margin-bottom: 12px;
         color: @60gray;
         overflow: hidden;

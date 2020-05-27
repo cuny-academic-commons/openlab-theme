@@ -133,7 +133,7 @@ if ( $category ) {
 						<div class="item-avatar alignleft col-xs-6">
 							<a href="<?php bp_group_permalink() ?>"><img class="img-responsive" src ="<?php echo esc_url( bp_core_fetch_avatar( array( 'item_id' => $group_id, 'object' => 'group', 'type' => 'full', 'html' => false ) ) ); ?>" alt="<?php echo esc_attr( bp_get_group_name() ); ?>"/></a>
 							<?php if ( $group_site_url && cboxol_site_can_be_viewed( $group_id ) ) : ?>
-								<a class="group-site-link" href="<?php echo esc_url( $group_site_url ); ?>"><?php echo esc_html( $group_type->get_label( 'group_site' ) ); ?></a>
+								<a class="group-site-link" href="<?php echo esc_url( $group_site_url ); ?>"><?php esc_html_e( 'Visit Site', 'openlab-theme' ); ?><span class="fa fa-chevron-circle-right" aria-hidden="true"></span></a>
 							<?php endif; ?>
 						</div>
 
