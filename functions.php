@@ -551,3 +551,12 @@ function openlab_braille_is_enabled() {
 	// @todo Add actual check for Braille server.
 	return function_exists( 'get_braille' ) && function_exists( '\HardG\BPBraille\braille_works' ) && \HardG\BPBraille\braille_works();
 }
+
+/**
+ * Is this the search results page?
+ *
+ * @since 1.2.0
+ */
+function openlab_is_search_results_page() {
+	return cboxol_is_brand_page( 'search-results' );
+}
