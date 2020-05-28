@@ -2844,10 +2844,25 @@ function openlab_group_directory_badges() {
 	}
 
 	echo '<div class="col-xs-18 alignright group-directory-badges">';
-	\OpenLab\Badges\Template::badge_links_directory();
+	\OpenLab\Badges\Template::badge_links( 'directory' );
 	echo '</div>';
 }
 add_action( 'openlab_theme_after_group_group_directory', 'openlab_group_directory_badges' );
+
+/**
+ * Outputs the badge markup for single group pages.
+ *
+ * @since 1.2.0
+ */
+function openlab_group_single_badges() {
+	if ( ! defined( 'OLBADGES_VERSION' ) ) {
+		return;
+	}
+
+	echo '<div class="group-single-badges">';
+	\OpenLab\Badges\Template::badge_links( 'single' );
+	echo '</div>';
+}
 
 /**
  * Checks whether a group has badges.
