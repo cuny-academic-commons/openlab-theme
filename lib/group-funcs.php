@@ -2832,3 +2832,38 @@ function openlab_group_avatar_script_data( $script_data ) {
 	return $script_data;
 }
 add_filter( 'bp_attachment_avatar_script_data', 'openlab_group_avatar_script_data' );
+
+/**
+ * Outputs the badge markup for the group directory.
+ *
+ * @since 1.2.0
+ */
+function openlab_group_directory_badges() {
+	if ( ! defined( 'OLBADGES_VERSION' ) ) {
+		return;
+	}
+
+	echo '<div class="col-xs-18 alignright group-directory-badges">';
+	\OpenLab\Badges\Template::badge_links_directory();
+	echo '</div>';
+}
+add_action( 'openlab_theme_after_group_group_directory', 'openlab_group_directory_badges' );
+
+/**
+ * Checks whether a group has badges.
+ *
+ * @since 1.2.0
+ *
+ * @param int $group_id Group ID.
+ * @return bool
+ */
+function openlab_group_has_badges( $group_id ) {
+	if ( ! defined( 'OLBADGES_VERSION' ) ) {
+		return false;
+	}
+
+	$badge_group  = new \OpenLab\Badges\Group( $group_id );
+	$group_badges = $badge_group->get_badges();
+
+	return ! empty( $group_badges );
+}

@@ -2189,6 +2189,16 @@ body form{
 /**group archives**/
 .group-list{
     margin-top: 50px;
+	.group-directory-badges {
+		position: absolute;
+		bottom: 6px;
+		padding-left: 27%;
+		width: 100%;
+
+		@media (max-width: @screen-md-max){
+			padding-left: 26%;
+		}
+	}
 	.group-site-link {
 		display: block;
 		font-size: 10pt;
@@ -2200,14 +2210,17 @@ body form{
 			text-decoration: underline;
 		}
 	}
+	.group-has-badges .group-item-wrapper {
+		padding-bottom: 36px;
+	}
     .group-item-wrapper{
         border-radius: @border-radius-base;
         border: 1px solid @10gray;
         padding: 1.2% 4% 1.2% 1.2%;
         height: 210px;
+		position: relative;
         margin-bottom: 12px;
         color: @60gray;
-        overflow: hidden;
         h1,
         h3,
         h4,
@@ -2229,6 +2242,7 @@ body form{
             color: @80gray;
             margin-bottom: 12px;
         }
+
         .info-line{
             font-size: 12px;
             margin-bottom: 6px;
