@@ -42,6 +42,7 @@ add_action( 'bp_after_group_details_admin', 'openlab_group_term_edit_markup', 4 
 add_action( 'bp_after_group_details_admin', 'openlab_group_contact_field', 5 );
 add_action( 'bp_after_group_details_admin', 'openlab_course_information_edit_panel', 8 );
 add_action( 'bp_after_group_details_admin', 'openlab_group_privacy_settings_markup', 12 );
+add_action( 'bp_after_group_details_admin', 'openlab_group_badges_edit_panel', 14 );
 
 
 /**
@@ -2502,6 +2503,29 @@ function openlab_course_information_save( BP_Groups_Group $group ) {
 	}
 }
 add_action( 'groups_group_after_save', 'openlab_course_information_save' );
+
+/**
+ * Markup for the Badges panel when editing a group.
+ */
+function openlab_group_badges_edit_panel() {
+	if ( ! defined( 'OLBADGES_VERSION' ) ) {
+		return;
+	}
+
+	if ( ! current_user_can( 'grant_badges' ) ) {
+		return;
+	}
+
+	?>
+
+	<div class="panel panel-default">
+		<div class="panel-heading"><?php esc_html_e( 'Badges', 'openlab-theme' ); ?></div>
+		<div class="panel-body">
+			<?php \OpenLab\Badges\Template::group_admin_markup(); ?>
+		</div>
+	</div><!--.panel-->
+	<?php
+}
 
 function openlab_group_academic_units_edit_markup() {
 	$selected_academic_units = array();
