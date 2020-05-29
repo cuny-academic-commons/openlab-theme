@@ -373,7 +373,7 @@ openlab_group_admin_js_data( $group_type );
 			<div class="bp-widget">
 				<h4><?php _e( 'Members', 'openlab-theme' ); ?></h4>
 
-				<?php if ( bp_group_has_members( 'per_page=15&exclude_banned=0' ) ) : ?>
+				<?php if ( bp_group_has_members( 'per_page=48&exclude_banned=0' ) ) : ?>
 
 					<?php if ( bp_group_member_needs_pagination() ) : ?>
 
