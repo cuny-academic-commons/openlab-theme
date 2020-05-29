@@ -2172,15 +2172,35 @@ body form{
 		}
 	}
 }
-.sidebar-filter-checkbox {
-	float: left;
-	margin-right: 16px;
-	width: calc(50% - 16px);
+.sidebar-filter-open-cloneable {
+	.sidebar-filter-checkbox {
+		float: left;
+		margin-right: 16px;
+		width: calc(50% - 16px);
 
+		label {
+			margin-left: 4px;
+		}
+	}
+}
+
+.sidebar-filter-checkbox {
 	label {
+		font-weight: normal;
 		margin-left: 4px;
 	}
 }
+
+.sidebar-filter-badges {
+	border-top: 1px solid #ccc;
+	margin-top: 6px;
+	padding-top: 12px;
+
+	.form-group {
+		margin-bottom: 0;
+	}
+}
+
 .sidebar-widget {
 	.bpeo-upcoming-event-title {
 		padding-left: 0;

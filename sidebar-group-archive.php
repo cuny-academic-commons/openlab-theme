@@ -69,6 +69,10 @@ var OLAcadUnits = ' . wp_json_encode( $academic_unit_map ) . ';
 				<?php if ( ! bp_is_members_directory() ) : ?>
 					<?php get_template_part( 'parts/sidebar/filter-open-cloneable' ); ?>
 				<?php endif; ?>
+
+				<?php if ( ! bp_is_members_directory() ) : ?>
+					<?php get_template_part( 'parts/sidebar/filter-badges' ); ?>
+				<?php endif; ?>
 			</div>
 
 			<div class="sidebar-buttons">

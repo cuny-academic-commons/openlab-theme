@@ -381,6 +381,10 @@ function openlab_get_current_filter( $param ) {
 			$value = ! empty( $_GET['is_cloneable'] );
 		break;
 
+		case 'badges' :
+			$value = isset( $_GET['badges'] ) ? array_map( 'intval', $_GET['badges'] ) : [];
+		break;
+
 		default :
 			$value = isset( $_GET[ $param ] ) ? wp_unslash( $_GET[ $param ] ) : '';
 		break;
