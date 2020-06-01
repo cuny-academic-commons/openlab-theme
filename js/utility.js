@@ -522,7 +522,6 @@
 		},
 
 		initMemberRoleDefinitions: function() {
-			console.log('going');
 			$( '.member-role-definition-label' ).on(
 				'click',
 				function( e ) {

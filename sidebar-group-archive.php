@@ -1,6 +1,6 @@
 <?php
-global $bp, $wp_query;
-$group_type = bp_get_current_group_directory_type();
+
+$group_type        = bp_get_current_group_directory_type();
 $group_type_object = cboxol_get_group_type( $group_type );
 if ( is_wp_error( $group_type_object ) ) {
 	$group_type_object = null;
@@ -65,9 +65,20 @@ var OLAcadUnits = ' . wp_json_encode( $academic_unit_map ) . ';
 				<?php endif; ?>
 
 				<?php get_template_part( 'parts/sidebar/filter-sort' ); ?>
+
+				<?php if ( ! bp_is_members_directory() ) : ?>
+					<?php get_template_part( 'parts/sidebar/filter-open-cloneable' ); ?>
+				<?php endif; ?>
+
+				<?php if ( ! bp_is_members_directory() ) : ?>
+					<?php get_template_part( 'parts/sidebar/filter-badges' ); ?>
+				<?php endif; ?>
 			</div>
-			<input class="btn btn-primary" type="submit" onchange="document.forms['group_seq_form'].submit();" value="Submit">
-			<input class="btn btn-default" type="button" value="Reset" onClick="window.location.href = '<?php echo esc_url( $reset_url ); ?>'">
+
+			<div class="sidebar-buttons">
+				<input class="btn btn-primary" type="submit" onchange="document.forms['group_seq_form'].submit();" value="<?php esc_attr_e( 'Submit', 'openlab-theme' ); ?>">
+				<input class="btn btn-default" type="button" value="<?php esc_attr_e( 'Reset', 'openlab-theme' ); ?>" onClick="window.location.href = '<?php echo esc_url( $reset_url ); ?>'">
+			</div>
 		</div><!--filter-->
 	</form>
 </div>

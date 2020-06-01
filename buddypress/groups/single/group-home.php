@@ -49,6 +49,8 @@ $academic_unit_data = cboxol_get_object_academic_unit_data_for_display(
 				);
 				?>
 				<img class="img-responsive" src="<?php echo esc_attr( $group_avatar ); ?>" alt="<?php echo esc_attr( $group_name ); ?>"/>
+
+				<?php openlab_group_single_badges(); ?>
 			</div>
 
 			<?php if ( is_user_logged_in() ) : ?>

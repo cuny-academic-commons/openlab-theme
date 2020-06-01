@@ -42,6 +42,7 @@ add_action( 'bp_after_group_details_admin', 'openlab_group_term_edit_markup', 4 
 add_action( 'bp_after_group_details_admin', 'openlab_group_contact_field', 5 );
 add_action( 'bp_after_group_details_admin', 'openlab_course_information_edit_panel', 8 );
 add_action( 'bp_after_group_details_admin', 'openlab_group_privacy_settings_markup', 12 );
+add_action( 'bp_after_group_details_admin', 'openlab_group_badges_edit_panel', 14 );
 
 
 /**
@@ -1925,6 +1926,19 @@ function openlab_show_site_posts_and_comments() {
 }
 
 /**
+ * Generates the 'faculty' line that appears under group names in course directories.
+ *
+ * @param int $group_id ID of the group.
+ * @return string
+ */
+function openlab_output_course_faculty_line( $group_id ) {
+	// The world's laziest technique.
+	$list = strip_tags( openlab_get_faculty_list( $group_id ) );
+
+	return '<span class="truncate-on-the-fly" data-basevalue="35">' . $list . '</span>';
+}
+
+/**
  * Generates the info line that appears under group names in directories.
  *
  * @param int $group_id ID of the group.
@@ -2068,14 +2082,20 @@ function openlab_bp_group_site_pages( $mobile = false ) {
 	} // !empty( $group_site_settings['site_url'] )
 }
 
-function openlab_get_faculty_list() {
+function openlab_get_faculty_list( $group_id = null ) {
 	global $bp;
 
 	$faculty_list = '';
 
-	if ( isset( $bp->groups->current_group->admins ) ) {
-		$faculty_id = groups_get_current_group()->admins[0]->user_id;
-		$group_id   = bp_get_current_group_id();
+	if ( $group_id ) {
+		$group = groups_get_group( $group_id );
+	} else {
+		$group    = groups_get_current_group();
+		$group_id = $group->id;
+	}
+
+	if ( isset( $group->admins ) ) {
+		$faculty_id = $group->admins[0]->user_id;
 
 		$faculty_ids = groups_get_groupmeta( $group_id, 'group_contact', false );
 		array_unshift( $faculty_ids, $faculty_id );
@@ -2484,6 +2504,29 @@ function openlab_course_information_save( BP_Groups_Group $group ) {
 }
 add_action( 'groups_group_after_save', 'openlab_course_information_save' );
 
+/**
+ * Markup for the Badges panel when editing a group.
+ */
+function openlab_group_badges_edit_panel() {
+	if ( ! defined( 'OLBADGES_VERSION' ) ) {
+		return;
+	}
+
+	if ( ! current_user_can( 'grant_badges' ) ) {
+		return;
+	}
+
+	?>
+
+	<div class="panel panel-default">
+		<div class="panel-heading"><?php esc_html_e( 'Badges', 'openlab-theme' ); ?></div>
+		<div class="panel-body">
+			<?php \OpenLab\Badges\Template::group_admin_markup(); ?>
+		</div>
+	</div><!--.panel-->
+	<?php
+}
+
 function openlab_group_academic_units_edit_markup() {
 	$selected_academic_units = array();
 
@@ -2789,3 +2832,53 @@ function openlab_group_avatar_script_data( $script_data ) {
 	return $script_data;
 }
 add_filter( 'bp_attachment_avatar_script_data', 'openlab_group_avatar_script_data' );
+
+/**
+ * Outputs the badge markup for the group directory.
+ *
+ * @since 1.2.0
+ */
+function openlab_group_directory_badges() {
+	if ( ! defined( 'OLBADGES_VERSION' ) ) {
+		return;
+	}
+
+	echo '<div class="col-xs-18 alignright group-directory-badges">';
+	\OpenLab\Badges\Template::badge_links( 'directory' );
+	echo '</div>';
+}
+add_action( 'openlab_theme_after_group_group_directory', 'openlab_group_directory_badges' );
+
+/**
+ * Outputs the badge markup for single group pages.
+ *
+ * @since 1.2.0
+ */
+function openlab_group_single_badges() {
+	if ( ! defined( 'OLBADGES_VERSION' ) ) {
+		return;
+	}
+
+	echo '<div class="group-single-badges">';
+	\OpenLab\Badges\Template::badge_links( 'single' );
+	echo '</div>';
+}
+
+/**
+ * Checks whether a group has badges.
+ *
+ * @since 1.2.0
+ *
+ * @param int $group_id Group ID.
+ * @return bool
+ */
+function openlab_group_has_badges( $group_id ) {
+	if ( ! defined( 'OLBADGES_VERSION' ) ) {
+		return false;
+	}
+
+	$badge_group  = new \OpenLab\Badges\Group( $group_id );
+	$group_badges = $badge_group->get_badges();
+
+	return ! empty( $group_badges );
+}
