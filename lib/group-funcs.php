@@ -2166,7 +2166,7 @@ function openlab_get_group_site_settings( $group_id ) {
 function openlab_custom_group_excerpts( $excerpt, $group ) {
 	global $post, $bp;
 
-	if ( bp_is_groups_directory() || bp_is_user_groups() || $bp->current_action == 'invites' ) {
+	if ( bp_is_groups_directory() || bp_is_user_groups() || $bp->current_action == 'invites' || openlab_is_search_results_page() ) {
 		$excerpt = strip_tags( $excerpt );
 	}
 
