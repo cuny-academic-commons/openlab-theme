@@ -10,7 +10,6 @@ $is_cloneable = openlab_get_current_filter( 'cloneable' );
 $show_open = false;
 
 // Cloneable should not appear if the content type is not cloneable.
-// @todo search-results
 $show_cloneable = false;
 if ( bp_is_groups_directory() ) {
 	$group_type        = bp_get_current_group_directory_type();
@@ -18,6 +17,8 @@ if ( bp_is_groups_directory() ) {
 	if ( ! is_wp_error( $group_type_object ) && $group_type_object->get_can_be_cloned() ) {
 		$show_cloneable = true;
 	}
+} elseif ( openlab_is_search_results_page() ) {
+	$show_cloneable = true;
 }
 
 // Don't render the element if there's nothing to show.

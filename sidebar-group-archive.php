@@ -45,6 +45,10 @@ var OLAcadUnits = ' . wp_json_encode( $academic_unit_map ) . ';
 			<p><?php esc_html_e( 'Narrow down your results using some of the filters below.', 'openlab-theme' ); ?></p>
 
 			<div id="sidebarCustomSelect" class="custom-select-parent">
+				<?php if ( openlab_is_search_results_page() ) : ?>
+					<?php get_template_part( 'parts/sidebar/filter-group-type' ); ?>
+				<?php endif; ?>
+
 				<?php foreach ( $academic_unit_types as $academic_unit_type ) : ?>
 					<?php
 					set_query_var( 'academic_unit_type', $academic_unit_type->get_slug() );

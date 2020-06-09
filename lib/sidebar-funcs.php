@@ -385,6 +385,27 @@ function openlab_get_current_filter( $param ) {
 			$value = isset( $_GET['badges'] ) ? array_map( 'intval', $_GET['badges'] ) : [];
 		break;
 
+		case 'group-types' :
+			$all_group_types = cboxol_get_group_types();
+
+			if ( empty( $_GET['group-types'] ) || ! is_array( $_GET['group-types'] ) ) {
+				$value = array_map(
+					function( $group_type ) {
+						return $group_type->get_slug();
+					},
+					$all_group_types
+				);
+			} else {
+				$value = array_filter(
+					wp_unslash( $_GET['group-types'] ),
+					function( $slug ) {
+						$type = cboxol_get_group_type( $slug );
+						return ! is_wp_error( $type );
+					}
+				);
+			}
+		break;
+
 		default :
 			$value = isset( $_GET[ $param ] ) ? wp_unslash( $_GET[ $param ] ) : '';
 		break;
