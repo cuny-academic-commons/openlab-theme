@@ -584,9 +584,6 @@
             margin: 0 auto;
             .navbar-right{
                 &.search{
-                    input[type="text"]{
-                        width: 43%;
-                    }
                     .btn{
                         height: 34px;
                         padding: 0 2%;
@@ -656,7 +653,11 @@
             .form-group{
                 margin-left: 18px;
                 padding: 5px 0;
+				width: 100%;
             }
+			#search-terms-desktop-header {
+				width: 258px;
+			}
             @media (max-width: @screen-xs-max){
                 position: relative;
                 top: 0;
@@ -667,10 +668,6 @@
                         display: inline-block;
                         vertical-align: top;
                         &.search-terms-mobile{
-                            width: 50%;
-                        }
-                        &.search-which-mobile{
-                            width: 32%;
                             height: 35px;
                         }
                     }
