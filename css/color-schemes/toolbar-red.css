@@ -7711,9 +7711,6 @@ button.oplb-bs .close {
 .oplb-bs.navbar-default .container-fluid {
   margin: 0 auto;
 }
-.oplb-bs.navbar-default .container-fluid .navbar-right.search input[type="text"] {
-  width: 43%;
-}
 .oplb-bs.navbar-default .container-fluid .navbar-right.search .btn {
   height: 34px;
   padding: 0 2%;
@@ -7777,6 +7774,10 @@ button.oplb-bs .close {
 .oplb-bs .search .search-form-wrapper .form-group {
   margin-left: 18px;
   padding: 5px 0;
+  width: 100%;
+}
+.oplb-bs .search .search-form-wrapper #search-terms-desktop-header {
+  width: 258px;
 }
 @media (max-width: 767px) {
   .oplb-bs .search .search-form-wrapper {
@@ -7792,10 +7793,6 @@ button.oplb-bs .close {
     vertical-align: top;
   }
   .oplb-bs .search .search-form-wrapper .form-group .form-control.search-terms-mobile {
-    width: 50%;
-  }
-  .oplb-bs .search .search-form-wrapper .form-group .form-control.search-which-mobile {
-    width: 32%;
     height: 35px;
   }
 }
