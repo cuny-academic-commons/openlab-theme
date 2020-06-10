@@ -169,6 +169,7 @@ openlab_group_admin_js_data( $group_type );
 							</li>
 							<?php $rli++; ?>
 						<?php endforeach; ?>
+						<?php wp_nonce_field( 'group_related_link_settings', 'group-related-link-settings-nonce' ); ?>
 					</ul>
 				</div>
 			</div>
