@@ -16,13 +16,23 @@
 				</label>
 			</p>
 
-			<p class="ass-welcome-email-field<?php if ( $welcome_email_enabled != 'yes' ) echo ' hide-if-js'; ?>">
+			<p class="ass-welcome-email-field
+			<?php
+			if ( $welcome_email_enabled != 'yes' ) {
+				echo ' hide-if-js';}
+			?>
+			">
 				<label for="ass-welcome-email-subject"><?php esc_html_e( 'Email Subject:', 'commons-in-a-box' ); ?></label>
 				<input class="form-control" value="<?php echo isset( $welcome_email['subject'] ) ? $welcome_email['subject'] : ''; ?>" type="text" name="ass_welcome_email[subject]" id="ass-welcome-email-subject" />
 			</p>
 
-			<p class="ass-welcome-email-field<?php if ( $welcome_email_enabled != 'yes' ) echo ' hide-if-js'; ?>">
-				<label for="ass-welcome-email-content"><?php esc_html_e( 'Email Content:', 'commons-in-a-box' ?></label>
+			<p class="ass-welcome-email-field
+			<?php
+			if ( $welcome_email_enabled != 'yes' ) {
+				echo ' hide-if-js';}
+			?>
+			">
+				<label for="ass-welcome-email-content"><?php esc_html_e( 'Email Content:', 'commons-in-a-box'; ?></label>
 				<textarea class="form-control" name="ass_welcome_email[content]" id="ass-welcome-email-content"><?php echo isset( $welcome_email['content'] ) ? $welcome_email['content'] : ''; ?></textarea>
 			</p>
 

@@ -4,12 +4,12 @@
  *
  * */
 	do_action( 'bp_before_member_settings_template' );
-	?>
+?>
 	<?php echo openlab_submenu_markup(); ?>
 
 	<div id="item-body" role="main">
 
-		<?php do_action( 'bp_template_content' ) ?>
+		<?php do_action( 'bp_template_content' ); ?>
 
 		<form action="<?php echo bp_displayed_user_domain() . bp_get_settings_slug() . '/delete-account'; ?>" name="account-delete-form" id="account-delete-form" class="standard-form" method="post">
 			<div class="bp-template-notice error margin-bottom">
@@ -27,11 +27,13 @@
 					</div>
 			<?php do_action( 'bp_members_delete_account_before_submit' ); ?>
 			<div class="submit">
-				<input type="submit" disabled="disabled" value="<?php _e( 'Delete My Account', 'buddypress' ) ?>" id="delete-account-button" class="btn btn-primary btn-margin btn-margin-top" name="delete-account-button" />
+				<input type="submit" disabled="disabled" value="<?php _e( 'Delete My Account', 'buddypress' ); ?>" id="delete-account-button" class="btn btn-primary btn-margin btn-margin-top" name="delete-account-button" />
 			</div>
 
-	<?php do_action( 'bp_members_delete_account_after_submit' );
-	wp_nonce_field( 'delete-account' ); ?>
+	<?php
+	do_action( 'bp_members_delete_account_after_submit' );
+	wp_nonce_field( 'delete-account' );
+	?>
 		</form>
 
 	<?php do_action( 'bp_after_member_body' ); ?>

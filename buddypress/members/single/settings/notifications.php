@@ -9,7 +9,7 @@ do_action( 'bp_before_member_settings_template' );
 
 <div id="item-body" role="main">
 
-	<?php do_action( 'bp_template_content' ) ?>
+	<?php do_action( 'bp_template_content' ); ?>
 
 	<form action="<?php echo bp_displayed_user_domain() . bp_get_settings_slug() . '/notifications'; ?>" method="post" class="standard-form form-panel" id="settings-form">
 
@@ -28,7 +28,8 @@ do_action( 'bp_before_member_settings_template' );
 			<input type="submit" name="submit" value="<?php _e( 'Save Changes', 'buddypress' ); ?>" id="submit" class="auto btn btn-primary btn-margin btn-margin-top" />
 		</div>
 
-		<?php do_action( 'bp_members_notification_settings_after_submit' );
+		<?php
+		do_action( 'bp_members_notification_settings_after_submit' );
 		wp_nonce_field( 'bp_settings_notifications' );
 		?>
 

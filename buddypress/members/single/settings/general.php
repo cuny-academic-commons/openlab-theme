@@ -11,18 +11,18 @@ do_action( 'bp_before_member_settings_template' );
 
 <div id="item-body" role="main">
 
-	<?php do_action( 'bp_template_content' ) ?>
+	<?php do_action( 'bp_template_content' ); ?>
 
 	<form action="<?php echo bp_displayed_user_domain() . bp_get_settings_slug() . '/general'; ?>" method="post" class="standard-form form-panel" id="settings-form">
 
 		<div class="panel panel-default">
 			<div class="panel-heading"><?php esc_html_e( 'Account Settings', 'commons-in-a-box' ); ?></div>
 				<div class="panel-body">
-	            	<?php do_action( 'template_notices' ); ?>
+					<?php do_action( 'template_notices' ); ?>
 
 		<div class="form-group settings-section username-section">
 			<label for="username">Username</label>
-			<input class="form-control" type="text" id="username" disabled="disabled" value="<?php bp_displayed_user_username() ?>" />
+			<input class="form-control" type="text" id="username" disabled="disabled" value="<?php bp_displayed_user_username(); ?>" />
 			<p class="description"><?php esc_html_e( 'Your username cannot be changed.', 'commons-in-a-box' ); ?></p>
 		</div>
 
@@ -36,7 +36,7 @@ do_action( 'bp_before_member_settings_template' );
 			<input class="form-control" type="password" name="pwd" id="pwd" size="16" value="" class="settings-input small" />
 
 			<?php
-			$account_type = openlab_get_displayed_user_account_type();
+			$account_type      = openlab_get_displayed_user_account_type();
 			$include_acct_type = in_array( $account_type, array( 'Student', 'Alumni' ) ) ? ' account type, ' : ' ';
 			?>
 
@@ -79,7 +79,8 @@ do_action( 'bp_before_member_settings_template' );
 			<input class="btn btn-primary btn-margin btn-margin-top" type="submit" name="submit" value="<?php esc_html_e( 'Save Changes', 'commons-in-a-box' ); ?>" id="submit" class="auto" />
 		</div>
 
-		<?php do_action( 'bp_core_general_settings_after_submit' );
+		<?php
+		do_action( 'bp_core_general_settings_after_submit' );
 		wp_nonce_field( 'bp_settings_general' );
 		?>
 	</form>

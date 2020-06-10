@@ -12,4 +12,5 @@
 
 <?php elseif ( bp_is_group_membership_request() ) : ?>
 	<?php bp_get_template_part( 'groups/single/request-membership.php' ); ?>
-<?php endif;
+	<?php
+endif;

@@ -3,13 +3,13 @@
 
 	// instanciating the template will do the heavy lifting with all the superglobal variables
 	$template = new BP_Group_Documents_Template();
-	?>
+?>
 
 	<div id="bp-group-documents">
 
-		<?php do_action( 'template_notices' ) // (error/success feedback)  ?>
+		<?php do_action( 'template_notices' ); // (error/success feedback) ?>
 
-		<?php // -----------------------------------------------------------------------LIST VIEW--  ?>
+		<?php // -----------------------------------------------------------------------LIST VIEW-- ?>
 
 		<?php if ( $template->document_list && count( $template->document_list ) >= 1 ) { ?>
 
@@ -20,7 +20,12 @@
 						<select name="category">
 							<option value="" ><?php echo __( 'All', 'bp-group-documents' ); ?></option>
 							<?php foreach ( $template->get_group_categories() as $category ) { ?>
-								<option value="<?php echo $category->term_id; ?>" <?php if ( $template->category == $category->term_id ) { echo 'selected="selected"';} ?>><?php echo $category->name; ?></option>
+								<option value="<?php echo $category->term_id; ?>" 
+														  <?php
+															if ( $template->category == $category->term_id ) {
+																echo 'selected="selected"';}
+															?>
+								><?php echo $category->name; ?></option>
 							<?php } ?>
 						</select>
 						<input type="submit" class="button" value="<?php echo __( 'Go', 'bp-group-documents' ); ?>" />
@@ -35,9 +40,24 @@
 						<form id="bp-group-documents-sort-form" method="get" action="<?php echo $template->action_link; ?>">
 							<?php _e( 'Order by:', 'bp-group-documents' ); ?>
 							<select name="order" class="form-control">
-								<option value="newest" <?php if ( 'newest' == $template->order ) { echo 'selected="selected"';} ?>><?php _e( 'Newest', 'bp-group-documents' ); ?></option>
-								<option value="alpha" <?php if ( 'alpha' == $template->order ) { echo 'selected="selected"';} ?>><?php _e( 'Alphabetical', 'bp-group-documents' ); ?></option>
-								<option value="popular" <?php if ( 'popular' == $template->order ) { echo 'selected="selected"';} ?>><?php _e( 'Most Popular', 'bp-group-documents' ); ?></option>
+								<option value="newest" 
+								<?php
+								if ( 'newest' == $template->order ) {
+									echo 'selected="selected"';}
+								?>
+								><?php _e( 'Newest', 'bp-group-documents' ); ?></option>
+								<option value="alpha" 
+								<?php
+								if ( 'alpha' == $template->order ) {
+									echo 'selected="selected"';}
+								?>
+								><?php _e( 'Alphabetical', 'bp-group-documents' ); ?></option>
+								<option value="popular" 
+								<?php
+								if ( 'popular' == $template->order ) {
+									echo 'selected="selected"';}
+								?>
+								><?php _e( 'Most Popular', 'bp-group-documents' ); ?></option>
 							</select>
 							<input type="submit" class="button" value="<?php _e( 'Go', 'bp-group-documents' ); ?>" />
 						</form>
@@ -53,7 +73,12 @@
 						$document = new BP_Group_Documents( $document_params['id'], $document_params );
 						?>
 
-						<li class="list-group-item <?php if ( ++$count % 2 ) { echo ' alt';} ?>" >
+						<li class="list-group-item 
+						<?php
+						if ( ++$count % 2 ) {
+							echo ' alt';}
+						?>
+						" >
 
 							<?php
 							// show edit and delete options if user is privileged
@@ -70,7 +95,10 @@
 							echo '</div>';
 							?>
 
-							<?php if ( get_option( 'bp_group_documents_display_icons' ) ) { $document->icon();} ?>
+							<?php
+							if ( get_option( 'bp_group_documents_display_icons' ) ) {
+								$document->icon();}
+							?>
 
 							<a class="group-documents-title" id="group-document-link-<?php echo $document->id; ?>" href="<?php $document->url(); ?>" target="_blank"><?php echo esc_html( stripslashes( $document->name ) ); ?>
 
@@ -78,7 +106,8 @@
 								if ( get_option( 'bp_group_documents_display_file_size' ) ) {
 									echo ' <span class="group-documents-filesize">(' . get_file_size( $document ) . ')</span>';
 								}
-								?></a> &nbsp;
+								?>
+								</a> &nbsp;
 
 							<span class="group-documents-meta"><?php printf( __( 'Uploaded by %1$s on %2$s', 'bp-group-documents' ), bp_core_get_userlink( $document->user_id ), date( get_option( 'date_format' ), $document->created_ts ) ); ?></span>
 
@@ -89,12 +118,12 @@
 
 							echo '</li>';
 					}
-						?>
+					?>
 				</ul>
 
 			<?php } else { ?>
 				<div id="message" class="info">
-					<p class="bold"><?php _e( 'There are no files to view.', 'commons-in-a-box' ) ?></p>
+					<p class="bold"><?php _e( 'There are no files to view.', 'commons-in-a-box' ); ?></p>
 				</div>
 
 			<?php } ?>
@@ -113,7 +142,7 @@
 				<?php } ?>
 			</div>
 
-			<?php // -------------------------------------------------------------------DETAIL VIEW--   ?>
+			<?php // -------------------------------------------------------------------DETAIL VIEW-- ?>
 
 			<?php if ( $template->show_detail ) { ?>
 
@@ -144,7 +173,7 @@
 
 								<?php if ( $template->operation == 'add' ) { ?>
 
-									<input type="hidden" name="MAX_FILE_SIZE" value="<?php echo return_bytes( ini_get( 'post_max_size' ) ) ?>" />
+									<input type="hidden" name="MAX_FILE_SIZE" value="<?php echo return_bytes( ini_get( 'post_max_size' ) ); ?>" />
 									<label><?php _e( 'Choose File:', 'bp-group-documents' ); ?></label>
 									<div class="form-control type-file-wrapper">
 										<input type="file" name="bp_group_documents_file" class="bp-group-documents-file" />
@@ -153,14 +182,19 @@
 
 								<?php if ( BP_GROUP_DOCUMENTS_FEATURED ) { ?>
 									<div class="checkbox">
-										<label class="bp-group-documents-featured-label"><input type="checkbox" name="bp_group_documents_featured" class="bp-group-documents-featured" value="1" <?php if ( $template->featured ) { echo 'checked="checked"';} ?> > <?php esc_html_e( 'Featured File', 'commons-in-a-box' ); ?></label>
+										<label class="bp-group-documents-featured-label"><input type="checkbox" name="bp_group_documents_featured" class="bp-group-documents-featured" value="1" 
+										<?php
+										if ( $template->featured ) {
+											echo 'checked="checked"';}
+										?>
+										 > <?php esc_html_e( 'Featured File', 'commons-in-a-box' ); ?></label>
 									</div>
 								<?php } ?>
 
 								<div id="document-detail-clear" class="clear"></div>
 								<div class="document-info">
 									<label><?php _e( 'Display Name:', 'bp-group-documents' ); ?></label>
-									<input type="text" name="bp_group_documents_name" id="bp-group-documents-name" class="form-control" value="<?php echo $template->name ?>" />
+									<input type="text" name="bp_group_documents_name" id="bp-group-documents-name" class="form-control" value="<?php echo $template->name; ?>" />
 									<?php if ( BP_GROUP_DOCUMENTS_SHOW_DESCRIPTIONS ) { ?>
 										<label><?php _e( 'Description:', 'bp-group-documents' ); ?></label>
 										<textarea name="bp_group_documents_description" id="bp-group-documents-description" class="form-control"><?php echo $template->description; ?></textarea>
@@ -178,7 +212,12 @@
 								<div class="bp-group-documents-category-list">
 									<ul class="inline-element-list">
 										<?php foreach ( $template->get_group_categories( false ) as $category ) { ?>
-											<li><input type="checkbox" name="bp_group_documents_categories[]" value="<?php echo $category->term_id; ?>" <?php if ( $template->doc_in_category( $category->term_id ) ) { echo 'checked="checked"';} ?> /><?php echo $category->name; ?></li>
+											<li><input type="checkbox" name="bp_group_documents_categories[]" value="<?php echo $category->term_id; ?>" 
+																																<?php
+																																if ( $template->doc_in_category( $category->term_id ) ) {
+																																	echo 'checked="checked"';}
+																																?>
+											 /><?php echo $category->name; ?></li>
 										<?php } ?>
 									</ul>
 								</div>

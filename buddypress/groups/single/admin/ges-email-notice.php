@@ -7,17 +7,17 @@
 			<b><?php esc_html_e( 'Members will receive the notice regardless of email settings, so please use with caution', 'commons-in-a-box' ); ?></b>.</p>
 
 			<p>
-				<label for="ass-admin-notice-subject"><?php esc_html_e( 'Email Subject:', 'commons-in-a-box' ) ?></label>
+				<label for="ass-admin-notice-subject"><?php esc_html_e( 'Email Subject:', 'commons-in-a-box' ); ?></label>
 				<input type="text" class="form-control" name="ass_admin_notice_subject" id="ass-admin-notice-subject" value="" />
 			</p>
 
 			<p>
-				<label for="ass-admin-notice-textarea"><?php esc_html_e( 'Email Content:', 'commons-in-a-box' ) ?></label>
+				<label for="ass-admin-notice-textarea"><?php esc_html_e( 'Email Content:', 'commons-in-a-box' ); ?></label>
 				<textarea value="" class="form-control" name="ass_admin_notice" id="ass-admin-notice-textarea"></textarea>
 			</p>
 
 			<p>
-				<input class="btn btn-primary" type="submit" name="ass_admin_notice_send" value="<?php esc_html_e( 'Send Notice', 'commons-in-a-box' ) ?>" />
+				<input class="btn btn-primary" type="submit" name="ass_admin_notice_send" value="<?php esc_html_e( 'Send Notice', 'commons-in-a-box' ); ?>" />
 			</p>
 		</div>
 	</div>

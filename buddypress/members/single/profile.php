@@ -13,35 +13,37 @@
 
 <div class="profile" role="main">
 
-<?php switch ( bp_current_action() ) :
+<?php
+switch ( bp_current_action() ) :
 
 	// Edit
-	case 'edit'   :
+	case 'edit':
 		bp_get_template_part( 'members/single/profile/edit' );
 		break;
 
 	// Change Avatar
-	case 'change-avatar' :
+	case 'change-avatar':
 		bp_get_template_part( 'members/single/profile/change-avatar' );
 		break;
 
 	// Compose
-	case 'public' :
-
+	case 'public':
 		// Display XProfile
 		if ( bp_is_active( 'xprofile' ) ) {
 			bp_get_template_part( 'members/single/profile/profile-loop' );
 		} // Display WordPress profile (fallback)
-		else { 			bp_get_template_part( 'members/single/profile/profile-wp' );
+		else {
+			bp_get_template_part( 'members/single/profile/profile-wp' );
 		}
 
 		break;
 
 	// Any other
-	default :
+	default:
 		bp_get_template_part( 'members/single/plugins' );
 		break;
-endswitch; ?>
+endswitch;
+?>
 </div><!-- .profile -->
 
 <?php do_action( 'bp_after_profile_content' ); ?>

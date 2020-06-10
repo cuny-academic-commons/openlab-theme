@@ -1,7 +1,7 @@
 <?php
 get_header();
 
-$type = bp_get_current_group_directory_type();
+$type        = bp_get_current_group_directory_type();
 $type_object = cboxol_get_group_type( $type );
 
 $can_create = is_user_logged_in() && bp_user_can_create_groups();

@@ -3,7 +3,9 @@
  * Group single page
  *
  */
-if ( bp_has_groups() ) : while ( bp_groups() ) : bp_the_group();
+if ( bp_has_groups() ) :
+	while ( bp_groups() ) :
+		bp_the_group();
 		?>
 
 		<?php do_action( 'bp_before_group_home_content' ); ?>
@@ -20,7 +22,7 @@ if ( bp_has_groups() ) : while ( bp_groups() ) : bp_the_group();
 				 * @todo A real template hierarchy? Gasp!
 				 */
 				// Group is visible
-				if ( bp_get_group_status() == 'public' || bp_get_group_status() == 'private' || (bp_get_group_status() == 'hidden' && (bp_is_item_admin() || bp_group_is_member())) ) :
+				if ( bp_get_group_status() == 'public' || bp_get_group_status() == 'private' || ( bp_get_group_status() == 'hidden' && ( bp_is_item_admin() || bp_group_is_member() ) ) ) :
 
 					// Looking at home location
 					if ( bp_is_group_home() ) :
@@ -28,13 +30,16 @@ if ( bp_has_groups() ) : while ( bp_groups() ) : bp_the_group();
 						// Use custom front if one exists
 						$custom_front = bp_locate_template( array( 'groups/single/front.php' ), false, true );
 
-						if ( ! empty( $custom_front ) ) : load_template( $custom_front, true );
+						if ( ! empty( $custom_front ) ) :
+							load_template( $custom_front, true );
 
 							// Default to activity
-						elseif ( bp_is_active( 'activity' ) ) : bp_get_template_part( 'groups/single/group-home' );
+						elseif ( bp_is_active( 'activity' ) ) :
+							bp_get_template_part( 'groups/single/group-home' );
 
 							// Otherwise show members
-						elseif ( bp_is_active( 'members' ) ) : bp_get_template_part( 'groups/single/members' );
+						elseif ( bp_is_active( 'members' ) ) :
+							bp_get_template_part( 'groups/single/members' );
 
 						endif;
 
@@ -42,22 +47,28 @@ if ( bp_has_groups() ) : while ( bp_groups() ) : bp_the_group();
 					else :
 
 						// Group Admin
-						if ( bp_is_group_admin_page() ) : bp_get_template_part( 'groups/single/admin' );
+						if ( bp_is_group_admin_page() ) :
+							bp_get_template_part( 'groups/single/admin' );
 
 							// Group Activity
-						elseif ( bp_is_group_activity() ) : bp_get_template_part( 'groups/single/activity' );
+						elseif ( bp_is_group_activity() ) :
+							bp_get_template_part( 'groups/single/activity' );
 
 							// Group Members
-						elseif ( bp_is_group_members() ) : bp_get_template_part( 'groups/single/members' );
+						elseif ( bp_is_group_members() ) :
+							bp_get_template_part( 'groups/single/members' );
 
 							// Group Invitations
-						elseif ( bp_is_group_invites() ) : bp_get_template_part( 'groups/single/send-invites' );
+						elseif ( bp_is_group_invites() ) :
+							bp_get_template_part( 'groups/single/send-invites' );
 
 							// Membership request
-						elseif ( bp_is_group_membership_request() ) : bp_get_template_part( 'groups/single/request-membership' );
+						elseif ( bp_is_group_membership_request() ) :
+							bp_get_template_part( 'groups/single/request-membership' );
 
 							// Email subscription options
-						elseif ( bp_current_action() == 'notifications' ) : bp_get_template_part( 'groups/single/notifications' );
+						elseif ( bp_current_action() == 'notifications' ) :
+							bp_get_template_part( 'groups/single/notifications' );
 
 							// Anything else (plugins mostly)
 						else :
@@ -67,38 +78,39 @@ if ( bp_has_groups() ) : while ( bp_groups() ) : bp_the_group();
 					endif;
 
 					// Group is not visible
-				elseif ( ! bp_group_is_visible() ) :
+					elseif ( ! bp_group_is_visible() ) :
 
-					// Membership request
-					if ( bp_is_group_membership_request() ) :
-						bp_get_template_part( 'groups/single/request-membership' );
+						// Membership request
+						if ( bp_is_group_membership_request() ) :
+							bp_get_template_part( 'groups/single/request-membership' );
 
-						// The group is not visible, show the status message
-					else :
+							// The group is not visible, show the status message
+						else :
 
-						do_action( 'bp_before_group_status_message' );
-						?>
+							do_action( 'bp_before_group_status_message' );
+							?>
 
 						<div id="message" class="info">
 							<p><?php bp_group_status_message(); ?></p>
 						</div>
 
-						<?php
-						do_action( 'bp_after_group_status_message' );
+							<?php
+							do_action( 'bp_after_group_status_message' );
 
+						endif;
 					endif;
-				endif;
 
-				do_action( 'bp_after_group_body' );
-				?>
+					do_action( 'bp_after_group_body' );
+					?>
 			</div>
 		</div><!-- #item-body -->
 
-		<?php do_action( 'bp_after_group_home_content' ); ?>
+			<?php do_action( 'bp_after_group_home_content' ); ?>
 
-	<?php
+			<?php
 	endwhile;
 endif;
 ?>
 
-<?php get_template_part( 'parts/sidebar/group' );
+<?php
+get_template_part( 'parts/sidebar/group' );

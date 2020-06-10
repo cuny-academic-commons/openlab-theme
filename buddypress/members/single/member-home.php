@@ -56,12 +56,12 @@ do_action( 'bp_before_member_home_content' );
 							echo bp_core_fetch_avatar(
 								array(
 									'item_id' => $friend_id,
-									'object' => 'member',
-									'type' => 'full',
-									'html' => false,
+									'object'  => 'member',
+									'type'    => 'full',
+									'html'    => false,
 								)
 							);
-?>
+							?>
 " alt="<?php echo bp_core_get_user_displayname( $friend_id ); ?>"/>
 						</a>
 					</li>

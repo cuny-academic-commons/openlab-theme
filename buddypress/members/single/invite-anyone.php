@@ -26,7 +26,7 @@
 			break;
 
 		// Any other
-		default :
+		default:
 			bp_get_template_part( 'members/single/plugins' );
 			break;
 	endswitch;

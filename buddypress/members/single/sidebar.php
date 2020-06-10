@@ -9,15 +9,17 @@ if ( ! $dud = bp_displayed_user_domain() ) {
 
 <?php /* Portfolio links */ ?>
 
-	<?php if ( (bp_is_user_activity() || ! bp_current_component()) && ! (strpos( $post->post_name,'my-' ) > -1) ) :
+	<?php
+	if ( ( bp_is_user_activity() || ! bp_current_component() ) && ! ( strpos( $post->post_name, 'my-' ) > -1 ) ) :
 		$mobile_hide = true;
-		$id = 'portfolio-sidebar-widget';
+		$id          = 'portfolio-sidebar-widget';
 	 else :
 			$mobile_hide = false;
-			$id = 'portfolio-sidebar-inline-widget';
-	 endif; ?>
+			$id          = 'portfolio-sidebar-inline-widget';
+	 endif;
+		?>
 
-<div class="sidebar-widget mol-menu" id="<?php echo $id ?>">
+<div class="sidebar-widget mol-menu" id="<?php echo $id; ?>">
 
 	<?php openlab_members_sidebar_blocks( $mobile_hide ); ?>
 	<?php openlab_member_sidebar_menu(); ?>
@@ -34,11 +36,11 @@ if ( ! $dud = bp_displayed_user_domain() ) {
 $user_id = bp_is_user() ? bp_displayed_user_id() : bp_loggedin_user_id();
 
 $activity_args = array(
-	'user_id' => $user_id,
-	'per_page' => openlab_is_my_profile() ? 4 : 2, // Legacy. Not sure why
-	'scope' => bp_is_user_friends() ? 'friends' : '',
+	'user_id'     => $user_id,
+	'per_page'    => openlab_is_my_profile() ? 4 : 2, // Legacy. Not sure why
+	'scope'       => bp_is_user_friends() ? 'friends' : '',
 	'show_hidden' => openlab_is_my_profile(),
-	'primary_id' => false,
+	'primary_id'  => false,
 );
 ?>
 
@@ -51,11 +53,14 @@ $activity_args = array(
 <div class="activity-wrapper">
 	<?php if ( bp_has_activities( $activity_args ) ) : ?>
 		<div id="activity-stream" class="activity-list item-list inline-element-list sidebar-sublinks">
-			<?php while ( bp_activities() ) : bp_the_activity(); ?>
+			<?php
+			while ( bp_activities() ) :
+				bp_the_activity();
+				?>
 				<div class="sidebar-block activity-block">
 					<div class="row activity-row">
 						<div class="activity-avatar col-sm-8 col-xs-7">
-							<a href="<?php bp_activity_user_link() ?>">
+							<a href="<?php bp_activity_user_link(); ?>">
 								<?php echo openlab_activity_user_avatar(); ?>
 							</a>
 						</div>
@@ -76,7 +81,7 @@ $activity_args = array(
 			<div class="sidebar-block">
 				<div class="row activity-row">
 					<div id="message" class="info col-sm-24">
-						<p><?php _e( 'No recent activity.', 'buddypress' ) ?></p>
+						<p><?php _e( 'No recent activity.', 'buddypress' ); ?></p>
 					</div>
 				</div>
 			</div>

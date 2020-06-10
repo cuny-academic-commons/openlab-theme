@@ -10,11 +10,11 @@
 
 	$registration_form_settings = cboxol_get_registration_form_settings();
 
-	$ajaxurl = bp_core_ajax_url();
+	$ajaxurl   = bp_core_ajax_url();
 	$site_name = bp_get_option( 'blogname' );
 
 	$limited_email_domains_message = '';
-	$limited_email_domains = get_site_option( 'limited_email_domains' );
+	$limited_email_domains         = get_site_option( 'limited_email_domains' );
 	if ( $limited_email_domains ) {
 		$led = array();
 		foreach ( $limited_email_domains as $d ) {
@@ -35,7 +35,7 @@
 		<div id="openlab-main-content"></div>
 
 		<div class="entry-title">
-			<h1><?php _e( 'Create an Account', 'commons-in-a-box' ) ?></h1>
+			<h1><?php _e( 'Create an Account', 'commons-in-a-box' ); ?></h1>
 		</div>
 
 		<form action="" name="signup_form" id="signup_form" class="standard-form form-panel" method="post" enctype="multipart/form-data" data-parsley-trigger="blur">
@@ -46,44 +46,54 @@
 					<div class="panel-heading semibold"><?php esc_html_e( 'Account Details', 'commons-in-a-box' ); ?></div>
 					<div class="panel-body">
 
-						<?php do_action( 'template_notices' ) ?>
+						<?php do_action( 'template_notices' ); ?>
 
 						<p><?php printf( esc_html__( 'Registering for %s is easy. Just fill in the fields below and we\'ll get a new account set up for you in no time.', 'commons-in-a-box' ), esc_html( $site_name ) ); ?></p>
 
-						<?php do_action( 'bp_before_account_details_fields' ) ?>
+						<?php do_action( 'bp_before_account_details_fields' ); ?>
 
 						<div class="register-section" id="basic-details-section">
 
 							<div class="form-group">
-								<label class="control-label" for="signup_username"><?php esc_html_e( 'Username', 'commons-in-a-box' ) ?> <?php esc_html_e( '(required)', 'commons-in-a-box' ) ?> <?php esc_html_e( '(lowercase & no special characters)', 'commons-in-a-box' ); ?></label>
-								<?php do_action( 'bp_signup_username_errors' ) ?>
+								<label class="control-label" for="signup_username"><?php esc_html_e( 'Username', 'commons-in-a-box' ); ?> <?php esc_html_e( '(required)', 'commons-in-a-box' ); ?> <?php esc_html_e( '(lowercase & no special characters)', 'commons-in-a-box' ); ?></label>
+								<?php do_action( 'bp_signup_username_errors' ); ?>
 								<input
 									class="form-control"
 									type="text"
 									name="signup_username"
 									id="signup_username"
-									value="<?php esc_attr( bp_signup_username_value() ) ?>"
+									value="<?php esc_attr( bp_signup_username_value() ); ?>"
 									data-parsley-lowercase
 									data-parsley-nospecialchars
 									data-parsley-required
 									data-parsley-minlength="4"
-									data-parsley-remote="<?php echo add_query_arg( array(
-										'action' => 'openlab_unique_login_check',
-										'login' => '{value}',
-									), $ajaxurl ); ?>"
+									data-parsley-remote="
+									<?php
+									echo add_query_arg(
+										array(
+											'action' => 'openlab_unique_login_check',
+											'login'  => '{value}',
+										),
+										$ajaxurl
+									);
+									?>
+									"
 									data-parsley-remote-message="<?php esc_attr_e( 'That username is already taken.', 'commons-in-a-box' ); ?>"
 								/>
 							</div>
 
 							<div class="form-group">
-								<label class="control-label" for="signup_email"><?php esc_html_e( 'Email Address (required)', 'commons-in-a-box' ); ?> <?php if ( $limited_email_domains_message ) : ?><div class="email-requirements"><?php echo $limited_email_domains_message; ?></div><?php endif; ?></label>
-								<?php do_action( 'bp_signup_email_errors' ) ?>
+								<label class="control-label" for="signup_email"><?php esc_html_e( 'Email Address (required)', 'commons-in-a-box' ); ?> <?php
+								if ( $limited_email_domains_message ) :
+									?>
+									<div class="email-requirements"><?php echo $limited_email_domains_message; ?></div><?php endif; ?></label>
+								<?php do_action( 'bp_signup_email_errors' ); ?>
 								<input
 									class="form-control"
 									type="text"
 									name="signup_email"
 									id="signup_email"
-									value="<?php echo esc_attr( openlab_post_value( 'signup_email' ) ) ?>"
+									value="<?php echo esc_attr( openlab_post_value( 'signup_email' ) ); ?>"
 									data-parsley-trigger="blur"
 									data-parsley-required
 									data-parsley-type="email"
@@ -109,8 +119,8 @@
 							</div>
 
 							<div data-parsley-children-should-match class="form-group">
-								<label class="control-label" for="signup_password"><?php _e( 'Choose a Password', 'commons-in-a-box' ) ?> <?php _e( '(required)', 'commons-in-a-box' ) ?></label>
-								<?php do_action( 'bp_signup_password_errors' ) ?>
+								<label class="control-label" for="signup_password"><?php _e( 'Choose a Password', 'commons-in-a-box' ); ?> <?php _e( '(required)', 'commons-in-a-box' ); ?></label>
+								<?php do_action( 'bp_signup_password_errors' ); ?>
 								<div class="password-field">
 									<input
 										class="form-control"
@@ -128,8 +138,8 @@
 									<div id="password-strength-notice" class="password-strength-notice"></div>
 								</div>
 
-								<label class="control-label" for="signup_password_confirm"><?php _e( 'Confirm Password', 'commons-in-a-box' ) ?> <?php _e( '(required)', 'commons-in-a-box' ) ?></label>
-								<?php do_action( 'bp_signup_password_confirm_errors' ) ?>
+								<label class="control-label" for="signup_password_confirm"><?php _e( 'Confirm Password', 'commons-in-a-box' ); ?> <?php _e( '(required)', 'commons-in-a-box' ); ?></label>
+								<?php do_action( 'bp_signup_password_confirm_errors' ); ?>
 								<input
 									class="form-control password-field"
 									type="password"
@@ -148,7 +158,7 @@
 					</div>
 				</div><!--.panel-->
 
-				<?php do_action( 'bp_after_account_details_fields' ) ?>
+				<?php do_action( 'bp_after_account_details_fields' ); ?>
 
 				<?php if ( bp_is_active( 'xprofile' ) ) : ?>
 
@@ -156,7 +166,7 @@
 						<div class="panel-heading semibold"><?php esc_html_e( 'Public Profile Details', 'commons-in-a-box' ); ?></div>
 						<div class="panel-body">
 
-							<?php do_action( 'bp_before_signup_profile_fields' ) ?>
+							<?php do_action( 'bp_before_signup_profile_fields' ); ?>
 
 							<div class="register-section" id="profile-details-section">
 
@@ -168,7 +178,7 @@
 								$entered_signup_code   = isset( $_POST['account-type-signup-code'] ) ? wp_unslash( $_POST['account-type-signup-code'] ) : '';
 								?>
 								<div class="editfield form-group account-type-select-ui">
-									<?php do_action( 'bp_account_type_errors' ) ?>
+									<?php do_action( 'bp_account_type_errors' ); ?>
 									<label class="control-label" for="account-type"><?php esc_html_e( 'Account Type', 'commons-in-a-box' ); ?> <?php esc_html_e( '(required)', 'commons-in-a-box' ); ?></label>
 									<div class="col-md-24">
 										<div class="col-md-8">
@@ -181,7 +191,12 @@
 										</div>
 
 										<div class="col-md-8">
-											<input class="form-control" name="account-type-signup-code" id="account-type-signup-code" placeholder="<?php esc_attr_e( 'Please enter a sign up code', 'commons-in-a-box' ); ?>" value="<?php if ( $entered_signup_code ) { echo esc_attr( $entered_signup_code ); } ?>" />
+											<input class="form-control" name="account-type-signup-code" id="account-type-signup-code" placeholder="<?php esc_attr_e( 'Please enter a sign up code', 'commons-in-a-box' ); ?>" value="
+																																									 <?php
+																																										if ( $entered_signup_code ) {
+																																											echo esc_attr( $entered_signup_code ); }
+																																										?>
+											" />
 										</div>
 
 										<div class="col-md-8 signup-code-message" id="signup-code-message"></div>
@@ -190,11 +205,15 @@
 
 								<div id="openlab-profile-fields"></div>
 
-								<?php echo cboxol_get_academic_unit_selector( array(
-									'entity_type' => 'user',
-								) ); ?>
+								<?php
+								echo cboxol_get_academic_unit_selector(
+									array(
+										'entity_type' => 'user',
+									)
+								);
+								?>
 
-								<?php do_action( 'bp_after_signup_profile_fields' ) ?>
+								<?php do_action( 'bp_after_signup_profile_fields' ); ?>
 
 							</div><!-- #profile-details-section -->
 						</div>
@@ -204,7 +223,7 @@
 
 				<?php endif; ?>
 
-				<?php do_action( 'bp_before_registration_submit_buttons' ) ?>
+				<?php do_action( 'bp_before_registration_submit_buttons' ); ?>
 
 				<p class="sign-up-terms">
 					<?php echo $registration_form_settings['confirmationText']; ?>
@@ -213,43 +232,43 @@
 				<p id="submitSrMessage" class="sr-only submit-alert" aria-live="polite"></p>
 
 				<div class="submit">
-					<input type="submit" name="signup_submit" id="signup_submit" class="btn btn-primary btn-disabled" value="<?php _e( 'Please Complete Required Fields', 'buddypress' ) ?>" />
+					<input type="submit" name="signup_submit" id="signup_submit" class="btn btn-primary btn-disabled" value="<?php _e( 'Please Complete Required Fields', 'buddypress' ); ?>" />
 				</div>
 
-				<?php do_action( 'bp_after_registration_submit_buttons' ) ?>
+				<?php do_action( 'bp_after_registration_submit_buttons' ); ?>
 
-				<?php wp_nonce_field( 'bp_new_signup' ) ?>
+				<?php wp_nonce_field( 'bp_new_signup' ); ?>
 
-			<?php endif; // request-details signup step    ?>
+			<?php endif; // request-details signup step ?>
 
 			<?php if ( 'completed-confirmation' == bp_get_current_signup_step() ) : ?>
 
 				<div class="panel panel-default">
-					<div class="panel-heading semibold"><?php _e( 'Sign Up Complete!', 'buddypress' ) ?></div>
+					<div class="panel-heading semibold"><?php _e( 'Sign Up Complete!', 'buddypress' ); ?></div>
 					<div class="panel-body">
 
-						<?php do_action( 'template_notices' ) ?>
+						<?php do_action( 'template_notices' ); ?>
 
 						<?php if ( bp_registration_needs_activation() ) : ?>
-							<p class="bp-template-notice updated no-margin no-margin-bottom"><?php _e( 'You have successfully created your account! To begin using this site you will need to activate your account via the email we have just sent to your address.', 'buddypress' ) ?></p>
+							<p class="bp-template-notice updated no-margin no-margin-bottom"><?php _e( 'You have successfully created your account! To begin using this site you will need to activate your account via the email we have just sent to your address.', 'buddypress' ); ?></p>
 						<?php else : ?>
-							<p class="bp-template-notice updated no-margin no-margin-bottom"><?php _e( 'You have successfully created your account! Please log in using the username and password you have just created.', 'buddypress' ) ?></p>
+							<p class="bp-template-notice updated no-margin no-margin-bottom"><?php _e( 'You have successfully created your account! Please log in using the username and password you have just created.', 'buddypress' ); ?></p>
 						<?php endif; ?>
 
 					</div>
 				</div><!--.panel-->
 
-			<?php endif; // completed-confirmation signup step    ?>
+			<?php endif; // completed-confirmation signup step ?>
 
-			<?php do_action( 'bp_custom_signup_steps' ) ?>
+			<?php do_action( 'bp_custom_signup_steps' ); ?>
 
 		</form>
 
 	</div>
 
-	<?php do_action( 'bp_after_register_page' ) ?>
+	<?php do_action( 'bp_after_register_page' ); ?>
 
-	<?php do_action( 'bp_after_directory_activity_content' ) ?>
+	<?php do_action( 'bp_after_directory_activity_content' ); ?>
 
 	<script type="text/javascript">
 		jQuery(document).ready(function () {

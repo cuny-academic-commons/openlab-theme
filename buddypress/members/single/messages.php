@@ -7,7 +7,7 @@
 
 <?php else : ?>
 
-	<?php do_action( 'bp_before_member_messages_content' ) ?>
+	<?php do_action( 'bp_before_member_messages_content' ); ?>
 
 	<div id="group-messages" class="messages group-list row">
 		<?php if ( 'notices' == bp_current_action() ) : ?>
@@ -19,6 +19,6 @@
 		<?php endif; ?>
 	</div><!-- .messages -->
 
-	<?php do_action( 'bp_after_member_messages_content' ) ?>
+	<?php do_action( 'bp_after_member_messages_content' ); ?>
 
 <?php endif; ?>

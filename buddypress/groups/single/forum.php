@@ -11,7 +11,7 @@ if ( bp_is_group_forum_topic_edit() ) {
 			<?php if ( is_user_logged_in() ) : ?>
 				<div class="submenu-text pull-left bold">Discussion:</div>
 				<ul class="nav nav-inline">
-				<li class="new-topic"><a href="#post-new" class="show-hide-new"><?php _e( 'New Topic', 'buddypress' ) ?></a></li>
+				<li class="new-topic"><a href="#post-new" class="show-hide-new"><?php _e( 'New Topic', 'buddypress' ); ?></a></li>
 				</ul>
 			<?php endif ?>
 		</div></div>
@@ -50,34 +50,34 @@ if ( ! bp_is_group_forum_topic_edit() && ! bp_is_group_forum_topic() && ! bp_gro
 
 
 			<div class="panel panel-default">
-				<div class="panel-heading semibold"><?php _e( 'Post a New Topic:', 'buddypress' ) ?></div>
+				<div class="panel-heading semibold"><?php _e( 'Post a New Topic:', 'buddypress' ); ?></div>
 				<div class="panel-body">
-			<?php do_action( 'bp_before_group_forum_post_new' ) ?>
+			<?php do_action( 'bp_before_group_forum_post_new' ); ?>
 
 			<?php if ( bp_groups_auto_join() && ! bp_group_is_member() ) : ?>
-				<p><?php _e( 'You will auto join this group when you start a new topic.', 'buddypress' ) ?></p>
+				<p><?php _e( 'You will auto join this group when you start a new topic.', 'buddypress' ); ?></p>
 			<?php endif; ?>
 
 			<p id="post-new"></p>
 
-			<label><?php _e( 'Title:', 'buddypress' ) ?></label>
+			<label><?php _e( 'Title:', 'buddypress' ); ?></label>
 			<input class="form-control" type="text" name="topic_title" id="topic_title" value="" />
 
-			<label><?php _e( 'Content:', 'buddypress' ) ?></label>
+			<label><?php _e( 'Content:', 'buddypress' ); ?></label>
 			<textarea class="form-control" name="topic_text" id="topic_text"></textarea>
 
-			<label><?php _e( 'Tags (comma separated):', 'buddypress' ) ?></label>
+			<label><?php _e( 'Tags (comma separated):', 'buddypress' ); ?></label>
 			<input class="form-control" type="text" name="topic_tags" id="topic_tags" value="" />
 
-			<?php do_action( 'bp_after_group_forum_post_new' ) ?>
+			<?php do_action( 'bp_after_group_forum_post_new' ); ?>
 			</div>
 	</div>
 
 			<div class="submit">
-				<input class="btn btn-primary" type="submit" name="submit_topic" id="submit" value="<?php _e( 'Post Topic', 'buddypress' ) ?>" />
+				<input class="btn btn-primary" type="submit" name="submit_topic" id="submit" value="<?php _e( 'Post Topic', 'buddypress' ); ?>" />
 			</div>
 
-			<?php wp_nonce_field( 'bp_forums_new_topic' ) ?>
+			<?php wp_nonce_field( 'bp_forums_new_topic' ); ?>
 
 		</form><!-- #forum-topic-form -->
 	</div><!-- #new-topic-post -->

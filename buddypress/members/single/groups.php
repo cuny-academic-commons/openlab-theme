@@ -4,10 +4,11 @@
 
 <?php else : ?>
 
-	<?php do_action( 'bp_before_member_groups_content' ) ?>
+	<?php do_action( 'bp_before_member_groups_content' ); ?>
 
 	<?php bp_get_template_part( 'groups/groups-loop' ); ?>
 
-	<?php do_action( 'bp_after_member_groups_content' ) ?>
+	<?php do_action( 'bp_after_member_groups_content' ); ?>
 
-<?php endif;
+	<?php
+endif;
