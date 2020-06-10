@@ -12,32 +12,30 @@
 	</div>
 	</noscript>
 
+	<?php // phpcs:ignore WordPress.Security.NonceVerification.Missing ?>
 	<?php if ( empty( $_POST['page'] ) ) : ?>
 		<ul id="activity-stream" class="activity-list item-list">
-		<?php endif; ?>
+	<?php endif; ?>
 
-		<?php
-		while ( bp_activities() ) :
-			bp_the_activity();
-			?>
-
+		<?php while ( bp_activities() ) : ?>
+			<?php bp_the_activity(); ?>
 			<?php bp_get_template_part( 'activity/entry.php' ); ?>
-
 		<?php endwhile; ?>
 
-		<?php if ( bp_get_activity_count() == bp_get_activity_per_page() ) : ?>
+		<?php if ( bp_get_activity_count() === bp_get_activity_per_page() ) : ?>
 			<li class="load-more">
-				<a href="#more"><?php _e( 'Load More', 'buddypress' ); ?></a> &nbsp; <span class="ajax-loader"></span>
+				<a href="#more"><?php esc_html_e( 'Load More', 'commons-in-a-box' ); ?></a> &nbsp; <span class="ajax-loader"></span>
 			</li>
 		<?php endif; ?>
 
-		<?php if ( empty( $_POST['page'] ) ) : ?>
+	<?php // phpcs:ignore WordPress.Security.NonceVerification.Missing ?>
+	<?php if ( empty( $_POST['page'] ) ) : ?>
 		</ul>
 	<?php endif; ?>
 
 <?php else : ?>
 	<div id="message" class="info">
-		<p><?php _e( 'Sorry, there was no activity found. Please try a different filter.', 'buddypress' ); ?></p>
+		<p><?php esc_html_e( 'Sorry, there was no activity found. Please try a different filter.', 'commons-in-a-box' ); ?></p>
 	</div>
 <?php endif; ?>
 
