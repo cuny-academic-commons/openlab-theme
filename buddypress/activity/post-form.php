@@ -2,46 +2,49 @@
 
 	<?php do_action( 'bp_before_activity_post_form' ); ?>
 
+	<?php // phpcs:disable WordPress.Security.NonceVerification.Recommended ?>
 	<?php if ( isset( $_GET['r'] ) ) : ?>
 		<div id="message" class="info">
-			<p><?php printf( __( 'You are mentioning %s in a new update, this user will be sent a notification of your message.', 'buddypress' ), bp_get_mentioned_user_display_name( $_GET['r'] ) ); ?></p>
+			<?php /* translators: mentioned user name */ ?>
+			<p><?php echo esc_html( sprintf( __( 'You are mentioning %s in a new update, this user will be sent a notification of your message.', 'commons-in-a-box' ), bp_get_mentioned_user_display_name( $_GET['r'] ) ) ); ?></p>
 		</div>
 	<?php endif; ?>
+	<?php // phpcs:enable WordPress.Security.NonceVerification.Recommended ?>
 
 	<div id="whats-new-avatar">
-		<a href="<?php echo bp_loggedin_user_domain(); ?>">
+		<a href="<?php echo esc_attr( bp_loggedin_user_domain() ); ?>">
 			<?php bp_loggedin_user_avatar( 'width=' . BP_AVATAR_THUMB_WIDTH . '&height=' . BP_AVATAR_THUMB_HEIGHT ); ?>
 		</a>
 	</div>
 
 	<h5>
 		<?php if ( bp_is_group() ) : ?>
-			<?php printf( __( "What's new in %1$s, %1$s?", 'buddypress' ), bp_get_group_name(), bp_get_user_firstname() ); ?>
+			<?php /* translators: 1. current group name, 2. logged-in user name */ ?>
+			<?php echo esc_html( sprintf( __( 'What\'s new in %1$s, %2$s?', 'commons-in-a-box' ), bp_get_group_name(), bp_get_user_firstname() ) ); ?>
 		<?php else : ?>
-			<?php printf( __( "What's new %s?", 'buddypress' ), bp_get_user_firstname() ); ?>
+			<?php /* translators: logged-in user name */ ?>
+			<?php echo esc_html( sprintf( __( "What's new %s?", 'commons-in-a-box' ), bp_get_user_firstname() ) ); ?>
 		<?php endif; ?>
 	</h5>
 
 	<div id="whats-new-content">
 		<div id="whats-new-textarea">
-			<textarea name="whats-new" id="whats-new" cols="50" rows="10">
-			<?php
-			if ( isset( $_GET['r'] ) ) :
-				?>
-				@<?php echo esc_attr( $_GET['r'] ); ?> <?php endif; ?></textarea>
+			<?php // phpcs:ignore WordPress.Security.NonceVerification.Recommended ?>
+			<?php $textarea_content = isset( $_GET['r'] ) ? '@' . wp_unslash( $_GET['r'] ) : ''; ?>
+			<textarea name="whats-new" id="whats-new" cols="50" rows="10"><?php echo esc_textarea( $textarea_content ); ?></textarea>
 		</div>
 
 		<div id="whats-new-options">
 			<div id="whats-new-submit">
 				<span class="ajax-loader"></span> &nbsp;
-				<input type="submit" name="aw-whats-new-submit" id="aw-whats-new-submit" value="<?php _e( 'Post Update', 'buddypress' ); ?>" />
+				<input type="submit" name="aw-whats-new-submit" id="aw-whats-new-submit" value="<?php esc_html_e( 'Post Update', 'commons-in-a-box' ); ?>" />
 			</div>
 			<?php if ( function_exists( 'bp_has_groups' ) && ! bp_is_my_profile() && ! bp_is_group() ) : ?>
 				<div id="whats-new-post-in-box">
-					<?php _e( 'Post in', 'buddypress' ); ?>:
+					<?php esc_html_e( 'Post in', 'commons-in-a-box' ); ?>:
 
 					<select id="whats-new-post-in" name="whats-new-post-in">
-						<option selected="selected" value="0"><?php _e( 'My Profile', 'buddypress' ); ?></option>
+						<option selected="selected" value="0"><?php esc_html_e( 'My Profile', 'commons-in-a-box' ); ?></option>
 
 						<?php
 						if ( bp_has_groups( 'user_id=' . bp_loggedin_user_id() . '&type=alphabetical&max=100&per_page=100&populate_extras=0' ) ) :
