@@ -25,14 +25,14 @@
 
 		<div class="activity-meta">
 			<?php if ( is_user_logged_in() && bp_activity_can_comment() ) : ?>
-				<a href="<?php bp_activity_comment_link(); ?>" class="acomment-reply" id="acomment-comment-<?php bp_activity_id(); ?>"><?php _e( 'Reply', 'buddypress' ); ?> (<span><?php bp_activity_comment_count(); ?></span>)</a>
+				<a href="<?php bp_activity_comment_link(); ?>" class="acomment-reply" id="acomment-comment-<?php bp_activity_id(); ?>"><?php esc_html_e( 'Reply', 'commons-in-a-box' ); ?> (<span><?php bp_activity_comment_count(); ?></span>)</a>
 			<?php endif; ?>
 
 			<?php if ( is_user_logged_in() ) : ?>
 				<?php if ( ! bp_get_activity_is_favorite() ) : ?>
-					<a href="<?php bp_activity_favorite_link(); ?>" class="fav" title="<?php _e( 'Mark as Favorite', 'buddypress' ); ?>"><?php _e( 'Favorite', 'buddypress' ); ?></a>
+					<a href="<?php bp_activity_favorite_link(); ?>" class="fav" title="<?php esc_attr_e( 'Mark as Favorite', 'commons-in-a-box' ); ?>"><?php esc_html_e( 'Favorite', 'commons-in-a-box' ); ?></a>
 				<?php else : ?>
-					<a href="<?php bp_activity_unfavorite_link(); ?>" class="unfav" title="<?php _e( 'Remove Favorite', 'buddypress' ); ?>"><?php _e( 'Remove Favorite', 'buddypress' ); ?></a>
+					<a href="<?php bp_activity_unfavorite_link(); ?>" class="unfav" title="<?php esc_attr_e( 'Remove Favorite', 'commons-in-a-box' ); ?>"><?php esc_html_e( 'Remove Favorite', 'commons-in-a-box' ); ?></a>
 				<?php endif; ?>
 			<?php endif; ?>
 
@@ -40,10 +40,10 @@
 		</div>
 	</div>
 
-	<?php if ( 'activity_comment' == bp_get_activity_type() ) : ?>
+	<?php if ( 'activity_comment' === bp_get_activity_type() ) : ?>
 		<div class="activity-inreplyto">
-			<strong><?php _e( 'In reply to', 'buddypress' ); ?></strong> - <?php bp_activity_parent_content(); ?> &middot;
-			<a href="<?php bp_activity_thread_permalink(); ?>" class="view" title="<?php _e( 'View Thread / Permalink', 'buddypress' ); ?>"><?php _e( 'View', 'buddypress' ); ?></a>
+			<strong><?php esc_html_e( 'In reply to', 'commons-in-a-box' ); ?></strong> - <?php bp_activity_parent_content(); ?> &middot;
+			<a href="<?php bp_activity_thread_permalink(); ?>" class="view" title="<?php esc_attr_e( 'View Thread / Permalink', 'commons-in-a-box' ); ?>"><?php esc_html_e( 'View', 'commons-in-a-box' ); ?></a>
 		</div>
 	<?php endif; ?>
 
@@ -60,7 +60,7 @@
 					<div class="ac-textarea">
 						<textarea id="ac-input-<?php bp_activity_id(); ?>" class="ac-input" name="ac_input_<?php bp_activity_id(); ?>"></textarea>
 					</div>
-					<input type="submit" name="ac_form_submit" value="<?php _e( 'Post', 'buddypress' ); ?> &rarr;" /> &nbsp; <?php _e( 'or press esc to cancel.', 'buddypress' ); ?>
+					<input type="submit" name="ac_form_submit" value="<?php esc_attr_e( 'Post', 'commons-in-a-box' ); ?> &rarr;" /> &nbsp; <?php esc_html_e( 'or press esc to cancel.', 'commons-in-a-box' ); ?>
 					<input type="hidden" name="comment_form_id" value="<?php bp_activity_id(); ?>" />
 				</div>
 				<?php wp_nonce_field( 'new_activity_comment', '_wpnonce_new_activity_comment' ); ?>
