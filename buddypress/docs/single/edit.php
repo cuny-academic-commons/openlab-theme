@@ -11,6 +11,7 @@ $doc_id = isset( $doc->ID ) ? (int) $doc->ID : 0;
 
 if ( ! function_exists( 'wp_editor' ) ) {
 	require_once ABSPATH . '/wp-admin/includes/post.php';
+	// phpcs:ignore WordPress.WP.DeprecatedFunctions.wp_tiny_mceFound
 	wp_tiny_mce();
 }
 ?>
@@ -20,13 +21,13 @@ if ( ! function_exists( 'wp_editor' ) ) {
 	<form action="" method="post" class="form-group form-panel" id="doc-form">
 
 		<div class="panel panel-default">
-			<div class="panel-heading"><?php echo $doc_id ? esc_html( 'Edit Doc', 'commons-in-a-box' ) : esc_html( 'New Doc', 'commons-in-a-box' ); ?></div>
+			<div class="panel-heading"><?php echo $doc_id ? esc_html__( 'Edit Doc', 'commons-in-a-box' ) : esc_html__( 'New Doc', 'commons-in-a-box' ); ?></div>
 			<div class="panel-body">
 
 				<?php do_action( 'template_notices' ); ?>
 
 				<div id="idle-warning" style="display:none">
-					<p><?php _e( 'You have been idle for <span id="idle-warning-time"></span>', 'commons-in-a-box' ); ?></p>
+					<p><?php esc_html_e( 'You have been idle for <span id="idle-warning-time"></span>', 'commons-in-a-box' ); ?></p>
 				</div>
 
 				<div class="doc-header">
@@ -94,7 +95,7 @@ if ( ! function_exists( 'wp_editor' ) ) {
 									<table class="toggle-table" id="toggle-table-parent">
 										<tr>
 											<td class="desc-column">
-												<label for="parent_id"><?php _e( 'Select a parent for this Doc.', 'bp-docs' ); ?></label>
+												<label for="parent_id"><?php esc_html_e( 'Select a parent for this Doc.', 'commons-in-a-box' ); ?></label>
 
 												<span class="description"><?php esc_html_e( '(Optional) Assigning a parent Doc means that a link to the parent will appear at the bottom of this Doc, and a link to this Doc will appear at the bottom of the parent.', 'commons-in-a-box' ); ?></span>
 											</td>
@@ -131,7 +132,7 @@ if ( ! function_exists( 'wp_editor' ) ) {
 
 						<?php wp_nonce_field( 'bp_docs_save' ); ?>
 
-						<input class="btn btn-primary" type="submit" name="doc-edit-submit" id="doc-edit-submit" value="<?php _e( 'Save', 'bp-docs' ); ?>"> <a href="<?php bp_docs_cancel_edit_link(); ?>" class="action safe btn btn-default no-deco"><?php esc_html_e( 'Cancel', 'commons-in-a-box' ); ?></a>
+						<input class="btn btn-primary" type="submit" name="doc-edit-submit" id="doc-edit-submit" value="<?php esc_html_e( 'Save', 'commons-in-a-box' ); ?>"> <a href="<?php bp_docs_cancel_edit_link(); ?>" class="action safe btn btn-default no-deco"><?php esc_html_e( 'Cancel', 'commons-in-a-box' ); ?></a>
 
 						<?php if ( bp_docs_is_existing_doc() && current_user_can( 'bp_docs_manage', $doc_id ) ) : ?>
 							<a class="delete-doc-button confirm" href="<?php bp_docs_delete_doc_link(); ?>"><?php esc_html_e( 'Delete', 'commons-in-a-box' ); ?></a>
