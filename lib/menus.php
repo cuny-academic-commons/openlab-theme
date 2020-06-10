@@ -716,7 +716,7 @@ function openlab_filter_subnav_home( $subnav_item ) {
 	if ( bp_is_group() ) {
 		$new_item = $subnav_item;
 	} else {
-		$new_item = str_replace( __( 'Home', 'buddypress' ), esc_html__( 'Profile', 'cbox-openlab-core' ), $subnav_item );
+		$new_item = str_replace( __( 'Home', 'buddypress' ), esc_html__( 'Profile', 'commons-in-a-box' ), $subnav_item );
 	}
 
 	// update "current" class to "current-menu-item" to unify site identification of current menu page

@@ -126,7 +126,7 @@ function openlab_maybe_install() {
 
 function openlab_create_default_nav_menus() {
 	// Main Menu.
-	$menu_name = wp_slash( __( 'Main Menu', 'cbox-openlab-core' ) );
+	$menu_name = wp_slash( __( 'Main Menu', 'commons-in-a-box' ) );
 	$menu_id = wp_create_nav_menu( $menu_name );
 
 	if ( is_wp_error( $menu_id ) ) {
@@ -191,7 +191,7 @@ function openlab_create_default_nav_menus() {
 
 	// About Menu.
 	if ( isset( $brand_pages['about'] ) ) {
-		$menu_name = wp_slash( __( 'About Menu', 'cbox-openlab-core' ) );
+		$menu_name = wp_slash( __( 'About Menu', 'commons-in-a-box' ) );
 		$menu_id = wp_create_nav_menu( $menu_name );
 
 		if ( is_wp_error( $menu_id ) ) {

@@ -411,7 +411,7 @@ function openlab_group_site_member_role_settings_markup() {
 				<div class="col-sm-24">
 					<ul class="member-role-selectors">
 						<li>
-							<label for="member-role-member"><?php esc_html_e( 'Group members have the following role on the associated site:', 'cbox-openlab-core' ); ?></label>
+							<label for="member-role-member"><?php esc_html_e( 'Group members have the following role on the associated site:', 'commons-in-a-box' ); ?></label>
 							<select class="form-control" name="member_role_member" id="member-role-member">
 								<?php foreach ( $site_roles as $site_role => $site_role_label ) : ?>
 									<option value="<?php echo esc_attr( $site_role ); ?>" <?php selected( $site_role, $settings['member'] ); ?>><?php echo esc_html( $site_role_label ); ?></option>
@@ -420,7 +420,7 @@ function openlab_group_site_member_role_settings_markup() {
 						</li>
 
 						<li>
-							<label for="member-role-mod"><?php esc_html_e( 'Group moderators have the following role on the associated site:', 'cbox-openlab-core' ); ?></label>
+							<label for="member-role-mod"><?php esc_html_e( 'Group moderators have the following role on the associated site:', 'commons-in-a-box' ); ?></label>
 							<select class="form-control" name="member_role_mod" id="member-role-mod">
 								<?php foreach ( $site_roles as $site_role => $site_role_label ) : ?>
 									<option value="<?php echo esc_attr( $site_role ); ?>" <?php selected( $site_role, $settings['mod'] ); ?>><?php echo esc_html( $site_role_label ); ?></option>
@@ -429,7 +429,7 @@ function openlab_group_site_member_role_settings_markup() {
 						</li>
 
 						<li>
-							<label for="member-role-admin"><?php esc_html_e( 'Group administrators have the following role on the associated site:', 'cbox-openlab-core' ); ?></label>
+							<label for="member-role-admin"><?php esc_html_e( 'Group administrators have the following role on the associated site:', 'commons-in-a-box' ); ?></label>
 							<select class="form-control" name="member-role-admin">
 								<?php foreach ( $site_roles as $site_role => $site_role_label ) : ?>
 									<option value="<?php echo esc_attr( $site_role ); ?>" <?php selected( $site_role, $settings['admin'] ); ?>><?php echo esc_html( $site_role_label ); ?></option>
