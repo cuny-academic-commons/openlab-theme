@@ -15,14 +15,14 @@ class OpenLab_NewMembers_Widget extends WP_Widget {
 	 */
 	public function __construct() {
 		$this->default_args = array(
-			'title' => __( 'New Members', 'openlab-theme' ),
+			'title' => __( 'New Members', 'commons-in-a-box' ),
 		);
 
 		$widget_ops = array(
 			'classname'   => 'new-members',
-			'description' => __( 'Newest members of the site.', 'openlab-theme' ),
+			'description' => __( 'Newest members of the site.', 'commons-in-a-box' ),
 		);
-		parent::__construct( 'openlab-new-members', __( 'New Members', 'openlab-theme' ), $widget_ops );
+		parent::__construct( 'openlab-new-members', __( 'New Members', 'commons-in-a-box' ), $widget_ops );
 	}
 
 	/**
@@ -45,11 +45,11 @@ class OpenLab_NewMembers_Widget extends WP_Widget {
 			<div id="new-members-text">
 				<p><span class="new-member-navigation pull-right">
 						<button class="prev btn btn-link">
-							<i class="fa fa-chevron-circle-left" aria-hidden="true"></i><span class="sr-only"><?php esc_html_e( 'Previous New Members', 'openlab-theme' ); ?></span></button>
+							<i class="fa fa-chevron-circle-left" aria-hidden="true"></i><span class="sr-only"><?php esc_html_e( 'Previous New Members', 'commons-in-a-box' ); ?></span></button>
 						<button class="next btn btn-link" href="#">
-							<i class="fa fa-chevron-circle-right" aria-hidden="true"></i><span class="sr-only"><?php esc_html_e( 'Next New Members', 'openlab-theme' ); ?></span></button>
+							<i class="fa fa-chevron-circle-right" aria-hidden="true"></i><span class="sr-only"><?php esc_html_e( 'Next New Members', 'commons-in-a-box' ); ?></span></button>
 					</span>
-					<?php esc_html_e( 'Browse through and say "Hello!" to the newest members of the site.', 'openlab-theme' ); ?></p>
+					<?php esc_html_e( 'Browse through and say "Hello!" to the newest members of the site.', 'commons-in-a-box' ); ?></p>
 			</div>
 			<div class="clearfloat"></div>
 		</div><!--members-top-wrapper-->
@@ -97,7 +97,7 @@ class OpenLab_NewMembers_Widget extends WP_Widget {
 		$r = array_merge( $this->default_args, $instance );
 
 		?>
-		<p><label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php esc_html_e( 'Title:', 'openlab-theme' ); ?> <input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $r['title'] ); ?>" style="width: 100%" /></label></p>
+		<p><label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php esc_html_e( 'Title:', 'commons-in-a-box' ); ?> <input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $r['title'] ); ?>" style="width: 100%" /></label></p>
 		<?php
 	}
 

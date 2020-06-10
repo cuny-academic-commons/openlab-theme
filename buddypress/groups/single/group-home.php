@@ -124,7 +124,7 @@ $academic_unit_data = cboxol_get_object_academic_unit_data_for_display(
 
 						<?php if ( $group_term ) : ?>
 							<div class="table-row row">
-								<div class="bold col-sm-7"><?php esc_html_e( 'Term', 'openlab-theme' ); ?></div>
+								<div class="bold col-sm-7"><?php esc_html_e( 'Term', 'commons-in-a-box' ); ?></div>
 								<div class="col-sm-17 row-content"><?php echo esc_html( $group_term ); ?></div>
 							</div>
 						<?php endif; ?>
@@ -132,14 +132,14 @@ $academic_unit_data = cboxol_get_object_academic_unit_data_for_display(
 							<?php $group_terms = bpcgc_get_group_selected_terms( $group_id, true ); ?>
 							<?php if ( $group_terms ) : ?>
 								<div class="table-row row">
-									<div class="bold col-sm-7"><?php esc_html_e( 'Category', 'openlab-theme' ); ?></div>
+									<div class="bold col-sm-7"><?php esc_html_e( 'Category', 'commons-in-a-box' ); ?></div>
 									<div class="col-sm-17 row-content"><?php echo esc_html( implode( ', ', wp_list_pluck( $group_terms, 'name' ) ) ); ?></div>
 								</div>
 							<?php endif; ?>
 						<?php endif; ?>
 
 						<div class="table-row row">
-							<div class="bold col-sm-7"><?php esc_html_e( 'Course Description', 'openlab-theme' ); ?></div>
+							<div class="bold col-sm-7"><?php esc_html_e( 'Course Description', 'commons-in-a-box' ); ?></div>
 							<?php // phpcs:ignore WordPress.Security.EscapeOutput ?>
 							<div class="col-sm-17 row-content"><?php echo apply_filters( 'the_content', $group_description ); ?></div>
 						</div>
@@ -193,14 +193,14 @@ $academic_unit_data = cboxol_get_object_academic_unit_data_for_display(
 						<?php endif; ?>
 
 						<div class="table-row row">
-							<div class="bold col-sm-7"><?php esc_html_e( 'Description', 'openlab-theme' ); ?></div>
+							<div class="bold col-sm-7"><?php esc_html_e( 'Description', 'commons-in-a-box' ); ?></div>
 							<div class="col-sm-17 row-content"><?php bp_group_description(); ?></div>
 						</div>
 
 						<?php if ( $group_type->get_is_portfolio() ) : ?>
 
 							<div class="table-row row">
-								<div class="bold col-sm-7"><?php esc_html_e( 'Member Profile', 'openlab-theme' ); ?></div>
+								<div class="bold col-sm-7"><?php esc_html_e( 'Member Profile', 'commons-in-a-box' ); ?></div>
 								<?php // phpcs:ignore WordPress.Security.EscapeOutput ?>
 								<div class="col-sm-17 row-content"><?php echo bp_core_get_userlink( openlab_get_user_id_from_portfolio_group_id( bp_get_group_id() ) ); ?></div>
 							</div>

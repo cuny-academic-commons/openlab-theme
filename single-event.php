@@ -32,13 +32,13 @@ get_header();
     <div class="col-sm-18 col-xs-24">
 
 		<div class="entry-title">
-			<h1><span class="profile-name"><?php esc_html_e( 'OpenLab Calendar: Event', 'openlab-theme' ); ?></span></h1>
+			<h1><span class="profile-name"><?php esc_html_e( 'OpenLab Calendar: Event', 'commons-in-a-box' ); ?></span></h1>
 		</div>
 
         <div class="action-events">
             <div id="item-body">
                 <div class="submenu">
-                    <div class="submenu-text pull-left bold"><?php esc_html_e( 'Calendar:', 'openlab-theme' ); ?></div>
+                    <div class="submenu-text pull-left bold"><?php esc_html_e( 'Calendar:', 'commons-in-a-box' ); ?></div>
                     <ul class="nav nav-inline"><!--
                         <?php $menu_items = openlab_calendar_submenu(); ?>
                         <?php foreach ($menu_items as $item): ?>

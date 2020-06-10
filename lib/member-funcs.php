@@ -154,7 +154,7 @@ function openlab_list_members( $view ) {
 
 		<div id="group-members-list" class="item-list group-list row">
 			<div class="widget-error query-no-results col-sm-24">
-				<p class="bold"><?php esc_html_e( 'There are no people to display.', 'openlab-theme' ); ?></p>
+				<p class="bold"><?php esc_html_e( 'There are no people to display.', 'commons-in-a-box' ); ?></p>
 			</div>
 		</div>
 
@@ -171,8 +171,8 @@ function openlab_members_pagination_links( $page_args = 'upage' ) {
 			'format' => '',
 			'total' => ceil( (int) $members_template->total_member_count / (int) $members_template->pag_num ),
 			'current' => (int) $members_template->pag_page,
-			'prev_text' => _x( '<i class="fa fa-angle-left" aria-hidden="true"></i><span class="sr-only">Previous</span>', 'Group pagination previous text', 'openlab-theme' ),
-			'next_text' => _x( '<i class="fa fa-angle-right" aria-hidden="true"></i><span class="sr-only">Next</span>', 'Group pagination next text', 'openlab-theme' ),
+			'prev_text' => _x( '<i class="fa fa-angle-left" aria-hidden="true"></i><span class="sr-only">Previous</span>', 'Group pagination previous text', 'commons-in-a-box' ),
+			'next_text' => _x( '<i class="fa fa-angle-right" aria-hidden="true"></i><span class="sr-only">Next</span>', 'Group pagination next text', 'commons-in-a-box' ),
 			'mid_size' => 3,
 			'type' => 'list',
 		)
@@ -431,7 +431,7 @@ function openlab_profile_group_type_activity_block( \CBOX\OL\GroupType $type ) {
 
 			<div class="panel panel-default">
 				<div class="panel-body">
-					<p><?php esc_html_e( 'None found.', 'openlab-theme' ); ?></p>
+					<p><?php esc_html_e( 'None found.', 'commons-in-a-box' ); ?></p>
 				</div>
 			</div>
 		</div>
@@ -479,12 +479,12 @@ function openlab_member_header() {
 	?>
 
 	<div class="entry-title">
-		<h1 class="profile-title clearfix"><span class="profile-name"><?php echo esc_html( sprintf( __( '%s&rsquo;s Profile', 'openlab-theme' ), bp_get_displayed_user_fullname() ) ); ?></span></h1>
+		<h1 class="profile-title clearfix"><span class="profile-name"><?php echo esc_html( sprintf( __( '%s&rsquo;s Profile', 'commons-in-a-box' ), bp_get_displayed_user_fullname() ) ); ?></span></h1>
 
 		<div class="directory-title-meta">
 			<span class="profile-type pull-right hidden-xs"><?php echo esc_html( $account_type ); ?></span>
 			<button data-target="#sidebar-mobile" class="mobile-toggle direct-toggle pull-right visible-xs" type="button">
-				<span class="sr-only"><?php esc_html_e( 'Toggle navigation', 'openlab-theme' ); ?></span>
+				<span class="sr-only"><?php esc_html_e( 'Toggle navigation', 'commons-in-a-box' ); ?></span>
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
@@ -626,7 +626,7 @@ function openlab_get_register_fields( $account_type = '', $post_data = array() )
 						$return .= '<label class="control-label" for="' . bp_get_the_profile_field_input_name() . '">' . bp_get_the_profile_field_name();
 
 						if ( bp_get_the_profile_field_is_required() ) {
-							$return .= ' ' . __( '(required)', 'openlab-theme' );
+							$return .= ' ' . __( '(required)', 'commons-in-a-box' );
 						}
 
 						$return .= '</label>';

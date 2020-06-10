@@ -82,7 +82,7 @@ function openlab_help_loop() {
 
 				<div class="directory-title-meta">
 					<?php echo openlab_toggle_button( '#sidebar-menu-wrapper', true ); ?>
-					<span class="print-link pull-right hidden-xs"><a class="print-page" href="#"><span class="fa fa-print"></span> <?php esc_html_e( 'Print this page', 'openlab-theme' ); ?></a></span></h1>
+					<span class="print-link pull-right hidden-xs"><a class="print-page" href="#"><span class="fa fa-print"></span> <?php esc_html_e( 'Print this page', 'commons-in-a-box' ); ?></a></span></h1>
 				</div>
 			</div>
 
@@ -121,7 +121,7 @@ function openlab_help_loop() {
 				</div>
 			</div>
 
-			<div id="help-title"><h2 class="page-title"><?php _e( 'Do you have a question? You\'re in the right place!', 'openlab-theme' ) ?></h2></div>
+			<div id="help-title"><h2 class="page-title"><?php _e( 'Do you have a question? You\'re in the right place!', 'commons-in-a-box' ) ?></h2></div>
 		<?php else : ?>
 			<div class="entry-title">
 				<h1><span class="profile-name hyphenate"><?php echo the_title(); ?></span></h1>
@@ -183,7 +183,7 @@ function openlab_help_tags_loop() {
 	?>
 
 	<div class="entry-title">
-		<h1 class="parent-cat"><span class="profile-name hyphenate"><?php echo esc_html( sprintf( __( 'Tag Archive for: %s', 'openlab-theme' ), $parent_cat_name ) ); ?></span></h1>
+		<h1 class="parent-cat"><span class="profile-name hyphenate"><?php echo esc_html( sprintf( __( 'Tag Archive for: %s', 'commons-in-a-box' ), $parent_cat_name ) ); ?></span></h1>
 
 		<div class="directory-title-meta">
 			<?php echo openlab_toggle_button( '#sidebar-menu-wrapper', true ); ?>

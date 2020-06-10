@@ -33,7 +33,7 @@ function openlab_ass_group_subscribe_settings() {
 						<?php wp_nonce_field( 'ass_subscribe' ); ?>
 
 						<p>
-							<b><?php printf( esc_html__( 'How do you want to be notified about activity in "%s"?', 'openlab-theme' ), esc_html( bp_get_group_name() ) ); ?></b>
+							<b><?php printf( esc_html__( 'How do you want to be notified about activity in "%s"?', 'commons-in-a-box' ), esc_html( bp_get_group_name() ) ); ?></b>
 						</p>
 
 						<div class="ass-email-type radio">
@@ -60,7 +60,7 @@ function openlab_ass_group_subscribe_settings() {
 
 						<div class="ass-email-type radio">
 							<label><input type="radio" name="ass_group_subscribe" value="supersub" <?php if ( $group_status == 'supersub' ) { echo 'checked="checked"';} ?>><?php _e( 'All Email', 'bp-ass' ); ?></label>
-							<div class="ass-email-explain italics"><?php _e( 'Send all activity as it arrives', 'openlab-theme' ); ?></div>
+							<div class="ass-email-explain italics"><?php _e( 'Send all activity as it arrives', 'commons-in-a-box' ); ?></div>
 						</div>
 					</div>
 				</div>

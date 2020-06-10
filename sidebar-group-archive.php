@@ -6,7 +6,7 @@ if ( is_wp_error( $group_type_object ) ) {
 	$group_type_object = null;
 }
 
-$sidebar_title = __( 'Search', 'openlab-theme' );
+$sidebar_title = __( 'Search', 'commons-in-a-box' );
 
 $reset_url = '';
 if ( bp_is_members_directory() ) {
@@ -42,7 +42,7 @@ var OLAcadUnits = ' . wp_json_encode( $academic_unit_map ) . ';
 		<form id="group_seq_form" name="group_seq_form" action="#" method="get">
 			<?php get_template_part( 'parts/sidebar/filter-search' ); ?>
 
-			<p><?php esc_html_e( 'Narrow down your results using some of the filters below.', 'openlab-theme' ); ?></p>
+			<p><?php esc_html_e( 'Narrow down your results using some of the filters below.', 'commons-in-a-box' ); ?></p>
 
 			<div id="sidebarCustomSelect" class="custom-select-parent">
 				<?php if ( openlab_is_search_results_page() ) : ?>
@@ -80,8 +80,8 @@ var OLAcadUnits = ' . wp_json_encode( $academic_unit_map ) . ';
 			</div>
 
 			<div class="sidebar-buttons">
-				<input class="btn btn-primary" type="submit" onchange="document.forms['group_seq_form'].submit();" value="<?php esc_attr_e( 'Submit', 'openlab-theme' ); ?>">
-				<input class="btn btn-default" type="button" value="<?php esc_attr_e( 'Reset', 'openlab-theme' ); ?>" onClick="window.location.href = '<?php echo esc_url( $reset_url ); ?>'">
+				<input class="btn btn-primary" type="submit" onchange="document.forms['group_seq_form'].submit();" value="<?php esc_attr_e( 'Submit', 'commons-in-a-box' ); ?>">
+				<input class="btn btn-default" type="button" value="<?php esc_attr_e( 'Reset', 'commons-in-a-box' ); ?>" onClick="window.location.href = '<?php echo esc_url( $reset_url ); ?>'">
 			</div>
 		</div><!--filter-->
 	</form>

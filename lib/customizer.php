@@ -13,7 +13,7 @@ function openlab_customizer_setup( $wp_customize ) {
 	// Color Scheme
 	$wp_customize->remove_section( 'colors' );
 	$wp_customize->add_section( 'openlab_section_color_scheme', array(
-		'title' => __( 'Color Scheme', 'openlab-theme' ),
+		'title' => __( 'Color Scheme', 'commons-in-a-box' ),
 	) );
 
 	$wp_customize->add_setting( 'openlab_color_scheme', array(
@@ -31,7 +31,7 @@ function openlab_customizer_setup( $wp_customize ) {
 	$wp_customize->add_control(
 		'openlab_color_scheme',
 		array(
-			'label' => __( 'Color Scheme', 'openlab-theme' ),
+			'label' => __( 'Color Scheme', 'commons-in-a-box' ),
 			'section' => 'openlab_section_color_scheme',
 			'type' => 'radio',
 			'choices' => $color_scheme_choices,
@@ -41,7 +41,7 @@ function openlab_customizer_setup( $wp_customize ) {
 
 	// Logo
 	$wp_customize->add_section( 'openlab_logo', array(
-		'title' => __( 'Logo', 'openlab-theme' ),
+		'title' => __( 'Logo', 'commons-in-a-box' ),
 	) );
 
 	$wp_customize->add_setting( 'openlab_logo', array(
@@ -54,7 +54,7 @@ function openlab_customizer_setup( $wp_customize ) {
 			$wp_customize,
 			'openlab_logo',
 			array(
-				'label'         => __( 'Logo', 'openlab-theme' ),
+				'label'         => __( 'Logo', 'commons-in-a-box' ),
 				'section'       => 'openlab_logo',
 				'height'        => 63,
 				'width'         => 185,
@@ -82,7 +82,7 @@ function openlab_customizer_setup( $wp_customize ) {
 
 	// Home Page
 	$wp_customize->add_panel( 'openlab_home_page', array(
-		'title' => __( 'Home Page', 'openlab-theme' ),
+		'title' => __( 'Home Page', 'commons-in-a-box' ),
 	) );
 
 	global $wp_registered_sidebars;
@@ -103,15 +103,15 @@ function openlab_customizer_setup( $wp_customize ) {
 	}
 
 	$wp_customize->add_panel( 'openlab_panel_footer', array(
-		'title' => __( 'Community-wide Footer', 'openlab-theme' ),
-		'description' => __( 'This works', 'openlab-theme' ),
+		'title' => __( 'Community-wide Footer', 'commons-in-a-box' ),
+		'description' => __( 'This works', 'commons-in-a-box' ),
 	) );
 
 	// Footer Left
 	$wp_customize->add_section( 'openlab_section_footer_left', array(
-		'title' => __( 'Footer - Left', 'openlab-theme' ),
+		'title' => __( 'Footer - Left', 'commons-in-a-box' ),
 		'panel' => 'openlab_panel_footer',
-		'description' => __( 'Controls the text on the left-hand side of the community-wide footer.', 'openlab-theme' ),
+		'description' => __( 'Controls the text on the left-hand side of the community-wide footer.', 'commons-in-a-box' ),
 	) );
 
 	$wp_customize->add_setting( 'openlab_footer_left_heading', array(
@@ -126,7 +126,7 @@ function openlab_customizer_setup( $wp_customize ) {
 
 	$wp_customize->add_control( 'openlab_footer_left_heading', array(
 		'type' => 'text',
-		'label' => __( 'Heading', 'openlab-theme' ),
+		'label' => __( 'Heading', 'commons-in-a-box' ),
 		'section' => 'openlab_section_footer_left',
 	) );
 
@@ -134,16 +134,16 @@ function openlab_customizer_setup( $wp_customize ) {
 		$wp_customize,
 		'openlab_footer_left_content',
 		array(
-			'label' => __( 'Content', 'openlab-theme' ),
+			'label' => __( 'Content', 'commons-in-a-box' ),
 			'section' => 'openlab_section_footer_left',
 		)
 	) );
 
 	// Footer Middle
 	$wp_customize->add_section( 'openlab_section_footer_middle', array(
-		'title' => __( 'Footer - Middle', 'openlab-theme' ),
+		'title' => __( 'Footer - Middle', 'commons-in-a-box' ),
 		'panel' => 'openlab_panel_footer',
-		'description' => __( 'Controls the text on the middle of the community-wide footer.', 'openlab-theme' ),
+		'description' => __( 'Controls the text on the middle of the community-wide footer.', 'commons-in-a-box' ),
 	) );
 
 	$wp_customize->add_setting( 'openlab_footer_middle_heading', array(
@@ -158,7 +158,7 @@ function openlab_customizer_setup( $wp_customize ) {
 
 	$wp_customize->add_control( 'openlab_footer_middle_heading', array(
 		'type' => 'text',
-		'label' => __( 'Heading', 'openlab-theme' ),
+		'label' => __( 'Heading', 'commons-in-a-box' ),
 		'section' => 'openlab_section_footer_middle',
 	) );
 
@@ -166,7 +166,7 @@ function openlab_customizer_setup( $wp_customize ) {
 		$wp_customize,
 		'openlab_footer_middle_content',
 		array(
-			'label' => __( 'Content', 'openlab-theme' ),
+			'label' => __( 'Content', 'commons-in-a-box' ),
 			'section' => 'openlab_section_footer_middle',
 		)
 	) );

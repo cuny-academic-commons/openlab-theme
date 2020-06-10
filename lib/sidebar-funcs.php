@@ -262,7 +262,7 @@ function openlab_members_sidebar_blocks( $mobile_hide = false ) {
 
 	if ( is_user_logged_in() && openlab_is_my_profile() ) :
 		?>
-		<h2 class="sidebar-header top-sidebar-header hidden-xs"><?php esc_html_e( 'My Profile', 'openlab-theme' ); ?></h2>
+		<h2 class="sidebar-header top-sidebar-header hidden-xs"><?php esc_html_e( 'My Profile', 'commons-in-a-box' ); ?></h2>
 	<?php else : ?>
 		<h2 class="sidebar-header top-sidebar-header hidden-xs">Member Profile</h2>
 	<?php endif; ?>
@@ -305,8 +305,8 @@ function openlab_members_sidebar_blocks( $mobile_hide = false ) {
 				</li>
 
 				<li class="portfolio-dashboard-link">
-					<a href="<?php openlab_user_portfolio_profile_url() ?>"><?php esc_html_e( 'Portfolio Home', 'openlab-theme' ); ?></a>
-					<?php if ( openlab_is_my_profile() && openlab_user_portfolio_site_is_local() ) : ?> | <a href="<?php openlab_user_portfolio_url() ?>/wp-admin"><?php esc_html_e( 'Dashboard', 'openlab-theme' ); ?></a>
+					<a href="<?php openlab_user_portfolio_profile_url() ?>"><?php esc_html_e( 'Portfolio Home', 'commons-in-a-box' ); ?></a>
+					<?php if ( openlab_is_my_profile() && openlab_user_portfolio_site_is_local() ) : ?> | <a href="<?php openlab_user_portfolio_url() ?>/wp-admin"><?php esc_html_e( 'Dashboard', 'commons-in-a-box' ); ?></a>
 					<?php endif ?>
 				</li>
 

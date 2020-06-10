@@ -1,9 +1,9 @@
 <div class="panel panel-default">
-	<div class="panel-heading"><?php esc_html_e( 'Category', 'openlab-theme' ); ?></div><div class="panel-body">
+	<div class="panel-heading"><?php esc_html_e( 'Category', 'commons-in-a-box' ); ?></div><div class="panel-body">
 		<table>
 			<tbody>
 				<tr class="school-tooltip">
-					<td colspan="2"><p class="ol-tooltip"><?php esc_html_e( 'Please select from the following categories.', 'openlab-theme' ); ?></p></td>
+					<td colspan="2"><p class="ol-tooltip"><?php esc_html_e( 'Please select from the following categories.', 'commons-in-a-box' ); ?></p></td>
 				</tr>
 				<tr class="bp-categories">
 					<td colspan="2" id="bp_group_categories">

@@ -20,7 +20,7 @@
 					$author_id = get_the_author_meta( 'ID' );
 					printf(
 						/* translators */
-						esc_html__( 'Posted on %1$s by %2$s', 'openlab-theme' ),
+						esc_html__( 'Posted on %1$s by %2$s', 'commons-in-a-box' ),
 						esc_html( get_the_date( 'F j, Y' ) ),
 						bp_core_get_userlink( get_the_author_meta( 'ID' ) )
 					);

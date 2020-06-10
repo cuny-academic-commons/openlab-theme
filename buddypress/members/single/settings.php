@@ -30,7 +30,7 @@ switch ( bp_current_action() ) :
 
 		<div id="item-body" class="form-panel" role="main">
 			<div class="panel panel-default">
-				<div class="panel-heading"><?php esc_html_e( 'Export Data', 'openlab-theme' ); ?></div>
+				<div class="panel-heading"><?php esc_html_e( 'Export Data', 'commons-in-a-box' ); ?></div>
 				<div class="panel-body">
 					<?php bp_get_template_part( 'members/single/settings/data' ); ?>
 				</div>

@@ -140,7 +140,7 @@ if ( $category ) {
 							<a href="<?php bp_group_permalink() ?>"><img class="img-responsive" src ="<?php echo esc_url( bp_core_fetch_avatar( array( 'item_id' => $group_id, 'object' => 'group', 'type' => 'full', 'html' => false ) ) ); ?>" alt="<?php echo esc_attr( bp_get_group_name() ); ?>"/></a>
 
 							<?php if ( $group_site_url && cboxol_site_can_be_viewed( $group_id ) ) : ?>
-								<a class="group-site-link" href="<?php echo esc_url( $group_site_url ); ?>"><?php esc_html_e( 'Visit Site', 'openlab-theme' ); ?><span class="fa fa-chevron-circle-right" aria-hidden="true"></span></a>
+								<a class="group-site-link" href="<?php echo esc_url( $group_site_url ); ?>"><?php esc_html_e( 'Visit Site', 'commons-in-a-box' ); ?><span class="fa fa-chevron-circle-right" aria-hidden="true"></span></a>
 							<?php endif; ?>
 						</div>
 
@@ -188,6 +188,6 @@ if ( $category ) {
 	</div>
 
 	<div class="widget-error">
-		<?php _e( 'There are no items to display', 'openlab-theme' ) ?>
+		<?php _e( 'There are no items to display', 'commons-in-a-box' ) ?>
 	</div>
 <?php endif; ?>
