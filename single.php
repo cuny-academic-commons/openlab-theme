@@ -2,13 +2,10 @@
 
 <div id="content" class="hfeed row">
 	<?php
-	global $wp_query;
-	$post = $wp_query->post;
-	$postID = $post->ID;
-	$parent = $post->post_parent;
-	?>
-
-	<?php if ( have_posts() ) : while ( have_posts() ) : the_post(); ?>
+	if ( have_posts() ) :
+		while ( have_posts() ) :
+			the_post();
+			?>
 
 		<div <?php post_class(); ?>>
 			<div id="openlab-main-content"  class="content-wrapper">
@@ -19,9 +16,10 @@
 					<?php
 					$author_id = get_the_author_meta( 'ID' );
 					printf(
-						/* translators */
+						/* translators: 1. post date, 2. author link */
 						esc_html__( 'Posted on %1$s by %2$s', 'commons-in-a-box' ),
 						esc_html( get_the_date( 'F j, Y' ) ),
+						// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 						bp_core_get_userlink( get_the_author_meta( 'ID' ) )
 					);
 					?>
@@ -31,10 +29,14 @@
 			</div>
 		</div><!--hentry-->
 
-		<?php if ( ! post_password_required() ) : ?>
-			<?php comments_template( '', true ); ?>
-		<?php endif; ?>
-	<?php endwhile; endif; ?>
+			<?php
+			if ( ! post_password_required() ) {
+				comments_template( '', true );
+			}
+
+		endwhile;
+	endif;
+	?>
 
 </div><!--#content-->
 
