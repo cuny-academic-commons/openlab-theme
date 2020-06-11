@@ -12,7 +12,14 @@
 if ( is_user_logged_in() ) :
 
 	echo '<div id="open-lab-login" class="log-box">';
-	echo '<h1 class="title inline-element semibold">Welcome,</h1><h2 class="title inline-element">' . bp_core_get_user_displayname( bp_loggedin_user_id() ) . '</h2>';
+	printf(
+		'<h1 class="title inline-element semibold">%s</h1>',
+		sprintf(
+			// translators: logged-in user name
+			esc_html__( 'Welcome, %s', 'commons-in-a-box' ),
+			esc_html( bp_core_get_user_displayname( bp_loggedin_user_id() ) )
+		)
+	);
 	do_action( 'bp_before_sidebar_me' )
 	?>
 
@@ -29,22 +36,20 @@ if ( is_user_logged_in() ) :
 		$contact_link = $brand_pages['contact-us']['preview_url'];
 	}
 
+	$user_avatar = bp_get_loggedin_user_avatar(
+		[
+			'type' => 'full',
+			'html' => false,
+		]
+	);
+
 	?>
 
 	<div id="sidebar-me" class="clearfix">
 		<div id="user-info">
-			<a class="avatar" href="<?php echo bp_loggedin_user_domain(); ?>">
+			<a class="avatar" href="<?php echo esc_attr( bp_loggedin_user_domain() ); ?>">
 				<?php /* translators: user display name */ ?>
-				<img class="img-responsive" src="
-				<?php
-				bp_loggedin_user_avatar(
-					array(
-						'type' => 'full',
-						'html' => false,
-					)
-				);
-				?>
-													" alt="<?php echo esc_attr( sprintf( __( 'Avatar for %s', 'commons-in-a-box' ), bp_core_get_user_displayname( bp_loggedin_user_id() ) ) ); ?>" />
+				<img class="img-responsive" src="<?php echo esc_attr( $user_avatar ); ?>" alt="<?php echo esc_attr( sprintf( __( 'Avatar for %s', 'commons-in-a-box' ), bp_core_get_user_displayname( bp_loggedin_user_id() ) ) ); ?>" />
 			</a>
 
 			<div class="welcome-link-my-profile">
@@ -53,8 +58,8 @@ if ( is_user_logged_in() ) :
 
 			<ul class="content-list">
 				<?php /* translators: logged-in user display name */ ?>
-				<li class="no-margin no-margin-bottom"><a class="button logout font-size font-12 roll-over-loss" href="<?php echo wp_logout_url( bp_get_root_domain() ); ?>"><?php printf( esc_html__( 'Not %s?', 'commons-in-a-box' ), esc_html( bp_core_get_username( bp_loggedin_user_id() ) ) ); ?></a></li>
-				<li class="no-margin no-margin-bottom"><a class="button logout font-size font-12 roll-over-loss" href="<?php echo wp_logout_url( bp_get_root_domain() ); ?>"><?php _e( 'Log Out', 'commons-in-a-box' ); ?></a></li>
+				<li class="no-margin no-margin-bottom"><a class="button logout font-size font-12 roll-over-loss" href="<?php echo esc_attr( wp_logout_url( bp_get_root_domain() ) ); ?>"><?php printf( esc_html__( 'Not %s?', 'commons-in-a-box' ), esc_html( bp_core_get_username( bp_loggedin_user_id() ) ) ); ?></a></li>
+				<li class="no-margin no-margin-bottom"><a class="button logout font-size font-12 roll-over-loss" href="<?php echo esc_attr( wp_logout_url( bp_get_root_domain() ) ); ?>"><?php esc_html_e( 'Log Out', 'commons-in-a-box' ); ?></a></li>
 			</ul>
 			</span><!--user-info-->
 		</div>
