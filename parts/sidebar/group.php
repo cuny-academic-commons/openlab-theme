@@ -34,6 +34,7 @@ if ( $site_id ) {
 					<div id="item-buttons" class="profile-nav sidebar-block clearfix">
 						<ul class="sidebar-nav clearfix">
 							<?php bp_get_options_nav(); ?>
+							<?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 							<?php echo openlab_get_group_profile_mobile_anchor_links(); ?>
 						</ul>
 					</div><!-- #item-buttons -->
@@ -41,6 +42,7 @@ if ( $site_id ) {
 				<?php do_action( 'bp_group_options_nav' ); ?>
 
 				<?php if ( ! cboxol_is_portfolio() ) : ?>
+					<?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 					<?php echo openlab_get_group_activity_events_feed(); ?>
 				<?php endif; ?>
 			</div>
