@@ -219,6 +219,9 @@ $field_ids          = array( 1 );
 							<option value="<?php echo esc_attr( $selectable_type->get_slug() ); ?>" <?php selected( $current_type, $selectable_type->get_slug() ); ?>><?php echo esc_html( $selectable_type->get_label( 'singular' ) ); ?></option>
 						<?php endforeach; ?>
 					</select>
+
+					<?php wp_nonce_field( 'change_member_type', 'change-member-type-nonce', false ); ?>
+
 				<?php endif; ?>
 
 			</div><!--panel-body-->
