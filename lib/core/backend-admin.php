@@ -68,7 +68,7 @@ function openlab_process_footer_links() {
 		$links_data_out['accessibility_info_title'] = $accessibility_info_obj->post_title;
 
 		update_option( 'footer_link_accessibility_help_post', $accessibility_info_val );
-		$links_data_out['sucess_message'] = 'Help post selection for the accessibility info link updated.';
+		$links_data_out['sucess_message'] = __( 'Help post selection for the accessibility info link updated.', 'commons-in-a-box' );
 	} else {
 
 		$links_data_out['accessibility_info_id'] = 0;
@@ -76,7 +76,7 @@ function openlab_process_footer_links() {
 
 		update_option( 'footer_link_accessibility_help_post', 0 );
 
-		$links_data_out['error_message'] = 'Help post selection for the accessibility info link returned a zero value. This will hide that link in the footer. If this was not your intention, please try again or contact support.';
+		$links_data_out['error_message'] = __( 'Help post selection for the accessibility info link returned a zero value. This will hide that link in the footer. If this was not your intention, please try again or contact support.', 'commons-in-a-box' );
 	}
 
 	return $links_data_out;
