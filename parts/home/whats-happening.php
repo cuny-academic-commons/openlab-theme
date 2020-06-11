@@ -9,12 +9,14 @@
 			<div class="sidebar-block activity-block">
 				<div class="activity-row clearfix">
 					<div class="activity-avatar pull-left">
-						<a href="<?php echo openlab_activity_group_link( $activity ); ?>"><?php echo openlab_activity_group_avatar( $activity ); ?></a>
+						<?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+						<a href="<?php echo esc_attr( openlab_activity_group_link( $activity ) ); ?>"><?php echo openlab_activity_group_avatar( $activity ); ?></a>
 					</div>
 
 					<div class="activity-content overflow-hidden">
 
 						<div class="activity-header">
+							<?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 							<?php echo openlab_get_custom_activity_action( $activity ); ?>
 						</div>
 
@@ -29,12 +31,12 @@
 			<div class="row activity-row">
 				<div class="activity-avatar col-sm-24">
 					<div class="activity-header">
-						<p>No recent activity</p>
+						<p><?php esc_html_e( 'No recent activity', 'commons-in-a-box' ); ?></p>
 					</div>
 				</div>
 			</div>
 		</div>
 
-	<?php endif; /* bp_has_activites() */ ?>
+	<?php endif; ?>
 
 </div><!-- .activity-list -->
