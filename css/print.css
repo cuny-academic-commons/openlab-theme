@@ -1,6 +1,6 @@
 /**print styles - help pages**/
 a[href]:after {
-    display: none;
+	display: none;
 }
 .navbar,
 #help-title-nav,
@@ -10,8 +10,8 @@ a[href]:after {
 .print-link,
 #breadcrumb-container,
 #openlab-footer{
-    display: none;
+	display: none;
 }
 #content {
-    position: relative !important;
+	position: relative !important;
 }

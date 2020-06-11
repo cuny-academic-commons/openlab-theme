@@ -8,8 +8,14 @@
 	<!-- Exclude any Node Modules directory. -->
 	<exclude-pattern>/node_modules/*</exclude-pattern>
 
-	<!-- Exclude minified Javascript files. -->
+	<!-- Exclude minified and built files. -->
 	<exclude-pattern>*.min.js</exclude-pattern>
+	<exclude-pattern>/style.css</exclude-pattern>
+	<exclude-pattern>/css/color-schemes/*</exclude-pattern>
+
+	<!-- Exclude libraries -->
+	<exclude-pattern>/css/camera.css</exclude-pattern>
+	<exclude-pattern>/css/select2/*</exclude-pattern>
 
 	<rule ref="PHPCompatibilityWP"/>
 
