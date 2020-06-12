@@ -2,36 +2,40 @@
 
 define( 'BP_DISABLE_ADMIN_BAR', true );
 
-add_action( 'widgets_init', 'cuny_remove_default_widget_areas', 11 );
 function cuny_remove_default_widget_areas() {
 	unregister_sidebar( 'sidebar' );
 	unregister_sidebar( 'sidebar-alt' );
 }
+add_action( 'widgets_init', 'cuny_remove_default_widget_areas', 11 );
+
 /** Add support for custom background */
 add_theme_support( 'custom-background', array() );
 
 add_action( 'wp_print_styles', 'cuny_no_bp_default_styles', 100 );
 
 // Enqueue Styles For Testimonials Page & sub-pages
-add_action( 'wp_print_styles', 'wds_cuny_ie_styles' );
 function wds_cuny_ie_styles() {
 	if ( is_admin() ) {
 		return;
 	}
+
+	// phpcs:disable WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet
 	?>
 
 	<!--[if lte IE 7]>
-	  <link rel="stylesheet" href="<?php bloginfo( 'stylesheet_directory' ); ?>/css/ie7.css" type="text/css" media="screen" />
+		<link rel="stylesheet" href="<?php bloginfo( 'stylesheet_directory' ); ?>/css/ie7.css" type="text/css" media="screen" />
 	<![endif]-->
 	<!--[if IE 8]>
-	  <link rel="stylesheet" href="<?php bloginfo( 'stylesheet_directory' ); ?>/css/ie8.css" type="text/css" media="screen" />
+		<link rel="stylesheet" href="<?php bloginfo( 'stylesheet_directory' ); ?>/css/ie8.css" type="text/css" media="screen" />
 	<![endif]-->
 	<!--[if IE 9]>
-	  <link rel="stylesheet" href="<?php bloginfo( 'stylesheet_directory' ); ?>/css/ie9.css" type="text/css" media="screen" />
+		<link rel="stylesheet" href="<?php bloginfo( 'stylesheet_directory' ); ?>/css/ie9.css" type="text/css" media="screen" />
 	<![endif]-->
 
-
-	<?php }
+	<?php
+	// phpcs:enable WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet
+}
+add_action( 'wp_print_styles', 'wds_cuny_ie_styles' );
 
 function cuny_no_bp_default_styles() {
 	wp_dequeue_style( 'gconnect-bp' );
