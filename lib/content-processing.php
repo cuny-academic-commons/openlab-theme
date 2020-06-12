@@ -15,7 +15,7 @@ function openlab_conditional_body_classes( $classes ) {
 
 	if ( is_front_page() || is_404() ) {
 		$classes[] = 'full-width-content';
-	} elseif ( isset( $post->post_name ) && $post->post_name == 'register' ) {
+	} elseif ( isset( $post->post_name ) && 'register' === $post->post_name ) {
 		$classes[] = 'content-sidebar';
 	}
 
@@ -29,7 +29,7 @@ function openlab_conditional_body_classes( $classes ) {
 	}
 
 	$calendar_page_obj = get_page_by_path( 'about/calendar' );
-	$is_calendar_page = cboxol_is_brand_page( 'calendar' );
+	$is_calendar_page  = cboxol_is_brand_page( 'calendar' );
 	if ( ! $is_calendar_page && ! empty( $post->post_parent ) ) {
 		$is_calendar_page = cboxol_is_brand_page( 'calendar', $post->post_parent );
 	}
@@ -39,8 +39,8 @@ function openlab_conditional_body_classes( $classes ) {
 			( function_exists( 'bp_is_user' ) && bp_is_user() ) ||
 			( $is_about_page ) ||
 			( $is_calendar_page ) ||
-			( isset( $post->post_type ) && $post->post_type == 'help' ) ||
-			( isset( $post->post_type ) && $post->post_type == 'help_glossary' ) ||
+			( isset( $post->post_type ) && 'help' === $post->post_type ) ||
+			( isset( $post->post_type ) && 'help_glossary' === $post->post_type ) ||
 			( ! empty( $query_vars ) && isset( $query_vars['help_category'] ) ) ) {
 		$classes[] = 'sidebar-mobile-dropdown';
 	}
@@ -76,51 +76,49 @@ function openlab_shortened_text( $text, $limit = '55', $echo = true ) {
 }
 
 // truncate links in profile fields - I'm using $field->data->value to just truncate the link name (it was giving odd results when trying to truncate $value)
-add_filter( 'bp_get_the_profile_field_value', 'openlab_filter_profile_fields', 10, 2 );
-
-function openlab_filter_profile_fields( $value, $type ) {
+function openlab_filter_profile_fields( $value ) {
 	global $field;
 	$truncate_link_candidates = array( 'Website', 'LinkedIn Profile Link', 'Facebook Profile Link', 'Google Scholar profile' );
-	if ( in_array( $field->name, $truncate_link_candidates ) ) {
-		$args = array(
+	if ( in_array( $field->name, $truncate_link_candidates, true ) ) {
+		$args           = array(
 			'ending' => __( '&hellip;', 'buddypress' ),
-			'exact' => true,
-			'html' => false,
+			'exact'  => true,
+			'html'   => false,
 		);
 		$truncated_link = bp_create_excerpt( $field->data->value, 40, $args );
-		$full_link = openlab_http_check( $field->data->value );
-		$value = '<a href="' . $full_link . '">' . openlab_http_check( $truncated_link ) . '</a>';
+		$full_link      = openlab_http_check( $field->data->value );
+		$value          = '<a href="' . $full_link . '">' . openlab_http_check( $truncated_link ) . '</a>';
 	}
 	return $value;
 }
+add_filter( 'bp_get_the_profile_field_value', 'openlab_filter_profile_fields', 10, 2 );
 
 function openlab_http_check( $link ) {
 	$http_check = strpos( $link, 'http' );
 
-	if ( $http_check === false ) {
+	if ( false === $http_check ) {
 		$link = 'http://' . $link;
 	}
 
 	return $link;
 }
-
 remove_filter( 'get_the_excerpt', 'wp_trim_excerpt' );
 add_filter( 'get_the_excerpt', 'cuny_add_links_wp_trim_excerpt' );
 
 function cuny_add_links_wp_trim_excerpt( $text ) {
 	$raw_excerpt = $text;
-	if ( '' == $text ) {
+	if ( '' === $text ) {
 		$text = get_the_content( '' );
 
 		$text = strip_shortcodes( $text );
 
-		$text = apply_filters( 'the_content', $text );
-		$text = str_replace( ']]>', ']]>', $text );
-		$text = strip_tags( $text, '<a>' );
+		$text           = apply_filters( 'the_content', $text );
+		$text           = str_replace( ']]>', ']]>', $text );
+		$text           = strip_tags( $text, '<a>' );
 		$excerpt_length = apply_filters( 'excerpt_length', 55 );
 
-		$excerpt_more = apply_filters( 'excerpt_more', ' ' . '[...]' );
-		$words = preg_split( '/( <a.*?a> )|\n|\r|\t|\s/', $text, $excerpt_length + 1, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE );
+		$excerpt_more = apply_filters( 'excerpt_more', ' [...]' );
+		$words        = preg_split( '/( <a.*?a> )|\n|\r|\t|\s/', $text, $excerpt_length + 1, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE );
 		if ( count( $words ) > $excerpt_length ) {
 			array_pop( $words );
 			$text = implode( ' ', $words );
@@ -142,7 +140,7 @@ function openlab_get_menu_count_mup( $count, $pull_right = ' pull-right' ) {
 }
 
 function openlab_not_empty( $content ) {
-	if ( $content && ! ctype_space( $content ) && $content !== '' ) {
+	if ( $content && ! ctype_space( $content ) && '' !== $content ) {
 		return true;
 	} else {
 		return false;
@@ -158,11 +156,9 @@ function openlab_sidebar_cleanup( $content ) {
 }
 
 /*
- * This function lets us customize status messages
- * uses filter: bp_core_render_message_content
+ * This function lets us customize status messages.
  */
-
-function openlab_process_status_messages( $message, $type ) {
+function openlab_process_status_messages( $message ) {
 
 	// invite anyone page
 	if ( bp_current_action() === 'invite-anyone' ) {
@@ -173,14 +169,13 @@ function openlab_process_status_messages( $message, $type ) {
 
 	return $message;
 }
-
-add_filter( 'bp_core_render_message_content', 'openlab_process_status_messages', 10, 2 );
+add_filter( 'bp_core_render_message_content', 'openlab_process_status_messages', 10 );
 
 function openlab_generate_school_name( $group_id ) {
 	$schools_out = '';
-	$school_out = array();
+	$school_out  = array();
 
-	$schools = groups_get_groupmeta( $group_id, 'wds_group_school' );
+	$schools     = groups_get_groupmeta( $group_id, 'wds_group_school' );
 	$schools_ary = explode( ',', $schools );
 
 	if ( ! empty( $schools_ary ) ) {
@@ -208,7 +203,7 @@ function openlab_generate_school_name( $group_id ) {
 function openlab_generate_department_name( $group_id ) {
 	$departments_out = '';
 
-	$departments = groups_get_groupmeta( $group_id, 'wds_departments' );
+	$departments     = groups_get_groupmeta( $group_id, 'wds_departments' );
 	$departments_ary = explode( ',', $departments );
 
 	if ( ! empty( $departments_ary ) ) {
