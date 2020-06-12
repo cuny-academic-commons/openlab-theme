@@ -1,18 +1,20 @@
 <?php
 /*
- menu functions - current includes
-  -register_nav_menus for custom menu locations
-  -help pages menu - adding categories
-  -profile pages sub menus
+ * menu functions - current includes
+ * -register_nav_menus for custom menu locations
+ * -help pages menu - adding categories
+ * -profile pages sub menus
  */
 
 // custom menu locations for OpenLab
-register_nav_menus(array(
-	'main' => __( 'Main Menu', 'commons-in-a-box' ),
-	'aboutmenu' => __( 'About Menu', 'commons-in-a-box' ),
-	'helpmenu' => __( 'Help Menu', 'commons-in-a-box' ),
-	'helpmenusec' => __( 'Help Menu Secondary', 'commons-in-a-box' ),
-));
+register_nav_menus(
+	array(
+		'main'        => __( 'Main Menu', 'commons-in-a-box' ),
+		'aboutmenu'   => __( 'About Menu', 'commons-in-a-box' ),
+		'helpmenu'    => __( 'Help Menu', 'commons-in-a-box' ),
+		'helpmenusec' => __( 'Help Menu Secondary', 'commons-in-a-box' ),
+	)
+);
 
 /**
  * Using @wp_nav_menu_objects for fine-grained menu customizations
@@ -31,7 +33,7 @@ function openlab_wp_menu_customizations( $items, $args ) {
 		$upcoming_page_obj = get_page_by_path( 'about/calendar/upcoming' );
 
 		// default order is at the end of the current set of items
-		$order = count( $items );
+		$order     = count( $items );
 		$new_items = array();
 
 		// add a mobile verison of the OpenLab Calendar menu item
@@ -42,11 +44,11 @@ function openlab_wp_menu_customizations( $items, $args ) {
 				$items[ $key ]->classes[] = 'external-link';
 			}
 
-			if ( $item->title === __( 'Calendar', 'commons-in-a-box' ) ) {
+			if ( __( 'Calendar', 'commons-in-a-box' ) === $item->title ) {
 
 				$items[ $key ]->classes[] = 'hidden-xs';
 
-				if ( $post->post_parent === $calendar_page_obj->ID || $post->post_type === 'event' ) {
+				if ( $post->post_parent === $calendar_page_obj->ID || 'event' === $post->post_type ) {
 					$items[ $key ]->classes[] = 'current-menu-item';
 				}
 
@@ -55,7 +57,7 @@ function openlab_wp_menu_customizations( $items, $args ) {
 
 			if ( $item->menu_order >= $order ) {
 				$items[ $key ]->menu_order = $item->menu_order + 1;
-				$new_items[ $key + 1 ] = $item;
+				$new_items[ $key + 1 ]     = $item;
 			} else {
 				$new_items[ $key ] = $item;
 			}
@@ -94,10 +96,10 @@ function openlab_modify_options_nav() {
 
 		if ( cboxol_is_portfolio() ) {
 			// Keep the following tabs as-is
-			$keepers = array( 'home', 'admin', 'members' );
+			$keepers   = array( 'home', 'admin', 'members' );
 			$nav_items = buddypress()->groups->nav->get_secondary( array( 'parent_slug' => bp_get_current_group_slug() ) );
 			foreach ( $nav_items as $nav_item ) {
-				if ( ! in_array( $nav_item->slug, $keepers ) ) {
+				if ( ! in_array( $nav_item->slug, $keepers, true ) ) {
 					buddypress()->groups->nav->delete_nav( $nav_item->slug, bp_get_current_group_slug() );
 				}
 			}
@@ -105,18 +107,28 @@ function openlab_modify_options_nav() {
 	}
 
 	if ( bp_is_group() && ! bp_is_group_create() ) {
-		buddypress()->groups->nav->edit_nav( array(
-			'position' => 95,
-		), 'admin', bp_get_current_group_slug() );
+		buddypress()->groups->nav->edit_nav(
+			array(
+				'position' => 95,
+			),
+			'admin',
+			bp_get_current_group_slug()
+		);
 
-		buddypress()->groups->nav->edit_nav( array(
-			'name' => 'Settings',
-		), 'admin', bp_get_current_group_slug() );
+		buddypress()->groups->nav->edit_nav(
+			array(
+				'name' => 'Settings',
+			),
+			'admin',
+			bp_get_current_group_slug()
+		);
 
-		$files_item = buddypress()->groups->nav->get_secondary( array(
-			'slug' => 'documents',
-			'parent_slug' => bp_get_current_group_slug(),
-		) );
+		$files_item = buddypress()->groups->nav->get_secondary(
+			array(
+				'slug'        => 'documents',
+				'parent_slug' => bp_get_current_group_slug(),
+			)
+		);
 
 		if ( $files_item ) {
 			$first_files_item = reset( $files_item );
@@ -130,29 +142,39 @@ function openlab_modify_options_nav() {
 				$files_name = __( 'Files', 'commons-in-a-box' );
 			}
 
-			buddypress()->groups->nav->edit_nav( array(
-				'name' => $files_name,
-			), 'documents', bp_get_current_group_slug() );
+			buddypress()->groups->nav->edit_nav(
+				array(
+					'name' => $files_name,
+				),
+				'documents',
+				bp_get_current_group_slug()
+			);
 		}
 
-		$nav_items = buddypress()->groups->nav->get_secondary( array( 'parent_slug' => bp_get_current_group_slug() ) );
+		$nav_items     = buddypress()->groups->nav->get_secondary( array( 'parent_slug' => bp_get_current_group_slug() ) );
 		$current_group = groups_get_current_group();
 
 		// Docs should have count.
-		$doc_item = buddypress()->groups->nav->get_secondary( array(
-			'slug' => 'docs',
-			'parent_slug' => bp_get_current_group_slug(),
-		) );
+		$doc_item = buddypress()->groups->nav->get_secondary(
+			array(
+				'slug'        => 'docs',
+				'parent_slug' => bp_get_current_group_slug(),
+			)
+		);
 		if ( $doc_item ) {
 			$group_doc_count = openlab_get_group_doc_count( $current_group->id );
-			$docs_name = sprintf(
+			$docs_name       = sprintf(
 				/* translators: 1. count span */
 				__( 'Docs %1$s', 'commons-in-a-box' ),
 				sprintf( '<span class="mol-count pull-right count-%d gray">%d</span>', $group_doc_count, $group_doc_count )
 			);
-			buddypress()->groups->nav->edit_nav( array(
-				'name' => $docs_name,
-			), 'docs', bp_get_current_group_slug() );
+			buddypress()->groups->nav->edit_nav(
+				array(
+					'name' => $docs_name,
+				),
+				'docs',
+				bp_get_current_group_slug()
+			);
 		}
 
 		foreach ( $nav_items as $nav_item ) {
@@ -160,16 +182,16 @@ function openlab_modify_options_nav() {
 			if ( 'events' === $nav_item->slug ) {
 
 				$new_option_args = array(
-					'name' => $nav_item->name,
-					'slug' => $nav_item->slug . '-mobile',
-					'parent_slug' => $nav_item->parent_slug,
-					'parent_url' => trailingslashit( bp_get_group_permalink( $current_group ) ),
-					'link' => trailingslashit( $nav_item->link ) . 'upcoming/',
-					'position' => intval( $nav_item->position ) + 1,
-					'item_css_id' => $nav_item->css_id . '-mobile',
+					'name'            => $nav_item->name,
+					'slug'            => $nav_item->slug . '-mobile',
+					'parent_slug'     => $nav_item->parent_slug,
+					'parent_url'      => trailingslashit( bp_get_group_permalink( $current_group ) ),
+					'link'            => trailingslashit( $nav_item->link ) . 'upcoming/',
+					'position'        => intval( $nav_item->position ) + 1,
+					'item_css_id'     => $nav_item->css_id . '-mobile',
 					'screen_function' => $nav_item->screen_function,
 					'user_has_access' => $nav_item->user_has_access,
-					'no_access_url' => $nav_item->no_access_url,
+					'no_access_url'   => $nav_item->no_access_url,
 				);
 
 				$status = bp_core_create_subnav_link( $new_option_args, 'groups' );
@@ -191,34 +213,34 @@ add_action( 'bp_screens', 'openlab_modify_options_nav', 1 );
 function openlab_help_categories_menu( $items, $args ) {
 	global $post;
 
-	if ( $args->theme_location == 'helpmenu' ) {
-		$term = get_query_var( 'term' );
-		$parent_term = get_term_by( 'slug', $term, 'help_category' );
+	if ( 'helpmenu' === $args->theme_location ) {
+		$term         = get_query_var( 'term' );
+		$parent_term  = get_term_by( 'slug', $term, 'help_category' );
 		$current_term = false;
 
-		if ( $parent_term == false ) {
+		if ( false === $parent_term ) {
 			$child_terms = get_the_terms( $post->ID, 'help_category' );
-			$term = array();
+			$term        = array();
 
 			if ( ! empty( $child_terms ) ) {
 				foreach ( $child_terms as $child_term ) {
 					$term[] = $child_term;
 				}
 
-				$parent_term = get_term_by( 'id', $term[0]->parent, 'help_category' );
+				$parent_term  = get_term_by( 'id', $term[0]->parent, 'help_category' );
 				$current_term = get_term_by( 'id', $term[0]->term_id, 'help_category' );
 			}
 		}
 
 		// for child term archive pages
-		if ( $parent_term !== false && $parent_term->parent != 0 ) {
+		if ( false !== $parent_term && 0 !== $parent_term->parent ) {
 			$current_term = $parent_term;
-			$parent_term = get_term_by( 'id', $current_term->parent, 'help_category' );
+			$parent_term  = get_term_by( 'id', $current_term->parent, 'help_category' );
 		}
 
 		$help_args = array(
 			'hide_empty' => false,
-			'orderby' => 'term_order',
+			'orderby'    => 'term_order',
 			'hide_empty' => false,
 		);
 		$help_cats = get_terms( 'help_category', $help_args );
@@ -226,13 +248,13 @@ function openlab_help_categories_menu( $items, $args ) {
 		// for post level identifying of current menu item
 		$post_cats_array = array();
 
-		if ( $post->post_type == 'help' ) {
+		if ( 'help' === $post->post_type ) {
 			$post_cats = get_the_terms( $post->id, 'help_category' );
 
 			if ( $post_cats ) {
 				foreach ( $post_cats as $post_cat ) {
 					// no children cats in menu
-					if ( $post_cat->parent == 0 ) {
+					if ( 0 === $post_cat->parent ) {
 						$post_cats_array[] = $post_cat->term_id;
 					}
 				}
@@ -242,25 +264,26 @@ function openlab_help_categories_menu( $items, $args ) {
 		$help_cat_list = '';
 		foreach ( $help_cats as $help_cat ) {
 			// eliminate children cats from the menu list
-			if ( $help_cat->parent == 0 ) {
+			if ( 0 === $help_cat->parent ) {
 				$help_classes = 'help-cat menu-item';
 
-				$highlight_active_state = get_query_var( 'taxonomy' ) != 'help_tags' && empty( $_GET['help-search'] );
+				// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+				$highlight_active_state = 'help_tags' === get_query_var( 'taxonomy' ) && empty( $_GET['help-search'] );
 
 				// see if this is the current menu item; if not, this could be a post,
 				// so we'll check against an array of cat ids for this post
 				if ( $highlight_active_state ) {
-					if ( $parent_term !== false && $help_cat->term_id == $parent_term->term_id ) {
+					if ( false !== $parent_term && $help_cat->term_id === $parent_term->term_id ) {
 						$help_classes .= ' current-menu-item';
-					} elseif ( $post->post_type == 'help' ) {
-						if ( in_array( $help_cat->term_id, $post_cats_array ) ) {
+					} elseif ( 'help' === $post->post_type ) {
+						if ( in_array( $help_cat->term_id, $post_cats_array, true ) ) {
 							$help_classes .= ' current-menu-item';
 						}
 					}
 				}
 
 				// a special case just for the glossary page
-				if ( $help_cat->name == 'Help Glossary' ) {
+				if ( 'Help Glossary' === $help_cat->name ) {
 					$help_cat->name = 'Glossary';
 				}
 
@@ -275,19 +298,19 @@ function openlab_help_categories_menu( $items, $args ) {
 
 					$child_args = array(
 						'hide_empty' => false,
-						'orderby' => 'term_order',
+						'orderby'    => 'term_order',
 						'hide_empty' => false,
-						'parent' => $help_cat->term_id,
+						'parent'     => $help_cat->term_id,
 					);
 					$child_cats = get_terms( 'help_category', $child_args );
 					foreach ( $child_cats as $child_cat ) {
 
 						$child_classes = 'help-cat menu-item';
 						if ( $highlight_active_state ) {
-							if ( $current_term !== false && $child_cat->term_id == $current_term->term_id ) {
+							if ( false !== $current_term && $child_cat->term_id === $current_term->term_id ) {
 								$child_classes .= ' current-menu-item';
-							} elseif ( $post->post_type == 'help' ) {
-								if ( in_array( $child_cat->term_id, $post_cats_array ) ) {
+							} elseif ( 'help' === $post->post_type ) {
+								if ( in_array( $child_cat->term_id, $post_cats_array, true ) ) {
 									$child_classes .= ' current-menu-item';
 								}
 							}
@@ -320,7 +343,7 @@ add_filter( 'wp_nav_menu_items', 'openlab_help_categories_menu', 10, 2 );
 function openlab_get_primary_help_term_name() {
 	global $post;
 	$child_terms = get_the_terms( $post->ID, 'help_category' );
-	$term = array();
+	$term        = array();
 	foreach ( $child_terms as $child_term ) {
 		$term[] = $child_term;
 	}
@@ -344,7 +367,7 @@ function openlab_submenu_markup( $type = '', $opt_var = null, $row_wrapper = tru
 	switch ( $type ) {
 		case 'invitations':
 			$submenu_text = esc_html__( 'My Invitations', 'commons-in-a-box' ) . '<span aria-hidden="true">:</span> ';
-			$menu = openlab_my_invitations_submenu();
+			$menu         = openlab_my_invitations_submenu();
 			break;
 		case 'friends':
 			$friends_menu = openlab_my_friends_submenu( false );
@@ -352,7 +375,7 @@ function openlab_submenu_markup( $type = '', $opt_var = null, $row_wrapper = tru
 				return '';
 			}
 
-			$menu = $friends_menu['menu'];
+			$menu         = $friends_menu['menu'];
 			$submenu_text = $friends_menu['submenu_text'];
 
 			$width = 'col-sm-24 has-menu-items is-mol-menu';
@@ -360,28 +383,28 @@ function openlab_submenu_markup( $type = '', $opt_var = null, $row_wrapper = tru
 			break;
 		case 'messages':
 			$submenu_text = esc_html__( 'My Messages', 'commons-in-a-box' ) . '<span aria-hidden="true">:</span> ';
-			$menu = openlab_my_messages_submenu();
+			$menu         = openlab_my_messages_submenu();
 			break;
 		case 'groups':
-			$group_menu = openlab_my_groups_submenu( $opt_var );
-			$menu = $group_menu['menu'];
+			$group_menu   = openlab_my_groups_submenu( $opt_var );
+			$menu         = $group_menu['menu'];
 			$submenu_text = $group_menu['submenu_text'];
 
 			$width = 'col-sm-19 is-mol-menu';
 
-			if ( $menu !== '' ) {
+			if ( '' !== $menu ) {
 				$width .= ' has-menu-items group-item';
 			}
 
 			break;
 		default:
 			$submenu_text = esc_html__( 'My Settings', 'commons-in-a-box' ) . '<span aria-hidden="true">:</span> ';
-			$menu = openlab_profile_settings_submenu();
+			$menu         = openlab_profile_settings_submenu();
 	}
 
 	$extras = openlab_get_submenu_extras();
 
-	$submenu = '<div class="' . $width . '">';
+	$submenu  = '<div class="' . $width . '">';
 	$submenu .= '<div class="submenu"><div class="submenu-text pull-left bold"><h2>' . $submenu_text . '</h2></div>' . $extras . $menu . '</div>';
 	$submenu .= '</div>';
 
@@ -399,7 +422,7 @@ function openlab_get_submenu_extras() {
 	global $bp;
 	$extras = '';
 
-	if ( $bp->current_action == 'my-friends' ) :
+	if ( bp_is_current_action( 'my-friends' ) ) :
 		if ( bp_has_members( bp_ajax_querystring( 'members' ) ) ) :
 			$count = '<div class="pull-left">' . bp_get_members_pagination_count() . '</div>';
 
@@ -422,16 +445,17 @@ HTML;
 function openlab_profile_settings_submenu() {
 	global $bp;
 
-	if ( ! $dud = bp_displayed_user_domain() ) {
+	$dud = bp_displayed_user_domain();
+	if ( ! $dud ) {
 		$dud = bp_loggedin_user_domain(); // will always be the logged in user on my-*
 	}
 
 	$settings_slug = $dud . bp_get_settings_slug();
-	$menu_list = array(
-		$dud . 'profile/edit'            => __( 'Edit Profile', 'commons-in-a-box' ),
-		$dud . 'profile/change-avatar'   => __( 'Change Avatar', 'commons-in-a-box' ),
-		$settings_slug                   => __( 'Account Settings', 'commons-in-a-box' ),
-		$dud . 'settings/notifications'  => __( 'Email Notifications', 'commons-in-a-box' ),
+	$menu_list     = array(
+		$dud . 'profile/edit'           => __( 'Edit Profile', 'commons-in-a-box' ),
+		$dud . 'profile/change-avatar'  => __( 'Change Avatar', 'commons-in-a-box' ),
+		$settings_slug                  => __( 'Account Settings', 'commons-in-a-box' ),
+		$dud . 'settings/notifications' => __( 'Email Notifications', 'commons-in-a-box' ),
 	);
 
 	/** This filter is documented in /wp-content/plugins/buddypress/bp-settings/classes/class-bp-settings-component.php */
@@ -457,14 +481,14 @@ function openlab_profile_settings_submenu() {
  */
 function openlab_my_groups_submenu( \CBOX\OL\GroupType $group_type ) {
 	global $bp;
-	$menu_out = array();
+	$menu_out  = array();
 	$menu_list = array();
 
 	$create_link = bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/create/step/group-details/?group_type=' . $group_type->get_slug() . '&new=true';
-	$no_link = 'no-link';
+	$no_link     = 'no-link';
 
 	$span_start = '<span class="bold">';
-	$span_end = '</span>';
+	$span_end   = '</span>';
 
 	// get account type to see if they're faculty
 	$faculty = xprofile_get_field_data( 'Account Type', get_current_user_id() );
@@ -483,7 +507,7 @@ function openlab_my_groups_submenu( \CBOX\OL\GroupType $group_type ) {
 		);
 	}
 
-	$menu_out['menu'] = openlab_submenu_gen( $menu_list );
+	$menu_out['menu']         = openlab_submenu_gen( $menu_list );
 	$menu_out['submenu_text'] = $submenu_text;
 
 	return $menu_out;
@@ -498,14 +522,16 @@ function openlab_create_group_menu( \CBOX\OL\GroupType $group_type ) {
 	global $bp;
 
 	switch ( bp_get_groups_current_create_step() ) {
-		case 'site-details' :
+		case 'site-details':
 			$step_name = __( 'Step Two: Associated Site Creation', 'commons-in-a-box' );
 			break;
-		case 'invite-anyone' :
+		case 'invite-anyone':
+			// translators: Group creation step name
 			$step_name = sprintf( __( 'Step Three: %s', 'commons-in-a-box' ), esc_html( $group_type->get_label( 'invite_members_to_group' ) ) );
 			break;
-		case 'group-details' :
+		case 'group-details':
 		default:
+			// translators: Group creation step name
 			$step_name = sprintf( __( 'Step One: %s', 'commons-in-a-box' ), esc_html( $group_type->get_label( 'item_creation' ) ) );
 			break;
 	}
@@ -528,17 +554,19 @@ function openlab_my_friends_submenu( $count = true ) {
 	global $bp;
 	$menu_out = array();
 
-	if ( ! $dud = bp_displayed_user_domain() ) {
+	$dud = bp_displayed_user_domain();
+	if ( ! $dud ) {
 		$dud = bp_loggedin_user_domain(); // will always be the logged in user on my-*
 	}
-	$request_ids = friends_get_friendship_request_user_ids( bp_loggedin_user_id() );
+
+	$request_ids   = friends_get_friendship_request_user_ids( bp_loggedin_user_id() );
 	$request_count = intval( count( (array) $request_ids ) );
 
-	$my_friends = $dud . 'friends/';
+	$my_friends      = $dud . 'friends/';
 	$friend_requests = $dud . 'friends/requests/';
 
-	$action = $bp->current_action;
-	$item = $bp->current_item;
+	$action    = $bp->current_action;
+	$item      = $bp->current_item;
 	$component = $bp->current_component;
 
 	$count_span = '';
@@ -549,7 +577,6 @@ function openlab_my_friends_submenu( $count = true ) {
 	if ( $bp->is_item_admin ) {
 		$menu_list = array(
 			$friend_requests => __( 'Requests Received', 'commons-in-a-box' ) . ' ' . $count_span,
-				// '#' => $page_identify,
 		);
 	} else {
 		return '';
@@ -557,13 +584,14 @@ function openlab_my_friends_submenu( $count = true ) {
 
 	$submenu_class = 'no-deco';
 
-	if ( $action !== 'my-friends' ) {
+	if ( 'my-friends' !== $action ) {
 		$submenu_class = 'display-as-menu-item';
 	}
 
 	$menu_out['menu'] = openlab_submenu_gen( $menu_list );
 
-	$label = bp_is_my_profile() ? __( 'My Friends', 'commons-in-a-box' ) : sprintf( __( '%s\'s Friends', 'commons-in-a-box' ), bp_core_get_user_displayname( bp_displayed_user_id() ) );
+	// translators: display name of user
+	$label                    = bp_is_my_profile() ? __( 'My Friends', 'commons-in-a-box' ) : sprintf( __( '%s\'s Friends', 'commons-in-a-box' ), bp_core_get_user_displayname( bp_displayed_user_id() ) );
 	$menu_out['submenu_text'] = '<a class="' . esc_attr( $submenu_class ) . '" href="' . esc_url( $my_friends ) . '">' . esc_html( $label ) . '</a>';
 
 	return $menu_out;
@@ -571,29 +599,29 @@ function openlab_my_friends_submenu( $count = true ) {
 
 // sub-menus for my-messages pages
 function openlab_my_messages_submenu() {
-	global $bp;
-	if ( ! $dud = bp_displayed_user_domain() ) {
+	$dud = bp_displayed_user_domain();
+	if ( ! $dud ) {
 		$dud = bp_loggedin_user_domain(); // will always be the logged in user on my-*
 	}
 
 	$menu_list = array(
-		$dud . 'messages/inbox/' => __( 'Inbox', 'commons-in-a-box' ),
+		$dud . 'messages/inbox/'   => __( 'Inbox', 'commons-in-a-box' ),
 		$dud . 'messages/sentbox/' => __( 'Sent', 'commons-in-a-box' ),
-		$dud . 'messages/compose' => __( 'Compose', 'commons-in-a-box' ),
+		$dud . 'messages/compose'  => __( 'Compose', 'commons-in-a-box' ),
 	);
 	return openlab_submenu_gen( $menu_list );
 }
 
 // sub-menus for my-invites pages
 function openlab_my_invitations_submenu() {
-	global $bp;
-	if ( ! $dud = bp_displayed_user_domain() ) {
+	$dud = bp_displayed_user_domain();
+	if ( ! $dud ) {
 		$dud = bp_loggedin_user_domain(); // will always be the logged in user on my-*
 	}
 
 	$menu_list = array(
-		$dud . 'groups/invites/' => __( 'Invitations Received', 'commons-in-a-box' ),
-		$dud . 'invite-anyone/' => __( 'Invite New Members', 'commons-in-a-box' ),
+		$dud . 'groups/invites/'             => __( 'Invitations Received', 'commons-in-a-box' ),
+		$dud . 'invite-anyone/'              => __( 'Invite New Members', 'commons-in-a-box' ),
 		$dud . 'invite-anyone/sent-invites/' => __( 'Sent Invitations', 'commons-in-a-box' ),
 	);
 	return openlab_submenu_gen( $menu_list );
@@ -610,7 +638,7 @@ function openlab_submenu_gen( $items, $timestamp = false ) {
 	$item_count = count( $items );
 
 	// determining if this is the current page or not - checks to see if this is an action page first; if not, checks the component of the page
-	$action = $bp->current_action;
+	$action    = $bp->current_action;
 	$component = $bp->current_component;
 	$page_slug = $post->post_name;
 
@@ -643,28 +671,28 @@ function openlab_submenu_gen( $items, $timestamp = false ) {
 		}
 
 		// special case for send invitations page hitting the same time as invitations received
-		if ( $page_identify == 'invites' && $title == __( 'Sent Invitations', 'commons-in-a-box' ) ) {
+		if ( 'invites' === $page_identify && __( 'Sent Invitations', 'commons-in-a-box' ) === $title ) {
 			$current_check = false;
 		}
 
 		// adding the current-menu-item class - also includes special cases, parsed out to make them easier to identify
-		if ( $current_check !== false ) {
+		if ( false !== $current_check ) {
 			$item_classes .= ' current-menu-item';
-		} elseif ( $page_identify == 'general' && $title == __( 'Account Settings', 'commons-in-a-box' ) ) {
+		} elseif ( 'general' === $page_identify && __( 'Account Settings', 'commons-in-a-box' ) === $title ) {
 			// special case just for account settings page
 			$item_classes .= ' current-menu-item';
-		} elseif ( $page_identify == 'my-friends' && $title == __( 'My Friends', 'commons-in-a-box' ) ) {
+		} elseif ( 'my-friends' === $page_identify && __( 'My Friends', 'commons-in-a-box' ) === $title ) {
 			// special case just for my friends page
 			$item_classes .= ' current-menu-item bold';
-		} elseif ( $page_identify == 'invite-new-members' && $title == __( 'Invite New Members', 'commons-in-a-box' ) ) {
+		} elseif ( 'invite-new-members' === $page_identify && __( 'Invite New Members', 'commons-in-a-box' ) === $title ) {
 			// special case just for Invite New Members page
 			$item_classes .= ' current-menu-item';
 		}
 
 		// checks to see if this is the last item or first item
-		if ( $item_count == $i ) {
+		if ( $item_count === $i ) {
 			$item_classes .= ' last-item';
-		} elseif ( $i == 1 ) {
+		} elseif ( 1 === $i ) {
 			$item_classes .= ' first-item';
 		}
 
@@ -674,19 +702,19 @@ function openlab_submenu_gen( $items, $timestamp = false ) {
 			$item_classes .= ' delete-button';
 		} elseif ( strpos( $item_classes, 'create' ) ) {
 			$item_classes .= ' create-button';
-		} elseif ( $item == 'no-link' ) {
+		} elseif ( 'no-link' === $item ) {
 			$item_classes .= ' no-link';
 		}
 
-		$submenu .= '--><li class="' . $item_classes . '">';
+		$submenu .= '--><li class="' . esc_attr( $item_classes ) . '">';
 
 		// for delete
-		$submenu .= (strstr( $slug, 'delete-' ) > -1 ? '<span class="fa fa-minus-circle"></span>' : '');
-		$submenu .= (strstr( $slug, 'create-' ) > -1 ? '<span class="fa fa-plus-circle"></span>' : '');
+		$submenu .= ( strstr( $slug, 'delete-' ) > -1 ? '<span class="fa fa-minus-circle"></span>' : '' );
+		$submenu .= ( strstr( $slug, 'create-' ) > -1 ? '<span class="fa fa-plus-circle"></span>' : '' );
 
-		$submenu .= ( $item == 'no-link' ? '' : '<a href="' . $item . '">' );
+		$submenu .= 'no-link' === $item ? '' : '<a href="' . esc_attr( $item ) . '">';
 		$submenu .= esc_html( $title );
-		$submenu .= ( $item == 'no-link' ? '' : '</a>' );
+		$submenu .= 'no-link' === $item ? '' : '</a>';
 		$submenu .= '</li><!--';
 
 		// increment counter
@@ -732,7 +760,7 @@ function openlab_filter_subnav_home( $subnav_item ) {
 	if ( ! empty( $group_site_settings['site_url'] ) && $group_site_settings['is_visible'] ) {
 		$site_link = '<li id="site-groups-li" class="visible-xs"><a href="' . trailingslashit( esc_attr( $group_site_settings['site_url'] ) ) . '" id="site">' . esc_html__( 'Site', 'commons-in-a-box' ) . '</a></li>';
 
-		if ( $group_site_settings['is_local'] && ((cboxol_is_portfolio() && openlab_is_my_portfolio()) || ( ! cboxol_is_portfolio() && groups_is_user_member( bp_loggedin_user_id(), bp_get_current_group_id() )) || $bp->is_item_admin || is_super_admin()) ) {
+		if ( $group_site_settings['is_local'] && ( ( cboxol_is_portfolio() && openlab_is_my_portfolio() ) || ( ! cboxol_is_portfolio() && groups_is_user_member( bp_loggedin_user_id(), bp_get_current_group_id() ) ) || $bp->is_item_admin || is_super_admin() ) ) {
 
 			$site_link .= '<li id="site-admin-groups-li" class="visible-xs"><a href="' . trailingslashit( esc_attr( $group_site_settings['site_url'] ) ) . 'wp-admin/" id="site-admin">' . esc_html__( 'Site Dashboard', 'commons-in-a-box' ) . '</a></li>';
 		}
@@ -747,7 +775,7 @@ function openlab_filter_subnav_admin( $subnav_item ) {
 	$new_item = $subnav_item;
 	// this is to stop the course settings menu item from getting a current class on membership pages
 	if ( bp_action_variable( 0 ) ) {
-		if ( $bp->action_variables[0] == 'manage-members' || $bp->action_variables[0] == 'notifications' || $bp->action_variables[0] == 'membership-requests' ) {
+		if ( bp_is_action_variable( 'manage-members', 0 ) || bp_is_action_variable( 'notifications', 0 ) || bp_is_action_variable( 'membership-requests', 0 ) ) {
 			$new_item = str_replace( 'current selected', ' ', $new_item );
 		} else {
 			// update "current" class to "current-menu-item" to unify site identification of current menu page
@@ -771,15 +799,15 @@ function openlab_filter_subnav_members( $subnav_item ) {
 		$new_item = str_replace( '/members/', '/admin/manage-members', $new_item );
 	endif;
 
-	$uri = $bp->unfiltered_uri;
-	$check_uri = array( 'groups', 'notifications' );
+	$uri                 = $bp->unfiltered_uri;
+	$check_uri           = array( 'groups', 'notifications' );
 	$notification_status = false;
-	if ( count( array_intersect( $uri, $check_uri ) ) == count( $check_uri ) ) {
+	if ( count( array_intersect( $uri, $check_uri ) ) === count( $check_uri ) ) {
 		$notification_status = true;
 	}
 
 	// filtering for current status on membership menu item when in membership submenu
-	if ( (bp_action_variable( 0 ) && ( $bp->action_variables[0] == 'manage-members' || $bp->action_variables[0] == 'notifications' || $bp->current_action == 'notifications' || $bp->action_variables[0] == 'membership-requests' || $wp_query->query_vars['pagename'] == 'invite-anyone' )) || $notification_status ) {
+	if ( bp_is_action_variable( 'manage-members', 0 ) || bp_is_action_variable( 'notifications', 0 ) || bp_is_current_action( 'notifications' ) || bp_is_action_variable( 'membership-requests', 0 ) || 'invite-anyone' === $wp_query->query_vars['pagename'] || $notification_status ) {
 		$new_item = str_replace( 'id="members-groups-li"', 'id="members-groups-li" class="current-menu-item"', $new_item );
 	} else {
 		// update "current" class to "current-menu-item" to unify site identification of current menu page
@@ -812,17 +840,17 @@ function openlab_filter_subnav_docs( $subnav_item ) {
 
 	$docs_arg = array(
 		'posts_per_page' => '3',
-		'post_type' => 'bp_doc',
-		'tax_query' =>
+		'post_type'      => 'bp_doc',
+		'tax_query'      =>
 		array(
 			array(
 				'taxonomy' => 'bp_docs_associated_item',
-				'field' => 'slug',
-				'terms' => $group_slug,
+				'field'    => 'slug',
+				'terms'    => $group_slug,
 			),
 		),
 	);
-	$query = new WP_Query( $docs_arg );
+	$query    = new WP_Query( $docs_arg );
 
 	$total_doc_count = ! empty( $query->found_posts ) ? $query->found_posts : 0;
 
@@ -830,13 +858,13 @@ function openlab_filter_subnav_docs( $subnav_item ) {
 	// if that's the case, the search replace below will not work properly
 	$doc_count = groups_get_groupmeta( $bp->groups->current_group->id, 'bp-docs-count' );
 
-	if ( $doc_count == $total_doc_count ) {
+	if ( (int) $doc_count === (int) $total_doc_count ) {
 		$span_count = $total_doc_count;
 	} else {
 		$span_count = $doc_count;
 	}
 
-	wp_reset_query();
+	$query->reset_postdata();
 
 	if ( $total_doc_count > 0 ) {
 		$new_item = str_replace( '<span>' . $span_count . '</span>', '<span class="mol-count pull-right count-' . $total_doc_count . ' gray">' . $total_doc_count . '</span>', $subnav_item );
@@ -878,21 +906,23 @@ function openlab_filter_subnav_forums( $subnav_item ) {
 	$subnav_item = str_replace( 'Forum', 'Discussion', $subnav_item );
 
 	// Add count.
-	$count = 0;
+	$count     = 0;
 	$forum_ids = bbp_get_group_forum_ids( bp_get_current_group_id() );
 	if ( $forum_ids ) {
 		// bbPress function bbp_get_forum_topic_count is broken. @todo fix or cache.
-		$topic_ids = get_posts(array(
-			'post_type' => bbp_get_topic_post_type(),
-			'post_parent' => $forum_ids[0],
-			'fields' => 'ids',
-			'posts_per_page' => -1,
-		));
-		$count = count( $topic_ids );
+		$topic_ids = get_posts(
+			array(
+				'post_type'      => bbp_get_topic_post_type(),
+				'post_parent'    => $forum_ids[0],
+				'fields'         => 'ids',
+				'posts_per_page' => -1,
+			)
+		);
+		$count     = count( $topic_ids );
 	}
 
 	if ( $count ) {
-		$span = sprintf( '<span class="mol-count pull-right count-%s gray">%s</span>', intval( $count ), esc_html( number_format_i18n( $count ) ) );
+		$span        = sprintf( '<span class="mol-count pull-right count-%s gray">%s</span>', intval( $count ), esc_html( number_format_i18n( $count ) ) );
 		$subnav_item = str_replace( '</a>', ' ' . $span . '</a>', $subnav_item );
 	}
 
@@ -900,8 +930,8 @@ function openlab_filter_subnav_forums( $subnav_item ) {
 }
 
 // Disable menu items.
-add_filter( 'bp_get_options_nav_nav-invite-anyone',  '__return_empty_string' );
-add_filter( 'bp_get_options_nav_nav-notifications',  '__return_empty_string' );
+add_filter( 'bp_get_options_nav_nav-invite-anyone', '__return_empty_string' );
+add_filter( 'bp_get_options_nav_nav-notifications', '__return_empty_string' );
 add_filter( 'bp_get_options_nav_request-membership', '__return_empty_string' );
 
 add_filter( 'bp_get_options_nav_nav-events', 'openlab_filter_subnav_nav_events' );
@@ -916,7 +946,7 @@ function openlab_filter_subnav_nav_events( $subnav_item ) {
 		$current = ' current-menu-item';
 	}
 
-	if ( strpos( $subnav_item,'nav-events-mobile' ) !== false ) {
+	if ( strpos( $subnav_item, 'nav-events-mobile' ) !== false ) {
 		$class = "visible-xs$current";
 	} else {
 		$class = "hidden-xs$current";
@@ -955,7 +985,7 @@ function openlab_filter_subnav_nav_new_event( $subnav_item ) {
 	// check the group calendar access setting to see if the current user has the right privileges
 	$event_create_access = openlab_get_group_event_create_access_setting( bp_get_current_group_id() );
 
-	if ( $event_create_access === 'admin' && ! bp_is_item_admin() && ! bp_is_item_mod() ) {
+	if ( 'admin' === $event_create_access && ! bp_is_item_admin() && ! bp_is_item_mod() ) {
 		return '';
 	}
 
@@ -969,17 +999,21 @@ function openlab_group_submenu_nav() {
 	}
 
 	$positions = array(
-		'home' => 10,
-		'nav-forum' => 25,
-		'members' => 35,
+		'home'                  => 10,
+		'nav-forum'             => 25,
+		'members'               => 35,
 		BP_GROUP_DOCUMENTS_SLUG => 60,
-		'admin' => 95,
+		'admin'                 => 95,
 	);
 
 	foreach ( $positions as $slug => $position ) {
-		buddypress()->groups->nav->edit_nav(array(
-			'position' => $position,
-		), $slug, bp_get_current_group_slug());
+		buddypress()->groups->nav->edit_nav(
+			array(
+				'position' => $position,
+			),
+			$slug,
+			bp_get_current_group_slug()
+		);
 	}
 }
 
@@ -1001,53 +1035,58 @@ function openlab_group_admin_tabs( $group = false ) {
 
 	// Portfolio tabs look different from other groups
 	?>
-	<!--
 	<?php if ( cboxol_is_portfolio() ) : ?>
-		<?php if ( $bp->is_item_admin || $bp->is_item_mod ) { ?>
-			--><li<?php if ( 'edit-details' == $current_tab || empty( $current_tab ) ) : ?> class="current-menu-item"<?php endif; ?>><a href="<?php echo bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug ?>/admin/edit-details"><?php echo esc_html( $group_type->get_label( 'group_details' ) ); ?></a></li><!--
+		<?php if ( bp_is_item_admin() || bp_is_item_mod() ) { ?>
+			<li class="<?php ( 'edit-details' === $current_tab || empty( $current_tab ) ) ? 'current-menu-item' : ''; ?>"><a href="<?php echo esc_attr( bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug ); ?>/admin/edit-details"><?php echo esc_html( $group_type->get_label( 'group_details' ) ); ?></a></li>
 		<?php } ?>
 
-		--><li<?php if ( 'site-details' === $current_tab ) : ?> class="current-menu-item"<?php endif; ?>><a href="<?php echo bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug ?>/admin/site-details"><?php echo esc_html_x( 'Site', 'Group admin nav item', 'commons-in-a-box' ); ?></a></li><!--
+		<li class="<?php echo 'site-details' === $current_tab ? 'current-menu-item' : ''; ?>"><a href="<?php echo esc_attr( bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug ); ?>/admin/site-details"><?php echo esc_html_x( 'Site', 'Group admin nav item', 'commons-in-a-box' ); ?></a></li>
 
-		--><li<?php if ( 'group-settings' == $current_tab ) : ?> class="current-menu-item"<?php endif; ?>><a href="<?php echo bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug ?>/admin/group-settings"><?php esc_html_e( 'Settings', 'commons-in-a-box' ); ?></a></li>
+		<li class="<?php echo 'group-settings' === $current_tab ? 'current-menu-item' : ''; ?>"><a href="<?php echo esc_attr( bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug ); ?>/admin/group-settings"><?php esc_html_e( 'Settings', 'commons-in-a-box' ); ?></a></li>
 
-		<li class="delete-button <?php if ( 'delete-group' == $current_tab ) : ?> current-menu-item<?php endif; ?>" ><span class="fa fa-minus-circle"></span><a href="<?php echo bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug ?>/admin/delete-group"><?php esc_html_e( 'Delete Portfolio', 'commons-in-a-box' ); ?></a></li><!--
+		<li class="delete-button <?php echo 'delete-group' === $current_tab ? 'current-menu-item' : ''; ?>"><span class="fa fa-minus-circle"></span><a href="<?php echo esc_attr( bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug ); ?>/admin/delete-group"><?php esc_html_e( 'Delete Portfolio', 'commons-in-a-box' ); ?></a></li>
 
 	<?php else : ?>
 
-		<?php if ( $bp->is_item_admin || $bp->is_item_mod ) { ?>
-			--><li<?php if ( 'edit-details' == $current_tab || empty( $current_tab ) ) : ?> class="current-menu-item"<?php endif; ?>><a href="<?php echo bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug ?>/admin/edit-details"><?php echo esc_html( $group_type->get_label( 'group_details' ) ); ?></a></li><!--
+		<?php if ( bp_is_item_admin() || bp_is_item_mod() ) { ?>
+			<li class="<?php ( 'edit-details' === $current_tab || empty( $current_tab ) ) ? 'current-menu-item' : ''; ?>"><a href="<?php echo esc_attr( bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug ); ?>/admin/edit-details"><?php echo esc_html( $group_type->get_label( 'group_details' ) ); ?></a></li>
 		<?php } ?>
 
 		<?php
-		if ( ! $bp->is_item_admin ) {
+		if ( bp_is_item_admin() ) {
 			return false;
 		}
 		?>
 
-		--><li<?php if ( 'site-details' === $current_tab ) : ?> class="current-menu-item"<?php endif; ?>><a href="<?php echo bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug ?>/admin/site-details"><?php echo esc_html_x( 'Site', 'Group admin nav item', 'commons-in-a-box' ); ?></a></li><!--
+		<li class="<?php echo 'site-details' === $current_tab ? 'current-menu-item' : ''; ?>"><a href="<?php echo esc_attr( bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug ); ?>/admin/site-details"><?php echo esc_html_x( 'Site', 'Group admin nav item', 'commons-in-a-box' ); ?></a></li>
 
-		--><li<?php if ( 'group-settings' == $current_tab ) : ?> class="current-menu-item"<?php endif; ?>><a href="<?php echo bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug ?>/admin/group-settings"><?php _e( 'Settings', 'commons-in-a-box' ); ?></a></li><!--
+		<li class="<?php echo 'group-settings' === $current_tab ? 'current-menu-item' : ''; ?>"><a href="<?php echo esc_attr( bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug ); ?>/admin/group-settings"><?php esc_attr_e( 'Settings', 'commons-in-a-box' ); ?></a></li>
 
 		<?php if ( $group_type->get_is_course() ) : ?>
 			<?php
-			$clone_link = add_query_arg( array(
-				'group_type' => $group_type->get_slug(),
-				'clone' => bp_get_current_group_id(),
-			), bp_get_groups_directory_permalink() . 'create/step/group-details/' ); ?>
-			--><li class="clone-button <?php if ( 'clone-group' == $current_tab ) : ?>current-menu-item<?php endif; ?>" ><span class="fa fa-plus-circle"></span><a href="<?php echo esc_url( $clone_link ); ?>"><?php esc_html_e( 'Clone', 'commons-in-a-box' ); ?></a></li><!--
+			$clone_link = add_query_arg(
+				array(
+					'group_type' => $group_type->get_slug(),
+					'clone'      => bp_get_current_group_id(),
+				),
+				bp_get_groups_directory_permalink() . 'create/step/group-details/'
+			);
+			?>
+
+			<li class="clone-button <?php 'clone-group' === $current_tab ? 'current-menu-item' : ''; ?>"><span class="fa fa-plus-circle"></span><a href="<?php echo esc_url( $clone_link ); ?>"><?php esc_html_e( 'Clone', 'commons-in-a-box' ); ?></a></li>
 		<?php endif ?>
 
-		--><li class="delete-button last-item <?php if ( 'delete-group' == $current_tab ) : ?>current-menu-item<?php endif; ?>" ><span class="fa fa-minus-circle"></span><a href="<?php echo bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug ?>/admin/delete-group"><?php esc_html_e( 'Delete', 'commons-in-a-box' ); ?></a></li><!--
+		<li class="delete-button last-item <?php echo 'delete-group' === $current_tab ? 'current-menu-item' : ''; ?>"><span class="fa fa-minus-circle"></span><a href="<?php echo esc_attr( bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug ); ?>/admin/delete-group"><?php esc_html_e( 'Delete', 'commons-in-a-box' ); ?></a></li>
 
 		<?php if ( $group_type->get_is_portfolio() ) : ?>
+			<?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 			<li class="portfolio-displayname pull-right"><span class="highlight"><?php echo bp_core_get_userlink( openlab_get_user_id_from_portfolio_group_id( bp_get_group_id() ) ); ?></span></li>
 		<?php else : ?>
-			<li class="info-line pull-right"><span class="timestamp info-line-timestamp visible-lg"><span class="fa fa-undo"></span> <?php printf( __( 'active %s', 'commons-in-a-box' ), bp_get_group_last_active() ) ?></span></li>
+			<?php // translators: last active timestamp ?>
+			<li class="info-line pull-right"><span class="timestamp info-line-timestamp visible-lg"><span class="fa fa-undo"></span> <?php echo esc_html( sprintf( __( 'active %s', 'commons-in-a-box' ), bp_get_group_last_active() ) ); ?></span></li>
 		<?php endif; ?>
 
-	<?php endif ?>
-	-->
+	<?php endif; ?>
 	<?php
 }
 
@@ -1065,29 +1104,28 @@ function openlab_group_membership_tabs( $group = false ) {
 
 	$group_type = groups_get_groupmeta( $bp->groups->current_group->id, 'wds_group_type' );
 	?>
-	<!--
-	<?php if ( $bp->is_item_admin || $bp->is_item_mod ) : ?>
-		--><li<?php if ( $current_tab == 'manage-members' ) : ?> class="current-menu-item"<?php endif; ?>><a href="<?php echo bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug ?>/admin/manage-members"><?php esc_html_e( 'Membership', 'commons-in-a-box' ); ?></a></li><!--
+	<?php if ( bp_is_item_admin() || bp_is_item_mod() ) : ?>
+		<li class="<?php echo 'manage-members' === $current_tab ? 'current-menu-item' : ''; ?>"><a href="<?php echo esc_attr( bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug ); ?>/admin/manage-members"><?php esc_html_e( 'Membership', 'commons-in-a-box' ); ?></a></li>
 
-		<?php if ( $group->status == 'private' ) : ?>
-			--><li<?php if ( 'membership-requests' == $current_tab ) : ?> class="current-menu-item"<?php endif; ?>><a href="<?php echo bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug ?>/admin/membership-requests"><?php esc_html_e( 'Member Requests', 'commons-in-a-box' ); ?></a></li><!--
+		<?php if ( 'private' === $group->status ) : ?>
+			<li class="<?php echo 'membership-requests' === $current_tab ? 'current-menu-item' : ''; ?>"><a href="<?php echo esc_attr( bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug ); ?>/admin/membership-requests"><?php esc_html_e( 'Member Requests', 'commons-in-a-box' ); ?></a></li>
 		<?php endif; ?>
 	<?php else : ?>
-		--><li<?php if ( $bp->current_action == 'members' ) : ?> class="current-menu-item"<?php endif; ?>><a href="<?php echo bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug ?>/members"><?php esc_html_e( 'Membership', 'commons-in-a-box' ); ?></a></li><!--
+		<li class="<?php echo bp_is_current_action( 'members' ) ? 'current-menu-item' : ''; ?>"><a href="<?php echo esc_attr( bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug ); ?>/members"><?php esc_html_e( 'Membership', 'commons-in-a-box' ); ?></a></li>
 	<?php endif; ?>
 
 	<?php if ( bp_group_is_member() && invite_anyone_access_test() && openlab_is_admin_truly_member() ) : ?>
-		--><li<?php if ( $bp->current_action == 'invite-anyone' ) : ?> class="current-menu-item"<?php endif; ?>><a href="<?php echo bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug ?>/invite-anyone"><?php esc_html_e( 'Invite New Members', 'commons-in-a-box' ); ?></a></li><!--
+		<li class="<?php echo bp_is_current_action( 'invite-anyone' ) ? 'current-menu-item' : ''; ?>"><a href="<?php echo esc_attr( bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug ); ?>/invite-anyone"><?php esc_html_e( 'Invite New Members', 'commons-in-a-box' ); ?></a></li>
 	<?php endif; ?>
 
-	<?php if ( $bp->is_item_admin || $bp->is_item_mod ) : ?>
-		--><li<?php if ( 'notifications' == $current_tab ) : ?> class="current-menu-item"<?php endif; ?>><a href="<?php echo bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug ?>/admin/notifications"><?php esc_html_e( 'Email Members', 'commons-in-a-box' ); ?></a></li><!--
+	<?php if ( bp_is_item_admin() || bp_is_item_mod() ) : ?>
+		<li class="<?php echo 'notifications' === $current_tab ? 'current-menu-item' : ''; ?>"><a href="<?php echo esc_attr( bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug ); ?>/admin/notifications"><?php esc_html_e( 'Email Members', 'commons-in-a-box' ); ?></a></li>
 	<?php endif; ?>
 
 	<?php if ( bp_group_is_member() && openlab_is_admin_truly_member() ) : ?>
-		--><li<?php if ( $bp->current_action == 'notifications' ) : ?> class="current-menu-item"<?php endif; ?>><a href="<?php echo bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug ?>/notifications"><?php esc_html_e( 'Your Email Options', 'commons-in-a-box' ); ?></a></li><!--
+		<li class="<?php echo bp_is_current_action( 'notifications' ) ? 'current-menu-item' : ''; ?>"><a href="<?php echo esc_attr( bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug ); ?>/notifications"><?php esc_html_e( 'Your Email Options', 'commons-in-a-box' ); ?></a></li>
 	<?php endif; ?>
-	-->
+
 	<?php
 }
 
@@ -1108,11 +1146,11 @@ function openlab_docs_tabs() {
 
 	?>
 
-	<li <?php echo ( bp_docs_current_view() == 'list' ? 'class="current-menu-item"' : '' ); ?> ><a href="<?php echo esc_url( $group_permalink . bp_docs_get_docs_slug() ); ?>/"><?php esc_html_e( 'View Docs', 'commons-in-a-box' ); ?></a></li>
+	<li <?php echo ( 'list' === bp_docs_current_view() ? 'class="current-menu-item"' : '' ); ?> ><a href="<?php echo esc_url( $group_permalink . bp_docs_get_docs_slug() ); ?>/"><?php esc_html_e( 'View Docs', 'commons-in-a-box' ); ?></a></li>
 	<?php if ( current_user_can( 'bp_docs_create' ) && current_user_can( 'bp_docs_associate_with_group', bp_get_current_group_id() ) ) : ?>
-		<li <?php echo ( bp_docs_current_view() == 'create' ? 'class="current-menu-item"' : '' ); ?> ><a href="<?php echo esc_url( $group_permalink . bp_docs_get_docs_slug() ) ?>/create/"><?php esc_html_e( 'New Doc', 'commons-in-a-box' ); ?></a></li>
+		<li <?php echo ( 'create' === bp_docs_current_view() ? 'class="current-menu-item"' : '' ); ?> ><a href="<?php echo esc_url( $group_permalink . bp_docs_get_docs_slug() ); ?>/create/"><?php esc_html_e( 'New Doc', 'commons-in-a-box' ); ?></a></li>
 	<?php endif; ?>
-	<?php if ( ( bp_docs_current_view() == 'edit' || bp_docs_current_view() == 'single' ) && bp_docs_is_existing_doc() ) : ?>
+	<?php if ( ( 'edit' === bp_docs_current_view() || 'single' === bp_docs_current_view() ) && bp_docs_is_existing_doc() ) : ?>
 		<?php $doc_obj = bp_docs_get_current_doc(); ?>
 		<li class="current-menu-item"><?php echo esc_html( $doc_obj->post_title ); ?></li>
 	<?php endif; ?>
@@ -1128,27 +1166,29 @@ function openlab_forum_tabs() {
 	/** Query Resets ***************************************************** */
 	// Forum data
 	$forum_ids = bbp_get_group_forum_ids( bp_get_current_group_id() );
-	$forum_id = array_shift( $forum_ids );
-	$offset = 0;
+	$forum_id  = array_shift( $forum_ids );
+	$offset    = 0;
 
 	$bbp->current_forum_id = $forum_id;
 
 	bbp_set_query_name( 'bbp_single_forum' );
 
 	// Get the topic
-	bbp_has_topics(array(
-		'name' => bp_action_variable( $offset + 1 ),
-		'posts_per_page' => 1,
-		'show_stickies' => false,
-	));
+	bbp_has_topics(
+		array(
+			'name'           => bp_action_variable( $offset + 1 ),
+			'posts_per_page' => 1,
+			'show_stickies'  => false,
+		)
+	);
 
 	// Setup the topic
 	bbp_the_topic();
 	?>
 
-	<li <?php echo ( ! bp_action_variable() ? 'class="current-menu-item"' : ''); ?> ><a href="<?php echo bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug ?>/forum/">Discussion</a></li><!--
-	<?php if ( bp_action_variable() == 'topic' ) : ?>
-		--><li class="current-menu-item hyphenate"><span><?php bbp_topic_title() ?></span></li><!--
+	<li <?php echo ( ! bp_action_variable() ? 'class="current-menu-item"' : '' ); ?> ><a href="<?php echo esc_attr( bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug ); ?>/forum/"><?php esc_html_e( 'Discussion', 'commons-in-a-box' ); ?></a></li><!--
+	<?php if ( bp_is_action_variable( 'topic' ) ) : ?>
+		--><li class="current-menu-item hyphenate"><span><?php bbp_topic_title(); ?></span></li><!--
 			<?php endif; ?>
 	-->
 	<?php
@@ -1168,18 +1208,20 @@ function openlab_is_create_group( $group_type ) {
 		$group_id = bp_get_new_group_id();
 	}
 
+	// phpcs:disable WordPress.Security.NonceVerification.Recommended
 	$current_group_type = null;
 	if ( $group_id ) {
 		$current_group_type = cboxol_get_group_group_type( $group_id );
 	} elseif ( isset( $_GET['group_type'] ) ) {
 		$current_group_type = cboxol_get_group_type( wp_unslash( urldecode( $_GET['group_type'] ) ) );
 	}
+	// phpcs:enable WordPress.Security.NonceVerification.Recommended
 
 	return $current_group_type && ! is_wp_error( $current_group_type ) && $group_type === $current_group_type->get_slug();
 }
 
 function openlab_get_group_profile_mobile_anchor_links() {
-	$links = '';
+	$links    = '';
 	$group_id = bp_get_current_group_id();
 
 	// Non-public groups shouldn't show this to non-members.
@@ -1192,7 +1234,7 @@ function openlab_get_group_profile_mobile_anchor_links() {
 	if ( ! empty( $related_links ) ) {
 
 		$heading = groups_get_groupmeta( $group_id, 'openlab_related_links_list_heading' );
-		$links .= '<li id="related-links-groups-li" class="visible-xs mobile-anchor-link"><a href="#group-related-links-sidebar-widget" id="related-links">' . esc_html( $heading ) . '</a></li>';
+		$links  .= '<li id="related-links-groups-li" class="visible-xs mobile-anchor-link"><a href="#group-related-links-sidebar-widget" id="related-links">' . esc_html( $heading ) . '</a></li>';
 	}
 
 	if ( openlab_portfolio_list_enabled_for_group() ) {
@@ -1210,16 +1252,16 @@ function openlab_calendar_submenu() {
 
 	$links_out = array(
 		array(
-			'name' => 'All Events',
-			'slug' => 'calendar',
-			'link' => get_site_url() . '/about/calendar/',
-			'class' => $post->post_name === 'calendar' ? 'current-menu-item' : '',
+			'name'  => 'All Events',
+			'slug'  => 'calendar',
+			'link'  => get_site_url() . '/about/calendar/',
+			'class' => 'calendar' === $post->post_name ? 'current-menu-item' : '',
 		),
 		array(
-			'name' => 'Upcoming',
-			'slug' => 'upcoming',
-			'link' => get_site_url() . '/about/calendar/upcoming/',
-			'class' => $post->post_name === 'upcoming' ? 'current-menu-item' : '',
+			'name'  => 'Upcoming',
+			'slug'  => 'upcoming',
+			'link'  => get_site_url() . '/about/calendar/upcoming/',
+			'class' => 'upcoming' === $post->post_name ? 'current-menu-item' : '',
 		),
 	);
 
@@ -1236,21 +1278,21 @@ function openlab_calendar_submenu() {
  * @return \stdClass
  */
 function openlab_custom_nav_menu_item( $title, $url, $order, $parent = 0, $classes = array() ) {
-	$item = new stdClass();
-	$item->ID = 1000000 + $order + $parent;
-	$item->db_id = $item->ID;
-	$item->title = $title;
-	$item->url = $url;
-	$item->menu_order = $order;
+	$item                   = new stdClass();
+	$item->ID               = 1000000 + $order + $parent;
+	$item->db_id            = $item->ID;
+	$item->title            = $title;
+	$item->url              = $url;
+	$item->menu_order       = $order;
 	$item->menu_item_parent = $parent;
-	$item->type = '';
-	$item->object = '';
-	$item->object_id = '';
-	$item->classes = $classes;
-	$item->target = '';
-	$item->attr_title = '';
-	$item->description = '';
-	$item->xfn = '';
-	$item->status = '';
+	$item->type             = '';
+	$item->object           = '';
+	$item->object_id        = '';
+	$item->classes          = $classes;
+	$item->target           = '';
+	$item->attr_title       = '';
+	$item->description      = '';
+	$item->xfn              = '';
+	$item->status           = '';
 	return $item;
 }
