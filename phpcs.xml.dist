@@ -31,6 +31,7 @@
 	<rule ref="WordPress-Extra">
 		<exclude name="WordPress.NamingConventions.PrefixAllGlobals"/>
 		<exclude name="WordPress.Files.FileName.NotHyphenatedLowercase"/>
+		<exclude name="WordPress.Files.FileName.InvalidClassFileName"/>
 	</rule>
 
 	<!-- Add in some extra rules from other standards. -->
