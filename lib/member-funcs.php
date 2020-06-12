@@ -575,7 +575,7 @@ function openlab_trim_member_name( $name ) {
 		$process_name = explode( ' ', $name );
 		$new_name = '';
 		foreach ( $process_name as $process ) {
-			$new_name .= ' ' . openlab_shortened_text( $process, 12, false );
+			$new_name .= ' ' . bp_create_excerpt( $process, 12 );
 		}
 
 		$name = $new_name;
@@ -589,7 +589,7 @@ function openlab_trim_message_subject( $subject ) {
 	global $bp;
 
 	if ( $bp->current_component == 'messages' && ($bp->current_action == 'inbox' || $bp->current_action == 'sentbox') ) {
-		$subject = openlab_shortened_text( $subject, 20, false );
+		$subject = bp_create_excerpt( $subject, 20 );
 	}
 
 	return $subject;
