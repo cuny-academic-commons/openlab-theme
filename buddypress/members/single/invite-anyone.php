@@ -16,11 +16,13 @@
 
 		// Edit
 		case 'invite-new-members':
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			echo openlab_submenu_markup( 'invitations' );
 			openlab_invite_anyone_screen_one_content();
 			break;
 
 		case 'sent-invites':
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			echo openlab_submenu_markup( 'invitations' );
 			openlab_invite_anyone_screen_two_content();
 			break;
