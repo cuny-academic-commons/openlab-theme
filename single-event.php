@@ -42,7 +42,7 @@ get_header();
 					<ul class="nav nav-inline"><!--
 						<?php $menu_items = openlab_calendar_submenu(); ?>
 						<?php foreach ( $menu_items as $item ) : ?>
-							--><li class="<?php echo $item['class']; ?>" id="<?php echo $item['slug']; ?>-groups-li"><a href="<?php echo $item['link']; ?>"><?php echo $item['name']; ?></a></li><!--
+							--><li class="<?php echo esc_attr( $item['class'] ); ?>" id="<?php echo esc_attr( $item['slug'] ); ?>-groups-li"><a href="<?php echo esc_attr( $item['link'] ); ?>"><?php echo esc_html( $item['name'] ); ?></a></li><!--
 						<?php endforeach; ?>
 						--><li class="current-menu-item" id="single-event-name"><span><?php the_title(); ?></span></li><!--
 					--></ul>
