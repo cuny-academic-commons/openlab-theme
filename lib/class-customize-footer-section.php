@@ -7,15 +7,15 @@ class OpenLab_Footer_Section_Control extends WP_Customize_Control {
 	public $type = 'openlab_footer_section';
 
 	public function render_content() {
-		$content = $this->value();
+		$content   = $this->value();
 		$editor_id = $this->id;
-		$settings = array(
-			'textarea_name' => $this->id,
-			'media_buttons' => false,
+		$settings  = array(
+			'textarea_name'    => $this->id,
+			'media_buttons'    => false,
 			'drag_drop_upload' => false,
-			'teeny' => true,
-			'quicktags' => true,
-			'textarea_rows' => 15,
+			'teeny'            => true,
+			'quicktags'        => true,
+			'textarea_rows'    => 15,
 		);
 
 		?>

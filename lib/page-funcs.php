@@ -14,7 +14,8 @@ function openlab_primary_skip_link() {
 		$adminbar_text   = __( 'Skip to admin bar', 'commons-in-a-box' );
 	} else {
 		$adminbar_target = '#wp-admin-bar-bp-login';
-		$adminbar_text   = __( 'Skip to log in', 'commons-in-a-box' );;
+		$adminbar_text   = __( 'Skip to log in', 'commons-in-a-box' );
+
 	}
 
 	$skip_link_out = sprintf(

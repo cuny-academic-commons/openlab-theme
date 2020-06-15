@@ -22,16 +22,16 @@ function openlab_bp_docs_template( $template ) {
 	global $bp;
 
 	switch ( $bp->bp_docs->current_view ) {
-		case 'edit' :
-		case 'create' :
+		case 'edit':
+		case 'create':
 			$template = bp_locate_template( 'docs/single/edit.php' );
 			break;
 
-		case 'single' :
+		case 'single':
 			$template = bp_locate_template( 'docs/single/index.php' );
 			break;
 
-		case 'list' :
+		case 'list':
 			$template = bp_locate_template( 'docs/docs-loop.php' );
 			break;
 	}
@@ -39,10 +39,13 @@ function openlab_bp_docs_template( $template ) {
 }
 add_filter( 'bp_docs_template', 'openlab_bp_docs_template' );
 
-add_action( 'bp_docs_setup_theme_compat', function( $theme_compat ) {
-	remove_action( 'bp_replace_the_content', array( $theme_compat, 'single_content' ) );
-	remove_action( 'bp_replace_the_content', array( $theme_compat, 'create_content' ) );
-} );
+add_action(
+	'bp_docs_setup_theme_compat',
+	function( $theme_compat ) {
+		remove_action( 'bp_replace_the_content', array( $theme_compat, 'single_content' ) );
+		remove_action( 'bp_replace_the_content', array( $theme_compat, 'create_content' ) );
+	}
+);
 
 /**
  * BuddyPress Docs directory filters should be disabled.
@@ -81,10 +84,10 @@ function openlab_allow_super_admins_to_edit_bp_docs( $user_can, $action ) {
 
 	if ( 'edit' == $action ) {
 		if ( is_super_admin() || bp_loggedin_user_id() == get_the_author_meta( 'ID' ) || $user_can ) {
-			$user_can = true;
+			$user_can                                 = true;
 			$bp->bp_docs->current_user_can[ $action ] = 'yes';
 		} else {
-			$user_can = false;
+			$user_can                                 = false;
 			$bp->bp_docs->current_user_can[ $action ] = 'no';
 		}
 	}
@@ -99,11 +102,13 @@ add_filter( 'bp_docs_current_user_can', 'openlab_allow_super_admins_to_edit_bp_d
  */
 function openlab_get_group_doc_count( $group_id ) {
 	$cache_key = $group_id . wp_cache_get_last_changed( 'posts' );
-	$count = wp_cache_get( $cache_key, 'bp_docs_group_doc_counts' );
+	$count     = wp_cache_get( $cache_key, 'bp_docs_group_doc_counts' );
 	if ( false === $count ) {
-		$dq = new BP_Docs_Query( array(
-			'group_id' => $group_id,
-		) );
+		$dq = new BP_Docs_Query(
+			array(
+				'group_id' => $group_id,
+			)
+		);
 
 		add_filter( 'bp_docs_pre_query_args', 'openlab_filter_docs_query_for_count' );
 		$doc_query = $dq->get_wp_query();
@@ -117,7 +122,7 @@ function openlab_get_group_doc_count( $group_id ) {
 }
 
 function openlab_filter_docs_query_for_count( $args ) {
-	$args['fields'] = 'ids';
+	$args['fields']         = 'ids';
 	$args['posts_per_page'] = -1;
 	return $args;
 }

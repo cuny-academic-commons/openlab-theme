@@ -24,25 +24,25 @@ function openlab_get_files_count() {
 	global $wpdb, $bp;
 
 	$start_record = 1;
-	$page = 1;
+	$page         = 1;
 
 	$group_id = bp_get_group_id();
-	$table = BP_GROUP_DOCUMENTS_TABLE;
+	$table    = BP_GROUP_DOCUMENTS_TABLE;
 
 	$sql = "SELECT COUNT(*) FROM {$table} WHERE group_id = %d ";
 
 	$total_records = $wpdb->get_var( $wpdb->prepare( $sql, $group_id ) );
 
 	$items_per_page = get_option( 'bp_group_documents_items_per_page' );
-	$total_pages = ceil( $total_records / $items_per_page );
+	$total_pages    = ceil( $total_records / $items_per_page );
 
 	if ( isset( $_GET['page'] ) && ctype_digit( $_GET['page'] ) ) {
-		$page = $_GET['page'];
-		$start_record = (($page - 1) * $items_per_page) + 1;
+		$page         = $_GET['page'];
+		$start_record = ( ( $page - 1 ) * $items_per_page ) + 1;
 	}
 
 	$last_possible = $items_per_page * $page;
-	$end_record = ($total_records < $last_possible) ? $total_records : $last_possible;
+	$end_record    = ( $total_records < $last_possible ) ? $total_records : $last_possible;
 
 	printf( __( 'Viewing item %1$s to %1$s (of %1$s items)', 'bp-group-documents' ), $start_record, $end_record, $total_records );
 }
@@ -97,11 +97,14 @@ add_filter( 'option_bp_group_documents_use_categories', '__return_false' );
 /**
  * Filter the success language.
  */
-add_filter( 'bp_core_render_message_content', function( $message ) {
-	$old = __( 'Document successfully uploaded', 'commons-in-a-box' );
-	$new = __( 'File successfully uploaded', 'commons-in-a-box' );
-	return str_replace( $old, $new, $message );
-} );
+add_filter(
+	'bp_core_render_message_content',
+	function( $message ) {
+		$old = __( 'Document successfully uploaded', 'commons-in-a-box' );
+		$new = __( 'File successfully uploaded', 'commons-in-a-box' );
+		return str_replace( $old, $new, $message );
+	}
+);
 
 // Don't force Files to be active on all groups.
 add_filter( 'pre_option_bp_group_documents_enable_all_groups', '__return_zero' );

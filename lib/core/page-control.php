@@ -15,10 +15,10 @@
  */
 function openlab_custom_page( $slug, $title, $parent_obj = null ) {
 
-	$post_id = -1;
-	$author_id = 1;
+	$post_id    = -1;
+	$author_id  = 1;
 	$check_path = $slug;
-	$parent_id = 0;
+	$parent_id  = 0;
 
 	if ( $parent_obj && ! empty( $parent_obj ) ) {
 		$ancestor_path = array();
@@ -28,7 +28,7 @@ function openlab_custom_page( $slug, $title, $parent_obj = null ) {
 			}
 
 			$ancestor_path[] = $parent->post_name;
-			$parent_id = $parent->ID;
+			$parent_id       = $parent->ID;
 		}
 
 		$check_path = implode( '/', $ancestor_path ) . '/' . $slug;
@@ -38,13 +38,13 @@ function openlab_custom_page( $slug, $title, $parent_obj = null ) {
 		$post_id = wp_insert_post(
 			array(
 				'comment_status' => 'closed',
-				'ping_status' => 'closed',
-				'post_author' => $author_id,
-				'post_name' => $slug,
-				'post_title' => $title,
-				'post_status' => 'publish',
-				'post_type' => 'page',
-				'post_parent' => $parent_id,
+				'ping_status'    => 'closed',
+				'post_author'    => $author_id,
+				'post_name'      => $slug,
+				'post_title'     => $title,
+				'post_status'    => 'publish',
+				'post_type'      => 'page',
+				'post_parent'    => $parent_id,
 			)
 		);
 	} else {

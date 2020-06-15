@@ -79,13 +79,13 @@ function openlab_ajax_help_post_autocomplete() {
 	}
 
 	$prepared_query = $wpdb->prepare( "SELECT * FROM $wpdb->posts WHERE post_type = '%s' AND post_status = '%s' AND post_title LIKE '%s'", 'help', 'publish', '%' . $term . '%' );
-	$posts = $wpdb->get_results( $prepared_query );
+	$posts          = $wpdb->get_results( $prepared_query );
 
 	if ( ! $posts || empty( $posts ) ) {
 		$posts_out[0] = array(
 			'label' => 'No Results',
 			'value' => 'No Results',
-			'id' => 0,
+			'id'    => 0,
 		);
 		die( json_encode( $posts_out ) );
 	}
@@ -95,7 +95,7 @@ function openlab_ajax_help_post_autocomplete() {
 		$posts_out[ $key ] = array(
 			'label' => $post->post_title,
 			'value' => $post->post_title,
-			'id' => $post->ID,
+			'id'    => $post->ID,
 		);
 	}
 

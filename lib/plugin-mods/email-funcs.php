@@ -24,10 +24,10 @@ function openlab_ass_group_subscribe_settings() {
 	$submit_link = bp_get_groups_action_link( 'notifications' );
 	?>
 	<div id="ass-email-subscriptions-options-page">
-		<form action="<?php echo $submit_link ?>" method="post" class="form-panel">
+		<form action="<?php echo $submit_link; ?>" method="post" class="form-panel">
 			<div class="panel-button-group">
 				<div class="panel panel-default">
-					<div class="panel-heading"><?php _e( 'Email Subscription Options', 'bp-ass' ) ?></div>
+					<div class="panel-heading"><?php _e( 'Email Subscription Options', 'bp-ass' ); ?></div>
 					<div class="panel-body">
 						<input type="hidden" name="ass_group_id" value="<?php echo $group->id; ?>"/>
 						<?php wp_nonce_field( 'ass_subscribe' ); ?>
@@ -37,39 +37,64 @@ function openlab_ass_group_subscribe_settings() {
 						</p>
 
 						<div class="ass-email-type radio">
-							<label><input type="radio" name="ass_group_subscribe" value="no" <?php if ( $group_status == 'no' || $group_status == 'un' || ! $group_status ) { echo 'checked="checked"';} ?>><?php _e( 'No Email', 'bp-ass' ); ?></label>
+							<label><input type="radio" name="ass_group_subscribe" value="no" 
+							<?php
+							if ( $group_status == 'no' || $group_status == 'un' || ! $group_status ) {
+								echo 'checked="checked"';}
+							?>
+							><?php _e( 'No Email', 'bp-ass' ); ?></label>
 							<div class="ass-email-explain italics"><?php esc_html_e( 'I will read all content on the web', 'bp-ass' ); ?></div>
 						</div>
 
 						<div class="ass-email-type radio">
-							<label><input type="radio" name="ass_group_subscribe" value="sum" <?php if ( $group_status == 'sum' ) { echo 'checked="checked"';} ?>><?php _e( 'Weekly Summary Email', 'bp-ass' ); ?></label>
+							<label><input type="radio" name="ass_group_subscribe" value="sum" 
+							<?php
+							if ( $group_status == 'sum' ) {
+								echo 'checked="checked"';}
+							?>
+							><?php _e( 'Weekly Summary Email', 'bp-ass' ); ?></label>
 							<div class="ass-email-explain italics"><?php _e( 'Get a summary of new topics each week', 'bp-ass' ); ?></div>
 						</div>
 
 						<div class="ass-email-type radio">
-							<label><input type="radio" name="ass_group_subscribe" value="dig" <?php if ( $group_status == 'dig' ) { echo 'checked="checked"';} ?>><?php _e( 'Daily Digest Email', 'bp-ass' ); ?></label>
+							<label><input type="radio" name="ass_group_subscribe" value="dig" 
+							<?php
+							if ( $group_status == 'dig' ) {
+								echo 'checked="checked"';}
+							?>
+							><?php _e( 'Daily Digest Email', 'bp-ass' ); ?></label>
 							<div class="ass-email-explain italics"><?php _e( 'Get all the day\'s activity bundled into a single email', 'bp-ass' ); ?></div>
 						</div>
 
 						<?php if ( ass_get_forum_type() ) : ?>
 							<div class="ass-email-type radio">
-								<label><input type="radio" name="ass_group_subscribe" value="sub" <?php if ( $group_status == 'sub' ) { echo 'checked="checked"';} ?>><?php _e( 'New Topics Email', 'bp-ass' ); ?></label>
+								<label><input type="radio" name="ass_group_subscribe" value="sub" 
+								<?php
+								if ( $group_status == 'sub' ) {
+									echo 'checked="checked"';}
+								?>
+								><?php _e( 'New Topics Email', 'bp-ass' ); ?></label>
 								<div class="ass-email-explain italics"><?php _e( 'Send new topics as they arrive (but don\'t send replies)', 'bp-ass' ); ?></div>
 							</div>
 						<?php endif; ?>
 
 						<div class="ass-email-type radio">
-							<label><input type="radio" name="ass_group_subscribe" value="supersub" <?php if ( $group_status == 'supersub' ) { echo 'checked="checked"';} ?>><?php _e( 'All Email', 'bp-ass' ); ?></label>
+							<label><input type="radio" name="ass_group_subscribe" value="supersub" 
+							<?php
+							if ( $group_status == 'supersub' ) {
+								echo 'checked="checked"';}
+							?>
+							><?php _e( 'All Email', 'bp-ass' ); ?></label>
 							<div class="ass-email-explain italics"><?php _e( 'Send all activity as it arrives', 'commons-in-a-box' ); ?></div>
 						</div>
 					</div>
 				</div>
 
-				<input type="submit" value="<?php _e( 'Save Settings', 'bp-ass' ) ?>" id="ass-save" name="ass-save" class="btn btn-primary">
+				<input type="submit" value="<?php _e( 'Save Settings', 'bp-ass' ); ?>" id="ass-save" name="ass-save" class="btn btn-primary">
 			</div>
 
 			<?php if ( ass_get_forum_type() == 'buddypress' ) : ?>
-				<p class="ass-sub-note italics"><?php _e( 'Note: Normally, you receive email notifications for topics you start or comment on. This can be changed at', 'bp-ass' ); ?> <a href="<?php echo bp_loggedin_user_domain() . BP_SETTINGS_SLUG . '/notifications/' ?>"><?php _e( 'email notifications', 'bp-ass' ); ?></a>.</p>
+				<p class="ass-sub-note italics"><?php _e( 'Note: Normally, you receive email notifications for topics you start or comment on. This can be changed at', 'bp-ass' ); ?> <a href="<?php echo bp_loggedin_user_domain() . BP_SETTINGS_SLUG . '/notifications/'; ?>"><?php _e( 'email notifications', 'bp-ass' ); ?></a>.</p>
 			<?php endif; ?>
 
 		</form>
@@ -79,7 +104,7 @@ function openlab_ass_group_subscribe_settings() {
 
 // Add a notice at end of email notification about how to change group email subscriptions
 function openlab_ass_add_notice_to_notifications_page() {
-?>
+	?>
 		<div id="group-email-settings">
 			<table class="notification-settings zebra">
 				<thead>
@@ -93,7 +118,7 @@ function openlab_ass_add_notice_to_notifications_page() {
 					<tr>
 						<td>&nbsp;</td>
 						<td>
-							<p><?php _e( 'To change the email notification settings for { your Courses, Projects, Clubs and Portfolio:','bp -ass' ); ?></p>
+							<p><?php _e( 'To change the email notification settings for { your Courses, Projects, Clubs and Portfolio:', 'bp -ass' ); ?></p>
 																			<ol>
 																				<li>Visit the group's Profile page </li>
 																				<li>In the sidebar, click 'Membership'</li>
@@ -108,7 +133,7 @@ function openlab_ass_add_notice_to_notifications_page() {
 				</tbody>
 			</table>
 		</div>
-<?php
+	<?php
 }
 
 remove_action( 'bp_notification_settings', 'ass_add_notice_to_notifications_page', 9000 );

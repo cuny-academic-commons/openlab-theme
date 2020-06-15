@@ -5,7 +5,7 @@ class OpenLab_Group_Type_Widget extends WP_Widget {
 
 	public function __construct() {
 		$this->default_args = array(
-			'title' => '',
+			'title'      => '',
 			'group_type' => '',
 		);
 
@@ -33,11 +33,11 @@ class OpenLab_Group_Type_Widget extends WP_Widget {
 		}
 
 		$groups_args = array(
-			'max' => 4,
-			'type' => 'active',
-			'user_id' => 0,
+			'max'         => 4,
+			'type'        => 'active',
+			'user_id'     => 0,
 			'show_hidden' => false,
-			'group_type' => $type->get_slug(),
+			'group_type'  => $type->get_slug(),
 		);
 
 		ob_start();
@@ -52,30 +52,51 @@ class OpenLab_Group_Type_Widget extends WP_Widget {
 				<?php if ( bp_has_groups( $groups_args ) ) : ?>
 					<?php
 					global $groups_template;
-					while ( bp_groups() ) : bp_the_group();
+					while ( bp_groups() ) :
+						bp_the_group();
 						$group = $groups_template->group;
 
 						$activity = stripslashes( $group->description );
 						echo '<div class="box-1 row-' . $i . ' activity-item type-' . esc_attr( $type->get_slug() ) . '">';
 						?>
 						<div class="item-avatar">
-							<a href="<?php bp_group_permalink() ?>"><img class="img-responsive" src ="<?php echo bp_core_fetch_avatar( array( 'item_id' => $group->id, 'object' => 'group', 'type' => 'full', 'html' => false ) ) ?>" alt="<?php echo $group->name; ?>"/></a>
+							<a href="<?php bp_group_permalink(); ?>"><img class="img-responsive" src ="
+																 <?php
+																	echo bp_core_fetch_avatar(
+																		array(
+																			'item_id' => $group->id,
+																			'object'  => 'group',
+																			'type'    => 'full',
+																			'html'    => false,
+																		)
+																	);
+																	?>
+																										" alt="<?php echo $group->name; ?>"/></a>
 						</div>
 						<div class="item-content-wrapper">
 							<h4 class="group-title overflow-hidden">
-								<a class="no-deco truncate-on-the-fly hyphenate" href="<?php echo bp_get_group_permalink() ?>" data-basevalue="40" data-minvalue="15" data-basewidth="145"><?php echo bp_get_group_name() ?></a>
-								<span class="original-copy hidden"><?php echo bp_get_group_name() ?></span>
+								<a class="no-deco truncate-on-the-fly hyphenate" href="<?php echo bp_get_group_permalink(); ?>" data-basevalue="40" data-minvalue="15" data-basewidth="145"><?php echo bp_get_group_name(); ?></a>
+								<span class="original-copy hidden"><?php echo bp_get_group_name(); ?></span>
 							</h4>
 
 							<p class="hyphenate overflow-hidden">
-								<?php echo bp_create_excerpt( $activity, 150, array( 'ending' => __( '&hellip;', 'buddypress' ), 'html' => false ) ) ?>
+								<?php
+								echo bp_create_excerpt(
+									$activity,
+									150,
+									array(
+										'ending' => __( '&hellip;', 'buddypress' ),
+										'html'   => false,
+									)
+								);
+								?>
 							</p>
 							<p class="see-more">
-								<a class="semibold" href="<?php echo bp_get_group_permalink() ?>">See More<span class="sr-only"> <?php echo bp_get_group_name() ?></span></a>
+								<a class="semibold" href="<?php echo bp_get_group_permalink(); ?>">See More<span class="sr-only"> <?php echo bp_get_group_name(); ?></span></a>
 							</p>
 						</div>
 					</div>
-					<?php $i++; ?>
+						<?php $i++; ?>
 					<?php endwhile; ?>
 				<?php else : ?>
 					<p class="group-widget-empty"><?php esc_html_e( 'Nothing to show.', 'commons-in-a-box' ); ?></p>

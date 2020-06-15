@@ -44,10 +44,10 @@ class OpenLab_WhatsHappening_Widget extends WP_Widget {
 		$tomorrow = new DateTime( 'tomorrow' );
 
 		$activity_args = array(
-			'per_page' => 10,
-			'action' => openlab_whats_happening_activity_types(),
+			'per_page'          => 10,
+			'action'            => openlab_whats_happening_activity_types(),
 			'update_meta_cache' => false,
-			'date_query' => array(
+			'date_query'        => array(
 				'before' => $tomorrow->format( 'Y-m-d' ),
 			),
 		);
@@ -56,7 +56,7 @@ class OpenLab_WhatsHappening_Widget extends WP_Widget {
 
 		ob_start(); ?>
 
-<?php echo $args['before_widget']; ?>
+		<?php echo $args['before_widget']; ?>
 	<h2 class="title uppercase clearfix"><i id="refreshActivity" class="fa fa-refresh pull-right" aria-hidden="true"></i><?php echo esc_html( $r['title'] ); ?></h2>
 	<div id="whatsHappening" class="left-block-content whats-happening-wrapper">
 		<div class="activity-list item-list inline-element-list sidebar-sublinks">
@@ -69,7 +69,7 @@ class OpenLab_WhatsHappening_Widget extends WP_Widget {
 					<div class="sidebar-block activity-block">
 						<div class="activity-row clearfix">
 							<div class="activity-avatar pull-left">
-								<a href="<?php echo openlab_activity_group_link( $activity ) ?>"><?php echo openlab_activity_group_avatar( $activity ); ?></a>
+								<a href="<?php echo openlab_activity_group_link( $activity ); ?>"><?php echo openlab_activity_group_avatar( $activity ); ?></a>
 							</div>
 
 							<div class="activity-content overflow-hidden">
@@ -95,8 +95,8 @@ class OpenLab_WhatsHappening_Widget extends WP_Widget {
 
 		</div><!-- .activity-list -->
 	</div><!-- #whatsHappening -->
-<?php echo $args['after_widget']; ?>
-<?php
+		<?php echo $args['after_widget']; ?>
+		<?php
 		$whats_happening_out = ob_get_clean();
 
 		wp_cache_set( 'whats_happening', $whats_happening_out, 'openlab', 5 * 60 );

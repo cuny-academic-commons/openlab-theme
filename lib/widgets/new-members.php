@@ -56,26 +56,38 @@ class OpenLab_NewMembers_Widget extends WP_Widget {
 		<?php
 		if ( bp_has_members( 'type=newest&max=5' ) ) :
 			$avatar_args = array(
-				'type' => 'full',
-				'width' => 121,
+				'type'   => 'full',
+				'width'  => 121,
 				'height' => 121,
-				'class' => 'avatar',
-				'id' => false,
-				'alt' => __( 'Member avatar', 'buddypress' ),
+				'class'  => 'avatar',
+				'id'     => false,
+				'alt'    => __( 'Member avatar', 'buddypress' ),
 			);
 			echo '<div id="home-new-member-wrap"><ul>';
-			while ( bp_members() ) : bp_the_member();
-				$user_id = bp_get_member_user_id();
+			while ( bp_members() ) :
+				bp_the_member();
+				$user_id   = bp_get_member_user_id();
 				$firstname = xprofile_get_field_data( 'Name', $user_id );
 				?>
 				<li class="home-new-member">
 					<div class="home-new-member-avatar">
-						<a href="<?php bp_member_permalink() ?>"><img class="img-responsive" src ="<?php echo bp_core_fetch_avatar( array( 'item_id' => $user_id, 'object' => 'member', 'type' => 'full', 'html' => false ) ) ?>" alt="<?php echo $firstname ?>"/></a>
+						<a href="<?php bp_member_permalink(); ?>"><img class="img-responsive" src ="
+															  <?php
+																echo bp_core_fetch_avatar(
+																	array(
+																		'item_id' => $user_id,
+																		'object'  => 'member',
+																		'type'    => 'full',
+																		'html'    => false,
+																	)
+																);
+																?>
+																									" alt="<?php echo $firstname; ?>"/></a>
 					</div>
 					<div class="home-new-member-info">
-						<h2 class="truncate-on-the-fly load-delay" data-basevalue="16" data-minvalue="11" data-basewidth="164"><?php echo $firstname ?></h2>
-						<span class="original-copy hidden"><?php echo $firstname ?></span>
-						<div class="registered timestamp"><?php bp_member_registered() ?></div>
+						<h2 class="truncate-on-the-fly load-delay" data-basevalue="16" data-minvalue="11" data-basewidth="164"><?php echo $firstname; ?></h2>
+						<span class="original-copy hidden"><?php echo $firstname; ?></span>
+						<div class="registered timestamp"><?php bp_member_registered(); ?></div>
 					</div>
 				</li>
 				<?php

@@ -10,16 +10,16 @@ function openlab_custom_the_content( $content ) {
 
 		if ( function_exists( 'eo_get_events' ) ) {
 			$args = array(
-				'headerright' => 'prev today next month agendaWeek',
-				'defaultview' => 'agendaWeek',
+				'headerright'     => 'prev today next month agendaWeek',
+				'defaultview'     => 'agendaWeek',
 				'titleformatweek' => 'F j, Y',
 			);
 
-			$link = eo_get_events_feed();
+			$link       = eo_get_events_feed();
 			$menu_items = openlab_calendar_submenu();
 
 			ob_start();
-			include( locate_template( 'parts/pages/openlab-calendar.php' ) );
+			include locate_template( 'parts/pages/openlab-calendar.php' );
 			$content .= ob_get_clean();
 		}
 	}
@@ -32,11 +32,11 @@ function openlab_custom_the_content( $content ) {
 				'event_start_after' => 'today',
 			);
 
-			$events = eo_get_events( $args );
+			$events     = eo_get_events( $args );
 			$menu_items = openlab_calendar_submenu();
 
 			ob_start();
-			include( locate_template( 'parts/pages/openlab-calendar-upcoming.php' ) );
+			include locate_template( 'parts/pages/openlab-calendar-upcoming.php' );
 			$content .= ob_get_clean();
 		}
 	}
@@ -60,21 +60,21 @@ function openlab_main_menu( $location = 'header' ) {
 	}
 
 	?>
-	<nav class="navbar navbar-default oplb-bs navbar-location-<?php echo $location ?>" role="navigation">
+	<nav class="navbar navbar-default oplb-bs navbar-location-<?php echo $location; ?>" role="navigation">
 		<?php openlab_sitewide_header( $location ); ?>
 		<div class="main-nav-wrapper">
 			<div class="container-fluid">
 				<div class="navbar-header hidden-xs">
 					<header class="menu-title"><?php echo $logo_html; ?></header>
 				</div>
-				<div class="navbar-collapse collapse" id="main-nav-<?php echo $location ?>">
+				<div class="navbar-collapse collapse" id="main-nav-<?php echo $location; ?>">
 					<?php
 					// this adds the main menu, controlled through the WP menu interface
 					$args = array(
 						'theme_location' => 'main',
-						'container' => false,
-						'menu_class' => 'nav navbar-nav',
-						'menu_id' => 'menu-main-menu-' . $location,
+						'container'      => false,
+						'menu_class'     => 'nav navbar-nav',
+						'menu_id'        => 'menu-main-menu-' . $location,
 					);
 
 					wp_nav_menu( $args );
@@ -121,7 +121,7 @@ function openlab_custom_menu_items( $items, $menu ) {
 			if ( bp_is_my_profile() || bp_is_current_action( 'create' ) || is_page( 'my-courses' ) || is_page( 'my-projects' ) || is_page( 'my-clubs' ) ) {
 				$class = 'class="current-menu-item"';
 			}
-			$opl_link = '<li ' . $class . '>';
+			$opl_link  = '<li ' . $class . '>';
 			$opl_link .= '<a href="' . bp_loggedin_user_domain() . '">' . esc_html__( 'My Profile', 'commons-in-a-box' ) . '</a>';
 			$opl_link .= '</li>';
 		}
@@ -207,7 +207,7 @@ function openlab_group_creation_categories() {
 
 	$group_type = filter_input( INPUT_GET, 'group_type' );
 
-	$group_id = bp_get_new_group_id() ? bp_get_new_group_id() : bp_get_current_group_id();
+	$group_id       = bp_get_new_group_id() ? bp_get_new_group_id() : bp_get_current_group_id();
 	$group_term_ids = array();
 
 	if ( ! empty( $group_id ) ) {
@@ -234,7 +234,7 @@ function openlab_group_creation_categories() {
 		if ( $categories && ! empty( $categories ) ) {
 
 			ob_start();
-			include( locate_template( 'parts/forms/group-categories.php' ) );
+			include locate_template( 'parts/forms/group-categories.php' );
 			$cats_out = ob_get_clean();
 		}
 	}
