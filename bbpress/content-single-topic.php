@@ -38,7 +38,8 @@ $group_type = cboxol_get_group_group_type( bp_get_current_group_id() );
 
 			<div id="no-reply-<?php bbp_topic_id(); ?>" class="bbp-no-reply">
 				<div class="bbp-template-notice">
-					<p><?php printf( __( 'The topic &#8216;%s&#8217; is closed to new replies.', 'bbpress' ), bbp_get_topic_title() ); ?></p>
+					<?php // translators: topic name ?>
+					<p><?php echo esc_html( sprintf( __( 'The topic &#8216;%s&#8217; is closed to new replies.', 'bbpress' ), bbp_get_topic_title() ) ); ?></p>
 				</div>
 			</div>
 
@@ -46,7 +47,8 @@ $group_type = cboxol_get_group_group_type( bp_get_current_group_id() );
 
 			<div id="no-reply-<?php bbp_topic_id(); ?>" class="bbp-no-reply">
 				<div class="bbp-template-notice">
-					<p><?php printf( __( 'The forum &#8216;%s&#8217; is closed to new topics and replies.', 'bbpress' ), bbp_get_forum_title( bbp_get_topic_forum_id() ) ); ?></p>
+					<?php // translators: forum name ?>
+					<p><?php echo esc_html( sprintf( __( 'The forum &#8216;%s&#8217; is closed to new topics and replies.', 'bbpress' ), bbp_get_forum_title( bbp_get_topic_forum_id() ) ) ); ?></p>
 				</div>
 			</div>
 
@@ -54,7 +56,7 @@ $group_type = cboxol_get_group_group_type( bp_get_current_group_id() );
 
 			<div id="no-reply-<?php bbp_topic_id(); ?>" class="bbp-no-reply">
 				<div class="bbp-template-notice">
-					<p><?php is_user_logged_in() ? _e( 'You cannot reply to this topic.', 'bbpress' ) : _e( 'You must be logged in to reply to this topic.', 'bbpress' ); ?></p>
+					<p><?php is_user_logged_in() ? esc_html_e( 'You cannot reply to this topic.', 'bbpress' ) : esc_html_e( 'You must be logged in to reply to this topic.', 'bbpress' ); ?></p>
 				</div>
 			</div>
 
@@ -92,18 +94,20 @@ $group_type = cboxol_get_group_group_type( bp_get_current_group_id() );
 			)
 		);
 
-		$this_topic_index = array_search( bbp_get_topic_id(), $group_topics->posts );
+		$this_topic_index = array_search( bbp_get_topic_id(), $group_topics->posts, true );
 		$last_topic_index = end( $group_topics->posts );
 
-		$prev_url  = $next_url = '';
-		$prev_link = $next_link = '';
+		$prev_url  = '';
+		$next_url  = '';
+		$prev_link = '';
+		$next_link = '';
 
 		// Previous is +1.
 		if ( $this_topic_index < $last_topic_index ) {
 			if ( isset( $group_topics->posts[ $this_topic_index + 1 ] ) ) {
 				$prev_topic_id = $group_topics->posts[ $this_topic_index + 1 ];
 				$prev_url      = get_permalink( $prev_topic_id );
-				$prev_link     = '<a class="btn btn-primary link-btn" href="' . $prev_url . '"><span class="fa fa-chevron-circle-left"></span> Previous Topic</a>';
+				$prev_link     = '<a class="btn btn-primary link-btn" href="' . esc_attr( $prev_url ) . '"><span class="fa fa-chevron-circle-left"></span> ' . esc_html__( 'Previous Topic', 'commons-in-a-box' ) . '</a>';
 			}
 		}
 
@@ -111,12 +115,13 @@ $group_type = cboxol_get_group_group_type( bp_get_current_group_id() );
 		if ( $this_topic_index > 0 ) {
 			$next_topic_id = $group_topics->posts[ $this_topic_index - 1 ];
 			$next_url      = get_permalink( $next_topic_id );
-			$next_link     = '<a class="btn btn-primary link-btn"  href="' . $next_url . '">Next Topic <span class="fa fa-chevron-circle-right"></span></a>';
+			$next_link     = '<a class="btn btn-primary link-btn"  href="' . esc_attr( $next_url ) . '">' . esc_html__( 'Next Topic', 'commons-in-a-box' ) . ' <span class="fa fa-chevron-circle-right"></span></a>';
 		}
 		?>
 
 		<div class="bbp-prev-next">
 			<p>
+				<?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 				<?php echo implode( '&nbsp;&nbsp;&nbsp;', array( $prev_link, $next_link ) ); ?>
 			</p>
 		</div>

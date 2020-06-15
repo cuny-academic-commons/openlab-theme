@@ -29,58 +29,50 @@
 
 			<form class="form form-panel" id="new-post" name="new-post" method="post" action="">
 
-		<?php do_action( 'bbp_theme_before_topic_form' ); ?>
+				<?php do_action( 'bbp_theme_before_topic_form' ); ?>
 
 				<div class="bbp-form panel panel-default">
 					<div class="panel-heading">
 					<?php
 					if ( bbp_is_topic_edit() ) {
-						printf( __( 'Now Editing &ldquo;%s&rdquo;', 'bbpress' ), bbp_get_topic_title() );
+						// translators: topic title
+						echo esc_html( sprintf( __( 'Now Editing &ldquo;%s&rdquo;', 'bbpress' ), bbp_get_topic_title() ) );
 					} else {
-						bbp_is_single_forum() ? printf( __( 'Create New Topic in &ldquo;%s&rdquo;', 'bbpress' ), bbp_get_forum_title() ) : _e( 'Create New Topic', 'bbpress' );
+						if ( bbp_is_single_forum() ) {
+							// translators: forum title
+							echo esc_html( sprintf( __( 'Create New Topic in &ldquo;%s&rdquo;', 'bbpress' ), bbp_get_forum_title() ) );
+						} else {
+							esc_html_e( 'Create New Topic', 'bbpress' );
+						}
 					}
 					?>
-	</div>
-					<div class="panel-body">
-						<?php
-						/*
-						  <legend>
+				</div>
 
-						  <?php
-						  if ( bbp_is_topic_edit() )
-						  printf( __( 'Now Editing &ldquo;%s&rdquo;', 'bbpress' ), bbp_get_topic_title() );
-						  else
-						  bbp_is_single_forum() ? printf( __( 'Create New Topic in &ldquo;%s&rdquo;', 'bbpress' ), bbp_get_forum_title() ) : _e( 'Create New Topic', 'bbpress' );
-						  ?>
+				<div class="panel-body">
 
-						  </legend>
-
-						  <?php do_action( 'bbp_theme_before_topic_form_notices' ); ?>
-						 */
-						?>
-
-						<?php if ( current_user_can( 'unfiltered_html' ) ) : ?>
+					<?php if ( current_user_can( 'unfiltered_html' ) ) : ?>
 
 							<div class="bbp-template-notice">
-								<p><?php _e( 'Your account has the ability to post unrestricted HTML content.', 'bbpress' ); ?></p>
+								<p><?php esc_html_e( 'Your account has the ability to post unrestricted HTML content.', 'bbpress' ); ?></p>
 							</div>
 
-	<?php endif; ?>
+					<?php endif; ?>
 
-						<?php do_action( 'bbp_template_notices' ); ?>
+					<?php do_action( 'bbp_template_notices' ); ?>
 
-						<div>
+					<div>
 
-		<?php bbp_get_template_part( 'form', 'anonymous' ); ?>
+						<?php bbp_get_template_part( 'form', 'anonymous' ); ?>
 
 							<?php do_action( 'bbp_theme_before_topic_form_title' ); ?>
 
 							<p>
-								<label for="bbp_topic_title"><?php printf( __( 'Topic Title (Maximum Length: %d):', 'bbpress' ), bbp_get_title_max_length() ); ?></label><br />
+								<?php // translators: maximum length for topic title ?>
+								<label for="bbp_topic_title"><?php echo esc_html( sprintf( __( 'Topic Title (Maximum Length: %d):', 'bbpress' ), bbp_get_title_max_length() ) ); ?></label><br />
 								<input type="text" id="bbp_topic_title" value="<?php bbp_form_topic_title(); ?>" tabindex="<?php bbp_tab_index(); ?>" size="40" name="bbp_topic_title" maxlength="<?php bbp_title_max_length(); ?>" />
 							</p>
 
-		<?php do_action( 'bbp_theme_after_topic_form_title' ); ?>
+							<?php do_action( 'bbp_theme_after_topic_form_title' ); ?>
 
 							<?php do_action( 'bbp_theme_before_topic_form_content' ); ?>
 
@@ -91,18 +83,19 @@
 							<?php if ( ! ( bbp_use_wp_editor() || current_user_can( 'unfiltered_html' ) ) ) : ?>
 
 								<p class="form-allowed-tags">
+									<?php // phpcs:ignore WordPress.Security.EscapeOutput.UnsafePrintingFunction ?>
 									<label><?php _e( 'You may use these <abbr title="HyperText Markup Language">HTML</abbr> tags and attributes:', 'bbpress' ); ?></label><br />
 									<code><?php bbp_allowed_tags(); ?></code>
 								</p>
 
-	<?php endif; ?>
+							<?php endif; ?>
 
 							<?php if ( bbp_allow_topic_tags() && current_user_can( 'assign_topic_tags' ) ) : ?>
 
 								<?php do_action( 'bbp_theme_before_topic_form_tags' ); ?>
 
 								<p>
-									<label for="bbp_topic_tags"><?php _e( 'Topic Tags:', 'bbpress' ); ?></label><br />
+									<label for="bbp_topic_tags"><?php esc_html_e( 'Topic Tags:', 'bbpress' ); ?></label><br />
 									<input type="text" value="<?php bbp_form_topic_tags(); ?>" tabindex="<?php bbp_tab_index(); ?>" size="40" name="bbp_topic_tags" id="bbp_topic_tags" <?php disabled( bbp_is_topic_spam() ); ?> />
 								</p>
 
@@ -112,7 +105,7 @@
 
 							<?php if ( ! bbp_is_single_forum() ) : ?>
 
-								<input type="hidden" name="bbp_forum_id" value="<?php echo bbp_get_form_topic_forum(); ?>" />
+								<input type="hidden" name="bbp_forum_id" value="<?php echo esc_attr( bbp_get_form_topic_forum() ); ?>" />
 
 							<?php endif; ?>
 
@@ -122,7 +115,7 @@
 
 								<p>
 
-									<label for="bbp_stick_topic"><?php _e( 'Topic Type:', 'bbpress' ); ?></label><br />
+									<label for="bbp_stick_topic"><?php esc_html_e( 'Topic Type:', 'bbpress' ); ?></label><br />
 
 								<?php bbp_form_topic_type_dropdown(); ?>
 
@@ -134,9 +127,9 @@
 
 								<p>
 
-									<label for="bbp_topic_status"><?php _e( 'Topic Status:', 'bbpress' ); ?></label><br />
+									<label for="bbp_topic_status"><?php esc_html_e( 'Topic Status:', 'bbpress' ); ?></label><br />
 
-								<?php bbp_form_topic_status_dropdown(); ?>
+									<?php bbp_form_topic_status_dropdown(); ?>
 
 								</p>
 
@@ -151,15 +144,16 @@
 								<p>
 									<input name="bbp_topic_subscription" id="bbp_topic_subscription" type="checkbox" value="bbp_subscribe" <?php bbp_form_topic_subscribed(); ?> tabindex="<?php bbp_tab_index(); ?>" />
 
-								<?php if ( bbp_is_topic_edit() && ( bbp_get_topic_author_id() !== bbp_get_current_user_id() ) ) : ?>
+									<?php if ( bbp_is_topic_edit() && ( bbp_get_topic_author_id() !== bbp_get_current_user_id() ) ) : ?>
 
-										<label for="bbp_topic_subscription"><?php _e( 'Notify the author of follow-up replies via email', 'bbpress' ); ?></label>
+										<label for="bbp_topic_subscription"><?php esc_html_e( 'Notify the author of follow-up replies via email', 'bbpress' ); ?></label>
 
-		<?php else : ?>
+									<?php else : ?>
 
-										<label for="bbp_topic_subscription"><?php _e( 'Notify me of follow-up replies via email', 'bbpress' ); ?></label>
+										<label for="bbp_topic_subscription"><?php esc_html_e( 'Notify me of follow-up replies via email', 'bbpress' ); ?></label>
 
-		<?php endif; ?>
+									<?php endif; ?>
+
 								</p>
 
 								<?php do_action( 'bbp_theme_after_topic_form_subscriptions' ); ?>
@@ -173,11 +167,11 @@
 								<fieldset class="bbp-form">
 									<legend>
 										<input name="bbp_log_topic_edit" id="bbp_log_topic_edit" type="checkbox" value="1" <?php bbp_form_topic_log_edit(); ?> tabindex="<?php bbp_tab_index(); ?>" />
-										<label for="bbp_log_topic_edit"><?php _e( 'Keep a log of this edit:', 'bbpress' ); ?></label><br />
+										<label for="bbp_log_topic_edit"><?php esc_html_e( 'Keep a log of this edit:', 'bbpress' ); ?></label><br />
 									</legend>
 
 									<div>
-										<label for="bbp_topic_edit_reason"><?php printf( __( 'Optional reason for editing:', 'bbpress' ), bbp_get_current_user_name() ); ?></label><br />
+										<label for="bbp_topic_edit_reason"><?php esc_html_e( 'Optional reason for editing:', 'bbpress' ); ?></label><br />
 										<input type="text" value="<?php bbp_form_topic_edit_reason(); ?>" tabindex="<?php bbp_tab_index(); ?>" size="40" name="bbp_topic_edit_reason" id="bbp_topic_edit_reason" />
 									</div>
 								</fieldset>
@@ -190,19 +184,19 @@
 					</div>
 				</div>
 
-		<?php do_action( 'bbp_theme_before_topic_form_submit_wrapper' ); ?>
+				<?php do_action( 'bbp_theme_before_topic_form_submit_wrapper' ); ?>
 
 				<div class="bbp-submit-wrapper">
 
-		<?php do_action( 'bbp_theme_before_topic_form_submit_button' ); ?>
+					<?php do_action( 'bbp_theme_before_topic_form_submit_button' ); ?>
 
-					<button type="submit" tabindex="<?php bbp_tab_index(); ?>" id="bbp_topic_submit" name="bbp_topic_submit" class="btn btn-primary submit"><?php _e( 'Submit', 'bbpress' ); ?></button>
+					<button type="submit" tabindex="<?php bbp_tab_index(); ?>" id="bbp_topic_submit" name="bbp_topic_submit" class="btn btn-primary submit"><?php esc_html_e( 'Submit', 'bbpress' ); ?></button>
 
-		<?php do_action( 'bbp_theme_after_topic_form_submit_button' ); ?>
+					<?php do_action( 'bbp_theme_after_topic_form_submit_button' ); ?>
 
 				</div>
 
-		<?php do_action( 'bbp_theme_after_topic_form_submit_wrapper' ); ?>
+				<?php do_action( 'bbp_theme_after_topic_form_submit_wrapper' ); ?>
 
 				<?php bbp_topic_form_fields(); ?>
 
@@ -216,7 +210,8 @@
 
 		<div id="no-topic-<?php bbp_topic_id(); ?>" class="bbp-no-topic">
 			<div class="bbp-template-notice">
-				<p><?php printf( __( 'The forum &#8216;%s&#8217; is closed to new topics and replies.', 'bbpress' ), bbp_get_forum_title() ); ?></p>
+				<?php // translators: forum title ?>
+				<p><?php echo esc_html( sprintf( __( 'The forum &#8216;%s&#8217; is closed to new topics and replies.', 'bbpress' ), bbp_get_forum_title() ) ); ?></p>
 			</div>
 		</div>
 
@@ -224,7 +219,7 @@
 
 		<div id="no-topic-<?php bbp_topic_id(); ?>" class="bbp-no-topic">
 			<div class="bbp-template-notice">
-				<p><?php is_user_logged_in() ? _e( 'You cannot create new topics.', 'bbpress' ) : _e( 'You must be logged in to create new topics.', 'bbpress' ); ?></p>
+				<p><?php is_user_logged_in() ? esc_html_e( 'You cannot create new topics.', 'bbpress' ) : esc_html_e( 'You must be logged in to create new topics.', 'bbpress' ); ?></p>
 			</div>
 		</div>
 
