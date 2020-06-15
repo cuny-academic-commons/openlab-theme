@@ -10,9 +10,12 @@ if ( ! defined( 'CSS_DEBUG' ) ) {
 add_action( 'widgets_init', 'openlab_register_sidebars' );
 
 // Force Legacy templates.
-add_action( 'after_setup_theme', function() {
-	add_theme_support( 'buddypress-use-legacy' );
-} );
+add_action(
+	'after_setup_theme',
+	function() {
+		add_theme_support( 'buddypress-use-legacy' );
+	}
+);
 
 // Install widgets.
 add_action( 'wp_loaded', 'openlab_maybe_install' );
@@ -20,12 +23,14 @@ add_action( 'wp_loaded', 'openlab_maybe_install' );
 function openlab_core_setup() {
 	add_theme_support( 'post-thumbnails' );
 	global $content_width;
-	register_nav_menus(array(
-		'main' => __( 'Main Menu', 'openlab' ),
-		'aboutmenu' => __( 'About Menu', 'openlab' ),
-		'helpmenu' => __( 'Help Menu', 'openlab' ),
-		'helpmenusec' => __( 'Help Menu Secondary', 'openlab' ),
-	));
+	register_nav_menus(
+		array(
+			'main'        => __( 'Main Menu', 'openlab' ),
+			'aboutmenu'   => __( 'About Menu', 'openlab' ),
+			'helpmenu'    => __( 'Help Menu', 'openlab' ),
+			'helpmenusec' => __( 'Help Menu Secondary', 'openlab' ),
+		)
+	);
 }
 
 // test
@@ -60,31 +65,33 @@ function openlab_maybe_install() {
 	// Slider.
 	$slides = array(
 		array(
-			'title' => __( 'Your Second Sample Slide', 'commons-in-a-box' ),
+			'title'   => __( 'Your Second Sample Slide', 'commons-in-a-box' ),
 			'content' => 'Ex consequatur ipsam iusto id impedit nesciunt. Velit perspiciatis laborum et culpa rem earum. Beatae fugit perspiciatis dolorum. Incidunt voluptate officia cupiditate ipsum. Officiis eius quo incidunt voluptatem vitae deleniti aut. Non dolorem iste qui voluptates id ratione unde accusantium.',
-			'image' => get_template_directory() . '/images/default-slide-1.jpeg',
+			'image'   => get_template_directory() . '/images/default-slide-1.jpeg',
 		),
 		array(
-			'title' => __( 'Your First Sample Slide', 'commons-in-a-box' ),
+			'title'   => __( 'Your First Sample Slide', 'commons-in-a-box' ),
 			'content' => 'Ipsam et voluptas sed qui vel voluptatem quam. Qui pariatur occaecati consequatur quibusdam reiciendis aut asperiores nam. Esse et et id amet et quis. Beatae quaerat a ea expedita blanditiis quia. Doloremque ad nemo culpa. Quia at qui et.',
-			'image' => get_template_directory() . '/images/default-slide-2.jpeg',
+			'image'   => get_template_directory() . '/images/default-slide-2.jpeg',
 		),
 	);
 
 	// only need these if performing outside of admin environment
 	if ( ! function_exists( 'media_sideload_image' ) ) {
-		require_once( ABSPATH . 'wp-admin/includes/media.php' );
-		require_once( ABSPATH . 'wp-admin/includes/file.php' );
-		require_once( ABSPATH . 'wp-admin/includes/image.php' );
+		require_once ABSPATH . 'wp-admin/includes/media.php';
+		require_once ABSPATH . 'wp-admin/includes/file.php';
+		require_once ABSPATH . 'wp-admin/includes/image.php';
 	}
 
 	foreach ( $slides as $slide ) {
-		$slide_id = wp_insert_post( array(
-			'post_type' => 'slider',
-			'post_status' => 'publish',
-			'post_title' => $slide['title'],
-			'post_content' => $slide['content'],
-		) );
+		$slide_id = wp_insert_post(
+			array(
+				'post_type'    => 'slider',
+				'post_status'  => 'publish',
+				'post_title'   => $slide['title'],
+				'post_content' => $slide['content'],
+			)
+		);
 
 		$file_path = $slide['image'];
 
@@ -93,10 +100,10 @@ function openlab_maybe_install() {
 		copy( $file_path, $tmpfname );
 
 		$file = array(
-			'error' => null,
+			'error'    => null,
 			'tmp_name' => $tmpfname,
-			'size' => filesize( $file_path ),
-			'name' => basename( $file_path ),
+			'size'     => filesize( $file_path ),
+			'name'     => basename( $file_path ),
 		);
 
 		$overrides = array(
@@ -108,14 +115,14 @@ function openlab_maybe_install() {
 
 		$attachment = array(
 			'post_mime_type' => $sideloaded['type'],
-			'post_title' => basename( $tmpfname ),
-			'post_content' => '',
-			'post_status' => 'inherit',
-			'post_parent' => $slide_id,
+			'post_title'     => basename( $tmpfname ),
+			'post_content'   => '',
+			'post_status'    => 'inherit',
+			'post_parent'    => $slide_id,
 		);
 
 		$attachment_id = wp_insert_attachment( $attachment, $sideloaded['file'] );
-		$attach_data = wp_generate_attachment_metadata( $attachment_id, $sideloaded );
+		$attach_data   = wp_generate_attachment_metadata( $attachment_id, $sideloaded );
 		wp_update_attachment_metadata( $attachment_id, $attach_data );
 
 		set_post_thumbnail( $slide_id, $attachment_id );
@@ -127,7 +134,7 @@ function openlab_maybe_install() {
 function openlab_create_default_nav_menus() {
 	// Main Menu.
 	$menu_name = wp_slash( __( 'Main Menu', 'commons-in-a-box' ) );
-	$menu_id = wp_create_nav_menu( $menu_name );
+	$menu_id   = wp_create_nav_menu( $menu_name );
 
 	if ( is_wp_error( $menu_id ) ) {
 		return;
@@ -139,10 +146,10 @@ function openlab_create_default_nav_menus() {
 			$menu_id,
 			0,
 			array(
-				'menu-item-title' => $brand_pages['about']['title'],
+				'menu-item-title'   => $brand_pages['about']['title'],
 				'menu-item-classes' => 'about',
-				'menu-item-url' => $brand_pages['about']['preview_url'],
-				'menu-item-status' => 'publish',
+				'menu-item-url'     => $brand_pages['about']['preview_url'],
+				'menu-item-status'  => 'publish',
 			)
 		);
 	}
@@ -151,10 +158,10 @@ function openlab_create_default_nav_menus() {
 		$menu_id,
 		0,
 		array(
-			'menu-item-title' => bp_get_directory_title( 'members' ),
+			'menu-item-title'   => bp_get_directory_title( 'members' ),
 			'menu-item-classes' => 'home',
-			'menu-item-url' => bp_get_members_directory_permalink(),
-			'menu-item-status' => 'publish',
+			'menu-item-url'     => bp_get_members_directory_permalink(),
+			'menu-item-status'  => 'publish',
 		)
 	);
 
@@ -164,10 +171,10 @@ function openlab_create_default_nav_menus() {
 			$menu_id,
 			0,
 			array(
-				'menu-item-title' => $group_type->get_label( 'plural' ),
+				'menu-item-title'   => $group_type->get_label( 'plural' ),
 				'menu-item-classes' => 'group-type ' . $group_type->get_slug(),
-				'menu-item-url' => bp_get_group_type_directory_permalink( $group_type->get_slug() ),
-				'menu-item-status' => 'publish',
+				'menu-item-url'     => bp_get_group_type_directory_permalink( $group_type->get_slug() ),
+				'menu-item-status'  => 'publish',
 			)
 		);
 	}
@@ -177,22 +184,22 @@ function openlab_create_default_nav_menus() {
 			$menu_id,
 			0,
 			array(
-				'menu-item-title' => $brand_pages['help']['title'],
+				'menu-item-title'   => $brand_pages['help']['title'],
 				'menu-item-classes' => 'help',
-				'menu-item-url' => $brand_pages['help']['preview_url'],
-				'menu-item-status' => 'publish',
+				'menu-item-url'     => $brand_pages['help']['preview_url'],
+				'menu-item-status'  => 'publish',
 			)
 		);
 	}
 
-	$locations = get_theme_mod( 'nav_menu_locations' );
+	$locations         = get_theme_mod( 'nav_menu_locations' );
 	$locations['main'] = $menu_id;
 	set_theme_mod( 'nav_menu_locations', $locations );
 
 	// About Menu.
 	if ( isset( $brand_pages['about'] ) ) {
 		$menu_name = wp_slash( __( 'About Menu', 'commons-in-a-box' ) );
-		$menu_id = wp_create_nav_menu( $menu_name );
+		$menu_id   = wp_create_nav_menu( $menu_name );
 
 		if ( is_wp_error( $menu_id ) ) {
 			return;
@@ -202,14 +209,14 @@ function openlab_create_default_nav_menus() {
 			$menu_id,
 			0,
 			array(
-				'menu-item-title' => $brand_pages['about']['title'],
+				'menu-item-title'   => $brand_pages['about']['title'],
 				'menu-item-classes' => 'about',
-				'menu-item-url' => $brand_pages['about']['preview_url'],
-				'menu-item-status' => 'publish',
+				'menu-item-url'     => $brand_pages['about']['preview_url'],
+				'menu-item-status'  => 'publish',
 			)
 		);
 
-		$locations = get_theme_mod( 'nav_menu_locations' );
+		$locations              = get_theme_mod( 'nav_menu_locations' );
 		$locations['aboutmenu'] = $menu_id;
 		set_theme_mod( 'nav_menu_locations', $locations );
 	}
@@ -218,31 +225,31 @@ function openlab_create_default_nav_menus() {
 /*
  * creating a library to organize functions* */
 /* * core* */
-require_once( get_template_directory() . '/lib/core/page-control.php' );
-require_once( get_template_directory() . '/lib/core/frontend-admin.php' );
-require_once( get_template_directory() . '/lib/core/backend-admin.php' );
+require_once get_template_directory() . '/lib/core/page-control.php';
+require_once get_template_directory() . '/lib/core/frontend-admin.php';
+require_once get_template_directory() . '/lib/core/backend-admin.php';
 
-require_once( get_template_directory() . '/lib/course-clone.php' );
-require_once( get_template_directory() . '/lib/header-funcs.php' );
-require_once( get_template_directory() . '/lib/post-types.php' );
-require_once( get_template_directory() . '/lib/menus.php' );
-require_once( get_template_directory() . '/lib/content-processing.php' );
-require_once( get_template_directory() . '/lib/nav.php' );
-require_once( get_template_directory() . '/lib/breadcrumbs.php' );
-require_once( get_template_directory() . '/lib/shortcodes.php' );
-require_once( get_template_directory() . '/lib/media-funcs.php' );
-require_once( get_template_directory() . '/lib/group-funcs.php' );
-require_once( get_template_directory() . '/lib/ajax-funcs.php' );
-require_once( get_template_directory() . '/lib/help-funcs.php' );
-require_once( get_template_directory() . '/lib/member-funcs.php' );
-require_once( get_template_directory() . '/lib/page-funcs.php' );
-require_once( get_template_directory() . '/lib/sidebar-funcs.php' );
-require_once( get_template_directory() . '/lib/plugin-hooks.php' );
-require_once( get_template_directory() . '/lib/theme-hooks.php' );
-require_once( get_template_directory() . '/lib/widgets.php' );
+require_once get_template_directory() . '/lib/course-clone.php';
+require_once get_template_directory() . '/lib/header-funcs.php';
+require_once get_template_directory() . '/lib/post-types.php';
+require_once get_template_directory() . '/lib/menus.php';
+require_once get_template_directory() . '/lib/content-processing.php';
+require_once get_template_directory() . '/lib/nav.php';
+require_once get_template_directory() . '/lib/breadcrumbs.php';
+require_once get_template_directory() . '/lib/shortcodes.php';
+require_once get_template_directory() . '/lib/media-funcs.php';
+require_once get_template_directory() . '/lib/group-funcs.php';
+require_once get_template_directory() . '/lib/ajax-funcs.php';
+require_once get_template_directory() . '/lib/help-funcs.php';
+require_once get_template_directory() . '/lib/member-funcs.php';
+require_once get_template_directory() . '/lib/page-funcs.php';
+require_once get_template_directory() . '/lib/sidebar-funcs.php';
+require_once get_template_directory() . '/lib/plugin-hooks.php';
+require_once get_template_directory() . '/lib/theme-hooks.php';
+require_once get_template_directory() . '/lib/widgets.php';
 
-require_once( get_template_directory() . '/lib/customizer.php' );
-require_once( get_template_directory() . '/lib/buddypress.php' );
+require_once get_template_directory() . '/lib/customizer.php';
+require_once get_template_directory() . '/lib/buddypress.php';
 
 /**
  * Gets a version string for assets.
@@ -255,7 +262,7 @@ function openlab_get_asset_version() {
 
 function openlab_load_scripts() {
 	$stylesheet_dir_uri = get_template_directory_uri();
-	$ver = openlab_get_asset_version();
+	$ver                = openlab_get_asset_version();
 
 	/**
 	 * scripts, additional functionality
@@ -286,13 +293,17 @@ function openlab_load_scripts() {
 		wp_register_script( 'utility', $stylesheet_dir_uri . '/js/utility.js', $utility_deps, $ver, true );
 
 		wp_enqueue_script( 'utility' );
-		wp_localize_script( 'utility', 'localVars', array(
-			'nonce' => wp_create_nonce( 'request-nonce' ),
-			'strings' => array(
-				'cancelFriendship' => esc_html__( 'Cancel Friendship', 'commons-in-a-box' ),
-				'seeMore' => esc_html__( 'See More', 'commons-in-a-box' ),
-			),
-		) );
+		wp_localize_script(
+			'utility',
+			'localVars',
+			array(
+				'nonce'   => wp_create_nonce( 'request-nonce' ),
+				'strings' => array(
+					'cancelFriendship' => esc_html__( 'Cancel Friendship', 'commons-in-a-box' ),
+					'seeMore'          => esc_html__( 'See More', 'commons-in-a-box' ),
+				),
+			)
+		);
 
 		wp_register_script( 'parsley', $stylesheet_dir_uri . '/js/parsley.min.js', array( 'jquery' ), $ver );
 	}
@@ -302,10 +313,14 @@ add_action( 'wp_enqueue_scripts', 'openlab_load_scripts' );
 function openlab_admin_scripts() {
 	wp_register_script( 'utility-admin', get_template_directory_uri() . '/js/utility.admin.js', array( 'jquery', 'jquery-ui-autocomplete' ), openlab_get_asset_version(), true );
 	wp_enqueue_script( 'utility-admin' );
-	wp_localize_script('utility-admin', 'localVars', array(
-		'ajaxurl' => admin_url( 'admin-ajax.php' ),
-		'nonce' => wp_create_nonce( 'request-nonce' ),
-	));
+	wp_localize_script(
+		'utility-admin',
+		'localVars',
+		array(
+			'ajaxurl' => admin_url( 'admin-ajax.php' ),
+			'nonce'   => wp_create_nonce( 'request-nonce' ),
+		)
+	);
 }
 
 add_action( 'admin_enqueue_scripts', 'openlab_admin_scripts' );
@@ -354,20 +369,24 @@ add_image_size( 'front-page-slider', 735, 295, true );
 function openlab_register_sidebars() {
 
 	// Home sidebar.
-	register_sidebar( array(
-		'name' => __( 'Home Sidebar', 'commons-in-a-box' ),
-		'description' => __( 'The sidebar at the left side of the home page.', 'commons-in-a-box' ),
-		'id' => 'home-sidebar',
-		'before_widget' => '<div id="%1$s" class="box-1 left-box widget %2$s">',
-		'after_widget' => '</div>',
-	) );
+	register_sidebar(
+		array(
+			'name'          => __( 'Home Sidebar', 'commons-in-a-box' ),
+			'description'   => __( 'The sidebar at the left side of the home page.', 'commons-in-a-box' ),
+			'id'            => 'home-sidebar',
+			'before_widget' => '<div id="%1$s" class="box-1 left-box widget %2$s">',
+			'after_widget'  => '</div>',
+		)
+	);
 
 	// Home main (group type columns).
-	register_sidebar( array(
-		'name' => __( 'Home Main', 'commons-in-a-box' ),
-		'description' => __( 'The main section of the home page. Generally used for group type widgets.', 'commons-in-a-box' ),
-		'id' => 'home-main',
-	) );
+	register_sidebar(
+		array(
+			'name'        => __( 'Home Main', 'commons-in-a-box' ),
+			'description' => __( 'The main section of the home page. Generally used for group type widgets.', 'commons-in-a-box' ),
+			'id'          => 'home-main',
+		)
+	);
 }
 
 /**
@@ -396,10 +415,10 @@ function enqueue_less_styles( $tag, $handle ) {
 	$match_pattern = '/\.less$/U';
 	if ( preg_match( $match_pattern, $wp_styles->registered[ $handle ]->src ) ) {
 		$handle = $wp_styles->registered[ $handle ]->handle;
-		$media = $wp_styles->registered[ $handle ]->args;
-		$href = $wp_styles->registered[ $handle ]->src;
-		$rel = isset( $wp_styles->registered[ $handle ]->extra['alt'] ) && $wp_styles->registered[ $handle ]->extra['alt'] ? 'alternate stylesheet' : 'stylesheet';
-		$title = isset( $wp_styles->registered[ $handle ]->extra['title'] ) ? "title='" . esc_attr( $wp_styles->registered[ $handle ]->extra['title'] ) . "'" : '';
+		$media  = $wp_styles->registered[ $handle ]->args;
+		$href   = $wp_styles->registered[ $handle ]->src;
+		$rel    = isset( $wp_styles->registered[ $handle ]->extra['alt'] ) && $wp_styles->registered[ $handle ]->extra['alt'] ? 'alternate stylesheet' : 'stylesheet';
+		$title  = isset( $wp_styles->registered[ $handle ]->extra['title'] ) ? "title='" . esc_attr( $wp_styles->registered[ $handle ]->extra['title'] ) . "'" : '';
 
 		$tag = "<link rel='stylesheet/less' $title href='$href' type='text/css' media='$media' />";
 	}
@@ -448,20 +467,20 @@ function openlab_profile_field_input_attributes() {
 	$attributes = array();
 
 	switch ( bp_get_the_profile_field_name() ) {
-		case 'Name' :
+		case 'Name':
 			$attributes[] = 'data-parsley-required';
 			$attributes[] = 'data-parsley-required';
 			break;
 
-		case 'First Name' :
+		case 'First Name':
 			$attributes[] = 'data-parsley-required';
 			break;
 
-		case 'Last Name' :
+		case 'Last Name':
 			$attributes[] = 'data-parsley-required';
 			break;
 
-		case 'Account Type' :
+		case 'Account Type':
 			$attributes[] = 'data-parsley-required';
 			break;
 	}
@@ -482,8 +501,8 @@ function openlab_site_footer() {
 		return;
 	}
 
-	$left_heading = get_theme_mod( 'openlab_footer_left_heading' );
-	$left_content = get_theme_mod( 'openlab_footer_left_content' );
+	$left_heading   = get_theme_mod( 'openlab_footer_left_heading' );
+	$left_content   = get_theme_mod( 'openlab_footer_left_content' );
 	$middle_heading = get_theme_mod( 'openlab_footer_middle_heading' );
 	$middle_content = get_theme_mod( 'openlab_footer_middle_content' );
 
@@ -508,7 +527,7 @@ function openlab_site_footer() {
 						<p><?php esc_html_e( 'Powered by:', 'commons-in-a-box' ); ?></p>
 
 						<div class="cboxol-footer-logo">
-							<a href="https://commonsinabox.org/"><img src="<?php echo get_template_directory_uri() ?>/images/cboxol-logo-noicon.png" alt="<?php esc_attr_e( 'CBOX-OL Logo', 'commons-in-a-box' ); ?>" /></a>
+							<a href="https://commonsinabox.org/"><img src="<?php echo get_template_directory_uri(); ?>/images/cboxol-logo-noicon.png" alt="<?php esc_attr_e( 'CBOX-OL Logo', 'commons-in-a-box' ); ?>" /></a>
 						</div>
 					</div>
 				</div>
@@ -531,9 +550,12 @@ function openlab_site_footer() {
 /**
  * Bust the footer markup transient when it's modified.
  */
-add_action( 'update_option_theme_mods_' . get_option( 'stylesheet' ), function() {
-	delete_site_transient( 'cboxol_network_footer' );
-} );
+add_action(
+	'update_option_theme_mods_' . get_option( 'stylesheet' ),
+	function() {
+		delete_site_transient( 'cboxol_network_footer' );
+	}
+);
 
 /**
  * Bust the sitewide nav item transient when it's edited.

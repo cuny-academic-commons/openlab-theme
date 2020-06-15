@@ -32,17 +32,17 @@
 	<h3 class="font-size font-14"><?php _e( 'Event Details', 'eventorganiser' ); ?></h3>
 
 	<!-- Is event recurring or a single event -->
-	<?php if ( eo_recurs() ) :?>
+	<?php if ( eo_recurs() ) : ?>
 		<!-- Event recurs - is there a next occurrence? -->
-		<?php $next = eo_get_next_occurrence( eo_get_event_datetime_format() );?>
+		<?php $next = eo_get_next_occurrence( eo_get_event_datetime_format() ); ?>
 
 		<?php if ( $next ) : ?>
 			<!-- If the event is occurring again in the future, display the date -->
-			<?php printf( '<p>' . __( 'This event is running from %1$s until %2$s. It is next occurring on %3$s', 'eventorganiser' ) . '</p>', eo_get_schedule_start( 'j F Y' ), eo_get_schedule_last( 'j F Y' ), $next );?>
+			<?php printf( '<p>' . __( 'This event is running from %1$s until %2$s. It is next occurring on %3$s', 'eventorganiser' ) . '</p>', eo_get_schedule_start( 'j F Y' ), eo_get_schedule_last( 'j F Y' ), $next ); ?>
 
 		<?php else : ?>
 			<!-- Otherwise the event has finished (no more occurrences) -->
-			<?php printf( '<p>' . __( 'This event finished on %s', 'eventorganiser' ) . '</p>', eo_get_schedule_last( 'd F Y', '' ) );?>
+			<?php printf( '<p>' . __( 'This event finished on %s', 'eventorganiser' ) . '</p>', eo_get_schedule_last( 'd F Y', '' ) ); ?>
 		<?php endif; ?>
 	<?php endif; ?>
 
@@ -50,25 +50,31 @@
 
 		<?php if ( ! eo_recurs() ) { ?>
 			<!-- Single event -->
-			<li><strong><?php esc_html_e( 'Date', 'eventorganiser' );?>:</strong> <?php echo eo_format_event_occurrence();?></li>
+			<li><strong><?php esc_html_e( 'Date', 'eventorganiser' ); ?>:</strong> <?php echo eo_format_event_occurrence(); ?></li>
 		<?php } ?>
 
-		<?php if ( eo_get_venue() ) {
-			$tax = get_taxonomy( 'event-venue' ); ?>
-			<li><strong><?php echo esc_html( $tax->labels->singular_name ) ?>:</strong> <?php eo_venue_name(); ?></li>
+		<?php
+		if ( eo_get_venue() ) {
+			$tax = get_taxonomy( 'event-venue' );
+			?>
+			<li><strong><?php echo esc_html( $tax->labels->singular_name ); ?>:</strong> <?php eo_venue_name(); ?></li>
 		<?php } ?>
 
-		<?php if ( eo_recurs() ) {
+		<?php
+		if ( eo_recurs() ) {
 				//Event recurs - display dates.
-				$upcoming = new WP_Query(array(
-					'post_type'         => 'event',
-					'event_start_after' => 'today',
-					'posts_per_page'    => -1,
-					'event_series'      => get_the_ID(),
-					'group_events_by'   => 'occurrence',
-				));
+				$upcoming = new WP_Query(
+					array(
+						'post_type'         => 'event',
+						'event_start_after' => 'today',
+						'posts_per_page'    => -1,
+						'event_series'      => get_the_ID(),
+						'group_events_by'   => 'occurrence',
+					)
+				);
 
-				if ( $upcoming->have_posts() ) : ?>
+			if ( $upcoming->have_posts() ) :
+				?>
 
 					<li><strong><?php _e( 'Upcoming Dates', 'eventorganiser' ); ?>:</strong>
 						<ul class="eo-upcoming-dates">
@@ -89,7 +95,7 @@
 				<?php endif; ?>
 		<?php } ?>
 
-		<?php do_action( 'eventorganiser_additional_event_meta' ) ?>
+		<?php do_action( 'eventorganiser_additional_event_meta' ); ?>
 
 	</ul>
 

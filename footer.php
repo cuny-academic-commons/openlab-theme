@@ -3,22 +3,22 @@
 * footer template
 *
 */ ?>
-                    </div><!--end .container-->
+					</div><!--end .container-->
 
-                    <?php do_action( 'bp_after_container' ) ?>
-                    <?php do_action( 'bp_before_footer' ) ?>
+					<?php do_action( 'bp_after_container' ); ?>
+					<?php do_action( 'bp_before_footer' ); ?>
 
-                    <?php do_action( 'bp_footer' ) ?>
+					<?php do_action( 'bp_footer' ); ?>
 
-                    <?php do_action( 'bp_after_footer' ) ?>
+					<?php do_action( 'bp_after_footer' ); ?>
 
-                    </div><!--.page-table-row-->
+					</div><!--.page-table-row-->
 
 					<?php openlab_site_footer(); ?>
 
-                    <?php wp_footer(); ?>
+					<?php wp_footer(); ?>
 
-                </div><!--.page-table-->
+				</div><!--.page-table-->
 
 	</body>
 

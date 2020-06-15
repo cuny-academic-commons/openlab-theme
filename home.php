@@ -21,13 +21,13 @@ get_header();
 </div>
 <div class="row row-home-bottom">
 	<div id="home-left" class="col-sm-8">
-		<?php dynamic_sidebar( 'home-sidebar' ) ?>
+		<?php dynamic_sidebar( 'home-sidebar' ); ?>
 	</div>
 
 	<div id="home-right" class="col-sm-16">
 		<div id="home-group-list-wrapper" class="row">
 
-		<?php dynamic_sidebar( 'home-main' ) ?>
+		<?php dynamic_sidebar( 'home-main' ); ?>
 
 		<div class="clearfloat"></div>
 

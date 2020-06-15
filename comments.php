@@ -38,10 +38,12 @@ endif;
 endif;
 endif;
 if ( comments_open() ) {
-	comment_form( array(
-		'title_reply_before' => '<h2 id="reply-title" class="comment-reply-title">',
-		'title_reply_after'  => '</h2>',
-	) );
+	comment_form(
+		array(
+			'title_reply_before' => '<h2 id="reply-title" class="comment-reply-title">',
+			'title_reply_after'  => '</h2>',
+		)
+	);
 }
 ?>
 </section>

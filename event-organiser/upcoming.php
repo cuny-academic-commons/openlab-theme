@@ -19,12 +19,12 @@ $events = eo_get_events( $eo_get_events_args ); ?>
 	<ul class="bpeo-upcoming-events">
 	<?php
 		$_post = $GLOBALS['post'];
-		foreach ( $events as $post ) {
-			eo_get_template_part( 'content-eo', 'upcoming' );
-		}
+	foreach ( $events as $post ) {
+		eo_get_template_part( 'content-eo', 'upcoming' );
+	}
 		$GLOBALS['post'] = $_post;
 	?>
 	</ul>
 <?php else : // ! empty( $events ) ?>
-	<p><?php _e( 'No upcoming events found.', 'bp-event-organiser' ) ?></p>
+	<p><?php _e( 'No upcoming events found.', 'bp-event-organiser' ); ?></p>
 <?php endif; // ! empty( $events ) ?>

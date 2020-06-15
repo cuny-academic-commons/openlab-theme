@@ -29,37 +29,40 @@ get_header();
 
 <div id="content" class="hfeed row">
 
-    <div class="col-sm-18 col-xs-24">
+	<div class="col-sm-18 col-xs-24">
 
 		<div class="entry-title">
 			<h1><span class="profile-name"><?php esc_html_e( 'OpenLab Calendar: Event', 'commons-in-a-box' ); ?></span></h1>
 		</div>
 
-        <div class="action-events">
-            <div id="item-body">
-                <div class="submenu">
-                    <div class="submenu-text pull-left bold"><?php esc_html_e( 'Calendar:', 'commons-in-a-box' ); ?></div>
-                    <ul class="nav nav-inline"><!--
-                        <?php $menu_items = openlab_calendar_submenu(); ?>
-                        <?php foreach ($menu_items as $item): ?>
-                            --><li class="<?php echo $item['class'] ?>" id="<?php echo $item['slug'] ?>-groups-li"><a href="<?php echo $item['link'] ?>"><?php echo $item['name'] ?></a></li><!--
-                        <?php endforeach; ?>
-                        --><li class="current-menu-item" id="single-event-name"><span><?php the_title(); ?></span></li><!--
-                    --></ul>
-                </div>
+		<div class="action-events">
+			<div id="item-body">
+				<div class="submenu">
+					<div class="submenu-text pull-left bold"><?php esc_html_e( 'Calendar:', 'commons-in-a-box' ); ?></div>
+					<ul class="nav nav-inline"><!--
+						<?php $menu_items = openlab_calendar_submenu(); ?>
+						<?php foreach ( $menu_items as $item ) : ?>
+							--><li class="<?php echo $item['class']; ?>" id="<?php echo $item['slug']; ?>-groups-li"><a href="<?php echo $item['link']; ?>"><?php echo $item['name']; ?></a></li><!--
+						<?php endforeach; ?>
+						--><li class="current-menu-item" id="single-event-name"><span><?php the_title(); ?></span></li><!--
+					--></ul>
+				</div>
 
-                <?php while (have_posts()) : the_post(); ?>
+				<?php
+				while ( have_posts() ) :
+					the_post();
+					?>
 
-                    <?php the_content(); ?>
+					<?php the_content(); ?>
 
-                <?php endwhile; // end of the loop. ?>
+				<?php endwhile; // end of the loop. ?>
 
-            </div>
+			</div>
 
-        </div>
-    </div>
+		</div>
+	</div>
 
-    <?php get_template_part( 'parts/sidebar/about' ); ?>
+	<?php get_template_part( 'parts/sidebar/about' ); ?>
 
 </div>
 

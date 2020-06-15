@@ -56,15 +56,15 @@ var OLAcadUnits = ' . wp_json_encode( $academic_unit_map ) . ';
 					?>
 				<?php endforeach; ?>
 
-				<?php if ( function_exists( 'bpcgc_get_terms_by_group_type' ) ) :  ?>
+				<?php if ( function_exists( 'bpcgc_get_terms_by_group_type' ) ) : ?>
 					<?php get_template_part( 'parts/sidebar/filter-group-categories' ); ?>
 				<?php endif; ?>
 
-				<?php if ( bp_is_groups_directory() && $group_type_object && $group_type_object->get_is_course() ) :  ?>
+				<?php if ( bp_is_groups_directory() && $group_type_object && $group_type_object->get_is_course() ) : ?>
 					<?php get_template_part( 'parts/sidebar/filter-term' ); ?>
 				<?php endif; ?>
 
-				<?php if ( ( bp_is_groups_directory() && $group_type_object && ! is_wp_error( $group_type_object ) && $group_type_object->get_is_portfolio() ) || bp_is_members_directory() ) :  ?>
+				<?php if ( ( bp_is_groups_directory() && $group_type_object && ! is_wp_error( $group_type_object ) && $group_type_object->get_is_portfolio() ) || bp_is_members_directory() ) : ?>
 					<?php get_template_part( 'parts/sidebar/filter-member-type' ); ?>
 				<?php endif; ?>
 
