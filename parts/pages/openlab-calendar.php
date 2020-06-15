@@ -10,6 +10,7 @@
 		</div>
 
 		<div id="openlabCalendar" class="calendar-wrapper">
+			<?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 			<?php echo eo_get_event_fullcalendar( $args ); ?>
 		</div>
 
