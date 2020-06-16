@@ -5,89 +5,79 @@
 	<?php do_action( 'bp_before_member_messages_threads' ); ?>
 
 		<?php
-		global $messages_template, $bp;
+		global $messages_template;
 		while ( bp_message_threads() ) :
 			bp_message_thread();
-			$mstatus  = true;
-				$read = 'unread';
-			if ( isset( $_GET['status'] ) && $_GET['status'] == 'unread' ) {
+
+			$mstatus = true;
+			$read    = 'unread';
+
+			// phpcs:disable WordPress.Security.NonceVerification.Recommended
+			if ( isset( $_GET['status'] ) && 'unread' === $_GET['status'] ) {
 				$mstatus = bp_message_thread_has_unread();
 			}
-			if ( isset( $_GET['status'] ) && $_GET['status'] == 'read' ) {
+			if ( isset( $_GET['status'] ) && 'read' === $_GET['status'] ) {
 				$mstatus = ! bp_message_thread_has_unread();
+				$read    = 'read';
 			}
-				$read = 'read';
+			// phpcs:enable WordPress.Security.NonceVerification.Recommended
+
+			$user_avatar = bp_core_fetch_avatar(
+				array(
+					'item_id' => $messages_template->thread->last_sender_id,
+					'object'  => 'member',
+					'type'    => 'full',
+					'html'    => false,
+				)
+			);
+
 			?>
 			<?php if ( $mstatus ) { ?>
-			<div id="m-<?php bp_message_thread_id(); ?>" class="message col-xs-12 <?php echo $read; ?>">
-							<div class="group-item-wrapper">
-				<div class="item-avatar col-sm-9 col-xs-7">	
-									<a href="<?php bp_message_thread_view_link(); ?>"><img class="img-responsive" src ="
-																				  <?php
-																					echo bp_core_fetch_avatar(
-																						array(
-																							'item_id' => $messages_template->thread->last_sender_id,
-																							'object'  => 'member',
-																							'type'    => 'full',
-																							'html'    => false,
-																						)
-																					);
-																					?>
-																														" alt="Message #<?php echo bp_message_thread_id(); ?>"/></a>
-				</div>
-				<div class="item col-sm-15 col-xs-17">
-					<h2 class="item-title"><a  class="no-deco"href="<?php bp_message_thread_view_link(); ?>" title="<?php _e( 'View Message', 'buddypress' ); ?>"><?php bp_message_thread_subject(); ?></a></h2>
-					<div class="info-line">
-						<?php if ( 'sentbox' != bp_current_action() ) : ?>
-							<?php _e( 'From:', 'buddypress' ); ?> <?php bp_message_thread_from(); ?><br />
-						<?php else : ?>
-							<?php _e( 'To:', 'buddypress' ); ?> <?php bp_message_thread_to(); ?><br />
-						<?php endif; ?>
-										</div>
-										<div class="timestamp">
-							<span class="fa fa-undo"></span> <span class="timestamp"><?php bp_message_thread_last_post_date(); ?></span>
+			<div id="m-<?php bp_message_thread_id(); ?>" class="message col-xs-12 <?php echo esc_attr( $read ); ?>">
+				<div class="group-item-wrapper">
+					<div class="item-avatar col-sm-9 col-xs-7">
+						<a href="<?php bp_message_thread_view_link(); ?>"><img class="img-responsive" src="<?php echo esc_attr( $user_avatar ); ?>" alt="Message #<?php echo esc_attr( bp_message_thread_id() ); ?>"/></a>
 					</div>
-					<p class="thread-excerpt"><?php bp_message_thread_excerpt(); ?>... <a href="<?php bp_message_thread_view_link(); ?>" class="read-more" title="<?php _e( 'View Message', 'buddypress' ); ?>">See More</a></p>
-	
-	
-					<?php do_action( 'bp_messages_inbox_list_item' ); ?>
-	
-					<?php
-					/* <input type="checkbox" name="message_ids[]" value="<?php bp_message_thread_id() ?>" />
-					<a class="delete-button confirm" href="<?php bp_message_thread_delete_link() ?>" title="<?php _e( "Delete Message", "buddypress" ); ?>">Delete</a> &nbsp; */
-					?>
-				</div>
-				</div>
-					</div>
-		<?php } ?>
-		<?php endwhile; ?>
 
+					<div class="item col-sm-15 col-xs-17">
+						<h2 class="item-title"><a  class="no-deco"href="<?php bp_message_thread_view_link(); ?>" title="<?php esc_attr_e( 'View Message', 'commons-in-a-box' ); ?>"><?php bp_message_thread_subject(); ?></a></h2>
+
+						<div class="info-line">
+							<?php if ( 'sentbox' !== bp_current_action() ) : ?>
+								<?php esc_html_e( 'From:', 'commons-in-a-box' ); ?> <?php bp_message_thread_from(); ?><br />
+							<?php else : ?>
+									<?php esc_html_e( 'To:', 'commons-in-a-box' ); ?> <?php bp_message_thread_to(); ?><br />
+							<?php endif; ?>
+						</div>
+
+						<div class="timestamp">
+							<span class="fa fa-undo"></span> <span class="timestamp"><?php bp_message_thread_last_post_date(); ?></span>
+						</div>
+
+						<p class="thread-excerpt"><?php bp_message_thread_excerpt(); ?>... <a href="<?php bp_message_thread_view_link(); ?>" class="read-more" title="<?php esc_attr_e( 'View Message', 'commons-in-a-box' ); ?>"><?php esc_html_e( 'See More', 'commons-in-a-box' ); ?></a></p>
+
+						<?php do_action( 'bp_messages_inbox_list_item' ); ?>
+					</div>
+				</div>
+			</div>
+		<?php } ?>
+	<?php endwhile; ?>
 
 	<div id="pag-bottom" class="pagination">
-	
+
 		<div class="pagination-links" id="messages-dir-pag">
-						<?php echo openlab_messages_pagination(); ?>
+			<?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+			<?php echo openlab_messages_pagination(); ?>
 		</div>
 
 	</div><!-- .pagination -->
 
 	<?php do_action( 'bp_after_member_messages_pagination' ); ?>
-	<?php
-	/*
-	<div class="messages-options-nav">
-		<?php bp_messages_options() ?>
-	</div><!-- .messages-options-nav -->
 
-	<?php do_action( 'bp_after_member_messages_threads' ) ?>
-
-	<?php do_action( 'bp_after_member_messages_options' ) ?>
-	*/
-	?>
-		
 <?php else : ?>
 
 	<div id="message" class="info">
-		<p><?php _e( 'Sorry, no messages were found.', 'buddypress' ); ?></p>
+		<p><?php esc_html_e( 'Sorry, no messages were found.', 'commons-in-a-box' ); ?></p>
 	</div>
 
 <?php endif; ?>
