@@ -25,6 +25,7 @@ switch ( bp_current_action() ) :
 		bp_get_template_part( 'members/single/settings/general' );
 		break;
 	case 'data':
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		echo openlab_submenu_markup();
 		?>
 
