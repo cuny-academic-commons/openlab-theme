@@ -28,11 +28,11 @@ switch ( bp_current_action() ) :
 
 	// Compose
 	case 'public':
-		// Display XProfile
 		if ( bp_is_active( 'xprofile' ) ) {
+			// Display XProfile
 			bp_get_template_part( 'members/single/profile/profile-loop' );
-		} // Display WordPress profile (fallback)
-		else {
+		} else {
+			// Display WordPress profile (fallback)
 			bp_get_template_part( 'members/single/profile/profile-wp' );
 		}
 
