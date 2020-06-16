@@ -4,20 +4,22 @@
  *
  * */
 do_action( 'bp_before_member_settings_template' );
+
+// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+echo openlab_submenu_markup();
 ?>
-<?php echo openlab_submenu_markup(); ?>
 
 <div id="item-body" role="main">
 
 	<?php do_action( 'bp_template_content' ); ?>
 
-	<form action="<?php echo bp_displayed_user_domain() . bp_get_settings_slug() . '/notifications'; ?>" method="post" class="standard-form form-panel" id="settings-form">
+	<form action="<?php echo esc_attr( bp_displayed_user_domain() . bp_get_settings_slug() . '/notifications' ); ?>" method="post" class="standard-form form-panel" id="settings-form">
 
 		<div class="panel panel-default">
-			<div class="panel-heading">Email Notifications</div>
+			<div class="panel-heading"><?php esc_html_e( 'Email Notifications', 'commons-in-a-box' ); ?></div>
 			<div class="panel-body">
 
-				<p><?php _e( 'Send a notification by email when:', 'buddypress' ); ?></p>
+				<p><?php esc_html_e( 'Send a notification by email when:', 'commons-in-a-box' ); ?></p>
 
 				<?php do_action( 'bp_notification_settings' ); ?>
 				<?php do_action( 'bp_members_notification_settings_before_submit' ); ?>
@@ -25,7 +27,7 @@ do_action( 'bp_before_member_settings_template' );
 		</div>
 
 		<div class="submit">
-			<input type="submit" name="submit" value="<?php _e( 'Save Changes', 'buddypress' ); ?>" id="submit" class="auto btn btn-primary btn-margin btn-margin-top" />
+			<input type="submit" name="submit" value="<?php esc_attr_e( 'Save Changes', 'commons-in-a-box' ); ?>" id="submit" class="auto btn btn-primary btn-margin btn-margin-top" />
 		</div>
 
 		<?php

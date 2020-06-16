@@ -4,16 +4,17 @@
  *
  * */
 do_action( 'bp_before_member_settings_template' );
-?>
 
-<?php echo openlab_submenu_markup(); ?>
+// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+echo openlab_submenu_markup();
+?>
 
 
 <div id="item-body" role="main">
 
 	<?php do_action( 'bp_template_content' ); ?>
 
-	<form action="<?php echo bp_displayed_user_domain() . bp_get_settings_slug() . '/general'; ?>" method="post" class="standard-form form-panel" id="settings-form">
+	<form action="<?php echo esc_attr( bp_displayed_user_domain() . bp_get_settings_slug() . '/general' ); ?>" method="post" class="standard-form form-panel" id="settings-form">
 
 		<div class="panel panel-default">
 			<div class="panel-heading"><?php esc_html_e( 'Account Settings', 'commons-in-a-box' ); ?></div>
@@ -35,12 +36,7 @@ do_action( 'bp_before_member_settings_template' );
 			<label for="pwd"><?php esc_html_e( 'Current Password', 'commons-in-a-box' ); ?></label>
 			<input class="form-control" type="password" name="pwd" id="pwd" size="16" value="" class="settings-input small" />
 
-			<?php
-			$account_type      = openlab_get_displayed_user_account_type();
-			$include_acct_type = in_array( $account_type, array( 'Student', 'Alumni' ) ) ? ' account type, ' : ' ';
-			?>
-
-			<p class="description"><?php esc_html_e( 'Required to change email address or password.', 'commons-in-a-box' ); ?> <a class="underline" href="<?php echo esc_attr( wp_lostpassword_url() ); ?>" title="<?php _e( 'Password Lost and Found', 'commons-in-a-box' ); ?>"><?php _e( 'Lost your password?', 'commons-in-a-box' ); ?></a></p>
+			<p class="description"><?php esc_html_e( 'Required to change email address or password.', 'commons-in-a-box' ); ?> <a class="underline" href="<?php echo esc_attr( wp_lostpassword_url() ); ?>" title="<?php esc_attr_e( 'Password Lost and Found', 'commons-in-a-box' ); ?>"><?php esc_html_e( 'Lost your password?', 'commons-in-a-box' ); ?></a></p>
 		</div>
 
 		<div class="form-group settings-section change-pw-section">
