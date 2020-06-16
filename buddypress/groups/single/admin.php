@@ -265,7 +265,7 @@ openlab_group_admin_js_data( $group_type );
 
 								<?php if ( bp_get_user_has_avatar() ) : ?>
 									<p class="italics"><?php _e( "If you'd like to remove the existing avatar but not upload a new one, please use the delete avatar button.", 'commons-in-a-box' ); ?></p>
-									<a class="btn btn-primary no-deco" href="<?php echo bp_get_group_avatar_delete_link(); ?>" title="<?php _e( 'Delete Avatar', 'commons-in-a-box' ); ?>"><?php _e( 'Delete Avatar', 'commons-in-a-box' ); ?></a>
+									<a class="btn btn-primary no-deco" href="<?php echo bp_get_group_avatar_delete_link(); ?>"><?php _e( 'Delete Avatar', 'commons-in-a-box' ); ?></a>
 								<?php endif; ?>
 
 								<?php wp_nonce_field( 'bp_avatar_upload' ); ?>
@@ -394,7 +394,7 @@ openlab_group_admin_js_data( $group_type );
 												</p>
 
 												<ul class="group-member-actions">
-													<li><a href="<?php bp_group_member_promote_admin_link( array( 'user_id' => bp_get_member_user_id() ) ); ?>" class="confirm mod-promote-to-admin" title="<?php _e( 'Promote to Admin', 'commons-in-a-box' ); ?>"><?php _e( 'Promote to Admin', 'commons-in-a-box' ); ?></a></li>
+													<li><a href="<?php bp_group_member_promote_admin_link( array( 'user_id' => bp_get_member_user_id() ) ); ?>" class="confirm mod-promote-to-admin"><?php _e( 'Promote to Admin', 'commons-in-a-box' ); ?></a></li>
 													<li><a class="confirm mod-demote-to-member" href="<?php bp_group_member_demote_link( bp_get_member_user_id() ); ?>"><?php _e( 'Demote to Member', 'commons-in-a-box' ); ?></a></li>
 												</ul>
 											</div>
@@ -467,17 +467,17 @@ openlab_group_admin_js_data( $group_type );
 
 											<ul class="group-member-actions">
 												<?php if ( bp_get_group_member_is_banned() ) : ?>
-													<li><a href="<?php bp_group_member_unban_link(); ?>" class="confirm member-unban" title="<?php _e( 'Unban this member', 'commons-in-a-box' ); ?>"><?php _e( 'Remove Ban', 'commons-in-a-box' ); ?></a></li>
+													<li><a href="<?php bp_group_member_unban_link(); ?>" class="confirm member-unban"><?php _e( 'Remove Ban', 'commons-in-a-box' ); ?></a></li>
 
 												<?php else : ?>
 
-													<li><a href="<?php bp_group_member_ban_link(); ?>" class="confirm member-ban" title="<?php _e( 'Kick and ban this member', 'commons-in-a-box' ); ?>"><?php _e( 'Kick &amp; Ban', 'commons-in-a-box' ); ?></a></li>
-													<li><a href="<?php bp_group_member_promote_mod_link(); ?>" class="confirm member-promote-to-mod" title="<?php _e( 'Promote to Mod', 'commons-in-a-box' ); ?>"><?php _e( 'Promote to Mod', 'commons-in-a-box' ); ?></a></li>
-													<li><a href="<?php bp_group_member_promote_admin_link(); ?>" class="confirm member-promote-to-admin" title="<?php _e( 'Promote to Admin', 'commons-in-a-box' ); ?>"><?php _e( 'Promote to Admin', 'commons-in-a-box' ); ?></a></li>
+													<li><a href="<?php bp_group_member_ban_link(); ?>" class="confirm member-ban"><?php _e( 'Kick &amp; Ban', 'commons-in-a-box' ); ?></a></li>
+													<li><a href="<?php bp_group_member_promote_mod_link(); ?>" class="confirm member-promote-to-mod"><?php _e( 'Promote to Mod', 'commons-in-a-box' ); ?></a></li>
+													<li><a href="<?php bp_group_member_promote_admin_link(); ?>" class="confirm member-promote-to-admin"><?php _e( 'Promote to Admin', 'commons-in-a-box' ); ?></a></li>
 
 												<?php endif; ?>
 
-												<li><a href="<?php bp_group_member_remove_link(); ?>" class="confirm" title="<?php _e( 'Remove this member', 'commons-in-a-box' ); ?>"><?php _e( 'Remove from group', 'commons-in-a-box' ); ?></a></li>
+												<li><a href="<?php bp_group_member_remove_link(); ?>" class="confirm"><?php _e( 'Remove from group', 'commons-in-a-box' ); ?></a></li>
 
 											</ul>
 
