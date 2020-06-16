@@ -56,20 +56,21 @@ do_action( 'bp_before_member_home_content' );
 					)
 				);
 				?>
-				<img class="img-responsive padded" src="<?php echo esc_attr( $avatar_src ); ?>" alt="<?php echo bp_core_get_user_displayname( $this_user_id ); ?>" />
+				<img class="img-responsive padded" src="<?php echo esc_attr( $avatar_src ); ?>" alt="<?php echo esc_html( bp_core_get_user_displayname( $this_user_id ) ); ?>" />
 			</div>
 		</div><!--memeber-header-avatar-->
 
 		<div id="profile-action-wrapper">
 			<?php if ( is_user_logged_in() && openlab_is_my_profile() ) : ?>
 				<div id="group-action-wrapper">
-					<a class="btn btn-default btn-block btn-primary link-btn" href="<?php echo $dud . 'profile/edit/'; ?>"><i class="fa fa-pencil" aria-hidden="true"></i> <?php esc_html_e( 'Edit Profile', 'commons-in-a-box' ); ?></a>
-					<a class="btn btn-default btn-block btn-primary link-btn" href="<?php echo $dud . 'profile/change-avatar/'; ?>"><i class="fa fa-camera" aria-hidden="true"></i> <?php esc_html_e( 'Change Avatar', 'commons-in-a-box' ); ?></a>
+					<a class="btn btn-default btn-block btn-primary link-btn" href="<?php echo esc_attr( $dud . 'profile/edit/' ); ?>"><i class="fa fa-pencil" aria-hidden="true"></i> <?php esc_html_e( 'Edit Profile', 'commons-in-a-box' ); ?></a>
+					<a class="btn btn-default btn-block btn-primary link-btn" href="<?php echo esc_attr( $dud . 'profile/change-avatar/' ); ?>"><i class="fa fa-camera" aria-hidden="true"></i> <?php esc_html_e( 'Change Avatar', 'commons-in-a-box' ); ?></a>
 				</div>
 			<?php elseif ( is_user_logged_in() && ! openlab_is_my_profile() ) : ?>
 				<?php bp_add_friend_button( openlab_fallback_user(), bp_loggedin_user_id() ); ?>
 
 				<?php
+				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 				echo bp_get_button(
 					array(
 						'id'                => 'private_message',
@@ -78,8 +79,8 @@ do_action( 'bp_before_member_home_content' );
 						'block_self'        => true,
 						'wrapper_id'        => 'send-private-message',
 						'link_href'         => bp_get_send_private_message_link(),
-						'link_title'        => __( 'Send a private message to this user.', 'buddypress' ),
-						'link_text'         => __( '<i class="fa fa-envelope" aria-hidden="true"></i> Send Message', 'buddypress' ),
+						'link_title'        => __( 'Send a private message to this user.', 'commons-in-a-box' ),
+						'link_text'         => '<i class="fa fa-envelope" aria-hidden="true"></i> ' . __( 'Send Message', 'commons-in-a-box' ),
 						'link_class'        => 'send-message btn btn-default btn-block btn-primary link-btn',
 					)
 				)
@@ -111,10 +112,10 @@ do_action( 'bp_before_member_home_content' );
 									bp_the_profile_field();
 									if ( bp_field_has_data() ) :
 										// @todo This should not be hardcoded like this.
-										if ( bp_get_the_profile_field_name() !== 'Name'
-											&& bp_get_the_profile_field_name() !== 'Account Type'
-											&& bp_get_the_profile_field_name() !== 'First Name'
-											&& bp_get_the_profile_field_name() !== 'Last Name'
+										if ( bp_get_the_profile_field_name() !== __( 'Name', 'commons-in-a-box' )
+											&& bp_get_the_profile_field_name() !== __( 'Account Type', 'commons-in-a-box' )
+											&& bp_get_the_profile_field_name() !== __( 'First Name', 'commons-in-a-box' )
+											&& bp_get_the_profile_field_name() !== __( 'Last Name', 'commons-in-a-box' )
 											) :
 											?>
 
@@ -125,28 +126,25 @@ do_action( 'bp_before_member_home_content' );
 
 												<div class="col-sm-17">
 													<?php
-													if ( bp_get_the_profile_field_name() == 'Academic interests' || bp_get_the_profile_field_name() == 'Bio' ) {
-														echo bp_get_the_profile_field_value();
-													} else {
-														$field_value = str_replace( '<p>', '', bp_get_the_profile_field_value() );
-														$field_value = str_replace( '</p>', '', $field_value );
-														echo $field_value;
-													}
+													$field_value = str_replace( '<p>', '', bp_get_the_profile_field_value() );
+													$field_value = str_replace( '</p>', '', $field_value );
+													// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+													echo $field_value;
 													?>
 												</div>
 											</div>
 										<?php endif; ?>
 
-									<?php endif; // bp_field_has_data() ?>
+									<?php endif; // bp_field_has_data ?>
 
-								<?php endwhile; // bp_profile_fields() ?>
+								<?php endwhile; // bp_profile_fields ?>
 
-							<?php endif; // bp_profile_group_has_fields() ?>
+							<?php endif; // bp_profile_group_has_fields ?>
 
-						<?php endwhile; // bp_profile_groups() ?>
+						<?php endwhile; // bp_profile_groups ?>
 
 						<?php /* @todo this should go somewhere else */ ?>
-						<?php foreach ( $academic_unit_data as $type => $type_data ) : ?>
+						<?php foreach ( $academic_unit_data as $_type => $type_data ) : ?>
 							<div class="table-row row">
 								<div class="bold col-sm-7">
 									<?php echo esc_html( $type_data['label'] ); ?>
@@ -159,7 +157,7 @@ do_action( 'bp_before_member_home_content' );
 						<?php endforeach; ?>
 					</div>
 				</div>
-			<?php endif; // bp_has_profile() ?>
+			<?php endif; ?>
 		</div>
 
 	</div><!-- #item-header-content -->
