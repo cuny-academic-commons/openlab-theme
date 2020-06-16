@@ -1,8 +1,10 @@
 <div class="panel-button-group form-panel">
 	<div class="panel panel-default">
+		<?php // translators: group name ?>
 		<div class="panel-heading semibold"><?php printf( esc_html__( 'Send an email notice to all members of "%s"', 'commons-in-a-box' ), esc_html( bp_get_group_name() ) ); ?></div>
 
 		<div class="panel-body">
+			<?php // translators: group name ?>
 			<p><?php printf( esc_html__( 'You can use the form below to send an email notice to all members of "%s".', 'commons-in-a-box' ), esc_html( bp_get_group_name() ) ); ?> <br>
 			<b><?php esc_html_e( 'Members will receive the notice regardless of email settings, so please use with caution', 'commons-in-a-box' ); ?></b>.</p>
 
