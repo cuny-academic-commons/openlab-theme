@@ -51,7 +51,7 @@
 								<?php do_action( 'bp_group_send_invites_item' ); ?>
 
 								<div class="action">
-									<a class="remove" href="<?php bp_group_invite_user_remove_invite_url(); ?>" id="<?php bp_group_invite_item_id(); ?>"><?php _e( 'Remove Invite', 'buddypress' ); ?></a>
+									<a class="remove" href="<?php bp_group_invite_user_remove_invite_url(); ?>" id="<?php bp_group_invite_item_id(); ?>"><?php esc_html_e( 'Remove Invite', 'commons-in-a-box' ); ?></a>
 
 									<?php do_action( 'bp_group_send_invites_item_action' ); ?>
 								</div>
@@ -78,7 +78,7 @@
 
 			<?php if ( ! bp_get_new_group_id() ) : ?>
 				<div class="submit">
-					<input class="btn btn-primary" type="submit" name="submit" id="submit" value="<?php _e( 'Send Invites', 'buddypress' ); ?>" />
+					<input class="btn btn-primary" type="submit" name="submit" id="submit" value="<?php esc_attr_e( 'Send Invites', 'commons-in-a-box' ); ?>" />
 				</div>
 			<?php endif; ?>
 
@@ -95,7 +95,7 @@
 
 				<p class="invite-copy"><?php esc_html_e( 'This link will take you to My Invitations, where you may invite people to join the community and this group.', 'commons-in-a-box' ); ?></p>
 
-				<p><a class="btn btn-primary no-deco" href="<?php echo bp_loggedin_user_domain() . BP_INVITE_ANYONE_SLUG . '/invite-new-members/group-invites/' . bp_get_group_id(); ?>"><?php esc_html_e( 'Invite New Members to This Community', 'commons-in-a-box' ); ?></a></p>
+				<p><a class="btn btn-primary no-deco" href="<?php echo esc_attr( bp_loggedin_user_domain() . BP_INVITE_ANYONE_SLUG . '/invite-new-members/group-invites/' . bp_get_group_id() ); ?>"><?php esc_html_e( 'Invite New Members to This Community', 'commons-in-a-box' ); ?></a></p>
 
 			</div>
 		</div>
@@ -106,17 +106,11 @@
 	<?php wp_nonce_field( 'groups_send_invites', '_wpnonce_send_invites' ); ?>
 
 	<!-- Don't leave out this sweet field -->
-	<?php
-	if ( ! bp_get_new_group_id() ) {
-		?>
+	<?php if ( ! bp_get_new_group_id() ) : ?>
 		<input type="hidden" name="group_id" id="group_id" value="<?php bp_group_id(); ?>" />
-		<?php
-	} else {
-		?>
+	<?php else : ?>
 		<input type="hidden" name="group_id" id="group_id" value="<?php bp_new_group_id(); ?>" />
-		<?php
-	}
-	?>
+	<?php endif; ?>
 
 	<?php if ( ! bp_get_new_group_id() ) : ?>
 	</form>
