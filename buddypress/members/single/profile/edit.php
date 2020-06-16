@@ -26,10 +26,11 @@ if ( isset( $pgroup ) ) {
 	$profile_args['profile_group_id'] = $pgroup;
 }
 
-$display_name_shown = isset( $pgroup ) && 1 == $pgroup;
+$display_name_shown = isset( $pgroup ) && 1 === (int) $pgroup;
 $field_ids          = array( 1 );
 ?>
 
+<?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 <?php echo openlab_submenu_markup(); ?>
 
 <form action="" method="post" id="profile-edit-form" class="standard-form form-panel">
@@ -61,105 +62,78 @@ $field_ids          = array( 1 );
 						bp_the_profile_field();
 						?>
 
-						<?php /* Add to the array for the field-ids input */ ?>
-						<?php $field_ids[] = bp_get_the_profile_field_id(); ?>
+						<?php
+						/* Add to the array for the field-ids input */
+						$field_ids[]   = bp_get_the_profile_field_id();
+						$required_text = bp_get_the_profile_field_is_required() ? __( '(required)', 'commons-in-a-box' ) : '';
+						?>
 
 						<div<?php bp_field_css_class( 'editfield' ); ?>>
 
-							<?php if ( 'textbox' == bp_get_the_profile_field_type() || 'url' == bp_get_the_profile_field_type() ) : ?>
-								<?php if ( bp_get_the_profile_field_name() == 'Name' ) { ?>
-									<label for="<?php bp_the_profile_field_input_name(); ?>"><?php echo 'Display Name'; ?> <?php
-									if ( bp_get_the_profile_field_is_required() ) :
-										?>
-										<?php _e( '(required)', 'buddypress' ); ?><?php endif; ?></label>
-								<?php } else { ?>
-									<label for="<?php bp_the_profile_field_input_name(); ?>"><?php bp_the_profile_field_name(); ?> <?php
-									if ( bp_get_the_profile_field_is_required() ) :
-										?>
-										<?php _e( '(required)', 'buddypress' ); ?><?php endif; ?></label>
-								<?php } ?>
+							<?php if ( 'textbox' === bp_get_the_profile_field_type() || 'url' === bp_get_the_profile_field_type() ) : ?>
+								<label for="<?php bp_the_profile_field_input_name(); ?>"><?php bp_the_profile_field_name(); ?> <?php echo esc_html( $required_text ); ?></label>
 
 								<input class="form-control" type="text" name="<?php bp_the_profile_field_input_name(); ?>" id="<?php bp_the_profile_field_input_name(); ?>" value="<?php bp_the_profile_field_edit_value(); ?>" />
 
 							<?php endif; ?>
 
-							<?php if ( 'textarea' == bp_get_the_profile_field_type() ) : ?>
+							<?php if ( 'textarea' === bp_get_the_profile_field_type() ) : ?>
 
-								<label for="<?php bp_the_profile_field_input_name(); ?>"><?php bp_the_profile_field_name(); ?> <?php
-								if ( bp_get_the_profile_field_is_required() ) :
-									?>
-									<?php _e( '(required)', 'buddypress' ); ?><?php endif; ?></label>
+								<label for="<?php bp_the_profile_field_input_name(); ?>"><?php bp_the_profile_field_name(); ?> <?php echo esc_html( $required_text ); ?></label>
 								<textarea class="form-control" rows="5" cols="40" name="<?php bp_the_profile_field_input_name(); ?>" id="<?php bp_the_profile_field_input_name(); ?>"><?php bp_the_profile_field_edit_value(); ?></textarea>
 
 							<?php endif; ?>
 
-							<?php
-							if ( 'selectbox' == bp_get_the_profile_field_type() ) :
-								?>
+							<?php if ( 'selectbox' === bp_get_the_profile_field_type() ) : ?>
 
-								<label for="<?php bp_the_profile_field_input_name(); ?>"><?php bp_the_profile_field_name(); ?> <?php
-								if ( bp_get_the_profile_field_is_required() ) :
-									?>
-									<?php _e( '(required)', 'buddypress' ); ?><?php endif; ?></label>
-								<select class="form-control" <?php echo $style; ?> name="<?php bp_the_profile_field_input_name(); ?>" id="<?php bp_the_profile_field_input_name(); ?>">
+								<label for="<?php bp_the_profile_field_input_name(); ?>"><?php bp_the_profile_field_name(); ?> <?php echo esc_html( $required_text ); ?></label>
+								<select class="form-control" name="<?php bp_the_profile_field_input_name(); ?>" id="<?php bp_the_profile_field_input_name(); ?>">
 									<?php bp_the_profile_field_options(); ?>
 								</select>
 
 							<?php endif; ?>
 
-							<?php if ( 'multiselectbox' == bp_get_the_profile_field_type() ) : ?>
+							<?php if ( 'multiselectbox' === bp_get_the_profile_field_type() ) : ?>
 
-								<label for="<?php bp_the_profile_field_input_name(); ?>"><?php bp_the_profile_field_name(); ?> <?php
-								if ( bp_get_the_profile_field_is_required() ) :
-									?>
-									<?php _e( '(required)', 'buddypress' ); ?><?php endif; ?></label>
+								<label for="<?php bp_the_profile_field_input_name(); ?>"><?php bp_the_profile_field_name(); ?> <?php echo esc_html( $required_text ); ?></label>
 								<select class="form-control" name="<?php bp_the_profile_field_input_name(); ?>" id="<?php bp_the_profile_field_input_name(); ?>" multiple="multiple">
 									<?php bp_the_profile_field_options(); ?>
 								</select>
 
 								<?php if ( ! bp_get_the_profile_field_is_required() ) : ?>
-									<a class="clear-value" href="javascript:clear( '<?php bp_the_profile_field_input_name(); ?>' );"><?php _e( 'Clear', 'buddypress' ); ?></a>
+									<a class="clear-value" href="javascript:clear( '<?php bp_the_profile_field_input_name(); ?>' );"><?php esc_html_e( 'Clear', 'commons-in-a-box' ); ?></a>
 								<?php endif; ?>
 
 							<?php endif; ?>
 
-							<?php if ( 'radio' == bp_get_the_profile_field_type() ) : ?>
+							<?php if ( 'radio' === bp_get_the_profile_field_type() ) : ?>
 
 								<div class="radio">
-									<span class="label"><?php bp_the_profile_field_name(); ?> <?php
-									if ( bp_get_the_profile_field_is_required() ) :
-										?>
-										<?php _e( '(required)', 'buddypress' ); ?><?php endif; ?></span>
+									<span class="label"><?php bp_the_profile_field_name(); ?> <?php echo esc_html( $required_text ); ?></span>
 
 									<?php bp_the_profile_field_options(); ?>
 
 									<?php if ( ! bp_get_the_profile_field_is_required() ) : ?>
-										<a class="clear-value" href="javascript:clear( '<?php bp_the_profile_field_input_name(); ?>' );"><?php _e( 'Clear', 'buddypress' ); ?></a>
+										<a class="clear-value" href="javascript:clear( '<?php bp_the_profile_field_input_name(); ?>' );"><?php esc_html_e( 'Clear', 'commons-in-a-box' ); ?></a>
 									<?php endif; ?>
 								</div>
 
 							<?php endif; ?>
 
-							<?php if ( 'checkbox' == bp_get_the_profile_field_type() ) : ?>
+							<?php if ( 'checkbox' === bp_get_the_profile_field_type() ) : ?>
 
 								<div class="checkbox">
-									<span class="label"><?php bp_the_profile_field_name(); ?> <?php
-									if ( bp_get_the_profile_field_is_required() ) :
-										?>
-										<?php _e( '(required)', 'buddypress' ); ?><?php endif; ?></span>
+									<span class="label"><?php bp_the_profile_field_name(); ?> <?php echo esc_html( $required_text ); ?></span>
 
 									<?php bp_the_profile_field_options(); ?>
 								</div>
 
 							<?php endif; ?>
 
-							<?php if ( 'datebox' == bp_get_the_profile_field_type() ) : ?>
+							<?php if ( 'datebox' === bp_get_the_profile_field_type() ) : ?>
 
 								<div class="datebox">
-									<label for="<?php bp_the_profile_field_input_name(); ?>_day"><?php bp_the_profile_field_name(); ?> <?php
-									if ( bp_get_the_profile_field_is_required() ) :
-										?>
-										<?php _e( '(required)', 'buddypress' ); ?><?php endif; ?></label>
+									<label for="<?php bp_the_profile_field_input_name(); ?>_day"><?php bp_the_profile_field_name(); ?> <?php echo esc_html( $required_text ); ?></label>
 
 									<select class="form-control" name="<?php bp_the_profile_field_input_name(); ?>_day" id="<?php bp_the_profile_field_input_name(); ?>_day">
 										<?php bp_the_profile_field_options( 'type=day' ); ?>
@@ -189,6 +163,8 @@ $field_ids          = array( 1 );
 				if ( ! is_wp_error( $member_type ) ) {
 					$member_type_slug = $member_type->get_slug();
 				}
+
+				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 				echo cboxol_get_academic_unit_selector(
 					array(
 						'entity_type' => 'user',
@@ -231,9 +207,9 @@ $field_ids          = array( 1 );
 		<?php do_action( 'bp_after_profile_field_content' ); ?>
 
 		<div class="submit">
-			<input class="btn btn-primary btn-margin btn-margin-top" type="submit" name="profile-group-edit-submit" id="profile-group-edit-submit" value="<?php _e( 'Save Changes', 'buddypress' ); ?> " />
+			<input class="btn btn-primary btn-margin btn-margin-top" type="submit" name="profile-group-edit-submit" id="profile-group-edit-submit" value="<?php esc_html_e( 'Save Changes', 'commons-in-a-box' ); ?> " />
 		</div>
-		<input type="hidden" name="field_ids" id="field_ids" value="<?php echo implode( ',', $field_ids ); ?>" />
+		<input type="hidden" name="field_ids" id="field_ids" value="<?php echo esc_attr( implode( ',', $field_ids ) ); ?>" />
 		<?php wp_nonce_field( 'bp_xprofile_edit' ); ?>
 
 	<?php endif; ?>
