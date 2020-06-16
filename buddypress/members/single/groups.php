@@ -1,4 +1,5 @@
-<?php if ( 'invites' == bp_current_action() ) : ?>
+<?php if ( 'invites' === bp_current_action() ) : ?>
+	<?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 	<?php echo openlab_submenu_markup( 'invitations' ); ?>
 	<?php bp_get_template_part( 'members/single/groups/invites' ); ?>
 

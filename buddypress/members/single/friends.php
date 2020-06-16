@@ -7,9 +7,9 @@
  * @subpackage bp-legacy
  */
 
+// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+echo openlab_submenu_markup( 'friends' );
 ?>
-
-<?php echo openlab_submenu_markup( 'friends' ); ?>
 
 <?php
 switch ( bp_current_action() ) :
