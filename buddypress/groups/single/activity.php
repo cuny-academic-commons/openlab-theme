@@ -1,21 +1,16 @@
 
 <div class="item-list-tabs no-ajax" id="subnav">
 	<ul>
-		<li class="feed"><a href="<?php bp_group_activity_feed_link(); ?>" title="<?php _e( 'RSS Feed', 'buddypress' ); ?>"><?php _e( 'RSS', 'buddypress' ); ?></a></li>
+		<li class="feed"><a href="<?php bp_group_activity_feed_link(); ?>" title="<?php esc_attr_e( 'RSS Feed', 'commons-in-a-box' ); ?>"><?php esc_html_e( 'RSS', 'commons-in-a-box' ); ?></a></li>
 
 		<?php do_action( 'bp_group_activity_syndication_options' ); ?>
 
 		<li id="activity-filter-select" class="last">
 			<select>
-				<option value="-1"><?php _e( 'No Filter', 'buddypress' ); ?></option>
-				<option value="activity_update"><?php _e( 'Show Updates', 'buddypress' ); ?></option>
+				<option value="-1"><?php esc_html_e( 'No Filter', 'commons-in-a-box' ); ?></option>
+				<option value="activity_update"><?php esc_html_e( 'Show Updates', 'commons-in-a-box' ); ?></option>
 
-				<?php if ( bp_is_active( 'forums' ) ) : ?>
-					<option value="new_forum_topic"><?php _e( 'Show New Forum Topics', 'buddypress' ); ?></option>
-					<option value="new_forum_post"><?php _e( 'Show Forum Replies', 'buddypress' ); ?></option>
-				<?php endif; ?>
-
-				<option value="joined_group"><?php _e( 'Show New Group Memberships', 'buddypress' ); ?></option>
+				<option value="joined_group"><?php esc_html_e( 'Show New Group Memberships', 'commons-in-a-box' ); ?></option>
 
 				<?php do_action( 'bp_group_activity_filter_options' ); ?>
 			</select>

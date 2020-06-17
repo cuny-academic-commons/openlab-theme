@@ -22,7 +22,8 @@ if ( bp_has_groups() ) :
 				 * @todo A real template hierarchy? Gasp!
 				 */
 				// Group is visible
-				if ( bp_get_group_status() == 'public' || bp_get_group_status() == 'private' || ( bp_get_group_status() == 'hidden' && ( bp_is_item_admin() || bp_group_is_member() ) ) ) :
+				$group_status = bp_get_group_status();
+				if ( 'public' === $group_status || 'private' === $group_status || ( 'hidden' === $group_status && ( bp_is_item_admin() || bp_group_is_member() ) ) ) :
 
 					// Looking at home location
 					if ( bp_is_group_home() ) :
@@ -67,7 +68,7 @@ if ( bp_has_groups() ) :
 							bp_get_template_part( 'groups/single/request-membership' );
 
 							// Email subscription options
-						elseif ( bp_current_action() == 'notifications' ) :
+						elseif ( bp_is_current_action( 'notifications' ) ) :
 							bp_get_template_part( 'groups/single/notifications' );
 
 							// Anything else (plugins mostly)
