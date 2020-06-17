@@ -7,7 +7,6 @@
  *       abstracted
  */
 // Set up the group meta filters
-global $bp;
 
 // Set up the bp_has_groups() args: per_page, page, search_terms
 $group_args = array(
@@ -18,15 +17,19 @@ $group_args = array(
 );
 
 $group_type_slug = bp_get_current_group_directory_type();
+// phpcs:disable WordPress.Security.NonceVerification.Recommended
 if ( ! $group_type_slug && ! empty( $_GET['group_type'] ) ) {
 	$group_type_slug = wp_unslash( urldecode( $_GET['group_type'] ) );
 }
+// phpcs:enable WordPress.Security.NonceVerification.Recommended
 
 $group_type = cboxol_get_group_type( $group_type_slug );
 
 $search_terms     = '';
 $search_terms_raw = '';
 
+// phpcs:disable WordPress.Security.NonceVerification.Recommended
+// phpcs:disable WordPress.Security.NonceVerification.Missing
 if ( ! empty( $_POST['group_search'] ) ) {
 	$search_terms_raw = $_POST['group_search'];
 	$search_terms     = 'search_terms=' . $search_terms_raw . '&';
@@ -35,11 +38,14 @@ if ( ! empty( $_GET['search'] ) ) {
 	$search_terms_raw = $_GET['search'];
 	$search_terms     = 'search_terms=' . $search_terms_raw . '&';
 }
+// phpcs:enable WordPress.Security.NonceVerification.Recommended
+// phpcs:enable WordPress.Security.NonceVerification.Missing
 
 $group_args['search_terms'] = $search_terms_raw;
 
 // @todo 'all' needs special treatment once tax queries work without shim.
 $academic_units = array();
+// phpcs:disable WordPress.Security.NonceVerification.Recommended
 foreach ( $_GET as $get_key => $get_value ) {
 	if ( 'academic-unit-' !== substr( $get_key, 0, 14 ) ) {
 		continue;
@@ -47,6 +53,7 @@ foreach ( $_GET as $get_key => $get_value ) {
 
 	$academic_units[] = urldecode( wp_unslash( $get_value ) );
 }
+// phpcs:enable WordPress.Security.NonceVerification.Recommended
 
 $academic_units = array_filter( $academic_units );
 
@@ -64,12 +71,10 @@ if ( ! empty( $academic_units ) ) {
 }
 
 $category = openlab_get_current_filter( 'cat' );
-$term     = openlab_get_current_filter( 'term' );
-
-$term = isset( $_GET['term'] ) ? wp_unslash( urldecode( $_GET['term'] ) ) : '';
+$the_term = openlab_get_current_filter( 'term' );
 
 // Set up filters
-if ( ! empty( $term ) && 'term_all' != strtolower( $term ) ) {
+if ( ! empty( $the_term ) && 'term_all' !== strtolower( $the_term ) ) {
 	$group_args['meta_query'][] = array(
 		'key'   => 'openlab_term',
 		'value' => $term,
@@ -115,6 +120,7 @@ if ( $category ) {
 
 	<div class="row group-archive-header-row">
 		<?php if ( openlab_is_my_profile() ) : ?>
+			<?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 			<?php echo openlab_submenu_markup( 'groups', $group_type, false ); ?>
 		<?php endif; ?>
 
@@ -134,26 +140,22 @@ if ( $category ) {
 				$classes .= ' group-has-badges';
 			}
 
+			$group_avatar = bp_core_fetch_avatar(
+				array(
+					'item_id' => $group_id,
+					'object'  => 'group',
+					'type'    => 'full',
+					'html'    => false,
+				)
+			);
+
 			?>
 
 			<div class="<?php echo esc_attr( $classes ); ?>">
 				<div class="group-item-wrapper">
 					<div class="row">
 						<div class="item-avatar alignleft col-xs-6">
-							<a href="<?php bp_group_permalink(); ?>"><img class="img-responsive" src ="
-																 <?php
-																	echo esc_url(
-																		bp_core_fetch_avatar(
-																			array(
-																				'item_id' => $group_id,
-																				'object'  => 'group',
-																				'type'    => 'full',
-																				'html'    => false,
-																			)
-																		)
-																	);
-																	?>
-																										" alt="<?php echo esc_attr( bp_get_group_name() ); ?>"/></a>
+							<a href="<?php bp_group_permalink(); ?>"><img class="img-responsive" src="<?php echo esc_attr( $group_avatar ); ?>" alt="<?php echo esc_attr( bp_get_group_name() ); ?>"/></a>
 
 							<?php if ( $group_site_url && cboxol_site_can_be_viewed( $group_id ) ) : ?>
 								<a class="group-site-link" href="<?php echo esc_url( $group_site_url ); ?>"><?php esc_html_e( 'Visit Site', 'commons-in-a-box' ); ?><span class="fa fa-chevron-circle-right" aria-hidden="true"></span></a>
@@ -169,18 +171,22 @@ if ( $category ) {
 
 								<?php if ( $group_type->get_is_course() ) : ?>
 									<div class="info-line uppercase">
+										<?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 										<?php echo openlab_output_course_faculty_line( $group_id ); ?>
 									</div>
 									<div class="info-line uppercase">
+										<?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 										<?php echo openlab_output_course_info_line( $group_id ); ?>
 									</div>
 								<?php elseif ( $group_type->get_is_portfolio() ) : ?>
 									<div class="info-line">
+										<?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 										<?php echo bp_core_get_userlink( openlab_get_user_id_from_portfolio_group_id( bp_get_group_id() ) ); ?>
 									</div>
 								<?php endif; ?>
 
 								<div class="description-line">
+									<?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 									<p class="hyphenate truncate-on-the-fly" data-basevalue="105" data-basewidth="250"><?php echo bp_get_group_description_excerpt(); ?></p>
 								</div>
 							</div><!-- .item-content-wrapper -->
@@ -194,16 +200,18 @@ if ( $category ) {
 		</div>
 
 		<div class="pagination-links" id="group-dir-pag-top">
+			<?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 			<?php echo openlab_groups_pagination_links(); ?>
 		</div>
 	<?php else : ?>
 	<div class="row group-archive-header-row">
 		<?php if ( openlab_is_my_profile() ) : ?>
+			<?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 			<?php echo openlab_submenu_markup( 'groups', $group_type, false ); ?>
 		<?php endif; ?>
 	</div>
 
 	<div class="widget-error">
-		<?php _e( 'There are no items to display', 'commons-in-a-box' ); ?>
+		<?php esc_html_e( 'There are no items to display', 'commons-in-a-box' ); ?>
 	</div>
 <?php endif; ?>

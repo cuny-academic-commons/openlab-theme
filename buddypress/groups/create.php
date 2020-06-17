@@ -9,9 +9,11 @@
 	<?php
 
 	$gt = '';
+	// phpcs:disable WordPress.Security.NonceVerification.Recommended
 	if ( ! empty( $_GET['group_type'] ) ) {
 		$gt = wp_unslash( urldecode( $_GET['group_type'] ) );
 	}
+	// phpcs:enable WordPress.Security.NonceVerification.Recommended
 
 	// @todo Redirect away if course and user cannot create courses.
 	if ( bp_get_current_group_id() ) {
@@ -38,12 +40,14 @@
 		$the_group_clone_source = groups_get_groupmeta( $the_group->id, 'clone_source_group_id', true );
 	}
 
+	// phpcs:disable WordPress.Security.NonceVerification.Recommended
 	$group_id_to_clone = 0;
 	if ( $group_type->get_is_course() && ! empty( $_GET['clone'] ) ) {
 		$group_id_to_clone = intval( $_GET['clone'] );
 	} elseif ( $the_group_clone_source ) {
 		$group_id_to_clone = intval( $the_group_clone_source );
 	}
+	// phpcs:enable WordPress.Security.NonceVerification.Recommended
 
 	openlab_group_admin_js_data( $group_type );
 	?>
@@ -52,6 +56,7 @@
 		<h1 class="mol-title"><?php echo esc_html( $group_type->get_label( 'create_clone_item' ) ); ?></h1>
 	</div>
 
+	<?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 	<?php echo openlab_create_group_menu( $group_type ); ?>
 
 	<div id="single-course-body" class="<?php echo ( $group_type->get_is_course() ? 'course-create' : '' ); ?>">
@@ -128,7 +133,7 @@
 
 				<div class="panel panel-default">
 					<div class="panel-heading semibold">
-						<label for="group-name"><?php esc_html_e( 'Name', 'commons-in-a-box' ); ?> <?php _e( '(required)', 'commons-in-a-box' ); ?></label>
+						<label for="group-name"><?php esc_html_e( 'Name', 'commons-in-a-box' ); ?> <?php esc_html_e( '(required)', 'commons-in-a-box' ); ?></label>
 					</div>
 
 					<div class="panel-body">
@@ -187,27 +192,27 @@
 
 			<?php /* Previous Button */ ?>
 			<?php if ( ! bp_is_first_group_creation_step() && 'group-settings' !== bp_get_groups_current_create_step() ) : ?>
-				<input class="btn btn-primary prev-btn btn-margin btn-margin-top" type="button" value="&#xf137; <?php _e( 'Previous Step', 'commons-in-a-box' ); ?>" id="group-creation-previous" name="previous" onclick="location.href = '<?php bp_group_creation_previous_link(); ?>'" />
+				<input class="btn btn-primary prev-btn btn-margin btn-margin-top" type="button" value="&#xf137; <?php esc_html_e( 'Previous Step', 'commons-in-a-box' ); ?>" id="group-creation-previous" name="previous" onclick="location.href = '<?php bp_group_creation_previous_link(); ?>'" />
 			<?php endif; ?>
 
 			<?php /* Next Button */ ?>
 			<?php if ( ! bp_is_last_group_creation_step() && ! bp_is_first_group_creation_step() ) : ?>
-				<input class="btn btn-primary btn-margin btn-margin-top" type="submit" value="<?php _e( 'Next Step', 'commons-in-a-box' ); ?> &#xf138;" id="group-creation-next" name="save" />
+				<input class="btn btn-primary btn-margin btn-margin-top" type="submit" value="<?php esc_html_e( 'Next Step', 'commons-in-a-box' ); ?> &#xf138;" id="group-creation-next" name="save" />
 			<?php endif; ?>
 
 			<?php /* Create Button */ ?>
 			<?php if ( bp_is_first_group_creation_step() ) : ?>
-				<input class="btn btn-primary btn-margin btn-margin-top" type="submit" value="<?php _e( 'Create and Continue', 'commons-in-a-box' ); ?> &#xf138;" id="group-creation-create" name="save" />
+				<input class="btn btn-primary btn-margin btn-margin-top" type="submit" value="<?php esc_html_e( 'Create and Continue', 'commons-in-a-box' ); ?> &#xf138;" id="group-creation-create" name="save" />
 			<?php endif; ?>
 
 			<?php /* Finish Button */ ?>
 			<?php if ( bp_is_last_group_creation_step() ) : ?>
-				<input class="btn btn-primary btn-margin btn-margin-top" type="submit" value="<?php _e( 'Finish', 'commons-in-a-box' ); ?> &#xf138;" id="group-creation-finish" name="save" />
+				<input class="btn btn-primary btn-margin btn-margin-top" type="submit" value="<?php esc_attr_e( 'Finish', 'commons-in-a-box' ); ?> &#xf138;" id="group-creation-finish" name="save" />
 			<?php endif; ?>
 
 			<?php do_action( 'bp_after_group_creation_step_buttons' ); ?>
 
-<?php /* Don't leave out this hidden field */ ?>
+			<?php /* Don't leave out this hidden field */ ?>
 			<input type="hidden" name="group_id" id="group_id" value="<?php bp_new_group_id(); ?>" />
 
 <?php do_action( 'bp_directory_groups_content' ); ?>
