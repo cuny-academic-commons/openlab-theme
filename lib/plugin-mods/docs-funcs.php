@@ -66,7 +66,7 @@ add_filter( 'bp_docs_force_enable_at_group_creation', '__return_true' );
  * @param type $menu_template
  * @return string
  */
-function openlab_hide_docs_native_menu( $menu_template ) {
+function openlab_hide_docs_native_menu() {
 	return bp_locate_template( 'docs/docs-header.php' );
 }
 add_filter( 'bp_docs_header_template', 'openlab_hide_docs_native_menu' );
@@ -82,8 +82,8 @@ add_filter( 'bp_docs_header_template', 'openlab_hide_docs_native_menu' );
 function openlab_allow_super_admins_to_edit_bp_docs( $user_can, $action ) {
 	global $bp;
 
-	if ( 'edit' == $action ) {
-		if ( is_super_admin() || bp_loggedin_user_id() == get_the_author_meta( 'ID' ) || $user_can ) {
+	if ( 'edit' === $action ) {
+		if ( is_super_admin() || bp_loggedin_user_id() === get_the_author_meta( 'ID' ) || $user_can ) {
 			$user_can                                 = true;
 			$bp->bp_docs->current_user_can[ $action ] = 'yes';
 		} else {

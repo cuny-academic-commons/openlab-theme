@@ -31,20 +31,24 @@ function openlab_get_files_count() {
 
 	$sql = "SELECT COUNT(*) FROM {$table} WHERE group_id = %d ";
 
+	// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 	$total_records = $wpdb->get_var( $wpdb->prepare( $sql, $group_id ) );
 
 	$items_per_page = get_option( 'bp_group_documents_items_per_page' );
 	$total_pages    = ceil( $total_records / $items_per_page );
 
+	// phpcs:disable WordPress.Security.NonceVerification
 	if ( isset( $_GET['page'] ) && ctype_digit( $_GET['page'] ) ) {
 		$page         = $_GET['page'];
 		$start_record = ( ( $page - 1 ) * $items_per_page ) + 1;
 	}
+	// phpcs:enable WordPress.Security.NonceVerification
 
 	$last_possible = $items_per_page * $page;
 	$end_record    = ( $total_records < $last_possible ) ? $total_records : $last_possible;
 
-	printf( __( 'Viewing item %1$s to %1$s (of %1$s items)', 'bp-group-documents' ), $start_record, $end_record, $total_records );
+	// translators: 1. pagination start number, 2. pagination end number, 3. total item count
+	echo esc_html( sprintf( __( 'Viewing item %1$s to %1$s (of %1$s items)', 'commons-in-a-box' ), $start_record, $end_record, $total_records ) );
 }
 
 /**
