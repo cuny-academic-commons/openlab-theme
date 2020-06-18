@@ -6,17 +6,17 @@ add_action( 'init', 'openlab_help_taxonomies', 0 );
 
 function openlab_help_taxonomies() {
 	$labels = array(
-		'name'              => _x( 'Help Categories', 'taxonomy general name' ),
-		'singular_name'     => _x( 'Help Category', 'taxonomy singular name' ),
-		'search_items'      => __( 'Search Help Categories' ),
-		'all_items'         => __( 'All Help Categories' ),
-		'parent_item'       => __( 'Parent Help Category' ),
-		'parent_item_colon' => __( 'Parent Help Category:' ),
-		'edit_item'         => __( 'Edit Help Category' ),
-		'update_item'       => __( 'Update Help Category' ),
-		'add_new_item'      => __( 'Add New Help Category' ),
-		'new_item_name'     => __( 'New Help Category Name' ),
-		'menu_name'         => __( 'Help Category' ),
+		'name'              => __( 'Help Categories', 'commons-in-a-box' ),
+		'singular_name'     => __( 'Help Category', 'commons-in-a-box' ),
+		'search_items'      => __( 'Search Help Categories', 'commons-in-a-box' ),
+		'all_items'         => __( 'All Help Categories', 'commons-in-a-box' ),
+		'parent_item'       => __( 'Parent Help Category', 'commons-in-a-box' ),
+		'parent_item_colon' => __( 'Parent Help Category:', 'commons-in-a-box' ),
+		'edit_item'         => __( 'Edit Help Category', 'commons-in-a-box' ),
+		'update_item'       => __( 'Update Help Category', 'commons-in-a-box' ),
+		'add_new_item'      => __( 'Add New Help Category', 'commons-in-a-box' ),
+		'new_item_name'     => __( 'New Help Category Name', 'commons-in-a-box' ),
+		'menu_name'         => __( 'Help Category', 'commons-in-a-box' ),
 	);
 
 	register_taxonomy(
@@ -69,24 +69,24 @@ add_action( 'init', 'openlab_register_help' );
 function openlab_register_help() {
 
 	$labels = array(
-		'name'               => _x( 'Help', 'help' ),
-		'singular_name'      => _x( 'Help', 'help' ),
-		'add_new'            => _x( 'Add New', 'help' ),
-		'add_new_item'       => _x( 'Add New Help', 'help' ),
-		'edit_item'          => _x( 'Edit Help', 'help' ),
-		'new_item'           => _x( 'New Help', 'help' ),
-		'view_item'          => _x( 'View Help', 'help' ),
-		'search_items'       => _x( 'Search Help', 'help' ),
-		'not_found'          => _x( 'No help found', 'help' ),
-		'not_found_in_trash' => _x( 'No help found in Trash', 'help' ),
-		'parent_item_colon'  => _x( 'Parent Help:', 'help' ),
-		'menu_name'          => _x( 'Help', 'help' ),
+		'name'               => __( 'Help', 'commons-in-a-box' ),
+		'singular_name'      => __( 'Help', 'commons-in-a-box' ),
+		'add_new'            => __( 'Add New', 'commons-in-a-box' ),
+		'add_new_item'       => __( 'Add New Help', 'commons-in-a-box' ),
+		'edit_item'          => __( 'Edit Help', 'commons-in-a-box' ),
+		'new_item'           => __( 'New Help', 'commons-in-a-box' ),
+		'view_item'          => __( 'View Help', 'commons-in-a-box' ),
+		'search_items'       => __( 'Search Help', 'commons-in-a-box' ),
+		'not_found'          => __( 'No help found', 'commons-in-a-box' ),
+		'not_found_in_trash' => __( 'No help found in Trash', 'commons-in-a-box' ),
+		'parent_item_colon'  => __( 'Parent Help:', 'commons-in-a-box' ),
+		'menu_name'          => __( 'Help', 'commons-in-a-box' ),
 	);
 
 	$args = array(
 		'labels'              => $labels,
 		'hierarchical'        => true,
-		'description'         => 'Help Pages',
+		'description'         => __( 'Help Pages', 'commons-in-a-box' ),
 		'supports'            => array( 'title', 'editor', 'excerpt', 'author', 'revisions', 'page-attributes' ),
 		'taxonomies'          => array( '' ),
 		'public'              => true,
@@ -114,12 +114,12 @@ add_filter( 'manage_edit-help_sortable_columns', 'help_column_register_sortable'
 function help_edit_columns( $columns ) {
 	$columns = array(
 		'cb'              => '<input type="checkbox" />',
-		'title'           => 'Title',
-		'author'          => 'Author',
-		'help_categories' => 'Help Categories',
-		'help_tags'       => 'Help Tags',
-		'menu_order'      => 'Menu Order',
-		'date'            => 'Date',
+		'title'           => __( 'Title', 'commons-in-a-box' ),
+		'author'          => __( 'Author', 'commons-in-a-box' ),
+		'help_categories' => __( 'Help Categories', 'commons-in-a-box' ),
+		'help_tags'       => __( 'Help Tags', 'commons-in-a-box' ),
+		'menu_order'      => __( 'Menu Order', 'commons-in-a-box' ),
+		'date'            => __( 'Date', 'commons-in-a-box' ),
 	);
 
 	return $columns;
@@ -145,7 +145,7 @@ function help_custom_columns( $column ) {
 			break;
 		case 'menu_order':
 			$order = $post->menu_order;
-			echo $order;
+			echo esc_html( $order );
 			break;
 	}
 }
@@ -161,24 +161,24 @@ add_action( 'init', 'openlab_register_help_glossary' );
 function openlab_register_help_glossary() {
 
 	$labels = array(
-		'name'               => _x( 'Help Glossary', 'help glossary' ),
-		'singular_name'      => _x( 'Help Glossary', 'help glossary' ),
-		'add_new'            => _x( 'Add New', 'help glossary' ),
-		'add_new_item'       => _x( 'Add New Help Glossary', 'help glossary' ),
-		'edit_item'          => _x( 'Edit Help Glossary', 'help glossary' ),
-		'new_item'           => _x( 'New Help Glossary', 'help glossary' ),
-		'view_item'          => _x( 'View Help Glossary', 'help glossary' ),
-		'search_items'       => _x( 'Search Help Glossary', 'help glossary' ),
-		'not_found'          => _x( 'No help glossary found', 'help glossary' ),
-		'not_found_in_trash' => _x( 'No help glossary found in Trash', 'help glossary' ),
-		'parent_item_colon'  => _x( 'Parent Help Glossary:', 'help glossary' ),
-		'menu_name'          => _x( 'Help Glossary', 'help glossary' ),
+		'name'               => __( 'Help Glossary', 'commons-in-a-box' ),
+		'singular_name'      => __( 'Help Glossary', 'commons-in-a-box' ),
+		'add_new'            => __( 'Add New', 'commons-in-a-box' ),
+		'add_new_item'       => __( 'Add New Help Glossary', 'commons-in-a-box' ),
+		'edit_item'          => __( 'Edit Help Glossary', 'commons-in-a-box' ),
+		'new_item'           => __( 'New Help Glossary', 'commons-in-a-box' ),
+		'view_item'          => __( 'View Help Glossary', 'commons-in-a-box' ),
+		'search_items'       => __( 'Search Help Glossary', 'commons-in-a-box' ),
+		'not_found'          => __( 'No help glossary found', 'commons-in-a-box' ),
+		'not_found_in_trash' => __( 'No help glossary found in Trash', 'commons-in-a-box' ),
+		'parent_item_colon'  => __( 'Parent Help Glossary:', 'commons-in-a-box' ),
+		'menu_name'          => __( 'Help Glossary', 'commons-in-a-box' ),
 	);
 
 	$args = array(
 		'labels'              => $labels,
 		'hierarchical'        => true,
-		'description'         => 'Help Glossary Pages',
+		'description'         => __( 'Help Glossary Pages', 'commons-in-a-box' ),
 		'supports'            => array( 'title', 'editor', 'excerpt', 'author', 'revisions', 'page-attributes' ),
 		'taxonomies'          => array( '' ),
 		'public'              => true,
@@ -207,10 +207,10 @@ add_filter( 'manage_edit-help_glossary_sortable_columns', 'help_glossary_column_
 function help_glossary_edit_columns( $columns ) {
 	$columns = array(
 		'cb'         => '<input type="checkbox" />',
-		'title'      => 'Title',
-		'author'     => 'Author',
-		'menu_order' => 'Menu Order',
-		'date'       => 'Date',
+		'title'      => __( 'Title', 'commons-in-a-box' ),
+		'author'     => __( 'Author', 'commons-in-a-box' ),
+		'menu_order' => __( 'Menu Order', 'commons-in-a-box' ),
+		'date'       => __( 'Date', 'commons-in-a-box' ),
 	);
 
 	return $columns;
@@ -222,7 +222,7 @@ function help_glossary_custom_columns( $column ) {
 	switch ( $column ) {
 		case 'menu_order':
 			$order = $post->menu_order;
-			echo $order;
+			echo esc_html( $order );
 			break;
 	}
 }
@@ -235,18 +235,18 @@ function help_glossary_column_register_sortable( $columns ) {
 // adding slider post type
 function register_cpt_slider() {
 	$labels = array(
-		'name'               => _x( 'Sliders', 'slider' ),
-		'singular_name'      => _x( 'Slider', 'slider' ),
-		'add_new'            => _x( 'Add New', 'slider' ),
-		'add_new_item'       => _x( 'Add New Slider', 'slider' ),
-		'edit_item'          => _x( 'Edit Slider', 'slider' ),
-		'new_item'           => _x( 'New Slider', 'slider' ),
-		'view_item'          => _x( 'View Slider', 'slider' ),
-		'search_items'       => _x( 'Search Sliders', 'slider' ),
-		'not_found'          => _x( 'No sliders found', 'slider' ),
-		'not_found_in_trash' => _x( 'No sliders found in Trash', 'slider' ),
-		'parent_item_colon'  => _x( 'Parent Slider:', 'slider' ),
-		'menu_name'          => _x( 'Sliders', 'slider' ),
+		'name'               => __( 'Sliders', 'commons-in-a-box' ),
+		'singular_name'      => __( 'Slider', 'commons-in-a-box' ),
+		'add_new'            => __( 'Add New', 'commons-in-a-box' ),
+		'add_new_item'       => __( 'Add New Slider', 'commons-in-a-box' ),
+		'edit_item'          => __( 'Edit Slider', 'commons-in-a-box' ),
+		'new_item'           => __( 'New Slider', 'commons-in-a-box' ),
+		'view_item'          => __( 'View Slider', 'commons-in-a-box' ),
+		'search_items'       => __( 'Search Sliders', 'commons-in-a-box' ),
+		'not_found'          => __( 'No sliders found', 'commons-in-a-box' ),
+		'not_found_in_trash' => __( 'No sliders found in Trash', 'commons-in-a-box' ),
+		'parent_item_colon'  => __( 'Parent Slider:', 'commons-in-a-box' ),
+		'menu_name'          => __( 'Sliders', 'commons-in-a-box' ),
 	);
 	$args   = array(
 		'labels'              => $labels,
