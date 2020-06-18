@@ -226,7 +226,6 @@ function openlab_create_default_nav_menus() {
  * creating a library to organize functions* */
 /* * core* */
 require_once get_template_directory() . '/lib/core/page-control.php';
-require_once get_template_directory() . '/lib/core/frontend-admin.php';
 require_once get_template_directory() . '/lib/core/backend-admin.php';
 
 require_once get_template_directory() . '/lib/course-clone.php';
