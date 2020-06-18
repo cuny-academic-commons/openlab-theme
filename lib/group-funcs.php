@@ -1136,32 +1136,6 @@ function openlab_delete_group() {
 	bp_core_redirect( bp_loggedin_user_domain() );
 }
 
-/**
- * This function prints out the departments for the course archives ( non ajax )
- *
- * @param string $school The id of the school to return a course list for
- * @param string $department The id of the deparment currently selected in
- *        the dropdown.
- */
-function openlab_return_course_list( $school, $department ) {
-
-	$list = '<option value="dept_all" ' . selected( '', $department ) . ' >All Departments</option>';
-
-	// Sanitize. If no value is found, don't return any
-	// courses
-	if ( ! in_array( $school, array( 'tech', 'studies', 'arts' ) ) ) {
-		return $list;
-	}
-
-	$depts = openlab_get_department_list( $school, 'short' );
-
-	foreach ( $depts as $dept_name => $dept_label ) {
-		$list .= '<option value="' . esc_attr( $dept_name ) . '" ' . selected( $department, $dept_name, false ) . '>' . esc_attr( $dept_label ) . '</option>';
-	}
-
-	return $list;
-}
-
 // a variation on bp_groups_pagination_count() to match design
 function cuny_groups_pagination_count() {
 	global $bp, $groups_template;
