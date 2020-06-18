@@ -36,6 +36,7 @@ class OpenLab_NewMembers_Widget extends WP_Widget {
 	public function widget( $args, $instance ) {
 		$r = array_merge( $this->default_args, $instance );
 
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		echo $args['before_widget'];
 
 		echo '<h2 class="title uppercase">' . esc_html( $r['title'] ) . '</h2>';
@@ -66,27 +67,24 @@ class OpenLab_NewMembers_Widget extends WP_Widget {
 			echo '<div id="home-new-member-wrap"><ul>';
 			while ( bp_members() ) :
 				bp_the_member();
-				$user_id   = bp_get_member_user_id();
-				$firstname = xprofile_get_field_data( 'Name', $user_id );
+				$user_id     = bp_get_member_user_id();
+				$firstname   = bp_get_user_display_name( $user_id );
+				$user_avatar = bp_core_fetch_avatar(
+					array(
+						'item_id' => $user_id,
+						'object'  => 'member',
+						'type'    => 'full',
+						'html'    => false,
+					)
+				);
 				?>
 				<li class="home-new-member">
 					<div class="home-new-member-avatar">
-						<a href="<?php bp_member_permalink(); ?>"><img class="img-responsive" src ="
-															  <?php
-																echo bp_core_fetch_avatar(
-																	array(
-																		'item_id' => $user_id,
-																		'object'  => 'member',
-																		'type'    => 'full',
-																		'html'    => false,
-																	)
-																);
-																?>
-																									" alt="<?php echo $firstname; ?>"/></a>
+						<a href="<?php bp_member_permalink(); ?>"><img class="img-responsive" src="<?php echo esc_attr( $user_avatar ); ?>" alt="<?php echo esc_html( $firstname ); ?>"/></a>
 					</div>
 					<div class="home-new-member-info">
-						<h2 class="truncate-on-the-fly load-delay" data-basevalue="16" data-minvalue="11" data-basewidth="164"><?php echo $firstname; ?></h2>
-						<span class="original-copy hidden"><?php echo $firstname; ?></span>
+						<h2 class="truncate-on-the-fly load-delay" data-basevalue="16" data-minvalue="11" data-basewidth="164"><?php echo esc_html( $firstname ); ?></h2>
+						<span class="original-copy hidden"><?php echo esc_html( $firstname ); ?></span>
 						<div class="registered timestamp"><?php bp_member_registered(); ?></div>
 					</div>
 				</li>
@@ -95,6 +93,8 @@ class OpenLab_NewMembers_Widget extends WP_Widget {
 			echo '</ul></div>';
 		endif;
 		echo '</div>';
+
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		echo $args['after_widget'];
 	}
 
@@ -109,7 +109,7 @@ class OpenLab_NewMembers_Widget extends WP_Widget {
 		$r = array_merge( $this->default_args, $instance );
 
 		?>
-		<p><label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php esc_html_e( 'Title:', 'commons-in-a-box' ); ?> <input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $r['title'] ); ?>" style="width: 100%" /></label></p>
+		<p><label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php esc_html_e( 'Title:', 'commons-in-a-box' ); ?> <input class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'title' ) ); ?>" type="text" value="<?php echo esc_attr( $r['title'] ); ?>" style="width: 100%" /></label></p>
 		<?php
 	}
 
@@ -121,9 +121,10 @@ class OpenLab_NewMembers_Widget extends WP_Widget {
 	 * @param array $new_instance New options.
 	 * @param array $old_instance Old options.
 	 */
+	// phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.FoundInExtendedClassAfterLastUsed
 	public function update( $new_instance, $old_instance ) {
 		return array(
-			'title' => sanitize_text_field( strip_tags( $new_instance['title'] ) ),
+			'title' => sanitize_text_field( wp_strip_all_tags( $new_instance['title'] ) ),
 		);
 	}
 }

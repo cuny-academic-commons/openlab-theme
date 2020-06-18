@@ -56,7 +56,9 @@ class OpenLab_WhatsHappening_Widget extends WP_Widget {
 
 		ob_start(); ?>
 
+		<?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 		<?php echo $args['before_widget']; ?>
+
 	<h2 class="title uppercase clearfix"><i id="refreshActivity" class="fa fa-refresh pull-right" aria-hidden="true"></i><?php echo esc_html( $r['title'] ); ?></h2>
 	<div id="whatsHappening" class="left-block-content whats-happening-wrapper">
 		<div class="activity-list item-list inline-element-list sidebar-sublinks">
@@ -69,11 +71,13 @@ class OpenLab_WhatsHappening_Widget extends WP_Widget {
 					<div class="sidebar-block activity-block">
 						<div class="activity-row clearfix">
 							<div class="activity-avatar pull-left">
+								<?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 								<a href="<?php echo openlab_activity_group_link( $activity ); ?>"><?php echo openlab_activity_group_avatar( $activity ); ?></a>
 							</div>
 
 							<div class="activity-content overflow-hidden">
 								<div class="activity-header">
+									<?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 									<?php echo openlab_get_custom_activity_action( $activity ); ?>
 								</div>
 							</div>
@@ -91,16 +95,21 @@ class OpenLab_WhatsHappening_Widget extends WP_Widget {
 						</div>
 					</div>
 				</div>
-			<?php endif; /* bp_has_activites() */ ?>
+			<?php endif; ?>
 
 		</div><!-- .activity-list -->
 	</div><!-- #whatsHappening -->
-		<?php echo $args['after_widget']; ?>
+
 		<?php
+
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		echo $args['after_widget'];
+
 		$whats_happening_out = ob_get_clean();
 
 		wp_cache_set( 'whats_happening', $whats_happening_out, 'openlab', 5 * 60 );
 
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		echo $whats_happening_out;
 	}
 
@@ -115,7 +124,7 @@ class OpenLab_WhatsHappening_Widget extends WP_Widget {
 		$r = array_merge( $this->default_args, $instance );
 
 		?>
-		<p><label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php esc_html_e( 'Title:', 'commons-in-a-box' ); ?> <input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $r['title'] ); ?>" style="width: 100%" /></label></p>
+		<p><label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php esc_html_e( 'Title:', 'commons-in-a-box' ); ?> <input class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'title' ) ); ?>" type="text" value="<?php echo esc_attr( $r['title'] ); ?>" style="width: 100%" /></label></p>
 		<?php
 	}
 
@@ -127,9 +136,10 @@ class OpenLab_WhatsHappening_Widget extends WP_Widget {
 	 * @param array $new_instance New options.
 	 * @param array $old_instance Old options.
 	 */
+	// phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.FoundInExtendedClassAfterLastUsed
 	public function update( $new_instance, $old_instance ) {
 		return array(
-			'title' => sanitize_text_field( strip_tags( $new_instance['title'] ) ),
+			'title' => sanitize_text_field( wp_strip_all_tags( $new_instance['title'] ) ),
 		);
 	}
 }

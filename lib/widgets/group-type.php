@@ -18,6 +18,7 @@ class OpenLab_Group_Type_Widget extends WP_Widget {
 		);
 	}
 
+	// phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.FoundInExtendedClassBeforeLastUsed
 	public function widget( $args, $instance ) {
 		$r = array_merge( $this->default_args, $instance );
 
@@ -43,10 +44,10 @@ class OpenLab_Group_Type_Widget extends WP_Widget {
 		ob_start();
 
 		?>
-		<div class="col-sm-6 activity-list <?php echo $type->get_slug(); ?>-list">
+		<div class="col-sm-6 activity-list <?php echo esc_attr( $type->get_slug() ); ?>-list">
 			<div class="activity-wrapper">
 				<div class="title-wrapper">
-					<h2 class="title activity-title"><a class="no-deco" href="<?php echo bp_get_group_type_directory_permalink( $type->get_slug() ); ?>"><?php echo esc_html( $r['title'] ); ?><span class="fa fa-chevron-circle-right" aria-hidden="true"></span></a></h2>
+					<h2 class="title activity-title"><a class="no-deco" href="<?php echo esc_attr( bp_get_group_type_directory_permalink( $type->get_slug() ) ); ?>"><?php echo esc_html( $r['title'] ); ?><span class="fa fa-chevron-circle-right" aria-hidden="true"></span></a></h2>
 				</div><!--title-wrapper-->
 
 				<?php if ( bp_has_groups( $groups_args ) ) : ?>
@@ -57,46 +58,51 @@ class OpenLab_Group_Type_Widget extends WP_Widget {
 						$group = $groups_template->group;
 
 						$activity = stripslashes( $group->description );
-						echo '<div class="box-1 row-' . $i . ' activity-item type-' . esc_attr( $type->get_slug() ) . '">';
-						?>
-						<div class="item-avatar">
-							<a href="<?php bp_group_permalink(); ?>"><img class="img-responsive" src ="
-																 <?php
-																	echo bp_core_fetch_avatar(
-																		array(
-																			'item_id' => $group->id,
-																			'object'  => 'group',
-																			'type'    => 'full',
-																			'html'    => false,
-																		)
-																	);
-																	?>
-																										" alt="<?php echo $group->name; ?>"/></a>
-						</div>
-						<div class="item-content-wrapper">
-							<h4 class="group-title overflow-hidden">
-								<a class="no-deco truncate-on-the-fly hyphenate" href="<?php echo bp_get_group_permalink(); ?>" data-basevalue="40" data-minvalue="15" data-basewidth="145"><?php echo bp_get_group_name(); ?></a>
-								<span class="original-copy hidden"><?php echo bp_get_group_name(); ?></span>
-							</h4>
 
-							<p class="hyphenate overflow-hidden">
-								<?php
-								echo bp_create_excerpt(
-									$activity,
-									150,
-									array(
-										'ending' => __( '&hellip;', 'buddypress' ),
-										'html'   => false,
-									)
-								);
-								?>
-							</p>
-							<p class="see-more">
-								<a class="semibold" href="<?php echo bp_get_group_permalink(); ?>">See More<span class="sr-only"> <?php echo bp_get_group_name(); ?></span></a>
-							</p>
+						$group_avatar = bp_core_fetch_avatar(
+							array(
+								'item_id' => $group->id,
+								'object'  => 'group',
+								'type'    => 'full',
+								'html'    => false,
+							)
+						);
+
+						?>
+
+						<div class="box-1 row-<?php echo esc_attr( $i ); ?> activity-item type-<?php echo esc_attr( $type->get_slug() ); ?>">
+?>
+							<div class="item-avatar">
+								<a href="<?php bp_group_permalink(); ?>"><img class="img-responsive" src="<?php echo esc_attr( $group_avatar ); ?>" alt="<?php echo esc_attr( $group->name ); ?>"/></a>
+							</div>
+
+							<div class="item-content-wrapper">
+								<h4 class="group-title overflow-hidden">
+									<a class="no-deco truncate-on-the-fly hyphenate" href="<?php echo esc_attr( bp_get_group_permalink() ); ?>" data-basevalue="40" data-minvalue="15" data-basewidth="145"><?php echo esc_html( bp_get_group_name() ); ?></a>
+									<span class="original-copy hidden"><?php echo esc_html( bp_get_group_name() ); ?></span>
+								</h4>
+
+								<p class="hyphenate overflow-hidden">
+									<?php
+									echo esc_html(
+										bp_create_excerpt(
+											$activity,
+											150,
+											array(
+												'ending' => __( '&hellip;', 'buddypress' ),
+												'html'   => false,
+											)
+										)
+									);
+									?>
+								</p>
+								<p class="see-more">
+									<a class="semibold" href="<?php echo esc_attr( bp_get_group_permalink() ); ?>"><?php esc_html_e( 'See More', 'commons-in-a-box' ); ?><span class="sr-only"> <?php echo esc_html( bp_get_group_name() ); ?></span></a>
+								</p>
+							</div><!-- .item-content-wrapper -->
 						</div>
-					</div>
 						<?php $i++; ?>
+
 					<?php endwhile; ?>
 				<?php else : ?>
 					<p class="group-widget-empty"><?php esc_html_e( 'Nothing to show.', 'commons-in-a-box' ); ?></p>
@@ -107,6 +113,7 @@ class OpenLab_Group_Type_Widget extends WP_Widget {
 
 		$html = ob_get_clean();
 
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		echo $html;
 	}
 
@@ -116,11 +123,11 @@ class OpenLab_Group_Type_Widget extends WP_Widget {
 		$group_types = cboxol_get_group_types();
 
 		?>
-		<p><label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php esc_html_e( 'Title:', 'commons-in-a-box' ); ?> <input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $r['title'] ); ?>" style="width: 100%" /></label></p>
+		<p><label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php esc_html_e( 'Title:', 'commons-in-a-box' ); ?> <input class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'title' ) ); ?>" type="text" value="<?php echo esc_attr( $r['title'] ); ?>" style="width: 100%" /></label></p>
 
 		<p>
-			<label for="<?php echo $this->get_field_id( 'group_type' ); ?>"><?php esc_html_e( 'Group Type:', 'commons-in-a-box' ); ?>
-				<select class="widefat" id="<?php echo $this->get_field_id( 'group_type' ); ?>" name="<?php echo $this->get_field_name( 'group_type' ); ?>" style="width: 100%">
+			<label for="<?php echo esc_attr( $this->get_field_id( 'group_type' ) ); ?>"><?php esc_html_e( 'Group Type:', 'commons-in-a-box' ); ?>
+				<select class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'group_type' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'group_type' ) ); ?>" style="width: 100%">
 					<option value="" <?php selected( ! $r['group_type'] ); ?>><?php esc_html_e( '- Select Group Type -', 'commons-in-a-box' ); ?></option>
 
 					<?php foreach ( $group_types as $group_type ) : ?>
@@ -132,6 +139,7 @@ class OpenLab_Group_Type_Widget extends WP_Widget {
 		<?php
 	}
 
+	// phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.FoundInExtendedClassAfterLastUsed
 	public function update( $new_instance, $old_instance ) {
 		return $new_instance;
 	}
