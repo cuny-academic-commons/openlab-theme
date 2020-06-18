@@ -21,8 +21,8 @@ function openlab_custom_admin_menu_items() {
 
 	add_submenu_page(
 		'edit.php?post_type=help',
-		'Footer Links',
-		'Footer Links',
+		__( 'Footer Links', 'commons-in-a-box' ),
+		__( 'Footer Links', 'commons-in-a-box' ),
 		'manage_options',
 		'help-footer-links',
 		'openlab_footer_links'
@@ -39,6 +39,7 @@ function openlab_footer_links() {
 	include locate_template( 'parts/admin/footer-links-admin.php' );
 	$footer_links_mup = ob_get_clean();
 
+	// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	echo $footer_links_mup;
 }
 
@@ -67,7 +68,7 @@ function openlab_process_footer_links() {
 	$accessibility_info_val  = filter_input( INPUT_POST, 'accessibility_info_val' );
 	$accessibility_info_name = filter_input( INPUT_POST, 'accessibility_info_name' );
 
-	if ( $accessibility_info_val && ! empty( $accessibility_info_val ) && $accessibility_info_val !== 0 && ! empty( $accessibility_info_name ) ) {
+	if ( $accessibility_info_val && ! empty( $accessibility_info_val ) && 0 !== $accessibility_info_val && ! empty( $accessibility_info_name ) ) {
 		$accessibility_info_obj                     = get_post( $accessibility_info_val );
 		$links_data_out['accessibility_info_id']    = $accessibility_info_val;
 		$links_data_out['accessibility_info_title'] = $accessibility_info_obj->post_title;

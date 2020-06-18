@@ -7,10 +7,10 @@
  */
 function openlab_bp_sidebar( $type, $mobile_dropdown = false, $extra_classes = '' ) {
 
-	$pull_classes  = ( $type == 'groups' ? ' pull-right' : '' );
-	$pull_classes .= ( $mobile_dropdown ? ' mobile-dropdown' : '' );
+	$pull_classes  = 'groups' === $type ? ' pull-right' : '';
+	$pull_classes .= $mobile_dropdown ? ' mobile-dropdown' : '';
 
-	echo '<div id="sidebar" class="sidebar col-sm-6 col-xs-24' . $pull_classes . ' type-' . $type . $extra_classes . '"><div class="sidebar-wrapper">';
+	echo '<div id="sidebar" class="sidebar col-sm-6 col-xs-24' . esc_attr( $pull_classes ) . ' type-' . esc_attr( $type ) . esc_attr( $extra_classes ) . '"><div class="sidebar-wrapper">';
 
 	switch ( $type ) {
 		case 'actions':
@@ -101,9 +101,9 @@ function openlab_group_sidebar( $mobile = false ) {
 		<div class="sidebar-widget sidebar-widget-wrapper" id="portfolio-sidebar-widget">
 			<h2 class="sidebar-header group-single top-sidebar-header">&nbsp;</h2>
 
-					<?php if ( $show_site ) : ?>
+			<?php if ( $show_site ) : ?>
 				<div class="wrapper-block group-sidebar-subsection">
-						<?php openlab_bp_group_site_pages( $mobile ); ?>
+					<?php openlab_bp_group_site_pages( $mobile ); ?>
 				</div>
 			<?php endif; ?>
 
@@ -111,14 +111,17 @@ function openlab_group_sidebar( $mobile = false ) {
 				<div id="item-buttons" class="profile-nav sidebar-block clearfix">
 					<ul class="sidebar-nav clearfix">
 						<?php bp_get_options_nav(); ?>
+						<?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 						<?php echo openlab_get_group_profile_mobile_anchor_links(); ?>
 					</ul>
 				</div><!-- #item-buttons -->
 			</div>
-					<?php do_action( 'bp_group_options_nav' ); ?>
 
-					<?php if ( ! cboxol_is_portfolio() ) : ?>
-						<?php echo openlab_get_group_activity_events_feed(); ?>
+			<?php do_action( 'bp_group_options_nav' ); ?>
+
+			<?php if ( ! cboxol_is_portfolio() ) : ?>
+				<?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+				<?php echo openlab_get_group_activity_events_feed(); ?>
 			<?php endif; ?>
 		</div>
 			<?php
@@ -133,7 +136,8 @@ endif;
  */
 function openlab_member_sidebar_menu( $mobile = false ) {
 
-	if ( ! $dud = bp_displayed_user_domain() ) {
+	$dud = bp_displayed_user_domain();
+	if ( ! $dud ) {
 		$dud = bp_loggedin_user_domain(); // will always be the logged in user on my-*
 	}
 
@@ -152,28 +156,24 @@ function openlab_member_sidebar_menu( $mobile = false ) {
 	$portfolio_group_type = cboxol_get_portfolio_group_type();
 
 	$current_group_type = null;
+	// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 	if ( ! empty( $_GET['group_type'] ) ) {
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		$current_group_type = wp_unslash( urldecode( $_GET['group_type'] ) );
 	}
 
 	if ( is_user_logged_in() && openlab_is_my_profile() ) :
 		?>
 
-		<div id="item-buttons<?php echo ( $mobile ? '-mobile' : '' ); ?>" class="mol-menu sidebar-block <?php echo $classes; ?>">
+		<div id="item-buttons<?php echo ( $mobile ? '-mobile' : '' ); ?>" class="mol-menu sidebar-block <?php echo esc_attr( $classes ); ?>">
 
 			<ul class="sidebar-nav clearfix">
 
-				<li class="sq-bullet 
-				<?php
-				if ( bp_is_user_activity() ) :
-					?>
-					selected-page<?php endif ?> mol-profile my-profile"><a href="<?php echo $dud; ?>">My Profile</a></li>
+				<?php $selected_page = bp_is_user_activity() ? 'selected-page' : ''; ?>
+				<li class="sq-bullet <?php echo esc_attr( $selected_page ); ?> mol-profile my-profile"><a href="<?php echo esc_attr( $dud ); ?>"><?php esc_html_e( 'My Profile', 'commons-in-box' ); ?></a></li>
 
-				<li class="sq-bullet 
-				<?php
-				if ( bp_is_user_settings() ) :
-					?>
-					selected-page<?php endif ?> mol-settings my-settings"><a href="<?php echo $dud . bp_get_settings_slug(); ?>/">My Settings</a></li>
+				<?php $selected_page = bp_is_user_settings() ? 'selected-page' : ''; ?>
+				<li class="sq-bullet <?php echo esc_attr( $selected_page ); ?> mol-settings my-settings"><a href="<?php echo esc_attr( $dud . bp_get_settings_slug() ); ?>/"><?php esc_html_e( 'My Settings', 'commons-in-a-box' ); ?></a></li>
 
 				<?php if ( $portfolio_group_type ) : ?>
 					<?php if ( openlab_user_has_portfolio( bp_displayed_user_id() ) && ( ! cboxol_group_is_hidden( openlab_get_user_portfolio_id() ) || openlab_is_my_profile() || groups_is_user_member( bp_loggedin_user_id(), openlab_get_user_portfolio_id() ) ) ) : ?>
@@ -198,7 +198,7 @@ function openlab_member_sidebar_menu( $mobile = false ) {
 						$selected = 'selected-page';
 					}
 					?>
-					<li class="sq-bullet <?php echo $selected; ?> mol-courses my-<?php echo esc_attr( $group_type->get_slug() ); ?>"><a href="<?php echo cboxol_get_user_group_type_directory_url( $group_type, bp_loggedin_user_id() ); ?>"><?php echo esc_html( $group_type->get_label( 'my_groups' ) ); ?></a></li>
+					<li class="sq-bullet <?php echo esc_attr( $selected ); ?> mol-courses my-<?php echo esc_attr( $group_type->get_slug() ); ?>"><a href="<?php echo esc_attr( cboxol_get_user_group_type_directory_url( $group_type, bp_loggedin_user_id() ) ); ?>"><?php echo esc_html( $group_type->get_label( 'my_groups' ) ); ?></a></li>
 				<?php endforeach; ?>
 
 				<?php /* Get a friend request count */ ?>
@@ -206,24 +206,26 @@ function openlab_member_sidebar_menu( $mobile = false ) {
 					<?php
 					$request_ids   = friends_get_friendship_request_user_ids( bp_loggedin_user_id() );
 					$request_count = intval( count( (array) $request_ids ) );
+					$selected_page = bp_is_user_friends() ? 'selected-page' : '';
 					?>
 
-					<li class="sq-bullet 
-					<?php
-					if ( bp_is_user_friends() ) :
-						?>
-						selected-page<?php endif ?> mol-friends my-friends"><a href="<?php echo $dud . bp_get_friends_slug(); ?>/">My Friends <?php echo openlab_get_menu_count_mup( $request_count ); ?></a></li>
+					<li class="sq-bullet <?php echo esc_attr( $selected_page ); ?> mol-friends my-friends">
+						<?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+						<a href="<?php echo esc_attr( $dud . bp_get_friends_slug() ); ?>/"><?php esc_html_e( 'My Friends', 'commons-in-a-box' ); ?> <?php echo openlab_get_menu_count_mup( $request_count ); ?></a>
+					</li>
 				<?php endif; ?>
 
 				<?php /* Get an unread message count */ ?>
 				<?php if ( bp_is_active( 'messages' ) ) : ?>
-					<?php $message_count = bp_get_total_unread_messages_count(); ?>
-
-					<li class="sq-bullet 
 					<?php
-					if ( bp_is_user_messages() ) :
-						?>
-						selected-page<?php endif ?> mol-messages my-messages"><a href="<?php echo $dud . bp_get_messages_slug(); ?>/inbox/">My Messages <?php echo openlab_get_menu_count_mup( $message_count ); ?></a></li>
+					$message_count = bp_get_total_unread_messages_count();
+					$selected_page = bp_is_user_messages() ? 'selected-page' : '';
+					?>
+
+					<li class="sq-bullet <?php echo esc_attr( $selected_page ); ?> mol-messages my-messages">
+						<?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+						<a href="<?php echo esc_attr( $dud . bp_get_messages_slug() ); ?>/inbox/"><?php esc_html_e( 'My Messages', 'commons-in-a-box' ); ?> <?php echo openlab_get_menu_count_mup( $message_count ); ?></a>
+					</li>
 				<?php endif; ?>
 
 				<?php /* Get an invitation count */ ?>
@@ -231,13 +233,14 @@ function openlab_member_sidebar_menu( $mobile = false ) {
 					<?php
 					$invites      = groups_get_invites_for_user();
 					$invite_count = isset( $invites['total'] ) ? (int) $invites['total'] : 0;
+
+					$selected_page = bp_is_current_action( 'invites' ) || bp_is_current_action( 'sent-invites' ) || bp_is_current_action( 'invite-new-members' ) ? 'selected-page' : '';
 					?>
 
-					<li class="sq-bullet 
-					<?php
-					if ( bp_is_current_action( 'invites' ) || bp_is_current_action( 'sent-invites' ) || bp_is_current_action( 'invite-new-members' ) ) :
-						?>
-						selected-page<?php endif ?> mol-invites my-invites"><a href="<?php echo $dud . bp_get_groups_slug(); ?>/invites/">My Invitations <?php echo openlab_get_menu_count_mup( $invite_count ); ?></a></li>
+					<li class="sq-bullet <?php echo esc_attr( $selected_page ); ?> mol-invites my-invites">
+						<?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+						<a href="<?php echo esc_attr( $dud . bp_get_groups_slug() ); ?>/invites/"><?php esc_html_e( 'My Invitations', 'commons-in-a-box' ); ?> <?php echo openlab_get_menu_count_mup( $invite_count ); ?></a>
+					</li>
 				<?php endif ?>
 			</ul>
 
@@ -245,15 +248,12 @@ function openlab_member_sidebar_menu( $mobile = false ) {
 
 	<?php else : ?>
 
-		<div id="item-buttons<?php echo ( $mobile ? '-mobile' : '' ); ?>" class="mol-menu sidebar-block <?php echo $classes; ?>">
+		<div id="item-buttons<?php echo ( $mobile ? '-mobile' : '' ); ?>" class="mol-menu sidebar-block <?php echo esc_attr( $classes ); ?>">
 
 			<ul class="sidebar-nav clearfix">
 
-				<li class="sq-bullet 
-				<?php
-				if ( bp_is_user_activity() ) :
-					?>
-					selected-page<?php endif ?> mol-profile"><a href="<?php echo $dud; ?>/">Profile</a></li>
+				<?php $selected_page = bp_is_user_activity() ? 'selected-page' : ''; ?>
+				<li class="sq-bullet <?php echo esc_attr( $selected_page ); ?> mol-profile"><a href="<?php echo esc_attr( $dud ); ?>/"><?php esc_html_e( 'Profile', 'commons-in-a-box' ); ?></a></li>
 
 				<?php if ( $portfolio_group_type ) : ?>
 					<?php if ( openlab_user_has_portfolio( bp_displayed_user_id() ) && ( ! cboxol_group_is_hidden( openlab_get_user_portfolio_id() ) || openlab_is_my_profile() || groups_is_user_member( bp_loggedin_user_id(), openlab_get_user_portfolio_id() ) ) ) : ?>
@@ -264,18 +264,12 @@ function openlab_member_sidebar_menu( $mobile = false ) {
 				<?php endif; ?>
 
 				<?php foreach ( $group_types as $group_type ) : ?>
-					<li class="sq-bullet 
-					<?php
-					if ( bp_is_user_groups() && $group_type->get_slug() === $current_group_type ) :
-						?>
-						selected-page<?php endif ?> mol-courses"><a href="<?php echo cboxol_get_user_group_type_directory_url( $group_type, bp_displayed_user_id() ); ?>"><?php echo esc_html( $group_type->get_label( 'plural' ) ); ?></a></li>
+					<?php $selected_page = $group_type->get_slug() === $current_group_type; ?>
+					<li class="sq-bullet <?php echo esc_attr( $selected_page ); ?> mol-courses"><a href="<?php echo esc_attr( cboxol_get_user_group_type_directory_url( $group_type, bp_displayed_user_id() ) ); ?>"><?php echo esc_html( $group_type->get_label( 'plural' ) ); ?></a></li>
 				<?php endforeach; ?>
 
-				<li class="sq-bullet 
-				<?php
-				if ( bp_is_user_friends() ) :
-					?>
-					selected-page<?php endif ?> mol-friends"><a href="<?php echo $dud . bp_get_friends_slug(); ?>/">Friends</a></li>
+				<?php $selected_page = bp_is_user_friends() ? 'selected-page' : ''; ?>
+				<li class="sq-bullet <?php echo esc_attr( $selected_page ); ?> mol-friends"><a href="<?php echo esc_attr( $dud . bp_get_friends_slug() ); ?>/"><?php esc_html_e( 'Friends', 'commons-in-a-box' ); ?></a></li>
 
 			</ul>
 
@@ -302,7 +296,7 @@ function openlab_members_sidebar_blocks( $mobile_hide = false ) {
 		?>
 		<h2 class="sidebar-header top-sidebar-header hidden-xs"><?php esc_html_e( 'My Profile', 'commons-in-a-box' ); ?></h2>
 	<?php else : ?>
-		<h2 class="sidebar-header top-sidebar-header hidden-xs">Member Profile</h2>
+		<h2 class="sidebar-header top-sidebar-header hidden-xs"><?php esc_html_e( 'Member Profile', 'commons-in-a-box' ); ?></h2>
 	<?php endif; ?>
 
 	<?php
@@ -318,16 +312,16 @@ function openlab_members_sidebar_blocks( $mobile_hide = false ) {
 
 		<?php if ( ! $mobile_hide ) : ?>
 			<?php if ( is_user_logged_in() && openlab_is_my_profile() ) : ?>
-				<h2 class="sidebar-header top-sidebar-header visible-xs">My <?php echo ( xprofile_get_field_data( 'Account Type', bp_displayed_user_id() ) == 'Student' ? 'ePortfolio' : 'Portfolio' ); ?></h2>
+				<h2 class="sidebar-header top-sidebar-header visible-xs"><?php echo esc_html( $portfolio_group_type->get_label( 'my_portfolio' ) ); ?></h2>
 			<?php else : ?>
-				<h2 class="sidebar-header top-sidebar-header visible-xs">Member <?php echo ( xprofile_get_field_data( 'Account Type', bp_displayed_user_id() ) == 'Student' ? 'ePortfolio' : 'Portfolio' ); ?></h2>
+				<h2 class="sidebar-header top-sidebar-header visible-xs"><?php echo esc_html( $portfolio_group_type->get_label( 'singular' ) ); ?></h2>
 			<?php endif; ?>
 		<?php endif; ?>
 
 		<?php /* Abstract the displayed user id, so that this function works properly on my-* pages */ ?>
 		<?php $displayed_user_id = bp_is_user() ? bp_displayed_user_id() : bp_loggedin_user_id(); ?>
 
-		<div class="sidebar-block<?php echo $block_classes; ?>">
+		<div class="sidebar-block<?php echo esc_attr( $block_classes ); ?>">
 
 			<ul class="sidebar-sublinks portfolio-sublinks inline-element-list">
 
@@ -344,10 +338,8 @@ function openlab_members_sidebar_blocks( $mobile_hide = false ) {
 
 				<li class="portfolio-dashboard-link">
 					<a href="<?php openlab_user_portfolio_profile_url(); ?>"><?php esc_html_e( 'Portfolio Home', 'commons-in-a-box' ); ?></a>
-					<?php
-					if ( openlab_is_my_profile() && openlab_user_portfolio_site_is_local() ) :
-						?>
-						 | <a href="<?php openlab_user_portfolio_url(); ?>/wp-admin"><?php esc_html_e( 'Dashboard', 'commons-in-a-box' ); ?></a>
+					<?php if ( openlab_is_my_profile() && openlab_user_portfolio_site_is_local() ) : ?>
+						| <a href="<?php openlab_user_portfolio_url(); ?>/wp-admin"><?php esc_html_e( 'Dashboard', 'commons-in-a-box' ); ?></a>
 					<?php endif ?>
 				</li>
 
@@ -362,7 +354,7 @@ function openlab_members_sidebar_blocks( $mobile_hide = false ) {
 				<h2 class="sidebar-header top-sidebar-header visible-xs"><?php echo esc_html( $portfolio_group_type->get_label( 'my_portfolio' ) ); ?></h2>
 			<?php endif; ?>
 
-			<div class="sidebar-block<?php echo $block_classes; ?>">
+			<div class="sidebar-block<?php echo esc_attr( $block_classes ); ?>">
 				<ul class="sidebar-sublinks portfolio-sublinks inline-element-list">
 					<li>
 						<a class="bold" href="<?php openlab_portfolio_creation_url(); ?>">+ <?php echo esc_html( $portfolio_group_type->get_label( 'create_item' ) ); ?></a>
@@ -381,6 +373,7 @@ function openlab_members_sidebar_blocks( $mobile_hide = false ) {
 function openlab_get_current_filter( $param ) {
 	$value = '';
 
+	// phpcs:disable WordPress.Security.NonceVerification.Recommended
 	switch ( $param ) {
 		case 'school':
 			if ( isset( $_GET['school'] ) ) {
@@ -402,8 +395,8 @@ function openlab_get_current_filter( $param ) {
 		case 'usertype':
 			if ( isset( $_GET['usertype'] ) ) {
 				$user_types    = array_merge( openlab_valid_user_types(), [ 'user_type_all' ] );
-				$user_type_raw = $_GET['usertype'];
-				if ( in_array( $user_type_raw, $user_types ) ) {
+				$user_type_raw = wp_unslash( $_GET['usertype'] );
+				if ( in_array( $user_type_raw, $user_types, true ) ) {
 					$value = $user_type_raw;
 				}
 			}
@@ -451,6 +444,7 @@ function openlab_get_current_filter( $param ) {
 			$value = isset( $_GET[ $param ] ) ? wp_unslash( $_GET[ $param ] ) : '';
 			break;
 	}
+	// phpcs:enable WordPress.Security.NonceVerification.Recommended
 
 	return $value;
 }
