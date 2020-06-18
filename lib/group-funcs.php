@@ -149,8 +149,19 @@ function openlab_group_site_markup() {
 							$group_site_url_out = '<a class="bold" href="' . esc_url( $group_site_url ) . '">' . esc_html( $group_site_url ) . '</a>';
 						}
 						?>
-						<p><?php printf( esc_html__( 'This group is currently associated with the site "%s"', 'commons-in-a-box' ), $group_site_text ); ?></p>
-						<ul id="change-group-site"><li><?php echo $group_site_url_out; ?> <a class="button underline confirm" href="<?php echo wp_nonce_url( bp_get_group_permalink( groups_get_current_group() ) . 'admin/site-details/unlink-site/', 'unlink-site' ); ?>" id="change-group-site-toggle"><?php esc_html_e( 'Unlink', 'commons-in-a-box' ); ?></a></li></ul>
+
+						<p>
+							<?php
+							printf(
+								// translators: site name or link
+								esc_html__( 'This group is currently associated with the site "%s"', 'commons-in-a-box' ),
+								 // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+								$group_site_text
+							);
+							?>
+						</p>
+
+						<ul id="change-group-site"><li><?php echo esc_html( $group_site_url_out ); ?> <a class="button underline confirm" href="<?php echo esc_attr( wp_nonce_url( bp_get_group_permalink( groups_get_current_group() ) . 'admin/site-details/unlink-site/', 'unlink-site' ) ); ?>" id="change-group-site-toggle"><?php esc_html_e( 'Unlink', 'commons-in-a-box' ); ?></a></li></ul>
 						<input type="hidden" id="site-is-external" value="<?php echo intval( $site_is_external ); ?>" />
 
 					</div>
@@ -203,11 +214,8 @@ function openlab_group_site_markup() {
 					<input type="hidden" name="action" value="copy_blog" />
 					<input type="hidden" name="source_blog" value="<?php echo intval( $blog_details->blog_id ); ?>" />
 
-					<div class="form-table groupblog-setup"
-					<?php
-					if ( ! empty( $group_site_url ) ) :
-						?>
-						 style="display: none;"<?php endif ?>>
+					<?php $group_site_display = ! empty( $group_site_url ) ? 'auto' : 'none'; ?>
+					<div class="form-table groupblog-setup" style="display: <?php echo esc_attr( $group_site_display ); ?>">
 						<?php if ( ! $group_type->get_requires_site() ) : ?>
 							<?php $show_website = 'none'; ?>
 							<div class="form-field form-required">
@@ -219,7 +227,7 @@ function openlab_group_site_markup() {
 							<?php $show_website = 'auto'; ?>
 						<?php endif ?>
 
-						<div id="wds-website-tooltips" class="form-field form-required" style="display:<?php echo $show_website; ?>"><div>
+						<div id="wds-website-tooltips" class="form-field form-required" style="display:<?php echo esc_attr( $show_website ); ?>"><div>
 
 						<p class="ol-tooltip"><?php echo esc_html( $group_type->get_label( 'site_address_help_text' ) ); ?></p>
 
@@ -228,7 +236,7 @@ function openlab_group_site_markup() {
 
 					<?php if ( bp_is_group_create() && $group_type->get_can_be_cloned() ) : ?>
 						<?php /* @todo get rid of all 'wds' */ ?>
-					<div id="wds-website-clone" class="form-field form-required" style="display:<?php echo $show_website; ?>">
+					<div id="wds-website-clone" class="form-field form-required" style="display:<?php echo esc_attr( $show_website ); ?>">
 						<div id="noo_clone_options">
 							<div class="row">
 								<div class="radio
@@ -246,12 +254,12 @@ function openlab_group_site_markup() {
 									<div class="site-label site-path site-path-subdomain">
 										<input id="clone-destination-path" class="form-control domain-validate" size="40" name="clone-destination-path" type="text" title="<?php esc_html_e( 'Domain', 'commons-in-a-box' ); ?>" value="<?php echo esc_html( $suggested_path ); ?>" />
 
-										<span>.<?php echo cboxol_get_subdomain_base(); ?></span>
+										<span>.<?php echo esc_html( cboxol_get_subdomain_base() ); ?></span>
 									</div>
 
 								<?php else : ?>
 									<div class="site-label site-path site-path-subdirectory">
-										<span><?php echo $current_site->domain . $current_site->path; ?></span>
+										<span><?php echo esc_html( $current_site->domain . $current_site->path ); ?></span>
 
 										<input class="form-control domain-validate" size="40" id="clone-destination-path" name="clone-destination-path" type="text" title="<?php esc_html_e( 'Domain', 'commons-in-a-box' ); ?>" value="<?php echo esc_html( $suggested_path ); ?>" />
 									</div>
@@ -265,7 +273,7 @@ function openlab_group_site_markup() {
 					</div><!-- /#wds-website-clone -->
 				<?php endif ?>
 
-				<div id="wds-website" class="form-field form-required" style="display:<?php echo $show_website; ?>">
+				<div id="wds-website" class="form-field form-required" style="display:<?php echo esc_attr( $show_website ); ?>">
 					<div id="noo_new_options">
 						<div id="noo_new_options-div" class="row">
 							<div class="radio">
@@ -279,12 +287,12 @@ function openlab_group_site_markup() {
 								<div class="site-label site-path site-path-subdomain">
 									<input id="new-site-domain" class="form-control domain-validate" size="40" name="blog[domain]" type="text" title="<?php esc_html_e( 'Domain', 'commons-in-a-box' ); ?>" value="<?php echo esc_html( $suggested_path ); ?>" />
 
-									<span>.<?php echo cboxol_get_subdomain_base(); ?></span>
+									<span>.<?php echo esc_html( cboxol_get_subdomain_base() ); ?></span>
 								</div>
 
 							<?php else : ?>
 								<div class="site-label site-path site-path-subdirectory">
-									<span><?php echo $current_site->domain . $current_site->path; ?></span>
+									<span><?php echo esc_html( $current_site->domain . $current_site->path ); ?></span>
 
 									<input id="new-site-domain" class="form-control domain-validate" size="40" name="blog[domain]" type="text" title="<?php esc_html_e( 'Domain', 'commons-in-a-box' ); ?>" value="<?php echo esc_html( $suggested_path ); ?>" />
 								</div>
@@ -298,10 +306,12 @@ function openlab_group_site_markup() {
 						<?php
 						// Exclude blogs already used as groupblogs
 						global $wpdb, $bp;
+						// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 						$current_groupblogs = $wpdb->get_col( "SELECT meta_value FROM {$bp->groups->table_name_groupmeta} WHERE meta_key = 'cboxol_group_site_id'" );
+						$current_groupblogs = array_map( 'intval', $current_groupblogs );
 
 						foreach ( $user_blogs as $ubid => $ub ) {
-							if ( in_array( $ub->userblog_id, $current_groupblogs ) ) {
+							if ( in_array( (int) $ub->userblog_id, $current_groupblogs, true ) ) {
 								unset( $user_blogs[ $ubid ] );
 							}
 						}
@@ -309,7 +319,7 @@ function openlab_group_site_markup() {
 						?>
 
 						<?php if ( ! empty( $user_blogs ) ) : ?>
-							<div id="wds-website-existing" class="form-field form-required" style="display:<?php echo $show_website; ?>">
+							<div id="wds-website-existing" class="form-field form-required" style="display:<?php echo esc_attr( $show_website ); ?>">
 
 								<div id="noo_old_options">
 									<div class="row">
@@ -323,7 +333,7 @@ function openlab_group_site_markup() {
 											<select class="form-control" name="groupblog-blogid" id="groupblog-blogid">
 												<option value="0"><?php esc_html_e( '- Choose a site -', 'commons-in-a-box' ); ?></option>
 												<?php foreach ( (array) $user_blogs as $user_blog ) : ?>
-													<option value="<?php echo $user_blog->userblog_id; ?>"><?php echo $user_blog->blogname; ?></option>
+													<option value="<?php echo esc_attr( $user_blog->userblog_id ); ?>"><?php echo esc_html( $user_blog->blogname ); ?></option>
 												<?php endforeach ?>
 											</select>
 										</div>
@@ -332,7 +342,7 @@ function openlab_group_site_markup() {
 							</div>
 						<?php endif ?>
 
-						<div id="wds-website-external" class="form-field form-required" style="display:<?php echo $show_website; ?>">
+						<div id="wds-website-external" class="form-field form-required" style="display:<?php echo esc_attr( $show_website ); ?>">
 
 							<div id="noo_external_options">
 								<div class="form-group row">
@@ -350,7 +360,7 @@ function openlab_group_site_markup() {
 								</div>
 							</div>
 						</div>
-						<div id="check-note-wrapper" style="display:<?php echo $show_website; ?>"><div colspan="2"><p id="check-note" class="italics disabled-opt"><?php echo esc_html( $group_type->get_label( 'site_feed_check_help_text' ) ); ?></p></div></div>
+						<div id="check-note-wrapper" style="display:<?php echo esc_attr( $show_website ); ?>"><div colspan="2"><p id="check-note" class="italics disabled-opt"><?php echo esc_html( $group_type->get_label( 'site_feed_check_help_text' ) ); ?></p></div></div>
 					</div>
 
 				<?php endif; ?>
@@ -449,6 +459,7 @@ function openlab_group_site_member_role_settings_markup() {
 
 			<div class="row">
 				<div class="member-role-definition col-sm-24">
+					<?php // translators: group type name ?>
 					<div class="member-role-definition-label"><i class="fa fa-caret-square-o-right" aria-hidden="true"></i><?php printf( esc_html__( 'Member Role Definitions: %s', 'commons-in-a-box' ), esc_html( $group_type->get_label( 'singular' ) ) ); ?></div>
 					<div class="member-role-definition-text">
 						<ul>
@@ -462,7 +473,7 @@ function openlab_group_site_member_role_settings_markup() {
 
 			<div class="row">
 				<div class="member-role-definition col-sm-24">
-					<div class="member-role-definition-label"><i class="fa fa-caret-square-o-right" aria-hidden="true"></i><?php printf( esc_html__( 'Member Role Definitions: %s', 'commons-in-a-box' ), esc_html__( 'Associated Site', 'commons-in-a-box' ) ); ?></div>
+					<div class="member-role-definition-label"><i class="fa fa-caret-square-o-right" aria-hidden="true"></i><?php esc_html_e( 'Member Role Definitions: Associated Site', 'commons-in-a-box' ); ?></div>
 					<div class="member-role-definition-text">
 						<ul>
 							<li><strong><?php esc_html_e( 'Administrator' ); ?></strong>: <?php esc_html_e( 'Someone who can control every aspect of a site, from managing content and comments, to choosing site themes to activating widgets and plugins.  In most cases, you should not make another site user an Administrator unless you want them to have equal control over your site content and functions.', 'commons-in-a-box' ); ?></li>
@@ -515,12 +526,12 @@ function openlab_group_site_privacy_settings_markup() {
 
 				<div class="radio group-site">
 
-					<h5><?php _e( 'Public', 'buddypress' ); ?></h5>
+					<h5><?php esc_html_e( 'Public', 'commons-in-a-box' ); ?></h5>
 					<div class="row">
 						<div class="col-sm-23">
-							<p><label for="blog-private1"><input id="blog-private1" type="radio" name="blog_public" value="1" <?php checked( '1', $blog_public ); ?> /><?php _e( 'Allow search engines to index this site. The site will show up in web search results.', 'commons-in-a-box' ); ?></label></p>
+							<p><label for="blog-private1"><input id="blog-private1" type="radio" name="blog_public" value="1" <?php checked( '1', $blog_public ); ?> /><?php esc_html_e( 'Allow search engines to index this site. The site will show up in web search results.', 'commons-in-a-box' ); ?></label></p>
 
-							<p><label for="blog-private0"><input id="blog-private0" type="radio" name="blog_public" value="0" <?php checked( '0', $blog_public ); ?> /><?php _e( 'Ask search engines not to index this site. The site should not show up in web search results.', 'commons-in-a-box' ); ?></label></p>
+							<p><label for="blog-private0"><input id="blog-private0" type="radio" name="blog_public" value="0" <?php checked( '0', $blog_public ); ?> /><?php esc_html_e( 'Ask search engines not to index this site. The site should not show up in web search results.', 'commons-in-a-box' ); ?></label></p>
 							<p id="search-setting-note" class="italics note"><?php esc_html_e( 'Note: This option will NOT block access to the site. It is up to search engines to honor your request.', 'commons-in-a-box' ); ?></p>
 						</div>
 					</div>
@@ -667,6 +678,7 @@ function openlab_group_avatar_markup() {
 
 					<p><?php echo esc_html( $group_type->get_label( 'avatar_help_text' ) ); ?></p>
 
+					<?php // translators: Max upload size ?>
 					<p><?php echo esc_html( sprintf( __( 'The maximum upload size is %s.', 'commons-in-a-box' ), size_format( wp_max_upload_size() ) ) ); ?></p>
 
 					<p id="avatar-upload">
@@ -674,7 +686,7 @@ function openlab_group_avatar_markup() {
 						<div class="form-control type-file-wrapper">
 							<input type="file" name="file" id="file" />
 						</div>
-						<input class="btn btn-primary top-align" type="submit" name="upload" id="upload" value="<?php _e( 'Upload Image', 'commons-in-a-box' ); ?>" />
+						<input class="btn btn-primary top-align" type="submit" name="upload" id="upload" value="<?php esc_attr_e( 'Upload Image', 'commons-in-a-box' ); ?>" />
 						<input type="hidden" name="action" id="action" value="bp_avatar_upload" />
 					</div>
 					</p>
@@ -854,15 +866,15 @@ function openlab_save_group_site() {
 
 	$group_type = cboxol_get_group_group_type( $group->id );
 	if ( isset( $_POST['set-up-site-toggle'] ) || ( ! is_wp_error( $group_type ) && $group_type->get_requires_site() ) ) {
-		if ( isset( $_POST['new_or_old'] ) && 'new' == $_POST['new_or_old'] ) {
+		if ( isset( $_POST['new_or_old'] ) && 'new' === $_POST['new_or_old'] ) {
 
 			// Create a new site
 			cboxol_copy_blog_page( $group->id );
-		} elseif ( isset( $_POST['new_or_old'] ) && 'old' == $_POST['new_or_old'] && isset( $_POST['groupblog-blogid'] ) ) {
+		} elseif ( isset( $_POST['new_or_old'] ) && 'old' === $_POST['new_or_old'] && isset( $_POST['groupblog-blogid'] ) ) {
 
 			// Associate an existing site
 			cboxol_set_group_site_id( $group->id, (int) $_POST['groupblog-blogid'] );
-		} elseif ( isset( $_POST['new_or_old'] ) && 'external' == $_POST['new_or_old'] && isset( $_POST['external-site-url'] ) ) {
+		} elseif ( isset( $_POST['new_or_old'] ) && 'external' === $_POST['new_or_old'] && isset( $_POST['external-site-url'] ) ) {
 
 			// External site
 			// Some validation
@@ -961,7 +973,8 @@ function openlab_group_privacy_settings( $group_type ) {
 	global $bp;
 
 	// If this is a cloned group/site, fetch the clone source's details
-	$clone_source_group_status = $clone_source_blog_status = '';
+	$clone_source_group_status = '';
+	$clone_source_blog_status  = '';
 	if ( bp_is_group_create() ) {
 		$new_group_id = bp_get_new_group_id();
 		if ( 'course' === $group_type ) {
@@ -999,13 +1012,15 @@ function openlab_group_privacy_settings( $group_type ) {
 					<label><input type="radio" name="group-status" value="public" <?php checked( 'public', $new_group_status ); ?> /><?php esc_html_e( 'Public', 'commons-in-a-box' ); ?></label>
 					<ul>
 						<li><?php esc_html_e( 'Profile and related content and activity will be visible to the public.', 'commons-in-a-box' ); ?></li>
+						<?php // translators: group type name ?>
 						<li><?php printf( esc_html__( 'Will be listed in the "%s" directory, in search results, and may be displayed on the home page.', 'commons-in-a-box' ), esc_html( $group_type->get_label( 'plural' ) ) ); ?></li>
-						<li><?php _e( 'Any site member may join this group.', 'commons-in-a-box' ); ?></li>
+						<li><?php esc_html_e( 'Any site member may join this group.', 'commons-in-a-box' ); ?></li>
 					</ul>
 
 					<label><input type="radio" name="group-status" value="private" <?php checked( 'private', $new_group_status ); ?> /><?php esc_html_e( 'Private', 'commons-in-a-box' ); ?></label>
 					<ul>
 						<li><?php esc_html_e( 'Profile and related content and activity will only be visible to members of the group.', 'buddypress' ); ?></li>
+						<?php // translators: group type name ?>
 						<li><?php printf( esc_html__( 'Will be listed in the "%s" directory, in search results, and may be displayed on the home page.', 'commons-in-a-box' ), esc_html( $group_type->get_label( 'plural' ) ) ); ?></li>
 						<li><?php esc_html_e( 'Only site members who request membership and are accepted may join this group.', 'commons-in-a-box' ); ?></li>
 					</ul>
@@ -1013,6 +1028,7 @@ function openlab_group_privacy_settings( $group_type ) {
 					<label><input type="radio" name="group-status" value="hidden" <?php checked( 'hidden', $new_group_status ); ?> /><?php esc_html_e( 'Hidden', 'commons-in-a-box' ); ?></label>
 					<ul>
 						<li><?php esc_html_e( 'Profile, related content, and activity will only be visible only to members of the group.', 'commons-in-a-box' ); ?></li>
+						<?php // translators: group type name ?>
 						<li><?php printf( esc_html__( 'Will NOT be listed in the "%s" directory, in search results, or on the home page.', 'commons-in-a-box' ), esc_html( $group_type->get_label( 'plural' ) ) ); ?></li>
 						<li><?php esc_html_e( 'Only site members who are invited may join this group.', 'commons-in-a-box' ); ?></li>
 					</ul>
@@ -1023,7 +1039,8 @@ function openlab_group_privacy_settings( $group_type ) {
 
 	<?php /* Site privacy markup */ ?>
 
-	<?php if ( $site_id = openlab_get_site_id_by_group_id() ) : ?>
+	<?php $site_id = openlab_get_site_id_by_group_id(); ?>
+	<?php if ( $site_id ) : ?>
 		<div class="panel panel-default">
 			<div class="panel-heading semibold"><?php esc_html_e( 'Associated Site', 'commons-in-a-box' ); ?></div>
 			<div class="panel-body">
@@ -1033,11 +1050,11 @@ function openlab_group_privacy_settings( $group_type ) {
 		</div>
 	<?php endif ?>
 
-	<?php if ( $bp->current_action == 'admin' ) : ?>
+	<?php if ( bp_is_current_action( 'admin' ) ) : ?>
 		<?php do_action( 'bp_after_group_settings_admin' ); ?>
 		<p><input class="btn btn-primary" type="submit" value="<?php esc_html_e( 'Save Changes', 'commons-in-a-box' ); ?> &#xf138;" id="save" name="save" /></p>
 		<?php wp_nonce_field( 'groups_edit_group_settings' ); ?>
-	<?php elseif ( $bp->current_action == 'create' ) : ?>
+	<?php elseif ( bp_is_current_action( 'create' ) ) : ?>
 		<?php wp_nonce_field( 'groups_create_save_group-settings' ); ?>
 		<?php
 	endif;
@@ -1047,8 +1064,10 @@ function openlab_group_privacy_settings( $group_type ) {
  * AJAX handler for group slugs.
  */
 function openlab_ajax_group_url_validate() {
+	// phpcs:disable WordPress.Security.NonceVerification.Recommended
 	$url      = wp_unslash( $_GET['url'] );
 	$group_id = intval( $_GET['groupId'] );
+	// phpcs:enable WordPress.Security.NonceVerification.Recommended
 
 	$found = groups_get_id( $url );
 
@@ -1073,9 +1092,11 @@ function openlab_groups_pagination_links() {
 		)
 	);
 
+	// phpcs:disable WordPress.Security.NonceVerification.Recommended
 	if ( isset( $_GET['search'] ) ) {
 		$base = add_query_arg( 's', urldecode( wp_unslash( $_GET['search'] ) ), $base );
 	}
+	// phpcs:enable WordPress.Security.NonceVerification.Recommended
 
 	$pagination = paginate_links(
 		array(
@@ -1083,8 +1104,8 @@ function openlab_groups_pagination_links() {
 			'format'             => '',
 			'total'              => ceil( (int) $groups_template->total_group_count / (int) $groups_template->pag_num ),
 			'current'            => $groups_template->pag_page,
-			'prev_text'          => _x( '<i class="fa fa-angle-left" aria-hidden="true"></i><span class="sr-only">Previous</span>', 'Group pagination previous text', 'buddypress' ),
-			'next_text'          => _x( '<i class="fa fa-angle-right" aria-hidden="true"></i><span class="sr-only">Next</span>', 'Group pagination next text', 'buddypress' ),
+			'prev_text'          => _x( '<i class="fa fa-angle-left" aria-hidden="true"></i><span class="sr-only">Previous</span>', 'Group pagination previous text', 'commons-in-a-box' ),
+			'next_text'          => _x( '<i class="fa fa-angle-right" aria-hidden="true"></i><span class="sr-only">Next</span>', 'Group pagination next text', 'commons-in-a-box' ),
 			'mid_size'           => 3,
 			'type'               => 'list',
 			'before_page_number' => '<span class="sr-only">Page</span>',
