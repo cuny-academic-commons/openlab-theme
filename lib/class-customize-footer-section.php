@@ -26,7 +26,7 @@ class OpenLab_Footer_Section_Control extends WP_Customize_Control {
 
 				<?php wp_editor( $content, $editor_id, $settings ); ?>
 
-				<input type="hidden" <?php echo $this->get_link(); ?> value="<?php echo esc_attr( $content ); ?>" />
+				<input type="hidden" <?php echo esc_attr( $this->get_link() ); ?> value="<?php echo esc_attr( $content ); ?>" />
 			</label>
 		</p>
 

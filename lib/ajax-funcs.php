@@ -19,6 +19,7 @@ function openlab_ajax_return_course_list() {
 		$options .= '<option value="' . esc_attr( $dept_name ) . '">' . esc_attr( $dept_label ) . '</option>';
 	}
 
+	// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	die( $options );
 }
 
@@ -32,6 +33,7 @@ function openlab_ajax_return_latest_activity() {
 
 	$whats_happening = openlab_whats_happening();
 
+	// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	die( $whats_happening );
 }
 
@@ -39,11 +41,13 @@ add_action( 'wp_ajax_nopriv_openlab_ajax_return_latest_activity', 'openlab_ajax_
 add_action( 'wp_ajax_openlab_ajax_return_latest_activity', 'openlab_ajax_return_latest_activity' );
 
 function openlab_ajax_unique_login_check() {
+	// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 	if ( ! isset( $_GET['login'] ) ) {
 		status_header( 500 );
 		die();
 	}
 
+	// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 	$login = urldecode( wp_unslash( $_GET['login'] ) );
 
 	if ( username_exists( $login ) ) {
@@ -78,8 +82,10 @@ function openlab_ajax_help_post_autocomplete() {
 		exit( 'exit' );
 	}
 
-	$prepared_query = $wpdb->prepare( "SELECT * FROM $wpdb->posts WHERE post_type = '%s' AND post_status = '%s' AND post_title LIKE '%s'", 'help', 'publish', '%' . $term . '%' );
-	$posts          = $wpdb->get_results( $prepared_query );
+	$prepared_query = $wpdb->prepare( "SELECT * FROM $wpdb->posts WHERE post_type = %s AND post_status = %s AND post_title LIKE %s", 'help', 'publish', '%' . $wpdb->esc_like( $term ) . '%' );
+
+	// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+	$posts = $wpdb->get_results( $prepared_query );
 
 	if ( ! $posts || empty( $posts ) ) {
 		$posts_out[0] = array(
@@ -87,7 +93,7 @@ function openlab_ajax_help_post_autocomplete() {
 			'value' => 'No Results',
 			'id'    => 0,
 		);
-		die( json_encode( $posts_out ) );
+		die( wp_json_encode( $posts_out ) );
 	}
 
 	foreach ( $posts as $key => $post ) {
@@ -99,7 +105,7 @@ function openlab_ajax_help_post_autocomplete() {
 		);
 	}
 
-	die( json_encode( $posts_out ) );
+	die( wp_json_encode( $posts_out ) );
 }
 
 add_action( 'wp_ajax_openlab_ajax_help_post_autocomplete', 'openlab_ajax_help_post_autocomplete' );
@@ -109,10 +115,12 @@ add_action( 'wp_ajax_openlab_ajax_help_post_autocomplete', 'openlab_ajax_help_po
  */
 function openlab_ajax_profile_fields() {
 	$markup = '';
+	// phpcs:ignore WordPress.Security.NonceVerification.Missing
 	if ( ! isset( $_POST['account_type'] ) ) {
 		wp_send_json_success( $markup );
 	}
 
+	// phpcs:ignore WordPress.Security.NonceVerification.Missing
 	$account_type = wp_unslash( $_POST['account_type'] );
 
 	$markup = openlab_get_register_fields( $account_type );

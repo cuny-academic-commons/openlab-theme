@@ -8,6 +8,7 @@ function openlab_callout_list_shortcode( $atts, $content ) {
 	$result = array();
 
 	// Attributes
+	// phpcs:ignore WordPress.PHP.DontExtract.extract_extract
 	extract( shortcode_atts( array(), $atts ) );
 
 	$index = 0;
@@ -18,6 +19,7 @@ function openlab_callout_list_shortcode( $atts, $content ) {
 	$list_items      = $domx->evaluate( '//li' );
 	$list_items_html = array();
 	foreach ( $list_items as $list_item ) {
+		// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 		$list_items_html[] = $list_item->ownerDocument->saveHTML( $list_item );
 	}
 

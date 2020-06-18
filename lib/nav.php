@@ -26,7 +26,7 @@ function openlab_help_navigation( $loc = 'bottom' ) {
 	);
 
 	if ( function_exists( 'previous_post_link_plus' ) && function_exists( 'next_post_link_plus' ) ) {
-		echo '<nav id="nav-single" class="' . $loc . ' clearfix page-nav">';
+		echo '<nav id="nav-single" class="' . esc_attr( $loc ) . ' clearfix page-nav">';
 		echo '<div class="nav-previous pull-left">';
 		previous_post_link_plus( $prev_args );
 		echo '</div>';
@@ -44,9 +44,9 @@ function openlab_custom_nav_classes( $classes, $item ) {
 		return $classes;
 	}
 
-	if ( ( $post->post_type == 'help' ) && $item->title == 'Help' ) {
+	if ( ( 'help' === $post->post_type ) && __( 'Help', 'commons-in-a-box' ) === $item->title ) {
 		$classes[] = ' current-menu-item';
-	} elseif ( get_page_by_path( 'about' ) && $post->post_parent == get_page_by_path( 'about' )->ID && $item->title == 'About' ) {
+	} elseif ( get_page_by_path( 'about' ) && __( 'About', 'commons-in-a-box' ) === $item->title ) {
 		$classes[] = ' current-menu-item';
 	}
 
@@ -62,7 +62,7 @@ function openlab_loop_pagination_links_filter( $has_items ) {
 	global $groups_template, $members_template;
 	// Only run on directories.
 	$current_page = get_queried_object();
-	if ( ! isset( $current_page->post_name ) || ! in_array( $current_page->post_name, array( 'people', 'courses', 'projects', 'clubs', 'portfolios' ) ) ) {
+	if ( ! isset( $current_page->post_name ) || ! in_array( $current_page->post_name, array( 'people', 'courses', 'projects', 'clubs', 'portfolios' ), true ) ) {
 			return $has_items;
 	}
 	switch ( current_filter() ) {
@@ -108,9 +108,11 @@ function openlab_loop_pagination_links_filter( $has_items ) {
 			'usertype',
 		);
 		foreach ( $ol_args as $ol_arg ) {
+			// phpcs:disable WordPress.Security.NonceVerification.Recommended
 			if ( isset( $_GET[ $ol_arg ] ) ) {
 				$pag_args[ $ol_arg ] = urldecode( $_GET[ $ol_arg ] );
 			}
+			// phpcs:enable WordPress.Security.NonceVerification.Recommended
 		}
 		$t->pag_links = paginate_links(
 			array(

@@ -25,12 +25,12 @@ add_filter( 'openlab_breadcrumb_args', 'custom_breadcrumb_args' );
 /**
  * For the help page breadcrumb
  */
-function openlab_specific_blog_breadcrumb( $crumb, $args ) {
+function openlab_specific_blog_breadcrumb( $crumb ) {
 	global $post;
 
-	if ( $post->post_type == 'help' ) {
+	if ( 'help' === $post->post_type ) {
 		// @todo This will not work to build a path.
-		$crumb = '<a title="' . esc_attr__( 'View all Help', 'commons-in-a-box' ) . '" href="' . site_url( 'help/openlab-help' ) . '">Help</a>';
+		$crumb = '<a title="' . esc_attr__( 'View all Help', 'commons-in-a-box' ) . '" href="' . site_url( 'help/openlab-help' ) . '">' . esc_html__( 'Help', 'commons-in-a-box' ) . '</a>';
 
 		$post_terms = get_the_terms( $post->ID, 'help_category' );
 		$term       = array();
@@ -63,61 +63,68 @@ function openlab_specific_blog_breadcrumb( $crumb, $args ) {
 }
 add_filter( 'openlab_single_crumb', 'openlab_specific_blog_breadcrumb', 10, 2 );
 
-add_filter( 'openlab_archive_crumb', 'openlab_specific_archive_breadcrumb', 10, 2 );
-
-function openlab_specific_archive_breadcrumb( $crumb, $args ) {
+function openlab_specific_archive_breadcrumb( $crumb ) {
 	global $bp, $bp_current;
 
 	$tax = get_query_var( 'taxonomy' );
-	if ( $tax == 'help_category' ) {
-		$crumb = '<a title="View all Help" href="' . site_url( 'help/openlab-help' ) . '">Help</a>';
+	if ( 'help_category' === $tax ) {
+		$crumb = '<a title="View all Help" href="' . esc_attr( site_url( 'help/openlab-help' ) ) . '">' . esc_html__( 'Help', 'commons-in-a-box' ) . '</a>';
 
 		$get_term = get_query_var( 'term' );
 		$term     = get_term_by( 'slug', $get_term, 'help_category' );
-		if ( $term->parent != 0 ) {
+		if ( 0 !== $term->parent ) {
 			$parent_term = get_term_by( 'id', $term->parent, 'help_category' );
 			$parent_link = get_term_link( $parent_term, 'help_category' );
 			if ( ! is_wp_error( $parent_link ) ) {
-				$crumb .= ' <span class="breadcrumb-sep">/</span> <a href="' . $parent_link . '">' . $parent_term->name . '</a>';
+				$crumb .= ' <span class="breadcrumb-sep">/</span> <a href="' . esc_attr( $parent_link ) . '">' . esc_html( $parent_term->name ) . '</a>';
 			}
 		}
 		$crumb .= ' <span class="breadcrumb-sep">/</span> ' . $term->name;
 	}
 
 	if ( bp_is_group() ) {
-		$group_id   = $bp->groups->current_group->id;
-		$b2         = $bp->groups->current_group->name;
-		$group_type = groups_get_groupmeta( $bp->groups->current_group->id, 'wds_group_type' );
-		if ( $group_type == 'course' ) {
-			$b1 = '<a href="' . site_url() . '/courses/">Courses</a>';
-		} elseif ( $group_type == 'project' ) {
-			$b1 = '<a href="' . site_url() . '/projects/">Projects</a>';
-		} elseif ( $group_type == 'club' ) {
-			$b1 = '<a href="' . site_url() . '/clubs/">Clubs</a>';
-		} else {
-			$b1 = '<a href="' . site_url() . '/groups/">Groups</a>';
+		$group_id = $bp->groups->current_group->id;
+		$b2       = $bp->groups->current_group->name;
+
+		$group_type = cboxol_get_group_group_type( $group_id );
+
+		if ( $group_type && ! is_wp_error( $group_type ) ) {
+			$b1 = sprintf(
+				'<a href="%s">%s</a>',
+				esc_attr( bp_get_group_type_directory_permalink( $group_type->get_slug() ) ),
+				esc_html( $group_type->get_label( 'plural' ) )
+			);
 		}
 	}
-	if ( ! empty( $bp->displayed_user->id ) ) {
-		$account_type = xprofile_get_field_data( 'Account Type', $bp->displayed_user->id );
-		if ( $account_type == 'Staff' ) {
-			$b1 = '<a href="' . site_url() . '/people/">People</a> <span class="breadcrumb-sep">/</span> <a href="' . site_url() . '/people/staff/">Staff</a>';
-		} elseif ( $account_type == 'Faculty' ) {
-			$b1 = '<a href="' . site_url() . '/people/">People</a> <span class="breadcrumb-sep">/</span> <a href="' . site_url() . '/people/faculty/">Faculty</a>';
-		} elseif ( $account_type == 'Student' ) {
-			$b1 = '<a href="' . site_url() . '/people/">People</a> <span class="breadcrumb-sep">/</span> <a href="' . site_url() . '/people/students/">Students</a>';
-		} else {
-			$b1 = '<a href="' . site_url() . '/people/">People</a>';
+
+	if ( bp_is_user() ) {
+		$member_type = cboxol_get_user_member_type( bp_displayed_user_id() );
+
+		$b1 = sprintf(
+			'<a href="%s">%s</a>',
+			esc_attr( bp_get_members_directory_permalink() ),
+			esc_html__( 'People', 'commons-in-a-box' )
+		);
+
+		if ( $member_type && ! is_wp_error( $member_type ) ) {
+			$b1 .= sprintf(
+				'<a href="%s">%s</a>',
+				esc_attr( bp_get_member_type_directory_permalink( $member_type->get_slug() ) ),
+				esc_html( $member_type->get_label( 'plural' ) )
+			);
 		}
+
 		$last_name = xprofile_get_field_data( 'Last Name', $bp->displayed_user->id );
-		$b2        = ucfirst( $bp->displayed_user->fullname ); //.''.ucfirst( $last_name )
+		$b2        = ucfirst( $bp->displayed_user->fullname );
 	}
-	if ( bp_is_group() || ! empty( $bp->displayed_user->id ) ) {
-		$crumb = $b1 . ' <span class="breadcrumb-sep">/</span> ' . $b2;
+
+	if ( bp_is_group() || bp_is_user() ) {
+		$crumb = $b1 . ' <span class="breadcrumb-sep">/</span> ' . esc_html( $b2 );
 	}
 
 	return $crumb;
 }
+add_filter( 'openlab_archive_crumb', 'openlab_specific_archive_breadcrumb' );
 
 /**
  * Class to control breadcrumbs display.
@@ -136,7 +143,7 @@ class Openlab_Breadcrumb {
 	 *
 	 * @var array
 	 */
-	var $args = array();
+	public $args = array();
 
 	/**
 	 * Cache get_option call. Private.
@@ -145,7 +152,7 @@ class Openlab_Breadcrumb {
 	 *
 	 * @var string
 	 */
-	var $on_front;
+	public $on_front;
 
 	/**
 	 * Constructor. Set up cacheable values and settings.
@@ -154,7 +161,7 @@ class Openlab_Breadcrumb {
 	 *
 	 * @param array $args
 	 */
-	function __construct() {
+	public function __construct() {
 		$this->on_front = get_option( 'show_on_front' );
 
 		/** Default arguments * */
@@ -188,7 +195,7 @@ class Openlab_Breadcrumb {
 	 *
 	 * @return string HTML markup
 	 */
-	function get_output( $args = array() ) {
+	public function get_output( $args = array() ) {
 
 		/** Merge and Filter user and default arguments * */
 		$this->args = apply_filters( 'openlab_breadcrumb_args', wp_parse_args( $args, $this->args ) );
@@ -203,8 +210,8 @@ class Openlab_Breadcrumb {
 	 *
 	 * @return string HTML markup
 	 */
-	function output( $args = array() ) {
-
+	public function output( $args = array() ) {
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		echo $this->get_output( $args );
 	}
 
@@ -217,10 +224,12 @@ class Openlab_Breadcrumb {
 	 *
 	 * @return string HTML markup
 	 */
-	function get_home_crumb() {
+	public function get_home_crumb() {
 
-		$url   = 'page' == $this->on_front ? get_permalink( get_option( 'page_on_front' ) ) : trailingslashit( home_url() );
-		$crumb = ( is_home() && is_front_page() ) ? $this->args['home'] : $this->get_breadcrumb_link( $url, sprintf( __( 'View %s', 'genesis' ), $this->args['home'] ), $this->args['home'] );
+		$url = 'page' === $this->on_front ? get_permalink( get_option( 'page_on_front' ) ) : trailingslashit( home_url() );
+
+		// translators: Home page name
+		$crumb = ( is_home() && is_front_page() ) ? $this->args['home'] : $this->get_breadcrumb_link( $url, sprintf( __( 'View %s', 'commons-in-a-box' ), esc_html( $this->args['home'] ) ), $this->args['home'] );
 
 		return apply_filters( 'openlab_home_crumb', $crumb, $this->args );
 	}
@@ -235,10 +244,10 @@ class Openlab_Breadcrumb {
 	 *
 	 * @return string HTML markup
 	 */
-	function get_blog_crumb() {
+	public function get_blog_crumb() {
 
 		$crumb = $this->get_home_crumb();
-		if ( 'page' == $this->on_front ) {
+		if ( 'page' === $this->on_front ) {
 			$crumb = get_the_title( get_option( 'page_for_posts' ) );
 		}
 
@@ -252,7 +261,7 @@ class Openlab_Breadcrumb {
 	 *
 	 * @return string HTML markup
 	 */
-	function get_search_crumb() {
+	public function get_search_crumb() {
 
 		$crumb = $this->args['labels']['search'] . '"' . esc_html( apply_filters( 'the_search_query', get_search_query() ) ) . '"';
 
@@ -266,8 +275,7 @@ class Openlab_Breadcrumb {
 	 *
 	 * @return string HTML markup
 	 */
-	function get_404_crumb() {
-
+	public function get_404_crumb() {
 		global $wp_query;
 
 		$crumb = $this->args['labels']['404'];
@@ -283,18 +291,18 @@ class Openlab_Breadcrumb {
 	 * @global mixed $wp_query
 	 * @return string HTML markup
 	 */
-	function get_page_crumb() {
+	public function get_page_crumb() {
 
 		global $wp_query;
 
-		if ( 'page' == $this->on_front && is_front_page() ) {
+		if ( 'page' === $this->on_front && is_front_page() ) {
 			// Don't do anything - we're on the front page and we've already dealt with that elsewhere.
 			$crumb = $this->get_home_crumb();
 		} else {
 			$post = $wp_query->get_queried_object();
 
 			// If this is a top level Page, it's simple to output the breadcrumb
-			if ( 0 == $post->post_parent ) {
+			if ( 0 === $post->post_parent ) {
 				$crumb = get_the_title();
 			} else {
 				if ( isset( $post->ancestors ) ) {
@@ -313,14 +321,15 @@ class Openlab_Breadcrumb {
 						$crumbs,
 						$this->get_breadcrumb_link(
 							get_permalink( $ancestor ),
-							sprintf( __( 'View %s', 'genesis' ), get_the_title( $ancestor ) ),
+							// translators: post title
+							sprintf( __( 'View %s', 'commons-in-a-box' ), esc_html( get_the_title( $ancestor ) ) ),
 							get_the_title( $ancestor )
 						)
 					);
 				}
 
 				// Add the current page title
-				$crumbs[] = strip_tags( get_the_title( $post->ID ) );
+				$crumbs[] = wp_strip_all_tags( get_the_title( $post->ID ) );
 
 				$crumb = join( $this->args['sep'], $crumbs );
 			}
@@ -341,43 +350,46 @@ class Openlab_Breadcrumb {
 	 * @todo Heirarchial, and multiple, cats and taxonomies
 	 * @todo redirect taxonomies to plural pages.
 	 */
-	function get_archive_crumb() {
+	public function get_archive_crumb() {
 		global $wp_query, $wp_locale;
 
 		if ( is_category() ) {
 			$crumb  = $this->args['labels']['category'] . $this->get_term_parents( get_query_var( 'cat' ), 'category' );
-			$crumb .= edit_term_link( __( '(Edit)', 'genesis' ), ' ', '', null, false );
+			$crumb .= edit_term_link( __( '(Edit)', 'commons-in-a-box' ), ' ', '', null, false );
 		} elseif ( is_tag() ) {
 			$crumb  = $this->args['labels']['tag'] . single_term_title( '', false );
-			$crumb .= edit_term_link( __( '(Edit)', 'genesis' ), ' ', '', null, false );
+			$crumb .= edit_term_link( __( '(Edit)', 'commons-in-a-box' ), ' ', '', null, false );
 		} elseif ( is_tax() ) {
 			$term   = $wp_query->get_queried_object();
 			$crumb  = $this->args['labels']['tax'] . $this->get_term_parents( $term->term_id, $term->taxonomy );
-			$crumb .= edit_term_link( __( '(Edit)', 'genesis' ), ' ', '', null, false );
+			$crumb .= edit_term_link( __( '(Edit)', 'commons-in-a-box' ), ' ', '', null, false );
 		} elseif ( is_year() ) {
 			$crumb = $this->args['labels']['date'] . get_query_var( 'year' );
 		} elseif ( is_month() ) {
-			$crumb  = $this->get_breadcrumb_link(
+			$crumb = $this->get_breadcrumb_link(
 				get_year_link( get_query_var( 'year' ) ),
-				sprintf( __( 'View archives for %s', 'genesis' ), get_query_var( 'year' ) ),
+				// translators: year
+				sprintf( __( 'View archives for %s', 'commons-in-a-box' ), esc_html( get_query_var( 'year' ) ) ),
 				get_query_var( 'year' ),
 				$this->args['sep']
 			);
 			$crumb .= $this->args['labels']['date'] . single_month_title( ' ', false );
 		} elseif ( is_day() ) {
-			$crumb  = $this->get_breadcrumb_link(
+			$crumb = $this->get_breadcrumb_link(
 				get_year_link( get_query_var( 'year' ) ),
-				sprintf( __( 'View archives for %s', 'genesis' ), get_query_var( 'year' ) ),
+				// translators: year
+				sprintf( __( 'View archives for %s', 'commons-in-a-box' ), esc_html( get_query_var( 'year' ) ) ),
 				get_query_var( 'year' ),
 				$this->args['sep']
 			);
 			$crumb .= $this->get_breadcrumb_link(
 				get_month_link( get_query_var( 'year' ), get_query_var( 'monthnum' ) ),
-				sprintf( __( 'View archives for %1$s %2$s', 'genesis' ), $wp_locale->get_month( get_query_var( 'monthnum' ) ), get_query_var( 'year' ) ),
+				// translators: 1. month name, 2. year
+				sprintf( __( 'View archives for %1$s %2$s', 'commons-in-a-box' ), esc_html( $wp_locale->get_month( get_query_var( 'monthnum' ) ) ), esc_html( get_query_var( 'year' ) ) ),
 				$wp_locale->get_month( get_query_var( 'monthnum' ) ),
 				$this->args['sep']
 			);
-			$crumb .= $this->args['labels']['date'] . get_query_var( 'day' ) . date( 'S', mktime( 0, 0, 0, 1, get_query_var( 'day' ) ) );
+			$crumb .= $this->args['labels']['date'] . get_query_var( 'day' ) . gmdate( 'S', mktime( 0, 0, 0, 1, get_query_var( 'day' ) ) );
 		} elseif ( is_author() ) {
 			$crumb = $this->args['labels']['author'] . esc_html( $wp_query->queried_object->display_name );
 		} elseif ( is_post_type_archive() ) {
@@ -397,7 +409,7 @@ class Openlab_Breadcrumb {
 	 * @global mixed $post Current post object
 	 * @return string HTML markup
 	 */
-	function get_single_crumb() {
+	public function get_single_crumb() {
 
 		global $post;
 
@@ -407,7 +419,8 @@ class Openlab_Breadcrumb {
 				$attachment_parent = get_post( $post->post_parent );
 				$crumb             = $this->get_breadcrumb_link(
 					get_permalink( $post->post_parent ),
-					sprintf( __( 'View %s', 'genesis' ), $attachment_parent->post_title ),
+					// translators: post name
+					sprintf( __( 'View %s', 'commons-in-a-box' ), $attachment_parent->post_title ),
 					$attachment_parent->post_title,
 					$this->args['sep']
 				);
@@ -416,15 +429,16 @@ class Openlab_Breadcrumb {
 		} elseif ( is_singular( 'post' ) ) {
 			$categories = get_the_category( $post->ID );
 
-			if ( 1 == count( $categories ) ) { // if in single category, show it, and any parent categories
+			if ( 1 === count( $categories ) ) { // if in single category, show it, and any parent categories
 				$crumb = $this->get_term_parents( $categories[0]->cat_ID, 'category', true ) . $this->args['sep'];
 			}
-			if ( count( $categories ) > 1 ) {
+			if ( 1 < count( $categories ) ) {
 				if ( ! $this->args['heirarchial_categories'] ) { // Don't show parent categories (unless the post happen to be explicitely in them)
 					foreach ( $categories as $category ) {
 						$crumbs[] = $this->get_breadcrumb_link(
 							get_category_link( $category->term_id ),
-							sprintf( __( 'View all posts in %s', 'genesis' ), $category->name ),
+							// translators: category name
+							sprintf( __( 'View all posts in %s', 'commons-in-a-box' ), esc_html( $category->name ) ),
 							$category->name
 						);
 					}
@@ -443,7 +457,8 @@ class Openlab_Breadcrumb {
 			$post_type        = get_query_var( 'post_type' );
 			$post_type_object = get_post_type_object( $post_type );
 
-			$crumb = $this->get_breadcrumb_link( get_post_type_archive_link( $post_type ), sprintf( __( 'View all %s', 'genesis' ), $post_type_object->labels->name ), $post_type_object->labels->name );
+			// translators: post type name
+			$crumb = $this->get_breadcrumb_link( get_post_type_archive_link( $post_type ), sprintf( __( 'View all %s', 'commons-in-a-box' ), esc_html( $post_type_object->labels->name ) ), $post_type_object->labels->name );
 
 			$crumb .= $this->args['sep'] . single_post_title( '', false );
 		}
@@ -488,21 +503,22 @@ class Openlab_Breadcrumb {
 	 * @param array $visited Array of IDs already included in the chain
 	 * @return string HTML markup of crumbs
 	 */
-	function get_term_parents( $parent_id, $taxonomy, $link = false, $visited = array() ) {
+	public function get_term_parents( $parent_id, $taxonomy, $link = false, $visited = array() ) {
 
-		$parent = &get_term( (int) $parent_id, $taxonomy );
+		$parent = get_term( (int) $parent_id, $taxonomy );
 
 		if ( is_wp_error( $parent ) ) {
 			return array();
 		}
 
-		if ( $parent->parent && ( $parent->parent != $parent->term_id ) && ! in_array( $parent->parent, $visited ) ) {
+		if ( $parent->parent && ( (int) $parent->parent !== (int) $parent->term_id ) && ! in_array( $parent->parent, $visited, true ) ) {
 			$visited[] = $parent->parent;
 			$chain[]   = $this->get_term_parents( $parent->parent, $taxonomy, true, $visited );
 		}
 
 		if ( $link && ! is_wp_error( get_term_link( get_term( $parent->term_id, $taxonomy ), $taxonomy ) ) ) {
-			$chain[] = $this->get_breadcrumb_link( get_term_link( get_term( $parent->term_id, $taxonomy ), $taxonomy ), sprintf( __( 'View all items in %s', 'genesis' ), $parent->name ), $parent->name );
+			// translators: parent term name
+			$chain[] = $this->get_breadcrumb_link( get_term_link( get_term( $parent->term_id, $taxonomy ), $taxonomy ), sprintf( __( 'View all items in %s', 'commons-in-a-box' ), esc_html( $parent->name ) ), $parent->name );
 		} else {
 			$chain[] = $parent->name;
 		}
@@ -519,7 +535,7 @@ class Openlab_Breadcrumb {
 	 * @param type $sep Separator
 	 * @return type HTML markup for anchor link and optional separator
 	 */
-	function get_breadcrumb_link( $url, $title, $content, $sep = false ) {
+	public function get_breadcrumb_link( $url, $title, $content, $sep = false ) {
 
 		$link = sprintf( '<a href="%s" title="%s">%s</a>', esc_attr( $url ), esc_attr( $title ), esc_html( $content ) );
 
@@ -555,14 +571,6 @@ function openlab_breadcrumb( $args = array() ) {
  * @since 0.1.6
  */
 function openlab_do_breadcrumbs() {
-
-	// Conditional Checks
-	/* if ( is_front_page() && !openlab_get_option( 'breadcrumb_home' ) ) return;
-	  if ( is_single() && !openlab_get_option( 'breadcrumb_single' ) ) return;
-	  if ( is_page() && !openlab_get_option( 'breadcrumb_page' ) ) return;
-	  if ( ( is_archive() || is_search() ) && !openlab_get_option('breadcrumb_archive')) return;
-	  if ( is_404() && !openlab_get_option('breadcrumb_404') ) return; */
-
 	if ( function_exists( 'bcn_display' ) ) {
 		echo '<div class="breadcrumb">';
 		bcn_display();

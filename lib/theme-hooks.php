@@ -6,7 +6,7 @@
 function openlab_custom_the_content( $content ) {
 	global $post;
 
-	if ( $post->post_type === 'page' && $post->post_name === 'calendar' ) {
+	if ( 'page' === $post->post_type && 'calendar' === $post->post_name ) {
 
 		if ( function_exists( 'eo_get_events' ) ) {
 			$args = array(
@@ -24,7 +24,7 @@ function openlab_custom_the_content( $content ) {
 		}
 	}
 
-	if ( $post->post_type === 'page' && $post->post_name === 'upcoming' ) {
+	if ( 'page' === $post->post_type && 'upcoming' === $post->post_name ) {
 
 		if ( function_exists( 'eo_get_events' ) ) {
 
@@ -60,14 +60,15 @@ function openlab_main_menu( $location = 'header' ) {
 	}
 
 	?>
-	<nav class="navbar navbar-default oplb-bs navbar-location-<?php echo $location; ?>" role="navigation">
+	<nav class="navbar navbar-default oplb-bs navbar-location-<?php echo esc_attr( $location ); ?>" role="navigation">
 		<?php openlab_sitewide_header( $location ); ?>
 		<div class="main-nav-wrapper">
 			<div class="container-fluid">
 				<div class="navbar-header hidden-xs">
+					<?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 					<header class="menu-title"><?php echo $logo_html; ?></header>
 				</div>
-				<div class="navbar-collapse collapse" id="main-nav-<?php echo $location; ?>">
+				<div class="navbar-collapse collapse" id="main-nav-<?php echo esc_attr( $location ); ?>">
 					<?php
 					// this adds the main menu, controlled through the WP menu interface
 					$args = array(
@@ -110,7 +111,7 @@ add_action( 'bp_before_footer', 'openlab_footer_bar', 6 );
 function openlab_custom_menu_items( $items, $menu ) {
 	global $post, $bp;
 
-	if ( $menu->theme_location == 'main' ) {
+	if ( 'main' === $menu->theme_location ) {
 
 		$opl_link = '';
 
@@ -122,12 +123,12 @@ function openlab_custom_menu_items( $items, $menu ) {
 				$class = 'class="current-menu-item"';
 			}
 			$opl_link  = '<li ' . $class . '>';
-			$opl_link .= '<a href="' . bp_loggedin_user_domain() . '">' . esc_html__( 'My Profile', 'commons-in-a-box' ) . '</a>';
+			$opl_link .= '<a href="' . esc_attr( bp_loggedin_user_domain() ) . '">' . esc_html__( 'My Profile', 'commons-in-a-box' ) . '</a>';
 			$opl_link .= '</li>';
 		}
 
 		return $items . $opl_link;
-	} elseif ( $menu->theme_location == 'aboutmenu' ) {
+	} elseif ( 'aboutmenu' === $menu->theme_location ) {
 
 		$items = str_replace( 'Privacy Policy', '<i class="fa fa-external-link no-margin no-margin-left"></i>Privacy Policy', $items );
 
@@ -157,7 +158,7 @@ add_filter( 'wpcf7_form_class_attr', 'openlab_custom_form_classes' );
 function openlab_message_thread_excerpt_custom_size( $message ) {
 	global $messages_template;
 
-	$message = strip_tags( bp_create_excerpt( $messages_template->thread->last_message_content, 55 ) );
+	$message = wp_strip_all_tags( bp_create_excerpt( $messages_template->thread->last_message_content, 55 ) );
 
 	return $message;
 }
@@ -182,7 +183,7 @@ add_action( 'wp_head', 'openlab_loader_class', 999 );
  * @param type $buttons
  * @return type
  */
-function openlab_mce_buttons( $init, $editor ) {
+function openlab_mce_buttons( $init ) {
 
 	if ( function_exists( 'bpeo_is_action' ) ) {
 		if ( bpeo_is_action( 'new' ) || bpeo_is_action( 'edit' ) ) {
@@ -239,6 +240,7 @@ function openlab_group_creation_categories() {
 		}
 	}
 
+	// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	echo $cats_out;
 }
 add_action( 'bp_after_group_details_creation_step', 'openlab_group_creation_categories', 9 );
