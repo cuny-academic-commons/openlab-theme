@@ -137,6 +137,8 @@ openlab_group_admin_js_data( $group_type );
 					</div>
 				</div>
 
+				<?php wp_nonce_field( 'openlab_group_bpeo_settings', 'openlab-group-bpeo-settings-nonce', false  ); ?>
+
 			<?php endif; ?>
 
 			<?php /* "Related Links List Settings" */ ?>

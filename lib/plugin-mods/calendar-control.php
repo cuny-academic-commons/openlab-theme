@@ -467,6 +467,12 @@ function openlab_get_group_event_create_access_setting( $group_id ) {
  * Save calendar group settings
  */
 function openlab_process_group_calendar_settings( $group_id ) {
+	if ( ! isset( $_POST['openlab-group-bpeo-settings-nonce'] ) ) {
+		return;
+	}
+
+	check_admin_referer( 'openlab_group_bpeo_settings', 'openlab-group-bpeo-settings-nonce' );
+
 	if ( ! empty( $_POST['openlab-bpeo-event-create-access'] ) ) {
 
 		$access_level = sanitize_text_field( $_POST['openlab-bpeo-event-create-access'] );
