@@ -18,8 +18,6 @@ add_action(
 );
 
 // Install widgets.
-add_action( 'wp_loaded', 'openlab_maybe_install' );
-
 function openlab_core_setup() {
 	add_theme_support( 'post-thumbnails' );
 	global $content_width;
@@ -35,101 +33,6 @@ function openlab_core_setup() {
 
 // test
 add_action( 'after_setup_theme', 'openlab_core_setup' );
-
-function openlab_maybe_install() {
-	return;
-	if ( ! isset( $_GET['cboxol-trigger-theme'] ) ) {
-		return;
-	}
-
-	$nonce = get_option( 'cboxol_setup_nonce' );
-	if ( ! $nonce || $nonce !== wp_unslash( $_GET['cboxol-trigger-theme'] ) ) {
-		return;
-	}
-
-	if ( defined( 'DOING_AJAX' ) ) {
-		return;
-	}
-
-	if ( get_option( 'openlab_theme_installed' ) ) {
-		return;
-	}
-
-	if ( get_option( 'cboxol_installing' ) ) {
-		return;
-	}
-
-	// Nav menus.
-	openlab_create_default_nav_menus();
-
-	// Slider.
-	$slides = array(
-		array(
-			'title'   => __( 'Your Second Sample Slide', 'commons-in-a-box' ),
-			'content' => 'Ex consequatur ipsam iusto id impedit nesciunt. Velit perspiciatis laborum et culpa rem earum. Beatae fugit perspiciatis dolorum. Incidunt voluptate officia cupiditate ipsum. Officiis eius quo incidunt voluptatem vitae deleniti aut. Non dolorem iste qui voluptates id ratione unde accusantium.',
-			'image'   => get_template_directory() . '/images/default-slide-1.jpeg',
-		),
-		array(
-			'title'   => __( 'Your First Sample Slide', 'commons-in-a-box' ),
-			'content' => 'Ipsam et voluptas sed qui vel voluptatem quam. Qui pariatur occaecati consequatur quibusdam reiciendis aut asperiores nam. Esse et et id amet et quis. Beatae quaerat a ea expedita blanditiis quia. Doloremque ad nemo culpa. Quia at qui et.',
-			'image'   => get_template_directory() . '/images/default-slide-2.jpeg',
-		),
-	);
-
-	// only need these if performing outside of admin environment
-	if ( ! function_exists( 'media_sideload_image' ) ) {
-		require_once ABSPATH . 'wp-admin/includes/media.php';
-		require_once ABSPATH . 'wp-admin/includes/file.php';
-		require_once ABSPATH . 'wp-admin/includes/image.php';
-	}
-
-	foreach ( $slides as $slide ) {
-		$slide_id = wp_insert_post(
-			array(
-				'post_type'    => 'slider',
-				'post_status'  => 'publish',
-				'post_title'   => $slide['title'],
-				'post_content' => $slide['content'],
-			)
-		);
-
-		$file_path = $slide['image'];
-
-		// Generate attachment and set as featured post.
-		$tmpfname = wp_tempnam( $file_path );
-		copy( $file_path, $tmpfname );
-
-		$file = array(
-			'error'    => null,
-			'tmp_name' => $tmpfname,
-			'size'     => filesize( $file_path ),
-			'name'     => basename( $file_path ),
-		);
-
-		$overrides = array(
-			'test_form' => false,
-			'test_size' => false,
-		);
-
-		$sideloaded = wp_handle_sideload( $file, $overrides );
-
-		$attachment = array(
-			'post_mime_type' => $sideloaded['type'],
-			'post_title'     => basename( $tmpfname ),
-			'post_content'   => '',
-			'post_status'    => 'inherit',
-			'post_parent'    => $slide_id,
-		);
-
-		$attachment_id = wp_insert_attachment( $attachment, $sideloaded['file'] );
-		$attach_data   = wp_generate_attachment_metadata( $attachment_id, $sideloaded );
-		wp_update_attachment_metadata( $attachment_id, $attach_data );
-
-		set_post_thumbnail( $slide_id, $attachment_id );
-	}
-
-	remove_action( 'after_switch_theme', '_wp_sidebars_changed' );
-}
 
 function openlab_create_default_nav_menus() {
 	// Main Menu.
@@ -277,16 +180,16 @@ function openlab_load_scripts() {
 
 		// less compliation via js so we can check styles in firebug via fireless - local dev only
 		if ( CSS_DEBUG ) {
-			wp_register_script( 'less-config-js', $stylesheet_dir_uri . '/js/less.config.js', array( 'jquery' ), $ver );
+			wp_register_script( 'less-config-js', $stylesheet_dir_uri . '/js/less.config.js', array( 'jquery' ), $ver, true );
 			wp_enqueue_script( 'less-config-js' );
-			wp_register_script( 'less-js', $stylesheet_dir_uri . '/js/less-1.7.4.js', array( 'jquery' ), $ver );
+			wp_register_script( 'less-js', $stylesheet_dir_uri . '/js/less-1.7.4.js', array( 'jquery' ), $ver, true );
 			wp_enqueue_script( 'less-js' );
 		}
 
 		wp_register_script( 'vendor-js', $stylesheet_dir_uri . '/js/dist/vendor.js', array( 'jquery' ), $ver, true );
 		wp_enqueue_script( 'vendor-js' );
 
-		wp_register_script( 'select2', $stylesheet_dir_uri . '/js/select2.min.js', array( 'jquery' ), $ver );
+		wp_register_script( 'select2', $stylesheet_dir_uri . '/js/select2.min.js', array( 'jquery' ), $ver, true );
 
 		$utility_deps = array( 'jquery', 'select2', 'hyphenator-js' );
 		wp_register_script( 'utility', $stylesheet_dir_uri . '/js/utility.js', $utility_deps, $ver, true );
@@ -304,7 +207,7 @@ function openlab_load_scripts() {
 			)
 		);
 
-		wp_register_script( 'parsley', $stylesheet_dir_uri . '/js/parsley.min.js', array( 'jquery' ), $ver );
+		wp_register_script( 'parsley', $stylesheet_dir_uri . '/js/parsley.min.js', array( 'jquery' ), $ver, true );
 	}
 }
 add_action( 'wp_enqueue_scripts', 'openlab_load_scripts' );
@@ -399,7 +302,7 @@ function openlab_group_admin_body_classes( $classes ) {
 		return $classes;
 	}
 
-	if ( in_array( bp_current_action(), array( 'invite-anyone', 'notifications' ) ) ) {
+	if ( in_array( bp_current_action(), array( 'invite-anyone', 'notifications' ), true ) ) {
 		$classes[] = 'group-admin';
 	}
 
@@ -419,7 +322,9 @@ function enqueue_less_styles( $tag, $handle ) {
 		$rel    = isset( $wp_styles->registered[ $handle ]->extra['alt'] ) && $wp_styles->registered[ $handle ]->extra['alt'] ? 'alternate stylesheet' : 'stylesheet';
 		$title  = isset( $wp_styles->registered[ $handle ]->extra['title'] ) ? "title='" . esc_attr( $wp_styles->registered[ $handle ]->extra['title'] ) . "'" : '';
 
+		// phpcs:disable
 		$tag = "<link rel='stylesheet/less' $title href='$href' type='text/css' media='$media' />";
+		// phpcs:enable
 	}
 	return $tag;
 }
@@ -446,9 +351,11 @@ function get_the_content_with_formatting( $more_link_text = '(more...)', $stript
  */
 function openlab_post_value( $key ) {
 	$value = '';
+	// phpcs:disable WordPress.Security.NonceVerification.Missing
 	if ( ! empty( $_POST[ $key ] ) ) {
 		$value = wp_unslash( $_POST[ $key ] );
 	}
+	// phpcs:enable WordPress.Security.NonceVerification.Missing
 	return $value;
 }
 
@@ -496,6 +403,7 @@ function openlab_site_footer() {
 	$footer = get_site_transient( 'cboxol_network_footer' );
 
 	if ( $footer ) {
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		echo $footer;
 		return;
 	}
@@ -514,11 +422,14 @@ function openlab_site_footer() {
 				<div class="row row-footer">
 					<div id="footer-left" class="footer-left footer-section col-md-12">
 						<h2 id="footer-left-heading"><?php echo esc_html( $left_heading ); ?></h2>
+						<?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 						<div id="footer-left-content"><?php echo $left_content; ?></div>
 					</div>
 
 					<div id="footer-middle" class="footer-middle footer-section col-md-8">
+						<?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 						<h2 id="footer-middle-heading"><?php echo esc_html( $middle_heading ); ?></h2>
+						<?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 						<div id="footer-middle-content"><?php echo $middle_content; ?></div>
 					</div>
 
@@ -526,7 +437,7 @@ function openlab_site_footer() {
 						<p><?php esc_html_e( 'Powered by:', 'commons-in-a-box' ); ?></p>
 
 						<div class="cboxol-footer-logo">
-							<a href="https://commonsinabox.org/"><img src="<?php echo get_template_directory_uri(); ?>/images/cboxol-logo-noicon.png" alt="<?php esc_attr_e( 'CBOX-OL Logo', 'commons-in-a-box' ); ?>" /></a>
+							<a href="https://commonsinabox.org/"><img src="<?php echo esc_attr( get_template_directory_uri() ); ?>/images/cboxol-logo-noicon.png" alt="<?php esc_attr_e( 'CBOX-OL Logo', 'commons-in-a-box' ); ?>" /></a>
 						</div>
 					</div>
 				</div>
@@ -543,6 +454,7 @@ function openlab_site_footer() {
 
 	set_site_transient( 'cboxol_network_footer', $footer, DAY_IN_SECONDS );
 
+	// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	echo $footer;
 }
 
