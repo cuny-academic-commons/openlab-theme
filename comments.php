@@ -29,7 +29,19 @@ endif;
 		$ping_count = count( $comments_by_type['pings'] );
 		?>
 <section id="trackbacks-list" class="comments">
-<h3 class="comments-title"><?php echo '<span>' . $ping_count . '</span> ' . ( $ping_count > 1 ? __( 'Trackbacks', 'blankslate' ) : __( 'Trackback', 'blankslate' ) ); ?></h3>
+
+	<h3 class="comments-title">
+		<?php
+		echo esc_html(
+			sprintf(
+				// translators: Trackback count
+				_n( '%s Trackback', '%s Trackbacks', $ping_count, 'commons-in-a-box' ),
+				number_format_i18n( $ping_count )
+			)
+		);
+		?>
+	</h3>
+
 <ul>
 		<?php wp_list_comments( 'type=pings&callback=blankslate_custom_pings' ); ?>
 </ul>
