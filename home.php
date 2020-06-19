@@ -15,6 +15,7 @@ get_header();
 		</div>
 	</div>
 	<div class="fill-gutter fill-gutter-left slider">
+		<?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 		<?php echo openlab_get_home_slider(); ?>
 	</div>
 

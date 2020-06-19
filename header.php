@@ -6,8 +6,6 @@
 		<meta name="robots" content="noodp,noydir" />
 		<title><?php bloginfo( 'name' ); ?></title>
 
-		<?php // do_action('bp_head') ?>
-
 		<link rel="pingback" href="<?php bloginfo( 'pingback_url' ); ?>" />
 
 		<?php wp_head(); ?>
@@ -16,6 +14,7 @@
 
 	<body <?php body_class(); ?>>
 
+		<?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 		<?php echo openlab_primary_skip_link(); ?>
 
 		<div class="page-table">
