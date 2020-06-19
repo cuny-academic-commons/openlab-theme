@@ -29,7 +29,7 @@
 	<hr>
 
 	<!-- Event details -->
-	<h3 class="font-size font-14"><?php _e( 'Event Details', 'eventorganiser' ); ?></h3>
+	<h3 class="font-size font-14"><?php esc_html_e( 'Event Details', 'eventorganiser' ); ?></h3>
 
 	<!-- Is event recurring or a single event -->
 	<?php if ( eo_recurs() ) : ?>
@@ -38,11 +38,13 @@
 
 		<?php if ( $next ) : ?>
 			<!-- If the event is occurring again in the future, display the date -->
-			<?php printf( '<p>' . __( 'This event is running from %1$s until %2$s. It is next occurring on %3$s', 'eventorganiser' ) . '</p>', eo_get_schedule_start( 'j F Y' ), eo_get_schedule_last( 'j F Y' ), $next ); ?>
+			<?php // translators: 1. start date, 2. end date, 3. next occurrence date ?>
+			<?php echo esc_html( sprintf( '<p>' . __( 'This event is running from %1$s until %2$s. It is next occurring on %3$s', 'eventorganiser' ) . '</p>', eo_get_schedule_start( 'j F Y' ), eo_get_schedule_last( 'j F Y' ), $next ) ); ?>
 
 		<?php else : ?>
 			<!-- Otherwise the event has finished (no more occurrences) -->
-			<?php printf( '<p>' . __( 'This event finished on %s', 'eventorganiser' ) . '</p>', eo_get_schedule_last( 'd F Y', '' ) ); ?>
+			<?php // translators: finish date ?>
+			<?php echo esc_html( sprintf( '<p>' . __( 'This event finished on %s', 'eventorganiser' ) . '</p>', eo_get_schedule_last( 'd F Y', '' ) ) ); ?>
 		<?php endif; ?>
 	<?php endif; ?>
 
@@ -50,14 +52,15 @@
 
 		<?php if ( ! eo_recurs() ) { ?>
 			<!-- Single event -->
+			<?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 			<li><strong><?php esc_html_e( 'Date', 'eventorganiser' ); ?>:</strong> <?php echo eo_format_event_occurrence(); ?></li>
 		<?php } ?>
 
 		<?php
 		if ( eo_get_venue() ) {
-			$tax = get_taxonomy( 'event-venue' );
+			$event_tax = get_taxonomy( 'event-venue' );
 			?>
-			<li><strong><?php echo esc_html( $tax->labels->singular_name ); ?>:</strong> <?php eo_venue_name(); ?></li>
+			<li><strong><?php echo esc_html( $event_tax->labels->singular_name ); ?>:</strong> <?php eo_venue_name(); ?></li>
 		<?php } ?>
 
 		<?php
@@ -76,11 +79,12 @@
 			if ( $upcoming->have_posts() ) :
 				?>
 
-					<li><strong><?php _e( 'Upcoming Dates', 'eventorganiser' ); ?>:</strong>
+					<li><strong><?php esc_html_e( 'Upcoming Dates', 'eventorganiser' ); ?>:</strong>
 						<ul class="eo-upcoming-dates">
 							<?php
 							while ( $upcoming->have_posts() ) {
 								$upcoming->the_post();
+								// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 								echo '<li>' . eo_format_event_occurrence() . '</li>';
 							};
 							?>
@@ -103,6 +107,7 @@
 	<?php if ( eo_get_venue() && eo_venue_has_latlng( eo_get_venue() ) ) : ?>
 		<!-- Display map -->
 		<div class="eo-event-venue-map">
+			<?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 			<?php echo eo_get_venue_map( eo_get_venue(), array( 'width' => '100%' ) ); ?>
 		</div>
 	<?php endif; ?>

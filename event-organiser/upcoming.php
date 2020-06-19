@@ -14,17 +14,19 @@ if ( bp_is_user() ) {
 }
 
 $events = eo_get_events( $eo_get_events_args ); ?>
-<h2>Group Events</h2>
+<h2><?php esc_html_e( 'Group Events', 'commons-in-a-box' ); ?></h2>
 <?php if ( ! empty( $events ) ) : ?>
 	<ul class="bpeo-upcoming-events">
 	<?php
+		// phpcs:disable
 		$_post = $GLOBALS['post'];
 	foreach ( $events as $post ) {
 		eo_get_template_part( 'content-eo', 'upcoming' );
 	}
 		$GLOBALS['post'] = $_post;
+		// phpcs:enable
 	?>
 	</ul>
-<?php else : // ! empty( $events ) ?>
-	<p><?php _e( 'No upcoming events found.', 'bp-event-organiser' ); ?></p>
-<?php endif; // ! empty( $events ) ?>
+<?php else : ?>
+	<p><?php esc_html_e( 'No upcoming events found.', 'bp-event-organiser' ); ?></p>
+<?php endif; ?>
