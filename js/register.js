@@ -2,7 +2,8 @@
 
 	// Parsley validation rules.
 	window.Parsley.addValidator(
-		'lowercase', {
+		'lowercase',
+		{
 			validateString: function( value ) {
 				return value === value.toLowerCase();
 			},
@@ -13,7 +14,8 @@
 	);
 
 	window.Parsley.addValidator(
-		'nospecialchars', {
+		'nospecialchars',
+		{
 			validateString: function( value ) {
 				return ! value.match( /[^a-zA-Z0-9]/ );
 			},
@@ -25,7 +27,8 @@
 
 	var iffRecursion = false;
 	window.Parsley.addValidator(
-		'iff', {
+		'iff',
+		{
 			validateString: function( value, requirement, instance ) {
 				var $partner = $( requirement );
 				var isValid  = $partner.val() == value;
@@ -67,29 +70,34 @@
 					errorsWrapper: '<ul class="parsley-errors-list text-danger"></ul>'
 				}
 			).on(
-				'field:error', function( formInstance ) {
+				'field:error',
+				function( formInstance ) {
 					this.$element.parent( '.form-group' )
 					.addClass( 'has-error' )
 					.prepend( '<span class="sr-only">Please enter the following: </span>' )
 					.attr( 'role', 'alert' );
 				}
 			).on(
-				'field:success', function( formInstance ) {
+				'field:success',
+				function( formInstance ) {
 					this.$element.parent( '.form-group' ).removeClass( 'has-error' );
 				}
 			);
 
-			var inputBlacklist = [
-			'signup_username',
-			'field_1',   // Display Name
+			var inputDenylist = [
+				'signup_username',
+				'field_1',   // Display Name
 			];
 
 			$password_strength_notice = $( '#password-strength-notice' );
 			$( 'body' ).on(
-				'keyup', '#signup_password', function( e ) {
+				'keyup',
+				'#signup_password',
+				function( e ) {
 					var blacklistValues = [];
-					for ( var i = 0; i < inputBlacklist.length; i++ ) {
-						var blacklistField = document.getElementById( inputBlacklist[ i ] );
+					var denylistLength  = inputDenylist.length
+					for ( var i = 0; i < denylistLength; i++ ) {
+						var blacklistField = document.getElementById( inputDenylist[ i ] );
 						if ( blacklistField ) {
 							if ( 4 <= blacklistField.value.length ) {
 								// Exclude short items. See password-strength-meter.js.
@@ -124,7 +132,8 @@
 			);
 
 			$( '#signup_email' ).on(
-				'blur', function (e) {
+				'blur',
+				function (e) {
 					var email = $( e.target ).val().toLowerCase();
 
 					if ( ! email.length ) {
@@ -142,10 +151,12 @@
 					);
 
 					$.post(
-						ajaxurl, {
+						ajaxurl,
+						{
 							action: 'openlab_validate_email',
 							'email': email
-						}, function( response ) {
+						},
+						function( response ) {
 							if ( response.success ) {
 								$emaillabel.fadeOut(
 									function () {
@@ -169,7 +180,8 @@
 			);
 
 			$( 'input#signup_validation_code' ).live(
-				'blur', function () {
+				'blur',
+				function () {
 					var code = $( this ).val();
 
 					var vcodespan = $( 'label[for="signup_validation_code"] span' );
@@ -189,7 +201,8 @@
 			var $signup_code_message            = $( '#signup-code-message' );
 
 			$account_type_signup_code_field.on(
-				'blur', function() {
+				'blur',
+				function() {
 					$signup_code_message
 					.html( OLReg.strings.dashChecking )
 					.removeClass( 'signup-code-ok signup-code-bad' )
@@ -231,7 +244,8 @@
 			);
 
 			$account_type_field.on(
-				'change', function () {
+				'change',
+				function () {
 					load_account_type_fields();
 				}
 			);
@@ -256,7 +270,8 @@
 
 				if (document.getElementById( 'signup_submit' )) {
 					$( '#signup_submit' ).on(
-						'click',function(e){
+						'click',
+						function(e){
 
 							var thisElem = $( this );
 
@@ -270,7 +285,8 @@
 					);
 
 					$.ajax(
-						ajaxurl, {
+						ajaxurl,
+						{
 							data: {
 								action: 'openlab_profile_fields',
 								account_type: $account_type_field.val(),
@@ -294,7 +310,8 @@
 			 */
 			function load_error_messages() {
 				jQuery.each(
-					OpenLab_Registration_Errors, function (k, v) {
+					OpenLab_Registration_Errors,
+					function (k, v) {
 						$( '#' + k ).before( v );
 					}
 				);
@@ -308,7 +325,7 @@
 				$( '.panel-body input' ).each(
 					function() {
 						if ( 'field_' === this.id.substr( 0, 6 ) ) {
-							  field_ids.push( this.id.substr( 6 ) );
+							field_ids.push( this.id.substr( 6 ) );
 						}
 					}
 				);

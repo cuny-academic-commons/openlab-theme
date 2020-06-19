@@ -11,12 +11,18 @@
 	<!-- Exclude minified and built files. -->
 	<exclude-pattern>*.min.js</exclude-pattern>
 	<exclude-pattern>*.min.css</exclude-pattern>
+	<exclude-pattern>/js/dist/vendor.js</exclude-pattern>
 	<exclude-pattern>/style.css</exclude-pattern>
 	<exclude-pattern>/css/color-schemes/*</exclude-pattern>
 
 	<!-- Exclude libraries -->
-	<exclude-pattern>/js/carousellite.js</exclude-pattern>
+	<exclude-pattern>/js/jcarousellite.js</exclude-pattern>
+	<exclude-pattern>/js/jquery.easing*</exclude-pattern>
+	<exclude-pattern>/js/detect-zoom.js</exclude-pattern>
+	<exclude-pattern>/js/less-*.js</exclude-pattern>
+	<exclude-pattern>/js/jQuery.succinct.mod.js</exclude-pattern>
 	<exclude-pattern>/js/easyaccordion.js</exclude-pattern>
+	<exclude-pattern>/js/camera.*</exclude-pattern>
 	<exclude-pattern>/css/camera.css</exclude-pattern>
 	<exclude-pattern>/css/select2/*</exclude-pattern>
 

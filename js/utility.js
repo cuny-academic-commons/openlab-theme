@@ -477,7 +477,7 @@
 								}
 							);
 						} else {
-							 selectedSlugs.push( v.value );
+							selectedSlugs.push( v.value );
 						}
 					}
 				}
@@ -494,7 +494,7 @@
 
 						// Enable items with no parent, or those with a selected parent.
 					if ( 'undefined' === typeof thisParent || thisParent.length === 0 || -1 !== selectedSlugs.indexOf( thisParent ) ) {
-						  $thisFilter.prop( 'disabled', false );
+							$thisFilter.prop( 'disabled', false );
 						if ( $thisFilter.hasClass( 'academic-unit-nonempty' ) ) {
 							$thisFilter.addClass( 'academic-unit-enabled' );
 						}
@@ -514,7 +514,7 @@
 			$academicUnitSelectors.each(
 				function( k, v ) {
 					if ( $( v ).find( '.academic-unit-enabled' ).length === 0 ) {
-						  $( v ).prop( 'disabled', true );
+						$( v ).prop( 'disabled', true );
 					}
 				}
 			);

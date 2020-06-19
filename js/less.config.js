@@ -3,8 +3,6 @@
  */
 
 var less = {
-    env: "development",
-    dumpLineNumbers: "mediaquery",
+	env: "development",
+	dumpLineNumbers: "mediaquery",
 };
-
-
