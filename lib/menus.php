@@ -1053,7 +1053,7 @@ function openlab_group_admin_tabs( $group = false ) {
 		<?php } ?>
 
 		<?php
-		if ( bp_is_item_admin() ) {
+		if ( ! bp_is_item_admin() ) {
 			return false;
 		}
 		?>
