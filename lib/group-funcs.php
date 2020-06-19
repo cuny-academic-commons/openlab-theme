@@ -772,6 +772,12 @@ function openlab_save_braille_status( $group ) {
 		return;
 	}
 
+	if ( ! isset( $_POST['openlab-group-braille-settings-nonce'] ) ) {
+		return;
+	}
+
+	check_admin_referer( 'openlab_group_braille_settings', 'openlab-group-braille-settings-nonce' );
+
 	$enable  = isset( $_POST['group-enable-braille'] ) ? 1 : 0;
 	$updated = groups_update_groupmeta( (int) $group->id, 'group_enable_braille', $enable );
 }
@@ -780,11 +786,13 @@ function openlab_save_braille_status( $group ) {
  * After group creation, move the dummy avatar to the proper location.
  */
 function openlab_move_avatar_after_group_create() {
+	// phpcs:disable WordPress.Security.NonceVerification.Missing
 	if ( ! isset( $_POST['avatar-item-uuid'] ) ) {
 		return;
 	}
 
 	$uuid = intval( $_POST['avatar-item-uuid'] );
+	// phpcs:enable WordPress.Security.NonceVerification.Missing
 
 	$new_group_id = bp_get_new_group_id();
 	if ( ! $new_group_id ) {
@@ -1640,6 +1648,9 @@ function openlab_default_subscription_settings_form() {
 		<label><input type="radio" name="ass-default-subscription" value="supersub" <?php ass_default_subscription_settings( 'supersub' ); ?> />
 			<?php esc_html_e( 'All Email ( send emails about everything - recommended only for working groups )', 'commons-in-a-box' ); ?></label>
 	</div>
+
+	<?php wp_nonce_field( 'openlab_group_bpges_settings', 'openlab-group-bpges-settings-nonce' ); ?>
+
 	<hr />
 	<?php
 }
@@ -1658,6 +1669,12 @@ add_action(
  * if it's 'no'. This should probably be fixed upstream
  */
 function openlab_save_default_subscription( $group ) {
+	if ( ! isset( $_POST['openlab-group-bpges-settings-nonce'] ) ) {
+		return;
+	}
+
+	check_admin_referer( 'openlab_group_bpges_settings', 'openlab-group-bpges-settings-nonce' );
+
 	if ( ! isset( $_POST['ass-default-subscription'] ) ) {
 		return;
 	}
@@ -2476,6 +2493,8 @@ function openlab_group_braille_toggle_markup() {
 			</div>
 		</div>
 	</div>
+
+	<?php wp_nonce_field( 'openlab_group_braille_settings', 'openlab-group-braille-settings-nonce', false ); ?>
 
 	<?php
 }
