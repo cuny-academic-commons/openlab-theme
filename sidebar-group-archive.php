@@ -17,7 +17,7 @@ if ( bp_is_members_directory() ) {
 
 ?>
 
-<h2 class="sidebar-title"><?php echo $sidebar_title; ?></h2>
+<h2 class="sidebar-title"><?php echo esc_html( $sidebar_title ); ?></h2>
 <div class="sidebar-block">
 	<?php
 	$unit_type_args = array();
