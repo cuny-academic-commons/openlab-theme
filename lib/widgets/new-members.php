@@ -68,7 +68,7 @@ class OpenLab_NewMembers_Widget extends WP_Widget {
 			while ( bp_members() ) :
 				bp_the_member();
 				$user_id     = bp_get_member_user_id();
-				$firstname   = bp_get_user_display_name( $user_id );
+				$firstname   = bp_core_get_user_displayname( $user_id );
 				$user_avatar = bp_core_fetch_avatar(
 					array(
 						'item_id' => $user_id,
