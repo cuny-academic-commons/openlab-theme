@@ -489,12 +489,12 @@
 
 			$academicUnits.each(
 				function( k, v ) {
-						var $thisFilter = $( v );
-						var thisParent  = $thisFilter.data( 'parent' );
+					var $thisFilter = $( v );
+					var thisParent  = $thisFilter.data( 'parent' );
 
-						// Enable items with no parent, or those with a selected parent.
+					// Enable items with no parent, or those with a selected parent.
 					if ( 'undefined' === typeof thisParent || thisParent.length === 0 || -1 !== selectedSlugs.indexOf( thisParent ) ) {
-							$thisFilter.prop( 'disabled', false );
+						$thisFilter.prop( 'disabled', false );
 						if ( $thisFilter.hasClass( 'academic-unit-nonempty' ) ) {
 							$thisFilter.addClass( 'academic-unit-enabled' );
 						}
@@ -518,7 +518,10 @@
 					}
 				}
 			);
-			$academicUnitSelectors.select2( 'destroy' ).select2( select2args );
+
+			// Reinitialize.
+			$academicUnitSelectors.select2( 'destroy' );
+			$academicUnitSelectors.select2( select2args );
 		},
 
 		initMemberRoleDefinitions: function() {
