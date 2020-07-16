@@ -71,7 +71,6 @@ class OpenLab_Group_Type_Widget extends WP_Widget {
 						?>
 
 						<div class="box-1 row-<?php echo esc_attr( $i ); ?> activity-item type-<?php echo esc_attr( $type->get_slug() ); ?>">
-?>
 							<div class="item-avatar">
 								<a href="<?php bp_group_permalink(); ?>"><img class="img-responsive" src="<?php echo esc_attr( $group_avatar ); ?>" alt="<?php echo esc_attr( $group->name ); ?>"/></a>
 							</div>
