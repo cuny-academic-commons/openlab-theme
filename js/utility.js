@@ -520,8 +520,10 @@
 			);
 
 			// Reinitialize.
-			$academicUnitSelectors.select2( 'destroy' );
-			$academicUnitSelectors.select2( select2args );
+			if ( $academicUnitSelectors.length > 0 ) {
+				$academicUnitSelectors.select2( 'destroy' );
+				$academicUnitSelectors.select2( select2args );
+			}
 		},
 
 		initMemberRoleDefinitions: function() {
