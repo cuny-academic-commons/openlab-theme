@@ -122,6 +122,10 @@ if ( $category ) {
 		<?php if ( openlab_is_my_profile() ) : ?>
 			<?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 			<?php echo openlab_submenu_markup( 'groups', $group_type, false ); ?>
+		<?php elseif ( openlab_is_search_results_page() ) : ?>
+			<div class="col-lg-19 col-md-18 col-sm-16">
+				<?php esc_html_e( 'Narrow down your results using the search filters.', 'commons-in-a-box' ); ?>
+			</div>
 		<?php endif; ?>
 
 		<div class="group-count pull-right col-lg-5 col-md-6 col-sm-8"><?php cuny_groups_pagination_count(); ?></div>
