@@ -15,6 +15,8 @@ if ( bp_is_members_directory() ) {
 	$reset_url = bp_get_group_type_directory_permalink( $group_type );
 }
 
+$is_search = openlab_is_search_results_page();
+
 ?>
 
 <h2 class="sidebar-title"><?php echo esc_html( $sidebar_title ); ?></h2>
@@ -45,7 +47,7 @@ var OLAcadUnits = ' . wp_json_encode( $academic_unit_map ) . ';
 			<p><?php esc_html_e( 'Narrow down your results using some of the filters below.', 'commons-in-a-box' ); ?></p>
 
 			<div id="sidebarCustomSelect" class="custom-select-parent">
-				<?php if ( openlab_is_search_results_page() ) : ?>
+				<?php if ( $is_search ) : ?>
 					<?php get_template_part( 'parts/sidebar/filter-group-type' ); ?>
 				<?php endif; ?>
 
@@ -60,11 +62,11 @@ var OLAcadUnits = ' . wp_json_encode( $academic_unit_map ) . ';
 					<?php get_template_part( 'parts/sidebar/filter-group-categories' ); ?>
 				<?php endif; ?>
 
-				<?php if ( bp_is_groups_directory() && $group_type_object && $group_type_object->get_is_course() ) : ?>
+				<?php if ( ( bp_is_groups_directory() && $group_type_object && $group_type_object->get_is_course() ) || $is_search ) : ?>
 					<?php get_template_part( 'parts/sidebar/filter-term' ); ?>
 				<?php endif; ?>
 
-				<?php if ( ( bp_is_groups_directory() && $group_type_object && ! is_wp_error( $group_type_object ) && $group_type_object->get_is_portfolio() ) || bp_is_members_directory() ) : ?>
+				<?php if ( ( bp_is_groups_directory() && $group_type_object && ! is_wp_error( $group_type_object ) && $group_type_object->get_is_portfolio() ) || bp_is_members_directory() || $is_search ) : ?>
 					<?php get_template_part( 'parts/sidebar/filter-member-type' ); ?>
 				<?php endif; ?>
 
