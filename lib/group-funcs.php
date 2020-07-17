@@ -2977,6 +2977,7 @@ function openlab_group_has_badges( $group_id ) {
 function openlab_filter_badge_links( $badge_links, $group_id, $context ) {
 	// Note that they're applied in reverse order, so 'open' is first.
 	$faux_badges = [
+		// phpcs:ignore Squiz.PHP.CommentedOutCode.Found
 		/*
 		Disabled for now - see #208
 		'cloneable' => [
@@ -2986,7 +2987,7 @@ function openlab_filter_badge_links( $badge_links, $group_id, $context ) {
 			'short_name' => 'Clone',
 		],
 		*/
-		'open'      => [
+		'open' => [
 			'add'        => openlab_group_is_open( $group_id ),
 			'link'       => 'somelink',
 			'name'       => 'Open',
