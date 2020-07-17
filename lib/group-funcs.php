@@ -214,7 +214,7 @@ function openlab_group_site_markup() {
 					<input type="hidden" name="action" value="copy_blog" />
 					<input type="hidden" name="source_blog" value="<?php echo intval( $blog_details->blog_id ); ?>" />
 
-					<?php $group_site_display = ! empty( $group_site_url ) ? 'auto' : 'none'; ?>
+					<?php $group_site_display = ! empty( $group_site_url ) ? 'none' : 'auto'; ?>
 					<div class="form-table groupblog-setup" style="display: <?php echo esc_attr( $group_site_display ); ?>">
 						<?php if ( ! $group_type->get_requires_site() ) : ?>
 							<?php $show_website = 'none'; ?>
