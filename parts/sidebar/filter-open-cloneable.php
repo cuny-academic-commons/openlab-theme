@@ -6,8 +6,7 @@
 $is_open      = openlab_get_current_filter( 'open' );
 $is_cloneable = openlab_get_current_filter( 'cloneable' );
 
-// 'Open' is not yet implemented. See https://github.com/cuny-academic-commons/commons-in-a-box/issues/227
-$show_open = false;
+$show_open = true;
 
 // Cloneable should not appear if the content type is not cloneable.
 $show_cloneable = false;

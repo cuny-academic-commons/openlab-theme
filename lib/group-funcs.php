@@ -2965,3 +2965,44 @@ function openlab_group_has_badges( $group_id ) {
 
 	return ! empty( $group_badges );
 }
+
+
+/**
+ * Checks whether a group is "open".
+ *
+ * @param int $group_id Group ID.
+ * @return bool
+ */
+function openlab_group_is_open( $group_id ) {
+	$group = groups_get_group( $group_id );
+
+	$is_open = false;
+	if ( 'public' === $group->status ) {
+		$site_id = openlab_get_site_id_by_group_id( $group_id );
+		if ( $site_id ) {
+			// Avoid switch_to_blog().
+			$blog_public = groups_get_groupmeta( $group_id, 'blog_public', true );
+			$is_open     = '0' === $blog_public || '1' === $blog_public;
+		} else {
+			$is_open = true;
+		}
+	}
+
+	return $is_open;
+}
+
+/**
+ * 'is_open' polyfill for the fact that 'status' is not implemented in bp_has_groups().
+ *
+ * See https://buddypress.trac.wordpress.org/ticket/8310
+ */
+add_filter(
+	'bp_before_groups_get_groups_parse_args',
+	function( $args ) {
+		$is_open = openlab_get_current_filter( 'is_open' );
+		if ( $is_open ) {
+			$args['status'] = 'public';
+		}
+		return $args;
+	}
+);
