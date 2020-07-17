@@ -2966,6 +2966,75 @@ function openlab_group_has_badges( $group_id ) {
 	return ! empty( $group_badges );
 }
 
+/**
+ * Filters the badge link markup to dynamically inject our badge-like flags.
+ *
+ * @param array  $badge_links Array of badge flags.
+ * @param int    $group_id    ID of the group.
+ * @param string $context     Context. 'directory' or 'single'.
+ * @return array
+ */
+function openlab_filter_badge_links( $badge_links, $group_id, $context ) {
+	// Note that they're applied in reverse order, so 'open' is first.
+	$faux_badges = [
+		/*
+		Disabled for now - see #208
+		'cloneable' => [
+			'add'        => openlab_group_can_be_cloned( $group_id ),
+			'link'       => 'someotherlink',
+			'name'       => 'Cloneable',
+			'short_name' => 'Clone',
+		],
+		*/
+		'open'      => [
+			'add'        => openlab_group_is_open( $group_id ),
+			'link'       => 'somelink',
+			'name'       => 'Open',
+			'short_name' => 'Open',
+		],
+	];
+
+	foreach ( $faux_badges as $badge_type => $faux_badge ) {
+		if ( ! $faux_badge['add'] ) {
+			continue;
+		}
+
+		// Copied from \OpenLab\Badges\Badge::get_avatar_flag_html().
+		$group = groups_get_group( $group_id );
+
+		$tooltip_id = 'badge-tooltip-' . $group->slug . '-' . $badge_type;
+
+		$badge_link_start = '';
+		$badge_link_end   = '';
+
+		if ( 'single' === $context ) {
+			$badge_link_start = sprintf(
+				'<a class="group-badge-shortname" href="%s">',
+				esc_attr( $faux_badge['link'] )
+			);
+
+			$badge_link_end = '</a>';
+		} else {
+			$badge_link_start = '<span class="group-badge-shortname">';
+			$badge_link_end   = '</span>';
+		}
+
+		$html  = '<div class="group-badge">';
+		$html .= $badge_link_start;
+		$html .= esc_html( $faux_badge['short_name'] );
+		$html .= $badge_link_end;
+
+		$html .= '<div id="' . esc_attr( $tooltip_id ) . '" class="badge-tooltip" role="tooltip">';
+		$html .= esc_html( $faux_badge['name'] );
+		$html .= '</div>';
+		$html .= '</div>';
+
+		array_unshift( $badge_links, $html );
+	}
+
+	return $badge_links;
+}
+add_filter( 'openlab_badges_badge_links', 'openlab_filter_badge_links', 10, 3 );
 
 /**
  * Checks whether a group is "open".
