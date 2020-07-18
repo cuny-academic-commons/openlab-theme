@@ -421,7 +421,7 @@ function openlab_get_current_filter( $param ) {
 
 		case 'group-types':
 			$group_types = isset( $_GET['group-types'] ) ? $_GET['group-types'] : [];
-			$value = array_filter(
+			$value       = array_filter(
 				wp_unslash( $group_types ),
 				function( $slug ) {
 					$type = cboxol_get_group_type( $slug );
