@@ -10,38 +10,30 @@
 
 // Set up the bp_has_groups() args: per_page, page, search_terms
 $group_args = array(
-	'per_page'   => 12,
-	'meta_query' => array(),
-	'tax_query'  => array( 'relation' => 'AND' ),
-	'type'       => openlab_get_current_filter( 'sort' ),
+	'per_page'     => 12,
+	'meta_query'   => array(),
+	'search_terms' => openlab_get_current_filter( 'search' ),
+	'tax_query'    => array( 'relation' => 'AND' ),
+	'type'         => openlab_get_current_filter( 'sort' ),
 );
 
-$group_type_slug = bp_get_current_group_directory_type();
-// phpcs:disable WordPress.Security.NonceVerification.Recommended
-if ( ! $group_type_slug && ! empty( $_GET['group_type'] ) ) {
-	$group_type_slug = wp_unslash( urldecode( $_GET['group_type'] ) );
+if ( openlab_is_search_results_page() ) {
+	$current_group_type = openlab_get_current_filter( 'group-types' );
+	if ( ! $current_group_type ) {
+		$current_group_type = array_map(
+			function( $type ) {
+				return $type->get_slug();
+			},
+			cboxol_get_group_types()
+		);
+	}
+} else {
+	$current_group_type = bp_get_current_group_directory_type();
 }
-// phpcs:enable WordPress.Security.NonceVerification.Recommended
 
-$group_type = cboxol_get_group_type( $group_type_slug );
-
-$search_terms     = '';
-$search_terms_raw = '';
-
-// phpcs:disable WordPress.Security.NonceVerification.Recommended
-// phpcs:disable WordPress.Security.NonceVerification.Missing
-if ( ! empty( $_POST['group_search'] ) ) {
-	$search_terms_raw = $_POST['group_search'];
-	$search_terms     = 'search_terms=' . $search_terms_raw . '&';
+if ( ! empty( $current_group_type ) ) {
+	$group_args['group_type'] = $current_group_type;
 }
-if ( ! empty( $_GET['search'] ) ) {
-	$search_terms_raw = $_GET['search'];
-	$search_terms     = 'search_terms=' . $search_terms_raw . '&';
-}
-// phpcs:enable WordPress.Security.NonceVerification.Recommended
-// phpcs:enable WordPress.Security.NonceVerification.Missing
-
-$group_args['search_terms'] = $search_terms_raw;
 
 // @todo 'all' needs special treatment once tax queries work without shim.
 $academic_units = array();
@@ -159,6 +151,10 @@ if ( $category ) {
 				<div class="group-item-wrapper">
 					<div class="row">
 						<div class="item-avatar alignleft col-xs-6">
+							<?php if ( openlab_is_search_results_page() ) : ?>
+								<div class="group-type-flag"><?php echo esc_html( $group_type->get_label( 'singular' ) ); ?></div>
+							<?php endif; ?>
+
 							<a href="<?php bp_group_permalink(); ?>"><img class="img-responsive" src="<?php echo esc_attr( $group_avatar ); ?>" alt="<?php echo esc_attr( bp_get_group_name() ); ?>"/></a>
 
 							<?php if ( $group_site_url && cboxol_site_can_be_viewed( $group_id ) ) : ?>
