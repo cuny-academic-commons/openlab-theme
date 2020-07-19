@@ -9424,6 +9424,11 @@ body form .checkbox-list-container {
 .sidebar-buttons {
   padding-top: 10px;
 }
+@media (max-width: 767px) {
+  .sidebar-buttons {
+    padding-bottom: 24px;
+  }
+}
 /**group archives**/
 .group-list {
   margin-top: 50px;
