@@ -35,6 +35,7 @@ function openlab_conditional_body_classes( $classes ) {
 	}
 
 	if ( ( bp_is_groups_directory() || bp_is_members_directory() ) ||
+			openlab_is_search_results_page() ||
 			( function_exists( 'bp_is_single_item' ) && bp_is_single_item() ) ||
 			( function_exists( 'bp_is_user' ) && bp_is_user() ) ||
 			( $is_about_page ) ||
