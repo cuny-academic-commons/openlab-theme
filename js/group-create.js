@@ -317,7 +317,7 @@ jQuery( document ).ready(
 			new_old_switch( 'new' );
 		}
 
-		if ( CBOXOL_Group_Create.is_course ) {
+		if ( CBOXOL_Group_Create.can_be_cloned ) {
 			var $create_or_clone, create_or_clone, group_id_to_clone, new_create_or_clone;
 
 			$create_or_clone = $( 'input[name="create-or-clone"]' );

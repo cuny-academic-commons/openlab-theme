@@ -42,7 +42,7 @@
 
 	// phpcs:disable WordPress.Security.NonceVerification.Recommended
 	$group_id_to_clone = 0;
-	if ( $group_type->get_is_course() && ! empty( $_GET['clone'] ) ) {
+	if ( $group_type->get_can_be_cloned() && ! empty( $_GET['clone'] ) ) {
 		$group_id_to_clone = intval( $_GET['clone'] );
 	} elseif ( $the_group_clone_source ) {
 		$group_id_to_clone = intval( $the_group_clone_source );
@@ -103,10 +103,10 @@
 								'show_hidden' => true,
 								'user_id'     => bp_loggedin_user_id(),
 								'group_type'  => $group_type->get_slug(),
+								'clone_id'    => $group_id_to_clone,
 							);
 
-							$groups_of_type = groups_get_groups( $group_args );
-
+							$groups_of_type = openlab_get_groups_of_type( $group_args );
 							?>
 
 							<li class="disable-if-js form-group radio form-inline">
@@ -166,6 +166,10 @@
 						<textarea class="form-control" name="group-desc" id="group-desc" required><?php echo esc_textarea( $the_description ); ?></textarea>
 					</div>
 				</div>
+
+				<?php if ( ! $group_type->get_is_portfolio() ) : ?>
+					<?php openlab_group_sharing_settings_markup( $group_type ); ?>
+				<?php endif; ?>
 
 				<?php do_action( 'bp_after_group_details_creation_step' ); ?>
 

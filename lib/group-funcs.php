@@ -2326,6 +2326,7 @@ function openlab_group_admin_js_data( \CBOX\OL\GroupType $group_type ) {
 		'is_course'                => $group_type->get_is_course(),
 		'enable_site_by_default'   => $group_type->get_enable_site_by_default(),
 		'group_type_requires_site' => $group_type->get_requires_site(),
+		'can_be_cloned'            => $group_type->get_can_be_cloned(),
 	);
 
 	?>

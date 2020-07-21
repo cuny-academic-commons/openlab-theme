@@ -85,6 +85,8 @@ openlab_group_admin_js_data( $group_type );
 			<?php do_action( 'template_notices' ); ?>
 
 			<?php if ( ! cboxol_is_portfolio() ) : ?>
+				<?php openlab_group_sharing_settings_markup( $group_type ); ?>
+
 				<?php
 					$forum_enabled = openlab_is_forum_enabled_for_group();
 					$docs_enabled  = openlab_is_docs_enabled_for_group();

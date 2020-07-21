@@ -1,43 +1,49 @@
 <?php
-
 /**
  * Course cloning
  */
 
 /**
- * Get the courses that a user is an admin of
+ * Get "Clonable" groups.
+ *
+ * @param array $args
+ * @return array $groups_of_type
  */
-function openlab_get_courses_owned_by_user( $user_id ) {
-	global $wpdb, $bp;
-
-	// This is pretty hackish, but the alternatives are all hacks too
-	// First, get list of all groups a user is in
-	$is_admin_of     = BP_Groups_Member::get_is_admin_of( $user_id );
-	$is_admin_of_ids = wp_list_pluck( $is_admin_of['groups'], 'id' );
-	if ( empty( $is_admin_of_ids ) ) {
-		$is_admin_of_ids = array( 0 );
-	}
-
-	// Next, get list of those that are courses
-	// phpcs:disable
-	$user_course_ids = $wpdb->get_col( "SELECT group_id FROM {$bp->groups->table_name_groupmeta} WHERE meta_key = 'wds_group_type' AND meta_value = 'course' AND group_id IN (" . implode( ',', wp_parse_id_list( $is_admin_of_ids ) ) . ')' );
-	// phpcs:enable
-	if ( empty( $user_course_ids ) ) {
-		$user_course_ids = array( 0 );
-	}
-
-	// Finally, get a pretty list
-	$user_courses = groups_get_groups(
-		array(
-			'type'            => 'alphabetical',
-			'include'         => $user_course_ids,
-			'show_hidden'     => true,
-			'per_page'        => 100000,
-			'populate_extras' => false,
-		)
+function openlab_get_groups_of_type( $args = array() ) {
+	$defaults = array(
+		'show_hidden' => true,
+		'user_id'     => bp_loggedin_user_id(),
+		'group_type'  => null,
+		'clone_id'    => null,
 	);
+	$r = wp_parse_args( $args, $defaults );
 
-	return $user_courses;
+	$groups_of_type = groups_get_groups( $r );
+
+	if ( ! $r['clone_id'] ) {
+		return $groups_of_type;
+	}
+
+	$group_id_to_clone = (int) $r['clone_id'];
+	if ( ! openlab_group_can_be_cloned( $group_id_to_clone ) ) {
+		return $groups_of_type;
+	}
+
+	// "Sharable" groups should be added to list if not present.
+	$in_list = false;
+	foreach ( $groups_of_type['groups'] as $g ) {
+		if ( $group_id_to_clone === $g->id ) {
+			$in_list = true;
+			break;
+		}
+	}
+
+	if ( ! $in_list ) {
+		$groups_of_type['groups'][] = groups_get_group( $group_id_to_clone );
+		$groups_of_type['total']++;
+	}
+
+	return $groups_of_type;
 }
 
 /**
@@ -198,6 +204,142 @@ function openlab_clone_course_site( $group_id, $source_group_id, $source_site_id
 function openlab_get_clone_source_group_id( $group_id ) {
 	return (int) groups_get_groupmeta( $group_id, 'clone_source_group_id' );
 }
+
+/**
+ * Determines whether a group can be cloned.
+ *
+ * @param int $group_id The group ID.
+ */
+function openlab_group_can_be_cloned( $group_id = null ) {
+	if ( null === $group_id ) {
+		$group_id = bp_get_current_group_id();
+	}
+
+	if ( ! $group_id ) {
+		return false;
+	}
+
+	$sharing_enabled_for_group = groups_get_groupmeta( $group_id, 'enable_sharing', true );
+
+	return ! empty( $sharing_enabled_for_group );
+}
+
+/**
+ * Determines whether a current user can clone current group.
+ *
+ * @param \CBOX\OL\GroupType $group_type Group type object.
+ * @return bool
+ */
+function openlab_user_can_clone_group( $group_type ) {
+	if ( is_super_admin() ) {
+		return true;
+	}
+
+	$user_id     = get_current_user_id();
+	$member_type = cboxol_get_user_member_type( $user_id );
+
+	if ( is_wp_error( $member_type ) ) {
+		return false;
+	}
+
+	if ( $group_type->get_is_course() && ! $member_type->get_can_create_courses() ) {
+		return false;
+	}
+
+	return true;
+}
+
+/** CREATE / EDIT *************************************************************/
+
+/**
+ * Outputs the markup for the Sharing Settings panel.
+ *
+ * @param \CBOX\OL\GroupType $group_type Group type object.
+ */
+function openlab_group_sharing_settings_markup( \CBOX\OL\GroupType $group_type ) {
+	$sharing_enabled = openlab_group_can_be_cloned();
+	$group_label     = $group_type->get_label( 'singular' );
+	?>
+
+	<div class="panel panel-default sharing-settings-panel">
+		<div class="panel-heading semibold"><?php esc_html_e( 'Sharing Settings', 'commons-in-a-box' ); ?></div>
+		<div class="panel-body">
+			<p><?php echo esc_html( $group_type->get_label( 'settings_help_text_sharing' ) ); ?></p>
+
+			<div class="checkbox">
+				<label><input type="checkbox" name="openlab-enable-sharing" id="openlab-enable-sharing" value="1"<?php checked( $sharing_enabled ); ?> /> <?php esc_html_e( 'Enable shared cloning', 'commons-in-a-box' ); ?></label>
+			</div>
+		</div>
+
+		<?php wp_nonce_field( 'openlab_sharing_settings', 'openlab_sharing_settings_nonce', false ); ?>
+	</div>
+
+	<?php
+}
+
+/**
+ * Processes Sharing Settings on create/edit.
+ *
+ * @param BP_Groups_Group $group Group object.
+ */
+function openlab_sharing_settings_save( $group ) {
+	$nonce = '';
+
+	if ( isset( $_POST['openlab_sharing_settings_nonce'] ) ) {
+		$nonce = urldecode( $_POST['openlab_sharing_settings_nonce'] );
+	}
+
+	if ( ! wp_verify_nonce( $nonce, 'openlab_sharing_settings' ) ) {
+		return;
+	}
+
+	// Admins only.
+	if ( ! current_user_can( 'bp_moderate' ) && ! groups_is_user_admin( bp_loggedin_user_id(), $group->id ) ) {
+		return;
+	}
+
+	$enable_sharing = ! empty( $_POST['openlab-enable-sharing'] );
+
+	if ( $enable_sharing ) {
+		groups_update_groupmeta( $group->id, 'enable_sharing', 1 );
+	} else {
+		groups_delete_groupmeta( $group->id, 'enable_sharing' );
+	}
+}
+add_action( 'groups_group_after_save', 'openlab_sharing_settings_save' );
+
+/**
+ * Adds 'Clone this {Group Type}' button to group profile.
+ */
+function openlab_add_clone_button_to_profile() {
+	$group_id = bp_get_current_group_id();
+
+	if ( ! openlab_group_can_be_cloned( $group_id ) ) {
+		return;
+	}
+
+	$group_type = cboxol_get_group_group_type( $group_id );
+	if ( is_wp_error( $group_type ) ) {
+		return;
+	}
+
+	if ( ! openlab_user_can_clone_group( $group_type ) ) {
+		return;
+	}
+
+	$clone_link = add_query_arg(
+		array(
+			'group_type' => $group_type->get_slug(),
+			'clone'      => bp_get_current_group_id(),
+		),
+		bp_get_groups_directory_permalink() . 'create/step/group-details/'
+	);
+
+	?>
+	<a class="btn btn-default btn-block btn-primary link-btn" href="<?php echo esc_url( $clone_link ); ?>"><i class="fa fa-clone" aria-hidden="true"></i> <?php printf( __( 'Clone this %s', 'commons-in-a-box' ), esc_html( $group_type->get_label( 'singular' ) ) ); ?></a>
+	<?php
+}
+add_action( 'bp_group_header_actions', 'openlab_add_clone_button_to_profile', 50 );
 
 /** CLASSES ******************************************************************/
 
