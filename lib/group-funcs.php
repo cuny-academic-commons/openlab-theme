@@ -1814,6 +1814,53 @@ function openlab_current_directory_filters() {
 }
 
 /**
+ * Gets a list of directory filter fields for each group type.
+ *
+ * @since 1.2.0
+ *
+ * @return array
+ */
+function openlab_group_type_disabled_filters() {
+	$disabled    = [];
+	$group_types = cboxol_get_group_types();
+	foreach ( $group_types as $group_type ) {
+		$group_type_disabled = [];
+
+		if ( ! $group_type->get_can_be_cloned() ) {
+			$group_type_disabled[] = 'checkbox-is-cloneable';
+		}
+
+		if ( ! $group_type->get_supports_course_information() ) {
+			$group_type_disabled[] = 'course-term-select';
+		}
+
+		$group_terms = bpcgc_get_terms_by_group_type( $group_type->get_slug() );
+		if ( ! $group_terms ) {
+			$group_type_disabled[] = 'bp-group-categories-select';
+		}
+
+		if ( ! $group_type->get_is_portfolio() ) {
+			$group_type_disabled[] = 'portfolio-user-member-type-select';
+		}
+
+
+		$disabled[ $group_type->get_slug() ] = $group_type_disabled;
+	}
+
+	if ( defined( 'OLBADGES_VERSION' ) ) {
+		$all_badges = \OpenLab\Badges\Badge::get();
+		foreach ( $all_badges as $badge ) {
+			foreach ( $disabled as $group_type => &$type_disabled ) {
+				if ( ! in_array( $group_type, $badge->get_group_types(), true ) ) {
+					$type_disabled[] = 'checkbox-badge-' . $badge->get_id();
+				}
+			}
+		}
+	}
+
+	return $disabled;
+}
+/**
  * Get a group's recent posts and comments, and display them in two widgets
  */
 function openlab_show_site_posts_and_comments() {

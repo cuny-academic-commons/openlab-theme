@@ -9,7 +9,7 @@
 <div id="content" class="hfeed row">
 	<?php get_template_part( 'parts/sidebar/groups' ); ?>
 	<div <?php post_class( 'col-sm-18 col-xs-24' ); ?>>
-		<div id="openlab-main-content"  class="content-wrapper">
+		<div id="openlab-main-content" class="content-wrapper openlab-search-results">
 			<div class="entry-title">
 				<h1><?php esc_html_e( 'Search Results', 'commons-in-a-box' ); ?></h1>
 
