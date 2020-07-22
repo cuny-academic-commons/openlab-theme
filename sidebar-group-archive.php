@@ -13,7 +13,7 @@ if ( bp_is_members_directory() ) {
 	$reset_url = bp_get_members_directory_permalink();
 } elseif ( openlab_is_search_results_page() ) {
 	$search_page = cboxol_get_brand_page( 'search-results' );
-	$reset_url   = isset( $search_page['preview_url'] ) ? $contact_us['search_page'] : '';
+	$reset_url   = isset( $search_page['preview_url'] ) ? $search_page['preview_url'] : '';
 } else {
 	$reset_url = bp_get_group_type_directory_permalink( $group_type );
 }
