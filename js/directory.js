@@ -2,30 +2,36 @@
 		var $groupTypeCheckboxes,
 			allSidebarFilters = [];
 
-    $(document).ready(function(){
-			if ( 0 !== $('.openlab-search-results').length ) {
-				$('.sidebar-filter input[type="checkbox"], .custom-select select' ).each( function() {
-					allSidebarFilters.push( this.id );
-				} );
+	$( document ).ready(
+		function(){
+			if ( 0 !== $( '.openlab-search-results' ).length ) {
+				$( '.sidebar-filter input[type="checkbox"], .custom-select select' ).each(
+					function() {
+						allSidebarFilters.push( this.id );
+					}
+				);
 
-				$groupTypeCheckboxes = $('.sidebar-filter-checkbox input.group-type-checkbox');
+				$groupTypeCheckboxes = $( '.sidebar-filter-checkbox input.group-type-checkbox' );
 				$groupTypeCheckboxes.on( 'change', calculateFilterStates );
 				calculateFilterStates();
 			}
-    });
+		}
+	);
 
 		calculateSelectedGroupTypes = function() {
-			var allGroupTypes = [];
+			var allGroupTypes      = [];
 			var selectedGroupTypes = [];
 
-			$groupTypeCheckboxes.each(function(){
-				var thisGroupType = this;
+			$groupTypeCheckboxes.each(
+				function(){
+					var thisGroupType = this;
 
-				allGroupTypes.push( thisGroupType.value );
-				if ( thisGroupType.checked ) {
-					selectedGroupTypes.push( thisGroupType.value );
+					allGroupTypes.push( thisGroupType.value );
+					if ( thisGroupType.checked ) {
+						selectedGroupTypes.push( thisGroupType.value );
+					}
 				}
-			});
+			);
 
 			if ( 0 === selectedGroupTypes.length ) {
 				return allGroupTypes;
@@ -39,7 +45,7 @@
 		 */
 		calculateFilterStates = function() {
 			var selectedGroupTypes = calculateSelectedGroupTypes();
-			var disabledFilters = {};
+			var disabledFilters    = {};
 
 			// Convert group-type disabled filters lists to an array of arrays (to use reduce() below).
 			var disabledFiltersArray = []
@@ -58,22 +64,24 @@
 			// Intersect of all disabled fields.
 			var disabledFilters = []
 			if ( disabledFiltersArray.length ) {
-				disabledFilters = disabledFiltersArray.reduce((a, b) => a.filter(c => b.includes(c)));
+				disabledFilters = disabledFiltersArray.reduce( (a, b) => a.filter( c => b.includes( c ) ) );
 			}
 
-			allSidebarFilters.forEach( function( sidebarFilterId ) {
-				var $el = $( '#' + sidebarFilterId );
-				var $elLabel = $( 'label[for="' + sidebarFilterId + '"]' );
+			allSidebarFilters.forEach(
+				function( sidebarFilterId ) {
+					var $el      = $( '#' + sidebarFilterId );
+					var $elLabel = $( 'label[for="' + sidebarFilterId + '"]' );
 
-				// Everything is enabled by default.
-				$el.removeProp( 'disabled' ).removeClass( 'disabled-checkbox' );
-				$elLabel.removeClass( 'disabled-label' );
+					// Everything is enabled by default.
+					$el.removeProp( 'disabled' ).removeClass( 'disabled-checkbox' );
+					$elLabel.removeClass( 'disabled-label' );
 
-				if ( -1 !== disabledFilters.indexOf( sidebarFilterId ) ) {
-					$el.prop( 'disabled', true ).addClass( 'disabled-checkbox' );
-					$elLabel.addClass( 'disabled-label' );
+					if ( -1 !== disabledFilters.indexOf( sidebarFilterId ) ) {
+						  $el.prop( 'disabled', true ).addClass( 'disabled-checkbox' );
+						  $elLabel.addClass( 'disabled-label' );
+					}
 				}
-			} );
+			);
 		};
 
 }(jQuery));

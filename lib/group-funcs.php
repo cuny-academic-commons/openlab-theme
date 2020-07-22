@@ -1843,7 +1843,6 @@ function openlab_group_type_disabled_filters() {
 			$group_type_disabled[] = 'portfolio-user-member-type-select';
 		}
 
-
 		$disabled[ $group_type->get_slug() ] = $group_type_disabled;
 	}
 
