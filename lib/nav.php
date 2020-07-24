@@ -46,8 +46,6 @@ function openlab_custom_nav_classes( $classes, $item ) {
 
 	if ( ( 'help' === $post->post_type ) && __( 'Help', 'commons-in-a-box' ) === $item->title ) {
 		$classes[] = ' current-menu-item';
-	} elseif ( get_page_by_path( 'about' ) && __( 'About', 'commons-in-a-box' ) === $item->title ) {
-		$classes[] = ' current-menu-item';
 	}
 
 	return $classes;
