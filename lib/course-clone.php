@@ -800,26 +800,6 @@ class Openlab_Clone_Course_Site {
 		$site_posts          = $wpdb->get_results( "SELECT ID, guid, post_author, post_status, post_title, post_type FROM {$wpdb->posts}" );
 		$source_group_admins = $this->get_source_group_admins();
 		foreach ( $site_posts as $sp ) {
-			if ( in_array( (int) $sp->post_author, $source_group_admins, true ) ) {
-				if ( 'publish' === $sp->post_status ) {
-					$post_arr = array(
-						'ID'          => $sp->ID,
-						'post_status' => 'draft',
-					);
-					wp_update_post( $post_arr );
-
-					wp_update_comment_count_now( $sp->ID );
-				}
-			} else {
-				// Non-teachers have their stuff deleted.
-				if ( 'attachment' === $sp->post_type ) {
-					// Will delete the file as well.
-					wp_delete_attachment( $sp->ID, true );
-				} else {
-					wp_delete_post( $sp->ID, true );
-				}
-			}
-
 			if ( 'nav_menu_item' === $sp->post_type ) {
 				$wpdb->update(
 					$wpdb->posts,
@@ -843,12 +823,34 @@ class Openlab_Clone_Course_Site {
 					$group = groups_get_group( $this->group_id );
 					update_post_meta( $sp->ID, '_menu_item_url', bp_get_group_permalink( $group ) );
 				}
+
+				continue;
+			}
+
+			if ( in_array( (int) $sp->post_author, $source_group_admins, true ) ) {
+				if ( 'publish' === $sp->post_status ) {
+					$post_arr = array(
+						'ID'          => $sp->ID,
+						'post_status' => 'draft',
+					);
+					wp_update_post( $post_arr );
+
+					wp_update_comment_count_now( $sp->ID );
+				}
+			} else {
+				// Non-teachers have their stuff deleted.
+				if ( 'attachment' === $sp->post_type ) {
+					// Will delete the file as well.
+					wp_delete_attachment( $sp->ID, true );
+				} else {
+					wp_delete_post( $sp->ID, true );
+				}
 			}
 		}
 
 		// Replace the site URL in all post content.
-				// For some reason a regular MySQL query is not working.
-				$this_site_url = get_option( 'home' );
+		// For some reason a regular MySQL query is not working.
+		$this_site_url = get_option( 'home' );
 		foreach ( $wpdb->get_col( "SELECT ID FROM $wpdb->posts" ) as $post_id ) {
 			$post               = get_post( $post_id );
 			$post->post_content = str_replace( $source_site_url, $this_site_url, $post->post_content );
