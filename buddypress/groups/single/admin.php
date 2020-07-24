@@ -84,6 +84,15 @@ openlab_group_admin_js_data( $group_type );
 
 			<?php do_action( 'template_notices' ); ?>
 
+			<?php if ( current_user_can( 'grant_badges' ) && class_exists( '\OpenLab\Badges\Template' ) ) : ?>
+				<div id="panel-badges" class="panel panel-default">
+					<div class="panel-heading"><?php esc_html_e( 'Badges', 'commons-in-a-box' ); ?></div>
+					<div class="panel-body">
+						<?php \OpenLab\Badges\Template::group_admin_markup(); ?>
+					</div>
+				</div>
+			<?php endif; ?>
+
 			<?php if ( ! cboxol_is_portfolio() ) : ?>
 				<?php openlab_group_sharing_settings_markup( $group_type ); ?>
 
