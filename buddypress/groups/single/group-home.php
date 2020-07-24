@@ -149,13 +149,15 @@ $academic_unit_data = cboxol_get_object_academic_unit_data_for_display(
 							<div class="table-row row">
 								<div class="bold col-sm-7"><?php esc_html_e( 'Credits', 'commons-in-a-box' ); ?></div>
 								<div class="col-sm-17 row-content">
-									<?php printf(
+									<?php
+									printf(
 										'<a href="%s">%s</a> &mdash; <a href="%s">%s</a>',
 										esc_attr( $group_history['group_url'] ),
 										esc_html( $group_history['group_name'] ),
 										esc_attr( $group_history['group_creator_url'] ),
 										esc_html( $group_history['group_creator_name'] )
-									); ?>
+									);
+									?>
 								</div>
 							</div>
 						<?php endif; ?>
@@ -213,17 +215,19 @@ $academic_unit_data = cboxol_get_object_academic_unit_data_for_display(
 							<div class="col-sm-17 row-content"><?php bp_group_description(); ?></div>
 						</div>
 
-						<?php if ( ! empty( $group_histroy ) ) : ?>
+						<?php if ( ! empty( $group_history ) ) : ?>
 							<div class="table-row row">
 								<div class="bold col-sm-7"><?php esc_html_e( 'Credits', 'commons-in-a-box' ); ?></div>
 								<div class="col-sm-17 row-content">
-									<?php printf(
+									<?php
+									printf(
 										'<a href="%s">%s</a> &mdash; <a href="%s">%s</a>',
-										esc_attr( $group_histroy['group_url'] ),
-										esc_html( $group_histroy['group_name'] ),
-										esc_attr( $group_histroy['group_creator_url'] ),
-										esc_html( $group_histroy['group_creator_name'] )
-									); ?>
+										esc_attr( $group_history['group_url'] ),
+										esc_html( $group_history['group_name'] ),
+										esc_attr( $group_history['group_creator_url'] ),
+										esc_html( $group_history['group_creator_name'] )
+									);
+									?>
 								</div>
 							</div>
 						<?php endif; ?>
