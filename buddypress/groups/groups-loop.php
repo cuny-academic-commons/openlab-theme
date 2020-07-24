@@ -27,6 +27,12 @@ if ( openlab_is_search_results_page() ) {
 			cboxol_get_group_types()
 		);
 	}
+} elseif ( bp_is_user_groups() ) {
+	$group_type_raw = isset( $_GET['group_type'] ) ? wp_unslash( $_GET['group_type'] ) : '';
+	$group_type_obj = cboxol_get_group_type( $group_type_raw );
+	if ( ! is_wp_error( $group_type_obj ) ) {
+		$current_group_type = $group_type_obj->get_slug();
+	}
 } else {
 	$current_group_type = bp_get_current_group_directory_type();
 }
@@ -113,7 +119,7 @@ if ( $category ) {
 	<div class="row group-archive-header-row">
 		<?php if ( openlab_is_my_profile() ) : ?>
 			<?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-			<?php echo openlab_submenu_markup( 'groups', $group_type, false ); ?>
+			<?php echo openlab_submenu_markup( 'groups', $group_type_obj, false ); ?>
 		<?php elseif ( openlab_is_search_results_page() ) : ?>
 			<div class="col-lg-19 col-md-18 col-sm-16">
 				<?php esc_html_e( 'Narrow down your results using the search filters.', 'commons-in-a-box' ); ?>
