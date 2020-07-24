@@ -28,6 +28,7 @@ if ( openlab_is_search_results_page() ) {
 		);
 	}
 } elseif ( bp_is_user_groups() ) {
+	// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 	$group_type_raw = isset( $_GET['group_type'] ) ? wp_unslash( $_GET['group_type'] ) : '';
 	$group_type_obj = cboxol_get_group_type( $group_type_raw );
 	if ( ! is_wp_error( $group_type_obj ) ) {
