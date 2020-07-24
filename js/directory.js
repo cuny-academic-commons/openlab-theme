@@ -77,8 +77,8 @@
 					$elLabel.removeClass( 'disabled-label' );
 
 					if ( -1 !== disabledFilters.indexOf( sidebarFilterId ) ) {
-						  $el.prop( 'disabled', true ).addClass( 'disabled-checkbox' );
-						  $elLabel.addClass( 'disabled-label' );
+						$el.prop( 'disabled', true ).addClass( 'disabled-checkbox' );
+						$elLabel.addClass( 'disabled-label' );
 					}
 				}
 			);
