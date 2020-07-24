@@ -19,6 +19,7 @@ $group_slug = bp_get_group_slug();
 $group_id          = bp_get_current_group_id();
 $group_name        = groups_get_current_group()->name;
 $group_description = groups_get_current_group()->description;
+$group_histroy     = openlab_get_group_clone_history_data( $group_id, $group_type );
 $html              = groups_get_groupmeta( $group_id, 'cboxol_additional_desc_html' );
 
 $academic_unit_data = cboxol_get_object_academic_unit_data_for_display(
@@ -143,6 +144,21 @@ $academic_unit_data = cboxol_get_object_academic_unit_data_for_display(
 							<?php // phpcs:ignore WordPress.Security.EscapeOutput ?>
 							<div class="col-sm-17 row-content"><?php echo apply_filters( 'the_content', $group_description ); ?></div>
 						</div>
+
+						<?php if ( ! empty( $group_histroy ) ) : ?>
+							<div class="table-row row">
+								<div class="bold col-sm-7"><?php esc_html_e( 'Credits', 'commons-in-a-box' ); ?></div>
+								<div class="col-sm-17 row-content">
+									<?php printf(
+										'<a href="%s">%s</a> &mdash; <a href="%s">%s</a>',
+										esc_attr( $group_histroy['group_url'] ),
+										esc_html( $group_histroy['group_name'] ),
+										esc_attr( $group_histroy['group_creator_url'] ),
+										esc_html( $group_histroy['group_creator_name'] )
+									); ?>
+								</div>
+							</div>
+						<?php endif; ?>
 					</div>
 
 				</div>
@@ -196,6 +212,21 @@ $academic_unit_data = cboxol_get_object_academic_unit_data_for_display(
 							<div class="bold col-sm-7"><?php esc_html_e( 'Description', 'commons-in-a-box' ); ?></div>
 							<div class="col-sm-17 row-content"><?php bp_group_description(); ?></div>
 						</div>
+
+						<?php if ( ! empty( $group_histroy ) ) : ?>
+							<div class="table-row row">
+								<div class="bold col-sm-7"><?php esc_html_e( 'Credits', 'commons-in-a-box' ); ?></div>
+								<div class="col-sm-17 row-content">
+									<?php printf(
+										'<a href="%s">%s</a> &mdash; <a href="%s">%s</a>',
+										esc_attr( $group_histroy['group_url'] ),
+										esc_html( $group_histroy['group_name'] ),
+										esc_attr( $group_histroy['group_creator_url'] ),
+										esc_html( $group_histroy['group_creator_name'] )
+									); ?>
+								</div>
+							</div>
+						<?php endif; ?>
 
 						<?php if ( $group_type->get_is_portfolio() ) : ?>
 
