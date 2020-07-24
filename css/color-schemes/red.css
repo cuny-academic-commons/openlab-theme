@@ -7474,6 +7474,10 @@ input[type="submit"] {
 .carousel-inner > .item > a > img {
   max-width: 100%;
 }
+.disabled-label,
+.disabled-checkbox {
+  opacity: 0.4;
+}
 .form-control {
   margin-bottom: 15px;
 }
@@ -8774,7 +8778,6 @@ body form .checkbox-list-container {
 .home-page .widget_cac_featured_content_widget .cfcw-content p.cfcw-title a {
   font-size: 18px;
   line-height: 1.25;
-  text-decoration: none;
 }
 .home-page .widget_cac_featured_content_widget .cfcw-content:after {
   clear: both;
