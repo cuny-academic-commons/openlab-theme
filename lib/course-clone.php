@@ -16,6 +16,7 @@ function openlab_get_groups_of_type( $args = array() ) {
 		'group_type'  => null,
 		'clone_id'    => null,
 	);
+
 	$r = wp_parse_args( $args, $defaults );
 
 	$groups_of_type = groups_get_groups( $r );
@@ -314,9 +315,11 @@ function openlab_group_sharing_settings_markup( \CBOX\OL\GroupType $group_type )
 function openlab_sharing_settings_save( $group ) {
 	$nonce = '';
 
+	// phpcs:disable WordPress.Security.NonceVerification.Missing
 	if ( isset( $_POST['openlab_sharing_settings_nonce'] ) ) {
 		$nonce = urldecode( $_POST['openlab_sharing_settings_nonce'] );
 	}
+	// phpcs:enable WordPress.Security.NonceVerification.Missing
 
 	if ( ! wp_verify_nonce( $nonce, 'openlab_sharing_settings' ) ) {
 		return;
@@ -365,7 +368,8 @@ function openlab_add_clone_button_to_profile() {
 	);
 
 	?>
-	<a class="btn btn-default btn-block btn-primary link-btn" href="<?php echo esc_url( $clone_link ); ?>"><i class="fa fa-clone" aria-hidden="true"></i> <?php printf( __( 'Clone this %s', 'commons-in-a-box' ), esc_html( $group_type->get_label( 'singular' ) ) ); ?></a>
+	<?php // translators: Group type ?>
+	<a class="btn btn-default btn-block btn-primary link-btn" href="<?php echo esc_url( $clone_link ); ?>"><i class="fa fa-clone" aria-hidden="true"></i> <?php printf( esc_html__( 'Clone this %s', 'commons-in-a-box' ), esc_html( $group_type->get_label( 'singular' ) ) ); ?></a>
 	<?php
 }
 add_action( 'bp_group_header_actions', 'openlab_add_clone_button_to_profile', 50 );
