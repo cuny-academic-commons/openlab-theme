@@ -5,8 +5,7 @@
 <?php
 $displayed_user_id = bp_displayed_user_id();
 
-$display_name = bp_get_profile_field_data( 'field=Name' );
-$member_type  = cboxol_get_user_member_type( $displayed_user_id );
+$member_type = cboxol_get_user_member_type( $displayed_user_id );
 
 $member_academic_units = cboxol_get_object_academic_units(
 	array(
@@ -26,8 +25,7 @@ if ( isset( $pgroup ) ) {
 	$profile_args['profile_group_id'] = $pgroup;
 }
 
-$display_name_shown = isset( $pgroup ) && 1 === (int) $pgroup;
-$field_ids          = array( 1 );
+$field_ids = array( 1 );
 ?>
 
 <?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
