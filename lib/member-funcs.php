@@ -654,7 +654,7 @@ function openlab_get_register_fields( $account_type = '', $post_data = array() )
 				$required = bp_get_the_profile_field_is_required() ? 'required' : '';
 				$return  .= '<div class="editfield form-group">';
 
-				switch ( bp_get_the_profile_field_type ) {
+				switch ( bp_get_the_profile_field_type() ) {
 					case 'textbox':
 						$return .= '<label class="control-label" for="' . bp_get_the_profile_field_input_name() . '">' . bp_get_the_profile_field_name();
 
