@@ -264,7 +264,7 @@ function openlab_member_sidebar_menu( $mobile = false ) {
 				<?php endif; ?>
 
 				<?php foreach ( $group_types as $group_type ) : ?>
-					<?php $selected_page = $group_type->get_slug() === $current_group_type; ?>
+					<?php $selected_page = $group_type->get_slug() === $current_group_type ? 'selected-page' : ''; ?>
 					<li class="sq-bullet <?php echo esc_attr( $selected_page ); ?> mol-courses"><a href="<?php echo esc_attr( cboxol_get_user_group_type_directory_url( $group_type, bp_displayed_user_id() ) ); ?>"><?php echo esc_html( $group_type->get_label( 'plural' ) ); ?></a></li>
 				<?php endforeach; ?>
 
