@@ -432,7 +432,7 @@ function _eventorganiser_details_metabox_openlab_custom( $post ) {
 		$venue_stored_name = '';
 
 		// check for stored fields when editing
-		if ( bp_action_variables() && bp_is_action_variables( 'edit' ) ) {
+		if ( bp_action_variables() && bp_is_action_variable( 'edit' ) ) {
 
 			if ( $venue_id && $venue_id > 0 ) {
 				$venue_obj         = get_term_by( 'id', $venue_id, 'event-venue' );
