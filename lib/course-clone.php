@@ -144,6 +144,7 @@ function openlab_group_clone_details( $group_id ) {
 		'site_url'               => '',
 		'site_path'              => '',
 		'term'                   => '',
+		'avatar'                 => '',
 	);
 
 	if ( $group_id ) {
@@ -181,6 +182,15 @@ function openlab_group_clone_details( $group_id ) {
 		$retval['site_path'] = str_replace( bp_get_root_domain(), '', $retval['site_url'] );
 
 		$retval['term'] = openlab_get_group_term( $group_id );
+
+		$retval['avatar'] = bp_core_fetch_avatar(
+			[
+				'item_id' => $group_id,
+				'object'  => 'group',
+				'html'    => false,
+				'type'    => 'full',
+			]
+		);
 	}
 
 	return $retval;

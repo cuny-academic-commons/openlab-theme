@@ -292,6 +292,9 @@ jQuery( document ).ready(
 
 						// Additional Description
 						$( '#additional-desc-html' ).val( r.additional_description );
+
+						// Avatar
+						$( '#avatar-wrapper img' ).attr( 'src', r.avatar );
 					}
 				}
 			);
