@@ -221,7 +221,7 @@ function openlab_group_site_markup() {
 							<?php $show_website = 'none'; ?>
 							<div class="form-field form-required">
 								<div scope='row' class="site-details-query">
-									<label><input type="checkbox" id="set-up-site-toggle" name="set-up-site-toggle" value="yes" /> <?php esc_html_e( 'Set up a site?', 'commons-in-a-box' ); ?></label>
+									<label><input type="checkbox" id="set-up-site-toggle" name="set-up-site-toggle" value="yes" <?php checked( $is_clone ); ?> /> <?php esc_html_e( 'Set up a site?', 'commons-in-a-box' ); ?></label>
 								</div>
 							</div>
 						<?php else : ?>
