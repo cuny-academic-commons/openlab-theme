@@ -495,16 +495,17 @@ function openlab_my_groups_submenu( \CBOX\OL\GroupType $group_type ) {
 
 	$submenu_text = $group_type->get_label( 'my_groups' );
 
-	if ( $group_type->get_is_course() ) {
-		if ( cboxol_user_can_create_courses( bp_loggedin_user_id() ) ) {
+	$show_create_link = ! $group_type->get_is_course() || cboxol_user_can_create_courses( bp_loggedin_user_id() );
+	if ( $show_create_link ) {
+		if ( $group_type->get_can_be_cloned() ) {
 			$menu_list = array(
 				$create_link => __( 'Create / Clone', 'commons-in-a-box' ),
 			);
+		} else {
+			$menu_list = array(
+				$create_link => __( 'Create New', 'commons-in-a-box' ),
+			);
 		}
-	} else {
-		$menu_list = array(
-			$create_link => __( 'Create New', 'commons-in-a-box' ),
-		);
 	}
 
 	$menu_out['menu']         = openlab_submenu_gen( $menu_list );
