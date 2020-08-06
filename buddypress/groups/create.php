@@ -16,10 +16,10 @@
 	// phpcs:enable WordPress.Security.NonceVerification.Recommended
 
 	// @todo Redirect away if course and user cannot create courses.
-	if ( bp_get_current_group_id() ) {
-		$group_type = cboxol_get_group_group_type( bp_get_current_group_id() );
-	} else {
+	if ( bp_is_group_create() ) {
 		$group_type = cboxol_get_group_type( $gt );
+	} else {
+		$group_type = cboxol_get_group_group_type( bp_get_current_group_id() );
 	}
 
 	if ( is_wp_error( $group_type ) ) {
