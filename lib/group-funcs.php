@@ -1015,7 +1015,7 @@ function openlab_group_privacy_settings( $group_type ) {
 			$clone_source_group        = groups_get_group( array( 'group_id' => $clone_source_group_id ) );
 			$clone_source_group_status = $clone_source_group->status;
 
-			$clone_source_site_id  = groups_get_groupmeta( $new_group_id, 'clone_source_blog_id' );
+			$clone_source_site_id      = groups_get_groupmeta( $new_group_id, 'clone_source_blog_id' );
 			if ( $clone_source_site_id ) {
 				$clone_source_blog_status = get_blog_option( $clone_source_site_id, 'blog_public' );
 			}
