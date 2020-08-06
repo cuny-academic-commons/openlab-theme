@@ -1401,8 +1401,8 @@ function openlab_group_profile_activity_list() {
 									</div>
 								</div>
 							</div>
-						</div>
-					<?php endif; // Recent Docs ?>
+						<?php endif; // Recent Docs ?>
+					</div>
 
 					<div id="members-list" class="info-group">
 
@@ -1452,7 +1452,7 @@ function openlab_group_profile_activity_list() {
 
 						<?php endif; ?>
 
-					</div>
+					</div><!-- .group-activity-overview -->
 
 				<?php endif; // end of if $group != 'portfolio' ?>
 
