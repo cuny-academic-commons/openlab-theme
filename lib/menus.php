@@ -883,6 +883,10 @@ add_filter( 'bp_get_options_nav_nav-docs', 'openlab_filter_subnav_docs' );
  * Modify the Documents subnav item in group contexts.
  */
 function openlab_filter_subnav_nav_group_documents( $subnav_item ) {
+	if ( ! openlab_is_files_enabled_for_group( bp_get_current_group_id() ) ) {
+		return '';
+	}
+
 	// no files if we're on the portfolio page
 	if ( cboxol_is_portfolio() ) {
 		return '';
