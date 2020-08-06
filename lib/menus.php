@@ -1067,7 +1067,7 @@ function openlab_group_admin_tabs( $group = false ) {
 
 		<li class="<?php echo 'group-settings' === $current_tab ? 'current-menu-item' : ''; ?>"><a href="<?php echo esc_attr( bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug ); ?>/admin/group-settings"><?php esc_attr_e( 'Settings', 'commons-in-a-box' ); ?></a></li>
 
-		<?php if ( $group_type->get_is_course() ) : ?>
+		<?php if ( $group_type->get_can_be_cloned() ) : ?>
 			<?php
 			$clone_link = add_query_arg(
 				array(
