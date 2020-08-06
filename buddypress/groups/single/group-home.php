@@ -103,11 +103,18 @@ $academic_unit_data = cboxol_get_object_academic_unit_data_for_display(
 							</div>
 						<?php endforeach; ?>
 
-						<div class="table-row row">
-							<div class="bold col-sm-7"><?php echo esc_html( $group_type->get_label( 'group_contact' ) ); ?></div>
-							<?php // phpcs:ignore WordPress.Security.EscapeOutput ?>
-							<div class="col-sm-17 row-content"><?php echo openlab_get_faculty_list(); ?></div>
-						</div>
+						<?php
+						$group_contacts      = groups_get_groupmeta( $group_id, 'group_contact', false );
+						$group_contact_label = $group_type->get_label( 'group_contact' );
+						?>
+
+						<?php if ( $group_contacts ) : ?>
+							<div class="table-row row">
+								<div class="bold col-sm-7"><?php echo esc_html( $group_contact_label ); ?></div>
+								<?php // phpcs:ignore WordPress.Security.EscapeOutput ?>
+								<div class="col-sm-17 row-content"><?php echo implode( ', ', array_map( 'bp_core_get_userlink', $group_contacts ) ); ?></div>
+							</div>
+						<?php endif; ?>
 
 						<?php if ( $course_code ) : ?>
 							<div class="table-row row">
