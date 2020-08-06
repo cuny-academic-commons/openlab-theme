@@ -214,7 +214,9 @@ if ( $category ) {
 	<div class="row group-archive-header-row">
 		<?php if ( openlab_is_my_profile() ) : ?>
 			<?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-			<?php echo openlab_submenu_markup( 'groups', $group_type, false ); ?>
+			<?php echo openlab_submenu_markup( 'groups', $group_type_obj, false ); ?>
+		<?php else : ?>
+			<div class="current-group-filters current-portfolio-filters col-sm-19">&nbsp;</div>
 		<?php endif; ?>
 	</div>
 
