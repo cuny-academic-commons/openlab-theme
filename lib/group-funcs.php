@@ -506,12 +506,27 @@ function openlab_group_site_member_role_settings_markup() {
  * Gets the markup for the group site private settings in group creation/edit.
  */
 function openlab_group_site_privacy_settings_markup() {
-	$group_id = bp_get_current_group_id();
+	$blog_public = null;
 
-	$site_id = cboxol_get_group_site_id();
-	if ( $site_id ) {
+	if ( ! bp_is_group_create() ) {
+		$group_id    = bp_get_current_group_id();
+		$site_id     = cboxol_get_group_site_id();
 		$blog_public = get_blog_option( $site_id, 'blog_public' );
 	} else {
+		$group_id = bp_get_new_group_id();
+
+		// If this is a clone of a group with a site, default to the clone source settings.
+		$clone_source_group_id = groups_get_groupmeta( $group_id, 'clone_source_group_id' );
+		if ( $clone_source_group_id ) {
+			$clone_source_site_id = openlab_get_site_id_by_group_id( $clone_source_group_id );
+			if ( $clone_source_site_id ) {
+				$blog_public = get_blog_option( $clone_source_site_id, 'blog_public' );
+			}
+		}
+	}
+
+	// Fall back on group status.
+	if ( null === $blog_public ) {
 		switch ( groups_get_current_group()->status ) {
 			case 'public':
 				$blog_public = 1;
@@ -526,6 +541,7 @@ function openlab_group_site_privacy_settings_markup() {
 				break;
 		}
 	}
+
 	?>
 
 		<div class="panel panel-default" id="associated-site-privacy-panel">
@@ -993,15 +1009,16 @@ function openlab_group_privacy_settings( $group_type ) {
 	$clone_source_group_status = '';
 	$clone_source_blog_status  = '';
 	if ( bp_is_group_create() ) {
-		$new_group_id = bp_get_new_group_id();
-		if ( 'course' === $group_type ) {
-			$clone_source_group_id = groups_get_groupmeta( $new_group_id, 'clone_source_group_id' );
-			$clone_source_site_id  = groups_get_groupmeta( $new_group_id, 'clone_source_blog_id' );
-
+		$new_group_id          = bp_get_new_group_id();
+		$clone_source_group_id = groups_get_groupmeta( $new_group_id, 'clone_source_group_id' );
+		if ( $clone_source_group_id ) {
 			$clone_source_group        = groups_get_group( array( 'group_id' => $clone_source_group_id ) );
 			$clone_source_group_status = $clone_source_group->status;
 
-			$clone_source_blog_status = get_blog_option( $clone_source_site_id, 'blog_public' );
+			$clone_source_site_id  = groups_get_groupmeta( $new_group_id, 'clone_source_blog_id' );
+			if ( $clone_source_site_id ) {
+				$clone_source_blog_status = get_blog_option( $clone_source_site_id, 'blog_public' );
+			}
 		}
 	}
 
