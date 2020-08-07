@@ -21,6 +21,8 @@
 			<p>
 				<input class="btn btn-primary" type="submit" name="ass_admin_notice_send" value="<?php esc_html_e( 'Send Notice', 'commons-in-a-box' ); ?>" />
 			</p>
+
+			<?php wp_nonce_field( 'bpges_admin_notice', 'bpges-admin-notice-nonce' ); ?>
 		</div>
 	</div>
 </div>
