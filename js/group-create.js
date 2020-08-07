@@ -158,6 +158,26 @@ jQuery( document ).ready(
 			}
 		}
 
+		function showHideMemberRoleSettings() {
+			var $memberRoleSettingsPanel = $( '.panel.member-roles' );
+
+			var $externalInput  = $( '#new_or_old_external' );
+			var $siteIsExternal = $( '#site-is-external' );
+			var siteIsExternal  = ( $externalInput.length && $externalInput.is( ':checked' ) ) || ( $siteIsExternal.length && $siteIsExternal.val() > 0 );
+
+			var show = $setuptoggle.is( ':checked' ) || $( '#current-group-site' ).is( ':visible' ) || CBOXOL_Group_Create.group_type_requires_site;
+			console.log( show );
+			if ( show && siteIsExternal ) {
+				show = false;
+			}
+
+			if ( show ) {
+				$memberRoleSettingsPanel.show();
+			} else {
+				$memberRoleSettingsPanel.hide();
+			}
+		}
+
 		function do_external_site_query(e) {
 			var euf = $( '#external-site-url' );
 			//var euf = e.target;
@@ -376,12 +396,14 @@ jQuery( document ).ready(
 			function(){
 				showHideAll();
 				showHideAssociatedSitePrivacy();
+				showHideMemberRoleSettings();
 			}
 		);
 		if ( $setuptoggle.is( ':checked' ) ) {
 			showHideAll();
 		};
 		showHideAssociatedSitePrivacy();
+		showHideMemberRoleSettings();
 
 		// Precheck the box if:
 		// - This is the group creation process, and
