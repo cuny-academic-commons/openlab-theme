@@ -179,7 +179,7 @@ if ( $category ) {
 								<?php if ( $group_type->get_is_course() ) : ?>
 									<div class="info-line uppercase">
 										<?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-										<?php echo openlab_output_course_info_line( $group_id ); ?>
+										<?php echo openlab_output_course_faculty_line( $group_id ); ?>
 									</div>
 									<div class="info-line uppercase">
 										<?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>

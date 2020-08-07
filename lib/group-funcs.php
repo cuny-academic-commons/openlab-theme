@@ -2217,33 +2217,21 @@ function openlab_get_faculty_list( $group_id = null ) {
 
 	$faculty_list = '';
 
-	if ( $group_id ) {
-		$group = groups_get_group( $group_id );
-	} else {
-		$group    = groups_get_current_group();
-		$group_id = $group->id;
+	$faculty_ids = groups_get_groupmeta( $group_id, 'group_contact', false );
+
+	$faculty = array();
+	foreach ( $faculty_ids as $id ) {
+		$faculty_link = sprintf(
+			'<a href="%s">%s</a>',
+			esc_url( bp_core_get_user_domain( $id ) ),
+			esc_html( bp_core_get_user_displayname( $id ) )
+		);
+		array_push( $faculty, $faculty_link );
 	}
 
-	if ( isset( $group->admins ) ) {
-		$faculty_id = $group->admins[0]->user_id;
+	$faculty = array_unique( $faculty );
 
-		$faculty_ids = groups_get_groupmeta( $group_id, 'group_contact', false );
-		array_unshift( $faculty_ids, $faculty_id );
-
-		$faculty = array();
-		foreach ( $faculty_ids as $id ) {
-			$faculty_link = sprintf(
-				'<a href="%s">%s</a>',
-				esc_url( bp_core_get_user_domain( $id ) ),
-				esc_html( bp_core_get_user_displayname( $id ) )
-			);
-			array_push( $faculty, $faculty_link );
-		}
-
-		$faculty = array_unique( $faculty );
-
-		$faculty_list = implode( ', ', $faculty );
-	}
+	$faculty_list = implode( ', ', $faculty );
 
 	return $faculty_list;
 }
