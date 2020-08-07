@@ -27,7 +27,7 @@ jQuery( document ).ready(
 		$gc_submit     = $( '#group-creation-create' ),
 		$required_fields;
 
-		var setuptoggle = $( 'input[name="set-up-site-toggle"]' );
+		var $setuptoggle = $( 'input[name="set-up-site-toggle"]' );
 
 		if ( $body.hasClass( 'group-admin' ) ) {
 			form_type = 'admin';
@@ -146,7 +146,7 @@ jQuery( document ).ready(
 			var $siteIsExternal = $( '#site-is-external' );
 			var siteIsExternal  = ( $externalInput.length && $externalInput.is( ':checked' ) ) || ( $siteIsExternal.length && $siteIsExternal.val() > 0 );
 
-			var show = setuptoggle.is( ':checked' ) || $( '#current-group-site' ).is( ':visible' ) || CBOXOL_Group_Create.group_type_requires_site;
+			var show = $setuptoggle.is( ':checked' ) || $( '#current-group-site' ).is( ':visible' ) || CBOXOL_Group_Create.group_type_requires_site;
 			if ( show && siteIsExternal ) {
 				show = false;
 			}
@@ -371,20 +371,33 @@ jQuery( document ).ready(
 		);
 
 		/* "Set up a site" toggle */
-		$( setuptoggle ).on(
+		$setuptoggle.on(
 			'click',
 			function(){
 				showHideAll();
 				showHideAssociatedSitePrivacy();
 			}
 		);
-		if ( $( setuptoggle ).is( ':checked' ) ) {
+		if ( $setuptoggle.is( ':checked' ) ) {
 			showHideAll();
 		};
 		showHideAssociatedSitePrivacy();
 
-		if ( CBOXOL_Group_Create.enable_site_by_default && ! $( setuptoggle ).is( ':checked' ) ) {
-			$( setuptoggle ).trigger( 'click' );
+		// Precheck the box if:
+		// - This is the group creation process, and
+		//   - it's a clone, and the clone source has a site
+		//   - the group type requires a site by default
+		if ( CBOXOL_Group_Create.is_create && ! $setuptoggle.is( ':checked' ) ) {
+			var precheck_site = false;
+			if ( parseInt( CBOXOL_Group_Create.clone_source_group_id, 10 ) > 0 ) {
+				precheck_site = parseInt( CBOXOL_Group_Create.clone_source_site_id, 10 ) > 0;
+			} else {
+				precheck_site = !! CBOXOL_Group_Create.enable_site_by_default;
+			}
+
+			if ( precheck_site ) {
+				$setuptoggle.trigger( 'click' );
+			}
 		}
 
 		// Set up Invite Anyone autocomplete
@@ -478,7 +491,7 @@ jQuery( document ).ready(
 			}
 
 			// If "Set up a site" is not checked, there's no validation to do
-			if ( $( setuptoggle ).length && ! $( setuptoggle ).is( ':checked' ) ) {
+			if ( $setuptoggle.length && ! $setuptoggle.is( ':checked' ) ) {
 				return true;
 			}
 

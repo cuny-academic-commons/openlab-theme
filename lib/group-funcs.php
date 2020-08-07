@@ -243,7 +243,7 @@ function openlab_group_site_markup() {
 					</div><!-- /.groupblog-setup -->
 				</div><!-- /.panel-body -->
 
-					<?php if ( bp_is_group_create() && $group_type->get_can_be_cloned() ) : ?>
+					<?php if ( bp_is_group_create() && $clone_source_site_id ) : ?>
 						<?php /* @todo get rid of all 'wds' */ ?>
 					<div id="wds-website-clone" class="form-field form-required" style="display:<?php echo esc_attr( $show_website ); ?>">
 						<div id="noo_clone_options">
@@ -2334,12 +2334,18 @@ function openlab_get_group_activity_events_feed() {
  * @param \CBOX\OL\GroupType $group_type Group type object.
  */
 function openlab_group_admin_js_data( \CBOX\OL\GroupType $group_type ) {
+	$clone_source_group_id = (int) groups_get_groupmeta( bp_get_current_group_id(), 'clone_source_group_id', true );
+	$clone_source_site_id  = $clone_source_group_id ? cboxol_get_group_site_id( $clone_source_group_id ) : 0;
+
 	$js_data = array(
 		'new_group_type'           => $group_type->get_slug(),
 		'is_course'                => $group_type->get_is_course(),
 		'enable_site_by_default'   => $group_type->get_enable_site_by_default(),
 		'group_type_requires_site' => $group_type->get_requires_site(),
 		'can_be_cloned'            => $group_type->get_can_be_cloned(),
+		'is_create'                => bp_is_group_create(),
+		'clone_source_group_id'    => $clone_source_group_id,
+		'clone_source_site_id'     => $clone_source_site_id,
 	);
 
 	?>
