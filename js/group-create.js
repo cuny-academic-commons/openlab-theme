@@ -392,7 +392,7 @@ jQuery( document ).ready(
 			if ( parseInt( CBOXOL_Group_Create.clone_source_group_id, 10 ) > 0 ) {
 				precheck_site = parseInt( CBOXOL_Group_Create.clone_source_site_id, 10 ) > 0;
 			} else {
-				precheck_site = !! CBOXOL_Group_Create.enable_site_by_default;
+				precheck_site = ! ! CBOXOL_Group_Create.enable_site_by_default;
 			}
 
 			if ( precheck_site ) {
