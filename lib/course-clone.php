@@ -90,7 +90,6 @@ function openlab_clone_create_form_catcher() {
 			// @todo Move
 			if ( isset( $_POST['new_or_old'] ) && ( 'clone' === $_POST['new_or_old'] ) && isset( $_POST['blog-id-to-clone'] ) && isset( $_POST['set-up-site-toggle'] ) ) {
 				$clone_source_blog_id = cboxol_get_group_site_id( $clone_source_group_id );
-				cboxol_set_group_site_id( $new_group_id, $clone_source_blog_id );
 
 				// @todo validation
 				$clone_destination_path = wp_unslash( $_POST['clone-destination-path'] );
@@ -687,6 +686,9 @@ class Openlab_Clone_Course_Site {
 		}
 
 		restore_current_blog();
+
+		// This has to be re-run, because the first time happens before site cloning is done.
+		openlab_save_group_site_settings();
 	}
 
 	/**
