@@ -24,8 +24,8 @@ function openlab_set_group_creation_steps() {
 	buddypress()->groups->group_creation_steps = $steps;
 
 	if ( bp_is_group_creation_step( 'group-details' ) ) {
-		unset( $bp->groups->current_create_step );
-		unset( $bp->groups->completed_create_steps );
+		unset( buddypress()->groups->current_create_step );
+		unset( buddypress()->groups->completed_create_steps );
 
 		setcookie( 'bp_new_group_id', false, time() - 1000, COOKIEPATH, COOKIE_DOMAIN, is_ssl() );
 		setcookie( 'bp_completed_create_steps', false, time() - 1000, COOKIEPATH, COOKIE_DOMAIN, is_ssl() );
