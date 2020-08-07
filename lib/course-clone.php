@@ -140,6 +140,7 @@ function openlab_group_clone_details( $group_id ) {
 		'course_code'            => '',
 		'section_code'           => '',
 		'additional_description' => '',
+		'categories'             => array(),
 		'site_id'                => '',
 		'site_url'               => '',
 		'site_path'              => '',
@@ -175,6 +176,8 @@ function openlab_group_clone_details( $group_id ) {
 		$retval['course_code']            = esc_attr( groups_get_groupmeta( $group_id, 'cboxol_course_code' ) );
 		$retval['section_code']           = esc_attr( groups_get_groupmeta( $group_id, 'cboxol_section_code' ) );
 		$retval['additional_description'] = esc_attr( groups_get_groupmeta( $group_id, 'cboxol_additional_desc_html' ) );
+
+		$retval['categories'] = wp_list_pluck( bpcgc_get_group_selected_terms( $group_id ), 'term_id' );
 
 		$retval['site_id']   = cboxol_get_group_site_id( $group_id );
 		$retval['site_url']  = get_blog_option( $retval['site_id'], 'home' );

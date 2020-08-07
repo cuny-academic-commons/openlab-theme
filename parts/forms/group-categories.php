@@ -10,7 +10,7 @@
 						<div class="bp-group-categories-list-container checkbox-list-container">
 							<?php foreach ( $categories as $category ) : ?>
 
-								<label class="passive block"><input type="checkbox" value="<?php echo esc_attr( $category->term_id ); ?>" name="_group_categories[]" <?php checked( in_array( $category->term_id, $group_term_ids, true ), true, true ); ?>>&nbsp;<?php echo esc_html( $category->name ); ?></label>
+								<label class="passive block"><input type="checkbox" value="<?php echo esc_attr( $category->term_id ); ?>" id="group-category-<?php echo esc_attr( $category->term_id ); ?>" name="_group_categories[]" <?php checked( in_array( $category->term_id, $group_term_ids, true ), true, true ); ?>>&nbsp;<?php echo esc_html( $category->name ); ?></label>
 
 							<?php endforeach; ?>
 							<?php if ( ! empty( $group_term_ids ) ) : ?>

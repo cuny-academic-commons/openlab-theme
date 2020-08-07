@@ -269,6 +269,14 @@ jQuery( document ).ready(
 						$( '#group-desc' ).val( r.description );
 						$( '#group-status-' + r.status ).prop( 'checked',true );
 
+						// Categories
+						$.each(
+							r.categories,
+							function( index, catId ) {
+								$( 'input#group-category-' + catId ).prop( 'checked', true );
+							}
+						);
+
 						// Schools and Departments
 						$.each(
 							r.academic_units,
