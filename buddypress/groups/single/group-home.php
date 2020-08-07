@@ -19,7 +19,7 @@ $group_slug = bp_get_group_slug();
 $group_id          = bp_get_current_group_id();
 $group_name        = groups_get_current_group()->name;
 $group_description = groups_get_current_group()->description;
-$group_history     = openlab_get_group_clone_history_list( $group_id, $group->creator_id );
+$group_history     = openlab_get_group_clone_history_list( $group_id, groups_get_current_group()->creator_id );
 $html              = groups_get_groupmeta( $group_id, 'cboxol_additional_desc_html' );
 
 $academic_unit_data = cboxol_get_object_academic_unit_data_for_display(
