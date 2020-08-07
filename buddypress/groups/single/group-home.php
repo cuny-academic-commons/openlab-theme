@@ -155,8 +155,16 @@ $academic_unit_data = cboxol_get_object_academic_unit_data_for_display(
 						<?php if ( ! empty( $group_history ) ) : ?>
 							<div class="table-row row">
 								<div class="bold col-sm-7"><?php esc_html_e( 'Credits', 'commons-in-a-box' ); ?></div>
-								<?php // phpcs:ignore WordPress.Security.EscapeOutput ?>
-								<div class="col-sm-17 row-content"><?php echo $group_history; ?></div>
+								<div class="col-sm-17 row-content">
+									<?php // phpcs:ignore WordPress.Security.EscapeOutput ?>
+									<?php echo $group_history; ?>
+								</div>
+							</div>
+						<?php endif; ?>
+
+						<?php if ( openlab_group_can_be_cloned( bp_get_current_group_id() ) ) : ?>
+							<div class="table-row row">
+								<div class="col-xs-24 status-message italics"><?php esc_html_e( 'May be cloned by logged-in users.', 'commons-in-a-box' ); ?></div>
 							</div>
 						<?php endif; ?>
 					</div>
@@ -230,6 +238,13 @@ $academic_unit_data = cboxol_get_object_academic_unit_data_for_display(
 							</div>
 
 						<?php endif; ?>
+
+						<?php if ( openlab_group_can_be_cloned( bp_get_current_group_id() ) ) : ?>
+							<div class="table-row row">
+								<div class="col-xs-24 status-message italics"><?php esc_html_e( 'May be cloned by logged-in users.', 'commons-in-a-box' ); ?></div>
+							</div>
+						<?php endif; ?>
+
 
 					</div>
 				</div>
