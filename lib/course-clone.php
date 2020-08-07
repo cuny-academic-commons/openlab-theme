@@ -70,6 +70,12 @@ function openlab_clone_create_form_catcher() {
 				}
 
 				groups_update_groupmeta( $new_group_id, 'clone_source_group_id', $clone_source_group_id );
+
+				// Store history.
+				$clone_history   = openlab_get_group_clone_history( $clone_source_group_id );
+				$clone_history[] = $clone_source_group_id;
+				groups_update_groupmeta( $new_group_id, 'clone_history', $clone_history );
+
 				openlab_clone_course_group( $new_group_id, $clone_source_group_id );
 			}
 			break;
@@ -253,35 +259,6 @@ function openlab_user_can_clone_group( $group_type ) {
 	return true;
 }
 
-/**
- * Get the clone historty of a group.
- *
- * @param int                $group_id   ID for the group.
- * @param \CBOX\OL\GroupType $group_type Group type object.
- * @return array             $histroy    The clone histroy.
- */
-function openlab_get_group_clone_history_data( $group_id, $group_type ) {
-	$source_id = groups_get_groupmeta( $group_id, 'clone_source_group_id', true );
-	$histroy   = array();
-
-	if ( ! $source_id ) {
-		return $histroy;
-	}
-
-	$source_group = groups_get_group( $source_id );
-
-	$histroy = array(
-		'group_id'           => $source_id,
-		'group_url'          => bp_get_group_permalink( $source_group ),
-		'group_name'         => $group_type->get_label( 'singular' ),
-		'group_creator_id'   => $source_group->creator_id,
-		'group_creator_name' => bp_core_get_user_displayname( $source_group->creator_id ),
-		'group_creator_url'  => bp_core_get_user_domain( $source_group->creator_id ),
-	);
-
-	return $histroy;
-}
-
 /** CREATE / EDIT *************************************************************/
 
 /**
@@ -337,6 +314,13 @@ function openlab_sharing_settings_save( $group ) {
 
 	if ( $enable_sharing ) {
 		groups_update_groupmeta( $group->id, 'enable_sharing', 1 );
+
+		$site_id = openlab_get_site_id_by_group_id( $group->id );
+		if ( $site_id ) {
+			switch_to_blog( $site_id );
+			openlab_add_widget_to_main_sidebar( 'openlab_shareable_content_widget' );
+			restore_current_blog();
+		}
 	} else {
 		groups_delete_groupmeta( $group->id, 'enable_sharing' );
 	}
@@ -744,6 +728,17 @@ class Openlab_Clone_Course_Site {
 		// Just in case
 		create_initial_taxonomies();
 		flush_rewrite_rules();
+
+		// Only add the Credits widget if there are non-self ancestors.
+		$group = groups_get_group( $this->group_id );
+		if ( openlab_get_group_clone_history_data( $group->id, $group->creator_id ) ) {
+			openlab_add_widget_to_main_sidebar( 'openlab_clone_credits_widget' );
+		}
+
+		$enable_sharing = groups_get_groupmeta( $group->id, 'enable_sharing', true );
+		if ( $enable_sharing ) {
+			openlab_add_widget_to_main_sidebar( 'openlab_shareable_content_widget' );
+		}
 
 		restore_current_blog();
 	}
