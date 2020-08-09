@@ -88,6 +88,17 @@ if ( $member_type && 'all' !== $member_type ) {
 	);
 }
 
+$is_open = openlab_get_current_filter( 'is_open' );
+if ( $is_open ) {
+	$group_args['meta_query']['blog_public'] = [
+		'key'      => 'blog_public',
+		'value'    => [ '1', '0' ],
+		'operator' => 'IN',
+	];
+
+	$group_args['status'] = 'public';
+}
+
 $is_cloneable = openlab_get_current_filter( 'is_cloneable' );
 if ( $is_cloneable ) {
 	$group_args['meta_query'][] = array(
