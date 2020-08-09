@@ -1117,20 +1117,20 @@ add_action( 'wp_ajax_openlab_group_url_validate', 'openlab_ajax_group_url_valida
 function openlab_groups_pagination_links() {
 	global $groups_template;
 
-	$base = add_query_arg(
-		array(
-			'grpage' => '%#%',
-			'num'    => $groups_template->pag_num,
-			'sortby' => $groups_template->sort_by,
-			'order'  => $groups_template->order,
-		)
-	);
+	$query_args = [
+		'grpage' => '%#%',
+		'num'    => $groups_template->pag_num,
+		'sortby' => $groups_template->sort_by,
+		'order'  => $groups_template->order,
+	];
 
 	// phpcs:disable WordPress.Security.NonceVerification.Recommended
-	if ( isset( $_GET['search'] ) ) {
-		$base = add_query_arg( 's', urldecode( wp_unslash( $_GET['search'] ) ), $base );
+	if ( ! empty( $_GET['search'] ) ) {
+		$query_args['s'] = urldecode( wp_unslash( $_GET['search'] ) );
 	}
 	// phpcs:enable WordPress.Security.NonceVerification.Recommended
+
+	$base = add_query_arg( $query_args );
 
 	$pagination = paginate_links(
 		array(
