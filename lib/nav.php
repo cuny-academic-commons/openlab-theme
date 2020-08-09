@@ -50,7 +50,7 @@ function openlab_custom_nav_classes( $classes, $item ) {
 
 	if ( bp_is_groups_directory() ) {
 		$current = bp_get_requested_url();
-		$query   = parse_url( $current, PHP_URL_QUERY );
+		$query   = wp_parse_url( $current, PHP_URL_QUERY );
 		$base    = str_replace( '?' . $query, '', $current );
 
 		if ( $base === $item->url ) {
