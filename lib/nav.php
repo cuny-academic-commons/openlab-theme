@@ -48,6 +48,16 @@ function openlab_custom_nav_classes( $classes, $item ) {
 		$classes[] = ' current-menu-item';
 	}
 
+	if ( bp_is_groups_directory() ) {
+		$current = bp_get_requested_url();
+		$query   = parse_url( $current, PHP_URL_QUERY );
+		$base    = str_replace( '?' . $query, '', $current );
+
+		if ( $base === $item->url ) {
+			$classes[] = 'current-menu-item';
+		}
+	}
+
 	return $classes;
 }
 
