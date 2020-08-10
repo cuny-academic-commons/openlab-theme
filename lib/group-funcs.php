@@ -958,6 +958,7 @@ function openlab_save_group_site_settings() {
 	}
 
 	update_blog_option( $site_id, 'blog_public', $blog_public );
+	groups_update_groupmeta( $group->id, 'blog_public', $blog_public );
 }
 
 /**
