@@ -263,6 +263,7 @@ function openlab_sharing_settings_save( $group ) {
 		$site_id = openlab_get_site_id_by_group_id( $group->id );
 		if ( $site_id ) {
 			switch_to_blog( $site_id );
+			cboxol_register_clone_widgets();
 			openlab_add_widget_to_main_sidebar( 'openlab_shareable_content_widget' );
 			restore_current_blog();
 		}
