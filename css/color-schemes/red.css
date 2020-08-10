@@ -9504,9 +9504,6 @@ body form .checkbox-list-container {
   font-size: 12px;
   margin-bottom: 6px;
 }
-.group-list .group-item-wrapper .item-avatar {
-  text-align: center;
-}
 @media (max-width: 1199px) {
   .group-list .group-item-wrapper .item {
     padding-left: 1.5%;
