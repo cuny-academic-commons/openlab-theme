@@ -164,7 +164,7 @@ $academic_unit_data = cboxol_get_object_academic_unit_data_for_display(
 
 						<?php if ( openlab_group_can_be_cloned( bp_get_current_group_id() ) ) : ?>
 							<div class="table-row row">
-								<div class="col-xs-24 status-message italics"><?php esc_html_e( 'May be cloned by logged-in users.', 'commons-in-a-box' ); ?></div>
+								<div class="col-xs-24 status-message italics"><?php esc_html_e( 'May be cloned by logged-in community members.', 'commons-in-a-box' ); ?></div>
 							</div>
 						<?php endif; ?>
 					</div>
@@ -241,7 +241,7 @@ $academic_unit_data = cboxol_get_object_academic_unit_data_for_display(
 
 						<?php if ( openlab_group_can_be_cloned( bp_get_current_group_id() ) ) : ?>
 							<div class="table-row row">
-								<div class="col-xs-24 status-message italics"><?php esc_html_e( 'May be cloned by logged-in users.', 'commons-in-a-box' ); ?></div>
+								<div class="col-xs-24 status-message italics"><?php esc_html_e( 'May be cloned by logged-in community members.', 'commons-in-a-box' ); ?></div>
 							</div>
 						<?php endif; ?>
 
