@@ -132,7 +132,7 @@ if ( $category ) {
 		<?php if ( openlab_is_my_profile() ) : ?>
 			<?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 			<?php echo openlab_submenu_markup( 'groups', $group_type_obj, false ); ?>
-		<?php elseif ( openlab_is_search_results_page() ) : ?>
+		<?php elseif ( bp_is_groups_directory() || openlab_is_search_results_page() ) : ?>
 			<div class="col-lg-19 col-md-18 col-sm-16">
 				<?php esc_html_e( 'Narrow down your results using the search filters.', 'commons-in-a-box' ); ?>
 			</div>
