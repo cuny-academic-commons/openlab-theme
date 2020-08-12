@@ -117,7 +117,7 @@
 <?php else : ?>
 	<?php if ( groups_is_user_member( get_current_user_id(), bp_get_current_group_id() ) ) : ?>
 		<?php /* translators: link to the Doc creation page */ ?>
-		<p class="no-docs bold"><?php printf( esc_html__( 'There are no docs to view. Why not <a href="%s">create one</a>?', 'commons-in-a-box' ), esc_attr( bp_docs_get_item_docs_link() . BP_DOCS_CREATE_SLUG ) ); ?></p>
+		<p class="no-docs bold"><?php esc_html_e( 'There are no docs to view.', 'commons-in-a-box' ); ?> <?php printf( '<a href="%s">%s</a>', esc_attr( bp_docs_get_item_docs_link() . BP_DOCS_CREATE_SLUG ), esc_html_x( 'Why not create one?', 'doc creation prompt', 'commons-in-a-box' ) ); ?></p>
 	<?php else : ?>
 		<p class="no-docs bold"><?php esc_html_e( 'There are no docs to view.', 'commons-in-a-box' ); ?></p>
 	<?php endif; ?>
