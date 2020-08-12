@@ -9447,8 +9447,18 @@ body form .checkbox-list-container {
   }
 }
 /**group archives**/
+@media (max-width: 767px) {
+  .group-archive-header-row .group-count {
+    margin-top: 24px;
+  }
+}
 .group-list {
   margin-top: 50px;
+}
+@media (max-width: 767px) {
+  .group-list {
+    margin-top: 6px;
+  }
 }
 .group-list .group-directory-badges {
   position: absolute;
@@ -9461,6 +9471,17 @@ body form .checkbox-list-container {
     padding-left: 26%;
   }
 }
+@media (max-width: 479px) {
+  .group-list .group-directory-badges {
+    padding-left: 25%;
+    bottom: 0;
+    position: relative;
+  }
+  .group-list .group-directory-badges .badge-links {
+    padding-left: 1.5%;
+    padding-right: 1.5%;
+  }
+}
 .group-list .group-site-link {
   display: block;
   font-size: 9pt;
@@ -9470,9 +9491,6 @@ body form .checkbox-list-container {
 }
 .group-list .group-site-link:hover {
   text-decoration: underline;
-}
-.group-list .group-has-badges .group-item-wrapper {
-  padding-bottom: 36px;
 }
 .group-list .group-item-wrapper {
   border-radius: 4px;

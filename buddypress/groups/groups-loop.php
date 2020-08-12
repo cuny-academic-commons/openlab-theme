@@ -150,7 +150,7 @@ if ( $category ) {
 			$group_type     = cboxol_get_group_group_type( $group_id );
 
 			$classes = 'group-item col-xs-12';
-			if ( openlab_group_has_badges( $group_id ) ) {
+			if ( openlab_group_has_badges( $group_id ) || openlab_group_is_open( $group_id ) || openlab_group_can_be_cloned( $group_id ) ) {
 				$classes .= ' group-has-badges';
 			}
 
