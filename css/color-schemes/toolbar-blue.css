@@ -7793,7 +7793,7 @@ button.oplb-bs .close {
     vertical-align: top;
   }
   .oplb-bs .search .search-form-wrapper .form-group .form-control.search-terms-mobile {
-    height: 35px;
+    width: calc(100% - 6% - 62px);
   }
 }
 .oplb-bs .search .search-trigger-wrapper {
