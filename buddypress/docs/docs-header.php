@@ -2,7 +2,7 @@
 	<div class="doc-tabs">
 		<ul>
 			<?php $li_class = 'single' === bp_docs_current_view() ? 'current' : ''; ?>
-			<li class="<?php echo esc_attr( $li_class ); ?>"
+			<li class="<?php echo esc_attr( $li_class ); ?>">
 				<a href="<?php echo esc_attr( bp_docs_get_group_doc_permalink() ); ?>"><?php esc_html_e( 'Read', 'commons-in-a-box' ); ?></a>
 			</li>
 
