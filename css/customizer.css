@@ -2,6 +2,10 @@
 	color: #000;
 }
 
+.js .customize-control-openlab_footer_section .html-active textarea {
+	width: 100%;
+}
+
 .js .customize-control-openlab_footer_section .wp-editor-tools {
 	background: #eee;
 }
