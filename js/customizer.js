@@ -26,20 +26,29 @@
 			var setChange, textarea;
 			for ( var i in editorIds ) {
 				var editorId = editorIds[ i ];
-				wp.editor.initialize( editorId, {
-					tinymce: {
-						wpautop: true
-					},
-					quicktags: true
-				} );
+				wp.editor.initialize(
+					editorId,
+					{
+						tinymce: {
+							wpautop: true
+						},
+						quicktags: true
+					}
+				);
 			}
 		}
 	);
 
-	$(document).on( 'tinymce-editor-init', function( event, editor ) {
-		editor.on('change', function(e){
-			tinyMCE.triggerSave();
-			$('#'+editor.id).trigger('change');
-		});
-	});
+	$( document ).on(
+		'tinymce-editor-init',
+		function( event, editor ) {
+			editor.on(
+				'change',
+				function(e){
+					tinyMCE.triggerSave();
+					$( '#' + editor.id ).trigger( 'change' );
+				}
+			);
+		}
+	);
 } )( wp, jQuery );
