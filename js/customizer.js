@@ -26,55 +26,20 @@
 			var setChange, textarea;
 			for ( var i in editorIds ) {
 				var editorId = editorIds[ i ];
-				wp.editor.initialize( editorId );
-
-				textarea   = document.getElementById( editorId );
-				var editor = tinyMCE.get( editorId );
-
-				// Catch changes to Visual.
-				if ( editor ) {
-					switchEditors.go( editorId, 'tmce' );
-
-					editor.onChange.add(
-						function(ed,e) {
-							console.log( ed.id );
-							ed.save();
-							var newContent = ed.getContent();
-
-							updateTextarea( ed.id, newContent );
-						}
-					);
-				}
-
-				// Catch changes to Text.
-				$( '#' + editorId ).on(
-					'input propertychange',
-					function( e ) {
-						// Have to let the customizer catch up.
-						var setChange;
-						clearTimeout( setChange );
-						setChange = setTimeout(
-							function(){
-								var newContent = $( e.target ).val();
-								updateTextarea( e.target.id, newContent );
-							},
-							1000
-						);
-					}
-				);
+				wp.editor.initialize( editorId, {
+					tinymce: {
+						wpautop: true
+					},
+					quicktags: true
+				} );
 			}
 		}
 	);
 
-	var updateTextarea = function( textareaId, content ) {
-		var setChange;
-		clearTimeout( setChange );
-		setChange = setTimeout(
-			function(){
-				var $textareaInput = $( 'input[data-customize-setting-link="' + textareaId + '"]' );
-				$textareaInput.val( content ).trigger( 'change' );
-			},
-			500
-		);
-	}
+	$(document).on( 'tinymce-editor-init', function( event, editor ) {
+		editor.on('change', function(e){
+			tinyMCE.triggerSave();
+			$('#'+editor.id).trigger('change');
+		});
+	});
 } )( wp, jQuery );
