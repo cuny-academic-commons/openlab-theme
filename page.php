@@ -44,6 +44,8 @@
 	//add the about-page sidebar to just the about page and any child about page
 	if ( $show_about_sidebar ) {
 		get_template_part( 'parts/sidebar/about' );
+	} elseif ( is_page( 'help' ) ) {
+		get_template_part( 'parts/sidebar/help' );
 	}
 	?>
 
