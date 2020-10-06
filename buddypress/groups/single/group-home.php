@@ -109,7 +109,7 @@ $academic_unit_data = cboxol_get_object_academic_unit_data_for_display(
 						// Backward compatibility.
 						if ( ! $group_contacts ) {
 							$group_contacts = [
-								groups_get_current_group()->admins[0]->user_id;
+								groups_get_current_group()->admins[0]->user_id,
 							];
 
 							$additional_faculty = groups_get_groupmeta( $group_id, 'additional_faculty', false );
