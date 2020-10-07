@@ -2229,7 +2229,7 @@ function openlab_get_faculty_list( $group_id = null ) {
 
 		if ( $group && $group->id ) {
 			$group_contacts = [
-				$group()->admins[0]->user_id,
+				$group->admins[0]->user_id,
 			];
 
 			$additional_faculty = groups_get_groupmeta( $group_id, 'additional_faculty', false );
