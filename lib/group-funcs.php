@@ -2228,13 +2228,13 @@ function openlab_get_faculty_list( $group_id = null ) {
 		$group = groups_get_group( $group_id );
 
 		if ( $group && $group->id ) {
-			$group_contacts = [
+			$faculty_ids = [
 				$group->admins[0]->user_id,
 			];
 
 			$additional_faculty = groups_get_groupmeta( $group_id, 'additional_faculty', false );
 			if ( $additional_faculty ) {
-				$group_contacts = array_merge( $group_contacts, $additional_faculty );
+				$faculty_ids = array_merge( $faculty_ids, $additional_faculty );
 			}
 		}
 	}
