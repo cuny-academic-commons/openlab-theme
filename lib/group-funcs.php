@@ -2221,19 +2221,23 @@ function openlab_get_faculty_list( $group_id = null ) {
 	$faculty_ids = groups_get_groupmeta( $group_id, 'group_contact', false );
 	// Backward compatibility.
 	if ( ! $faculty_ids ) {
+		if ( empty( $group_id ) ) {
+			$group_id = bp_get_group_id();
+		}
+
 		$group = groups_get_group( $group_id );
 
-		$group_contacts = [
-			$group->admins[0]->user_id,
-		];
+		if ( $group && $group->id ) {
+			$group_contacts = [
+				$group()->admins[0]->user_id,
+			];
 
-		$additional_faculty = groups_get_groupmeta( $group_id, 'additional_faculty', false );
-		if ( $additional_faculty ) {
-			$group_contacts = array_merge( $group_contacts, $additional_faculty );
+			$additional_faculty = groups_get_groupmeta( $group_id, 'additional_faculty', false );
+			if ( $additional_faculty ) {
+				$group_contacts = array_merge( $group_contacts, $additional_faculty );
+			}
 		}
 	}
-
-	$group_contact_label = $group_type->get_label( 'group_contact' );
 
 	$faculty = array();
 	foreach ( $faculty_ids as $id ) {
