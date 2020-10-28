@@ -61,7 +61,7 @@ var OLAcadUnits = ' . wp_json_encode( $academic_unit_map ) . ';
 					?>
 				<?php endforeach; ?>
 
-				<?php if ( function_exists( 'bpcgc_get_terms_by_group_type' ) ) : ?>
+				<?php if ( function_exists( 'bpcgc_get_terms_by_group_type' ) && ! bp_is_members_directory() ) : ?>
 					<?php get_template_part( 'parts/sidebar/filter-group-categories' ); ?>
 				<?php endif; ?>
 
