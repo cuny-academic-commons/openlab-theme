@@ -211,7 +211,8 @@ openlab_group_admin_js_data( $group_type );
 
 			<?php // Output some default BP fields so that the default routine runs properly. ?>
 			<input type="hidden" name="group-status" value="<?php echo esc_attr( groups_get_current_group()->status ); ?>" />
-
+			
+			<?php do_action( 'bp_after_group_settings_admin' ); ?>
 			<p><input class="btn btn-primary" type="submit" value="<?php esc_attr_e( 'Save Changes', 'commons-in-a-box' ); ?> &#xf138;" id="save" name="save" /></p>
 			<?php wp_nonce_field( 'groups_edit_group_settings' ); ?>
 
