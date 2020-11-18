@@ -35,8 +35,8 @@ function openlab_list_members() {
 	// phpcs:disable WordPress.Security.NonceVerification.Recommended
 	// phpcs:disable WordPress.Security.NonceVerification.Missing
 
-	if ( ! empty( $_GET['group_sequence'] ) ) {
-		$sequence_type = $_GET['group_sequence'];
+	if ( ! empty( $_GET['sort'] ) ) {
+		$sequence_type = $_GET['sort'];
 	}
 
 	if ( ! empty( $_POST['people_search'] ) ) {

@@ -20,3 +20,5 @@ get_header(); ?>
 		</div><!-- end .post -->
 	</div>
 </div><!--#content-->
+
+<?php get_footer(); ?>
