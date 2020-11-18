@@ -46,16 +46,18 @@ wp_nav_menu( $args );
 
 	if ( $my_posts ) {
 		$the_post_id = $my_posts[0]->ID;
+		$args        = array(
+			'post_type'   => 'attachment',
+			'numberposts' => -1,
+			'post_status' => 'any',
+			'post_parent' => $the_post_id,
+			'orderby'     => 'name',
+			'order'       => 'ASC',
+		);
+		$attachments = get_posts( $args );
+	} else {
+		$attachments = false;
 	}
-	$args        = array(
-		'post_type'   => 'attachment',
-		'numberposts' => -1,
-		'post_status' => 'any',
-		'post_parent' => $the_post_id,
-		'orderby'     => 'name',
-		'order'       => 'ASC',
-	);
-	$attachments = get_posts( $args );
 
 	$contact_us     = cboxol_get_brand_page( 'contact-us' );
 	$contact_us_url = isset( $contact_us['preview_url'] ) ? $contact_us['preview_url'] : '';

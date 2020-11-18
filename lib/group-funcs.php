@@ -2219,6 +2219,25 @@ function openlab_get_faculty_list( $group_id = null ) {
 	$faculty_list = '';
 
 	$faculty_ids = groups_get_groupmeta( $group_id, 'group_contact', false );
+	// Backward compatibility.
+	if ( ! $faculty_ids ) {
+		if ( empty( $group_id ) ) {
+			$group_id = bp_get_group_id();
+		}
+
+		$group = groups_get_group( $group_id );
+
+		if ( $group && $group->id ) {
+			$faculty_ids = [
+				$group->admins[0]->user_id,
+			];
+
+			$additional_faculty = groups_get_groupmeta( $group_id, 'additional_faculty', false );
+			if ( $additional_faculty ) {
+				$faculty_ids = array_merge( $faculty_ids, $additional_faculty );
+			}
+		}
+	}
 
 	$faculty = array();
 	foreach ( $faculty_ids as $id ) {

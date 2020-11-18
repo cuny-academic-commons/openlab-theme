@@ -82,11 +82,12 @@ function openlab_help_loop() {
 		<?php if ( $help_cats ) : ?>
 			<div class="entry-title">
 				<h1 class="help-entry-title"><a class="no-deco" href="<?php echo esc_attr( get_term_link( $parent_cat ) ); ?>"><span class="profile-name hyphenate"><?php echo esc_html( $parent_cat_name ); ?></span></a>
+				</h1>
 
 				<div class="directory-title-meta">
 					<?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 					<?php echo openlab_toggle_button( '#sidebar-menu-wrapper', true ); ?>
-					<span class="print-link pull-right hidden-xs"><a class="print-page" href="#"><span class="fa fa-print"></span> <?php esc_html_e( 'Print this page', 'commons-in-a-box' ); ?></a></span></h1>
+					<span class="print-link pull-right hidden-xs"><a class="print-page" href="#"><span class="fa fa-print"></span> <?php esc_html_e( 'Print this page', 'commons-in-a-box' ); ?></a></span>
 				</div>
 			</div>
 
