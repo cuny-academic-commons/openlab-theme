@@ -2776,7 +2776,7 @@ function openlab_group_term_edit_markup() {
 	}
 
 	$term = openlab_get_group_term( bp_get_current_group_id() );
-	if ( ! $term ) {
+	if ( ! $term && bp_is_group_create() ) {
 		$term = openlab_get_default_group_term();
 	}
 
