@@ -77,6 +77,10 @@ function openlab_clone_create_form_catcher() {
 					return;
 				}
 
+				if ( ! openlab_user_can_clone_group( $clone_source_group_id ) ) {
+					return;
+				}
+
 				// Don't do anything if this is a reprocess of an existing group.
 				if ( ! empty( $_POST['existing-group-id'] ) ) {
 					return;
@@ -141,7 +145,11 @@ add_filter( 'bp_get_new_group_status', 'openlab_clone_bp_get_new_group_status' )
 function openlab_group_clone_fetch_details() {
 	// phpcs:ignore WordPress.Security.NonceVerification.Missing
 	$group_id = isset( $_POST['group_id'] ) ? intval( $_POST['group_id'] ) : 0;
-	$retval   = openlab_group_clone_details( $group_id );
+	if ( ! openlab_user_can_clone_group( $group_id ) ) {
+		$group_id = 0;
+	}
+
+	$retval = openlab_group_clone_details( $group_id );
 
 	die( wp_json_encode( $retval ) );
 }
@@ -290,18 +298,14 @@ add_action( 'groups_group_after_save', 'openlab_sharing_settings_save' );
  * Adds 'Clone this {Group Type}' button to group profile.
  */
 function openlab_add_clone_button_to_profile() {
-	$group_id = bp_get_current_group_id();
-
-	if ( ! openlab_group_can_be_cloned( $group_id ) ) {
-		return;
-	}
-
+	$group_id   = bp_get_current_group_id();
 	$group_type = cboxol_get_group_group_type( $group_id );
+
 	if ( is_wp_error( $group_type ) ) {
 		return;
 	}
 
-	if ( ! openlab_user_can_clone_group( $group_type ) ) {
+	if ( ! openlab_user_can_clone_group( $group_id ) ) {
 		return;
 	}
 
