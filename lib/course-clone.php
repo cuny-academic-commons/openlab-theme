@@ -11,8 +11,12 @@
  * @return array $user_groups
  */
 function openlab_get_groups_owned_by_user( $args = array() ) {
-	$user_groups = array( 'groups' => array(), 'total' => 0 );
-	$defaults    = array(
+	$user_groups = array(
+		'groups' => array(),
+		'total'  => 0,
+	);
+
+	$defaults = array(
 		'show_hidden'     => true,
 		'user_id'         => bp_loggedin_user_id(),
 		'include'         => array(),
@@ -21,6 +25,7 @@ function openlab_get_groups_owned_by_user( $args = array() ) {
 		'per_page'        => 1000,
 		'populate_extras' => false,
 	);
+
 	$r = wp_parse_args( $args, $defaults );
 
 	$groups          = groups_get_groups( $r );
@@ -29,9 +34,12 @@ function openlab_get_groups_owned_by_user( $args = array() ) {
 	$is_admin_of_ids = array_map( 'absint', $is_admin_of_ids );
 
 	// Get only the groups user is administrator of.
-	$user_groups['groups'] = array_filter( $groups['groups'], function ( $group ) use ( $is_admin_of_ids ) {
-		return in_array( $group->id, $is_admin_of_ids );
-	} );
+	$user_groups['groups'] = array_filter(
+		$groups['groups'],
+		function ( $group ) use ( $is_admin_of_ids ) {
+			return in_array( intval( $group->id ), $is_admin_of_ids, true );
+		}
+	);
 	$user_groups['total']  = count( $user_groups['groups'] );
 
 	if ( ! $r['clone_id'] ) {
