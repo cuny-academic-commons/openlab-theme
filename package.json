@@ -1,6 +1,6 @@
 {
   "name": "openlab_theme",
-  "version": "1.2.3",
+  "version": "1.2.4-alpha",
   "main": "Gruntfile.js",
   "private": true,
   "scripts": {
