@@ -179,7 +179,7 @@
 				}
 			);
 
-			$( 'input#signup_validation_code' ).live(
+			$( 'input#signup_validation_code' ).on(
 				'blur',
 				function () {
 					var code = $( this ).val();
