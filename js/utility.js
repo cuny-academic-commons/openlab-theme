@@ -775,7 +775,9 @@
 		}
 	);
 
-	$( window ).on('load', function () {
+	$( window ).on(
+		'load',
+		function () {
 
 			$( 'html' ).removeClass( 'page-loading' );
 			OpenLab.utility.detectZoom();
