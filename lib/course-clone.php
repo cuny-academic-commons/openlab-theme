@@ -751,7 +751,8 @@ class Openlab_Clone_Course_Site {
 			}
 
 			// phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-			$wpdb->query( "DELETE FROM {$table}" );
+			$wpdb->query( "DROP TABLE {$table}" );
+			$wpdb->query( "CREATE TABLE {$table} LIKE {$source_table}" );
 			$wpdb->query( "INSERT INTO {$table} SELECT * FROM {$source_table}" );
 			// phpcs:enable WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		}
