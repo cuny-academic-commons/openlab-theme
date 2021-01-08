@@ -7507,7 +7507,7 @@ input[type="submit"] {
 @media (max-width: 991px) {
   .navbar-default .container-fluid ul.nav li a {
     font-size: 13px;
-    padding: 22px 11px;
+    padding: 22px 7px;
   }
 }
 .navbar-default .container-fluid ul.nav li.current-menu-item a {
