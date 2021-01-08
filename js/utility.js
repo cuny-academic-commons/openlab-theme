@@ -721,7 +721,8 @@
 					function () {
 						var thisButton     = $( this );
 						var thisButtonHTML = $( this ).html();
-						thisButton.hover(
+						thisButton.on(
+							'hover',
 							function () {
 								thisButton.html( '<span class="pull-left"><i class="fa fa-user"></i> ' + localVars.strings.cancelFriendship + '</span><i class="fa fa-minus-circle pull-right"></i>' );
 							},
