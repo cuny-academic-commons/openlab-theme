@@ -84,7 +84,6 @@ module.exports = function (grunt) {
 					'node_modules/jcarousellite/jcarousellite.js',
 					'js/easyaccordion.js',
 					'js/jquery.easing.1.3.js',
-					'js/jquery.mobile.customized.min.js',
 					'js/camera.mod.js',
 					'js/jQuery.succinct.mod.js',
 					'js/detect-zoom.js'],
