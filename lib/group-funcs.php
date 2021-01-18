@@ -2750,9 +2750,11 @@ function openlab_get_default_group_term() {
 	$month = gmdate( 'n' );
 	$year  = gmdate( 'Y' );
 
-	if ( $month > 9 || $month < 4 ) {
+	if ( $month > 9 ) {
 		$term = __( 'Spring', 'commons-in-a-box' );
 		$year++;
+	} elseif ( $month < 4 ) {
+		$term = __( 'Spring', 'commons-in-a-box' );
 	} else {
 		$term = __( 'Fall', 'commons-in-a-box' );
 	}
