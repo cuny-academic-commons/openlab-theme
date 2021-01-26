@@ -106,7 +106,7 @@
 								'clone_id'    => $group_id_to_clone,
 							);
 
-							$groups_of_type = openlab_get_groups_of_type( $group_args );
+							$groups_of_type = openlab_get_groups_owned_by_user( $group_args );
 							?>
 
 							<li class="disable-if-js form-group radio form-inline">

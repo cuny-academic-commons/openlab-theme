@@ -796,9 +796,9 @@ function openlab_filter_subnav_members( $subnav_item ) {
 	$new_item = str_replace( 'Members', 'Membership', $subnav_item );
 
 	// switch slugs based on user role
-	if ( $bp->is_item_admin || $bp->is_item_mod ) :
+	if ( $bp->is_item_admin ) {
 		$new_item = str_replace( '/members/', '/admin/manage-members', $new_item );
-	endif;
+	}
 
 	$uri                 = $bp->unfiltered_uri;
 	$check_uri           = array( 'groups', 'notifications' );
@@ -1109,7 +1109,7 @@ function openlab_group_membership_tabs( $group = false ) {
 
 	$group_type = groups_get_groupmeta( $bp->groups->current_group->id, 'wds_group_type' );
 	?>
-	<?php if ( bp_is_item_admin() || bp_is_item_mod() ) : ?>
+	<?php if ( bp_is_item_admin() ) : ?>
 		<li class="<?php echo 'manage-members' === $current_tab ? 'current-menu-item' : ''; ?>"><a href="<?php echo esc_attr( bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug ); ?>/admin/manage-members"><?php esc_html_e( 'Membership', 'commons-in-a-box' ); ?></a></li>
 
 		<?php if ( 'private' === $group->status ) : ?>
@@ -1123,7 +1123,7 @@ function openlab_group_membership_tabs( $group = false ) {
 		<li class="<?php echo bp_is_current_action( 'invite-anyone' ) ? 'current-menu-item' : ''; ?>"><a href="<?php echo esc_attr( bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug ); ?>/invite-anyone"><?php esc_html_e( 'Invite New Members', 'commons-in-a-box' ); ?></a></li>
 	<?php endif; ?>
 
-	<?php if ( bp_is_item_admin() || bp_is_item_mod() ) : ?>
+	<?php if ( bp_is_item_admin() ) : ?>
 		<li class="<?php echo 'notifications' === $current_tab ? 'current-menu-item' : ''; ?>"><a href="<?php echo esc_attr( bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug ); ?>/admin/notifications"><?php esc_html_e( 'Email Members', 'commons-in-a-box' ); ?></a></li>
 	<?php endif; ?>
 

@@ -11,7 +11,7 @@
 				<?php
 				printf(
 					// translators: list of thread recipients
-					esc_html_e( 'Sent between %s', 'commons-in-a-box' ),
+					esc_html__( 'Sent between %s', 'commons-in-a-box' ),
 					// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 					bp_get_the_thread_recipients()
 				);

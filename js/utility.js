@@ -672,7 +672,8 @@
 
 			// this add an onclick event to the "New Topic" button while preserving
 			// the original event; this is so "New Topic" can have a "current" class
-			$( '.show-hide-new' ).click(
+			$( '.show-hide-new' ).on(
+				'click',
 				function () {
 					var origOnClick = $( '.show-hide-new' ).onclick;
 					return function (e) {
@@ -685,7 +686,8 @@
 			);
 
 			window.new_topic_is_visible = $( '#new-topic-post' ).is( ":visible" );
-			$( '.show-hide-new' ).click(
+			$( '.show-hide-new' ).on(
+				'click',
 				function () {
 					if (window.new_topic_is_visible) {
 						$( '.single-forum #message' ).slideUp( 300 );
@@ -719,7 +721,8 @@
 					function () {
 						var thisButton     = $( this );
 						var thisButtonHTML = $( this ).html();
-						thisButton.hover(
+						thisButton.on(
+							'hover',
 							function () {
 								thisButton.html( '<span class="pull-left"><i class="fa fa-user"></i> ' + localVars.strings.cancelFriendship + '</span><i class="fa fa-minus-circle pull-right"></i>' );
 							},
@@ -775,7 +778,8 @@
 		}
 	);
 
-	$( window ).load(
+	$( window ).on(
+		'load',
 		function () {
 
 			$( 'html' ).removeClass( 'page-loading' );

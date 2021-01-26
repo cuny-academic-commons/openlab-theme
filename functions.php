@@ -1,6 +1,6 @@
 <?php
 
-define( 'OPENLAB_VERSION', '1.2.3-1605712718817' );
+define( 'OPENLAB_VERSION', '1.2.4-1611673568690' );
 
 if ( ! defined( 'CSS_DEBUG' ) ) {
 	define( 'CSS_DEBUG', false );
@@ -191,7 +191,7 @@ function openlab_load_scripts() {
 
 		wp_register_script( 'select2', $stylesheet_dir_uri . '/js/select2.min.js', array( 'jquery' ), $ver, true );
 
-		$utility_deps = array( 'jquery', 'jquery-migrate', 'select2', 'hyphenator-js' );
+		$utility_deps = array( 'jquery', 'select2', 'hyphenator-js' );
 		wp_register_script( 'utility', $stylesheet_dir_uri . '/js/utility.js', $utility_deps, $ver, true );
 
 		wp_enqueue_script( 'utility' );
