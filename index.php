@@ -1,4 +1,5 @@
 <?php get_header(); ?>
+
 <div id="openlab-main-content"></div>
 <section id="content" role="main">
 <?php

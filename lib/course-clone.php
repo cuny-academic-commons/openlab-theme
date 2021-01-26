@@ -4,35 +4,56 @@
  */
 
 /**
- * Get "Clonable" groups.
+ * Get "Clonable" groups for the user.
+ * Usually based on the group type.
  *
  * @param array $args
- * @return array $groups_of_type
+ * @return array $user_groups
  */
-function openlab_get_groups_of_type( $args = array() ) {
+function openlab_get_groups_owned_by_user( $args = array() ) {
+	$user_groups = array(
+		'groups' => array(),
+		'total'  => 0,
+	);
+
 	$defaults = array(
-		'show_hidden' => true,
-		'user_id'     => bp_loggedin_user_id(),
-		'group_type'  => null,
-		'clone_id'    => null,
+		'show_hidden'     => true,
+		'user_id'         => bp_loggedin_user_id(),
+		'include'         => array(),
+		'group_type'      => null,
+		'clone_id'        => null,
+		'per_page'        => 1000,
+		'populate_extras' => false,
 	);
 
 	$r = wp_parse_args( $args, $defaults );
 
-	$groups_of_type = groups_get_groups( $r );
+	$groups          = groups_get_groups( $r );
+	$is_admin_of     = BP_Groups_Member::get_is_admin_of( $r['user_id'] );
+	$is_admin_of_ids = wp_list_pluck( $is_admin_of['groups'], 'id' );
+	$is_admin_of_ids = array_map( 'absint', $is_admin_of_ids );
+
+	// Get only the groups user is administrator of.
+	$user_groups['groups'] = array_filter(
+		$groups['groups'],
+		function ( $group ) use ( $is_admin_of_ids ) {
+			return in_array( intval( $group->id ), $is_admin_of_ids, true );
+		}
+	);
+	$user_groups['total']  = count( $user_groups['groups'] );
 
 	if ( ! $r['clone_id'] ) {
-		return $groups_of_type;
+		return $user_groups;
 	}
 
 	$group_id_to_clone = (int) $r['clone_id'];
 	if ( ! openlab_group_can_be_cloned( $group_id_to_clone ) ) {
-		return $groups_of_type;
+		return $user_groups;
 	}
 
-	// "Sharable" groups should be added to list if not present.
+	// Groups with "Shared Cloning" enabled should be added to list if not present.
 	$in_list = false;
-	foreach ( $groups_of_type['groups'] as $g ) {
+	foreach ( $user_groups['groups'] as $g ) {
 		if ( $group_id_to_clone === $g->id ) {
 			$in_list = true;
 			break;
@@ -40,11 +61,11 @@ function openlab_get_groups_of_type( $args = array() ) {
 	}
 
 	if ( ! $in_list ) {
-		$groups_of_type['groups'][] = groups_get_group( $group_id_to_clone );
-		$groups_of_type['total']++;
+		$user_groups['groups'][] = groups_get_group( $group_id_to_clone );
+		$user_groups['total']++;
 	}
 
-	return $groups_of_type;
+	return $user_groups;
 }
 
 /**
@@ -61,6 +82,10 @@ function openlab_clone_create_form_catcher() {
 				$clone_source_group_id = isset( $_POST['group-to-clone'] ) ? (int) $_POST['group-to-clone'] : 0;
 
 				if ( ! $clone_source_group_id ) {
+					return;
+				}
+
+				if ( ! openlab_user_can_clone_group( $clone_source_group_id ) ) {
 					return;
 				}
 
@@ -128,7 +153,11 @@ add_filter( 'bp_get_new_group_status', 'openlab_clone_bp_get_new_group_status' )
 function openlab_group_clone_fetch_details() {
 	// phpcs:ignore WordPress.Security.NonceVerification.Missing
 	$group_id = isset( $_POST['group_id'] ) ? intval( $_POST['group_id'] ) : 0;
-	$retval   = openlab_group_clone_details( $group_id );
+	if ( ! openlab_user_can_clone_group( $group_id ) ) {
+		$group_id = 0;
+	}
+
+	$retval = openlab_group_clone_details( $group_id );
 
 	die( wp_json_encode( $retval ) );
 }
@@ -277,18 +306,14 @@ add_action( 'groups_group_after_save', 'openlab_sharing_settings_save' );
  * Adds 'Clone this {Group Type}' button to group profile.
  */
 function openlab_add_clone_button_to_profile() {
-	$group_id = bp_get_current_group_id();
-
-	if ( ! openlab_group_can_be_cloned( $group_id ) ) {
-		return;
-	}
-
+	$group_id   = bp_get_current_group_id();
 	$group_type = cboxol_get_group_group_type( $group_id );
+
 	if ( is_wp_error( $group_type ) ) {
 		return;
 	}
 
-	if ( ! openlab_user_can_clone_group( $group_type ) ) {
+	if ( ! openlab_user_can_clone_group( $group_id ) ) {
 		return;
 	}
 
@@ -726,7 +751,8 @@ class Openlab_Clone_Course_Site {
 			}
 
 			// phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-			$wpdb->query( "DELETE FROM {$table}" );
+			$wpdb->query( "DROP TABLE {$table}" );
+			$wpdb->query( "CREATE TABLE {$table} LIKE {$source_table}" );
 			$wpdb->query( "INSERT INTO {$table} SELECT * FROM {$source_table}" );
 			// phpcs:enable WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		}
