@@ -54,7 +54,7 @@ jQuery( document ).ready(
 						$( thisid ).find( 'input' ).each(
 							function(index,element){
 								$( element ).removeClass( 'disabled-opt' );
-								$( element ).removeProp( 'disabled' ).removeClass( 'disabled' );
+								$( element ).prop( 'disabled', false ).removeClass( 'disabled' );
 							}
 						);
 
@@ -62,7 +62,7 @@ jQuery( document ).ready(
 							function(index,element){
 								if ($( element ).attr( 'type' ) !== 'radio') {
 									$( element ).removeClass( 'disabled-opt' );
-									$( element ).removeProp( 'disabled' ).removeClass( 'disabled' );
+									$( element ).prop( 'disabled', false ).removeClass( 'disabled' );
 								}
 							}
 						);
