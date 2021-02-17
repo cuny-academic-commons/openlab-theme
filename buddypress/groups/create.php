@@ -183,6 +183,9 @@
 				<p class="group-create-help-text"><?php echo esc_html( $group_type->get_label( 'site_help_text' ) ); ?></p>
 
 				<?php openlab_group_site_markup(); ?>
+
+				<?php do_action( 'openlab_after_group_site_markup' ); ?>
+
 				<?php openlab_group_site_privacy_settings_markup(); ?>
 				<?php openlab_group_site_member_role_settings_markup(); ?>
 
