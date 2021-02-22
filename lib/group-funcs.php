@@ -244,7 +244,7 @@ function openlab_group_site_markup() {
 					</div><!-- /.groupblog-setup -->
 				</div><!-- /.panel-body -->
 
-					<?php if ( bp_is_group_create() && $clone_source_site_id ) : ?>
+					<?php if ( bp_is_group_create() && ! empty( $clone_source_site_id ) ) : ?>
 						<?php /* @todo get rid of all 'wds' */ ?>
 					<div id="wds-website-clone" class="form-field form-required" style="display:<?php echo esc_attr( $show_website ); ?>">
 						<div id="noo_clone_options">
