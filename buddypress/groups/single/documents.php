@@ -190,6 +190,11 @@ $template = new BP_Group_Documents_Template();
 							</div>
 						</div>
 
+						<div class="notify-group-members-ui">
+							<?php /* Default to checked for 'add' only, not 'edit' */ ?>
+							<?php openlab_notify_group_members_ui( 'add' === $template->operation ); ?>
+						</div>
+
 						<input type="submit" class="btn btn-primary btn-margin btn-margin-top" value="<?php esc_attr_e( 'Submit', 'commons-in-a-box' ); ?>" />
 
 						<?php if ( get_option( 'bp_group_documents_use_categories' ) ) { ?>

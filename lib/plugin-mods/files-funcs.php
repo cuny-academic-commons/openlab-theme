@@ -133,3 +133,18 @@ function openlab_is_files_enabled_for_group( $group_id = null ) {
 
 	return empty( $is_disabled );
 }
+
+/**
+ * Conditionally disables the upload email notification, based on 'Notify' checkbox.
+ *
+ * @since 1.3.0
+ */
+add_action(
+	'bp_group_documents_add_success',
+	function() {
+		if ( ! openlab_notify_group_members_of_this_action() ) {
+			remove_action( 'bp_group_documents_add_success', 'bp_group_documents_email_notification', 10 );
+		}
+	},
+	5
+);
