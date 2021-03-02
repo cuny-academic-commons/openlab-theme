@@ -3170,9 +3170,9 @@ add_filter(
  * @param bool $checked Whether the checkbox should be checked.
  */
 function openlab_notify_group_members_ui( $checked = false ) {
-    ?>
+	?>
 <label><input type="checkbox" name="ol-notify-group-members" value="1" class="ol-notify-group-members" <?php checked( $checked ); ?> /> <?php esc_html_e( 'Notify subscribed members by email', 'commons-in-a-box' ); ?></label>
-    <?php
+	<?php
 }
 
 /**
@@ -3183,5 +3183,6 @@ function openlab_notify_group_members_ui( $checked = false ) {
  * @return bool
  */
 function openlab_notify_group_members_of_this_action() {
-    return ! empty( $_POST['ol-notify-group-members'] );
+	// phpcs:ignore WordPress.Security.NonceVerification.Missing
+	return ! empty( $_POST['ol-notify-group-members'] );
 }
