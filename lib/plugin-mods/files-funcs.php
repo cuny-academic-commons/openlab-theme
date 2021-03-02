@@ -156,11 +156,9 @@ add_action(
  *
  * @param bool   $send_it  Whether the notification should be sent.
  * @param object $activity Activity object.
- * @param int    $user_id  ID of the user.
- * @param string $sub      Subscription level of the user.
  * @return bool
  */
-function openlab_files_activity_notification_control( $send_it, $activity, $user_id, $sub ) {
+function openlab_files_activity_notification_control( $send_it, $activity ) {
 	if ( ! $send_it ) {
 		return $send_it;
 	}
@@ -173,5 +171,5 @@ function openlab_files_activity_notification_control( $send_it, $activity, $user
 			return $send_it;
 	}
 }
-add_action( 'bp_ass_send_activity_notification_for_user', 'openlab_files_activity_notification_control', 100, 4 );
-add_action( 'bp_ges_add_to_digest_queue_for_user', 'openlab_files_activity_notification_control', 100, 4 );
+add_action( 'bp_ass_send_activity_notification_for_user', 'openlab_files_activity_notification_control', 100, 2 );
+add_action( 'bp_ges_add_to_digest_queue_for_user', 'openlab_files_activity_notification_control', 100, 2 );
