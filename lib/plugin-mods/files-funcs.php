@@ -141,7 +141,7 @@ function openlab_is_files_enabled_for_group( $group_id = null ) {
  *
  * @since 1.3.0
  */
-remove_action( 'groups_screen_notification_settings' , 'bp_group_documents_screen_notification_settings' ) ;
+remove_action( 'groups_screen_notification_settings', 'bp_group_documents_screen_notification_settings' );
 remove_action( 'bp_group_documents_add_success', 'bp_group_documents_email_notification', 10 );
 
 /**
@@ -155,17 +155,18 @@ remove_action( 'bp_group_documents_add_success', 'bp_group_documents_email_notif
  * @param string $sub      Subscription level of the user.
  * @return bool
  */
+// phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.FoundBeforeLastUsed
 function openlab_files_activity_notification_control( $send_it, $activity, $user_id, $sub ) {
 	if ( ! $send_it ) {
 		return $send_it;
 	}
 
 	switch ( $activity->type ) {
-		case 'deleted_group_document' :
+		case 'deleted_group_document':
 			return false;
 
-		case 'added_group_document' :
-		case 'edited_group_document' :
+		case 'added_group_document':
+		case 'edited_group_document':
 			return openlab_notify_group_members_of_this_action() && 'no' !== $sub;
 
 		default:
