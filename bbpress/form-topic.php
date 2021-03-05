@@ -190,6 +190,10 @@
 
 					<?php do_action( 'bbp_theme_before_topic_form_submit_button' ); ?>
 
+					<div class="notify-group-members-ui">
+						<?php openlab_notify_group_members_ui( true ); ?>
+					</div>
+
 					<button type="submit" tabindex="<?php bbp_tab_index(); ?>" id="bbp_topic_submit" name="bbp_topic_submit" class="btn btn-primary submit"><?php esc_html_e( 'Submit', 'bbpress' ); ?></button>
 
 					<?php do_action( 'bbp_theme_after_topic_form_submit_button' ); ?>

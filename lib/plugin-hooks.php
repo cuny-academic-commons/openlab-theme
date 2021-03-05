@@ -292,6 +292,33 @@ function openlab_bbp_force_site_public_to_1( $public, $site_id ) {
 add_filter( 'bbp_is_site_public', 'openlab_bbp_force_site_public_to_1', 10, 2 );
 
 /**
+ * Manages email notifications for group forums.
+ *
+ * @since 1.3.0
+ *
+ * @param bool   $send_it  Whether the notification should be sent.
+ * @param object $activity Activity object.
+ * @param int    $user_id  ID of the user.
+ * @param string $sub      Subscription level of the user.
+ * @return bool
+ */
+// phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.FoundBeforeLastUsed
+function openlab_forums_activity_notification_control( $send_it, $activity, $user_id, $sub ) {
+	if ( ! $send_it ) {
+		return $send_it;
+	}
+
+	switch ( $activity->type ) {
+		case 'bbp_topic_create':
+			return openlab_notify_group_members_of_this_action() && 'no' !== $sub;
+
+		default:
+			return $send_it;
+	}
+}
+add_action( 'bp_ass_send_activity_notification_for_user', 'openlab_forums_activity_notification_control', 100, 4 );
+
+/**
  * Handle feature toggling for groups.
  */
 function openlab_group_feature_toggle( $group_id ) {
