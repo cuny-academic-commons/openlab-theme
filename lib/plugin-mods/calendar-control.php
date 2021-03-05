@@ -601,11 +601,13 @@ function openlab_bpeo_activity_notification_control( $send_it, $activity, $user_
 		return $send_it;
 	}
 
+	// phpcs:disable WordPress.Security.NonceVerification.Missing
 	if ( openlab_notify_group_members_of_this_action() && 'no' !== $sub ) {
 		unset( $_POST['bpeo-silent'] );
 	} else {
 		$_POST['bpeo-silent'] = 1;
 	}
+	// phpcs:enable WordPress.Security.NonceVerification.Missing
 
 	return openlab_notify_group_members_of_this_action();
 }
