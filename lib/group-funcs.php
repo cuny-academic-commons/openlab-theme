@@ -151,11 +151,13 @@ function openlab_group_site_markup() {
 							$group_site_name    = get_blog_option( $maybe_site_id, 'blogname' );
 							$group_site_text    = '<strong>' . esc_html( $group_site_name ) . '</strong>';
 							$group_site_url_out = '<a class="bold" href="' . esc_url( $group_site_url ) . '">' . esc_html( $group_site_url ) . '</a>';
+							$show_admin_bar     = cboxol_show_admin_bar_for_anonymous_users( $maybe_site_id );
 						} else {
 							$site_is_external   = true;
 							$group_site_text    = esc_url( $group_site_url );
 							$group_site_url_out = '<a class="bold" href="' . esc_url( $group_site_url ) . '">' . esc_html( $group_site_url ) . '</a>';
 						}
+
 						?>
 
 						<p>
@@ -173,6 +175,13 @@ function openlab_group_site_markup() {
 						<ul id="change-group-site"><li><?php echo $group_site_url_out; ?> <a class="button underline confirm" href="<?php echo esc_attr( wp_nonce_url( bp_get_group_permalink( groups_get_current_group() ) . 'admin/site-details/unlink-site/', 'unlink-site' ) ); ?>" id="change-group-site-toggle"><?php esc_html_e( 'Unlink', 'commons-in-a-box' ); ?></a></li></ul>
 						<input type="hidden" id="site-is-external" value="<?php echo intval( $site_is_external ); ?>" />
 
+						<?php if ( ! $site_is_external ) : ?>
+							<div class="show-admin-bar-on-site-setting">
+								<p><input type="checkbox" name="show-admin-bar-on-site" id="show-admin-bar-on-site" <?php checked( $show_admin_bar ); ?>> <label for="show-admin-bar-on-site"><?php esc_html_e( 'Show WordPress admin bar to non-logged-in visitors to my site?', 'commons-in-a-box' ); ?></label></p>
+								<p class="group-setting-note italics note"><?php esc_html_e( 'Logged-in visitors will always see the admin bar.', 'commons-in-a-box' ); ?></p>
+								<?php wp_nonce_field( 'openlab_site_admin_bar_settings', 'openlab-site-admin-bar-settings-nonce', false ); ?>
+							</div>
+						<?php endif; ?>
 					</div>
 
 				<?php else : ?>
@@ -558,7 +567,7 @@ function openlab_group_site_privacy_settings_markup() {
 							<p><label for="blog-private1"><input id="blog-private1" type="radio" name="blog_public" value="1" <?php checked( '1', $blog_public ); ?> /><?php esc_html_e( 'Allow search engines to index this site. The site will show up in web search results.', 'commons-in-a-box' ); ?></label></p>
 
 							<p><label for="blog-private0"><input id="blog-private0" type="radio" name="blog_public" value="0" <?php checked( '0', $blog_public ); ?> /><?php esc_html_e( 'Ask search engines not to index this site. The site should not show up in web search results.', 'commons-in-a-box' ); ?></label></p>
-							<p id="search-setting-note" class="italics note"><?php esc_html_e( 'Note: This option will NOT block access to the site. It is up to search engines to honor your request.', 'commons-in-a-box' ); ?></p>
+							<p id="search-setting-note" class="group-setting-note italics note"><?php esc_html_e( 'Note: This option will NOT block access to the site. It is up to search engines to honor your request.', 'commons-in-a-box' ); ?></p>
 						</div>
 					</div>
 
@@ -970,6 +979,32 @@ function openlab_save_group_site_settings() {
 
 	update_blog_option( $site_id, 'blog_public', $blog_public );
 	groups_update_groupmeta( $group->id, 'blog_public', $blog_public );
+}
+
+/**
+ * Catches and processes admin-bar settings.
+ */
+function openlab_save_group_site_admin_bar_settings() {
+	if ( ! isset( $_POST['openlab-site-admin-bar-settings-nonce'] ) ) {
+		return;
+	}
+
+	check_admin_referer( 'openlab_site_admin_bar_settings', 'openlab-site-admin-bar-settings-nonce' );
+
+	$group = groups_get_current_group();
+
+	$site_id = cboxol_get_group_site_id( $group->id );
+	if ( ! $site_id ) {
+		return;
+	}
+
+	$show_admin_bar = ! empty( $_POST['show-admin-bar-on-site'] );
+
+	if ( $show_admin_bar ) {
+		delete_blog_option( $site_id, 'cboxol_hide_admin_bar_for_anonymous_users' );
+	} else {
+		update_blog_option( $site_id, 'cboxol_hide_admin_bar_for_anonymous_users', 1 );
+	}
 }
 
 /**
@@ -1570,6 +1605,7 @@ function openlab_group_site_settings() {
 	// phpcs:ignore WordPress.Security.NonceVerification.Missing
 	if ( isset( $_POST['save'] ) ) {
 		openlab_save_group_site();
+		openlab_save_group_site_admin_bar_settings();
 		openlab_save_group_site_settings();
 		openlab_save_group_site_member_role_settings();
 
