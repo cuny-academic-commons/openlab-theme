@@ -212,3 +212,60 @@ function openlab_is_docs_enabled_for_group( $group_id = null ) {
 
 	return ! empty( $group_settings['group-enable'] );
 }
+
+/**
+ * Manages email notifications for Docs.
+ *
+ * @since 1.3.0
+ *
+ * @param bool   $send_it  Whether the notification should be sent.
+ * @param object $activity Activity object.
+ * @param int    $user_id  ID of the user.
+ * @param string $sub      Subscription level of the user.
+ * @return bool
+ */
+// phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.FoundBeforeLastUsed
+function openlab_docs_activity_notification_control( $send_it, $activity, $user_id, $sub ) {
+	if ( ! $send_it ) {
+		return $send_it;
+	}
+
+	switch ( $activity->type ) {
+		case 'bp_doc_created':
+		case 'bp_doc_edited':
+		case 'bp_doc_comment':
+			return openlab_notify_group_members_of_this_action() && 'no' !== $sub;
+
+		default:
+			return $send_it;
+	}
+}
+add_action( 'bp_ass_send_activity_notification_for_user', 'openlab_docs_activity_notification_control', 100, 4 );
+add_action( 'bp_ges_add_to_digest_queue_for_user', 'openlab_docs_activity_notification_control', 100, 4 );
+
+
+/**
+ * Inject "Notify members" interface before Docs comment submit button.
+ *
+ * @since 1.3.0
+ */
+add_filter(
+	'comment_form_submit_button',
+	function( $button ) {
+		if ( ! bp_docs_is_existing_doc() ) {
+			return $button;
+		}
+
+		ob_start();
+		?>
+		<div class="notify-group-members-ui">
+			<?php openlab_notify_group_members_ui( true ); ?>
+		</div>
+		<?php
+		$ui = ob_get_contents();
+		ob_end_clean();
+
+		return $ui . $button;
+	},
+	100
+);

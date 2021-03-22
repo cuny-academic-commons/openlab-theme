@@ -546,3 +546,70 @@ function openlab_bpeo_extra_venue_meta( $venue_id ) {
 	// phpcs:enable
 }
 add_action( 'eventorganiser_save_venue', 'openlab_bpeo_extra_venue_meta' );
+
+/**
+ * Render the "Notify subsribers" checkbox during event creation/editing.
+ *
+ * @since 1.3.0
+ *
+ * @param string $post_type
+ * @param string $location
+ */
+function openlab_bpeo_render_silent_checkbox( $post_type, $location ) {
+	// Only do this on the front end.
+	if ( is_admin() ) {
+		return;
+	}
+
+	// Only do this for events.
+	if ( 'event' !== $post_type ) {
+		return;
+	}
+
+	// Only do this for 'side'.
+	if ( 'side' !== $location ) {
+		return;
+	}
+
+	?>
+	<p id="bpeo-silent-wrapper" style="display:none">
+		<?php openlab_notify_group_members_ui( bp_is_action_variable( 'new-event', 0 ) ); ?>
+	</p>
+	<?php
+}
+add_action( 'do_meta_boxes', 'openlab_bpeo_render_silent_checkbox', 10, 2 );
+remove_action( 'do_meta_boxes', 'bpeo_render_silent_checkbox', 10, 2 );
+
+/**
+ * Trick: Hook in before bpeo_send_bpges_notification_for_user() and fake $_POST.
+ *
+ * @since 1.3.0
+ *
+ * @param bool   $send_it  Whether the notification should be sent.
+ * @param object $activity Activity object.
+ * @param int    $user_id  ID of the user.
+ * @param string $sub      Subscription level of the user.
+ * @return bool
+ */
+// phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.FoundBeforeLastUsed
+function openlab_bpeo_activity_notification_control( $send_it, $activity, $user_id, $sub ) {
+	if ( 'groups' !== $activity->component || 0 !== strpos( $activity->type, 'bpeo_' ) ) {
+		return $send_it;
+	}
+
+	if ( ! $send_it ) {
+		return $send_it;
+	}
+
+	// phpcs:disable WordPress.Security.NonceVerification.Missing
+	if ( openlab_notify_group_members_of_this_action() && 'no' !== $sub ) {
+		unset( $_POST['bpeo-silent'] );
+	} else {
+		$_POST['bpeo-silent'] = 1;
+	}
+	// phpcs:enable WordPress.Security.NonceVerification.Missing
+
+	return openlab_notify_group_members_of_this_action();
+}
+add_action( 'bp_ass_send_activity_notification_for_user', 'openlab_bpeo_activity_notification_control', 5, 4 );
+add_action( 'bp_ges_add_to_digest_queue_for_user', 'openlab_bpeo_activity_notification_control', 5, 4 );

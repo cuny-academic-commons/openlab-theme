@@ -3172,3 +3172,28 @@ add_filter(
 		return $args;
 	}
 );
+
+/**
+ * Reusable markup for the "Notify subscribed..." UI.
+ *
+ * @since 1.3.0
+ *
+ * @param bool $checked Whether the checkbox should be checked.
+ */
+function openlab_notify_group_members_ui( $checked = false ) {
+	?>
+<label><input type="checkbox" name="ol-notify-group-members" value="1" class="ol-notify-group-members" <?php checked( $checked ); ?> /> <?php esc_html_e( 'Notify subscribed members by email', 'commons-in-a-box' ); ?></label>
+	<?php
+}
+
+/**
+ * Reusable wrapper for checking whether the "Notify subscribed..." checkbox was checked.
+ *
+ * @since 1.3.0
+ *
+ * @return bool
+ */
+function openlab_notify_group_members_of_this_action() {
+	// phpcs:ignore WordPress.Security.NonceVerification.Missing
+	return ! empty( $_POST['ol-notify-group-members'] );
+}
