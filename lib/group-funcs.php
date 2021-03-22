@@ -208,7 +208,8 @@ function openlab_group_site_markup() {
 					}
 
 					if ( $group_type->get_is_portfolio() ) {
-						$suggested_path = openlab_suggest_portfolio_path();
+						$portfolio_user_id = openlab_get_user_id_from_portfolio_group_id( $the_group_id );
+						$suggested_path    = openlab_suggest_portfolio_path( $portfolio_user_id );
 					} else {
 						$suggested_path = groups_get_current_group()->slug;
 					}
@@ -243,7 +244,7 @@ function openlab_group_site_markup() {
 					</div><!-- /.groupblog-setup -->
 				</div><!-- /.panel-body -->
 
-					<?php if ( bp_is_group_create() && $clone_source_site_id ) : ?>
+					<?php if ( bp_is_group_create() && ! empty( $clone_source_site_id ) ) : ?>
 						<?php /* @todo get rid of all 'wds' */ ?>
 					<div id="wds-website-clone" class="form-field form-required" style="display:<?php echo esc_attr( $show_website ); ?>">
 						<div id="noo_clone_options">
@@ -895,41 +896,51 @@ function openlab_save_group_site() {
 
 	check_admin_referer( 'openlab_site_settings', 'openlab-site-settings-nonce' );
 
-	$group = groups_get_current_group();
+	if ( bp_is_group_create() ) {
+		$group_id = bp_get_new_group_id();
+	} else {
+		$group_id = bp_get_current_group_id();
+	}
 
-	$group_type = cboxol_get_group_group_type( $group->id );
+	$group_type = cboxol_get_group_group_type( $group_id );
 	if ( isset( $_POST['set-up-site-toggle'] ) || ( ! is_wp_error( $group_type ) && $group_type->get_requires_site() ) ) {
 		if ( isset( $_POST['new_or_old'] ) && 'new' === $_POST['new_or_old'] ) {
 
 			// Create a new site
-			cboxol_copy_blog_page( $group->id );
+			cboxol_copy_blog_page( $group_id );
 		} elseif ( isset( $_POST['new_or_old'] ) && 'old' === $_POST['new_or_old'] && isset( $_POST['groupblog-blogid'] ) ) {
 
 			// Associate an existing site
-			cboxol_set_group_site_id( $group->id, (int) $_POST['groupblog-blogid'] );
+			cboxol_set_group_site_id( $group_id, (int) $_POST['groupblog-blogid'] );
 		} elseif ( isset( $_POST['new_or_old'] ) && 'external' === $_POST['new_or_old'] && isset( $_POST['external-site-url'] ) ) {
 
 			// External site
 			// Some validation
 			$url = openlab_validate_url( $_POST['external-site-url'] );
-			groups_update_groupmeta( $group->id, 'external_site_url', $url );
+			groups_update_groupmeta( $group_id, 'external_site_url', $url );
 
 			if ( ! empty( $_POST['external-site-type'] ) ) {
-				groups_update_groupmeta( $group->id, 'external_site_type', $_POST['external-site-type'] );
+				groups_update_groupmeta( $group_id, 'external_site_type', $_POST['external-site-type'] );
 			}
 
 			if ( ! empty( $_POST['external-posts-url'] ) ) {
-				groups_update_groupmeta( $group->id, 'external_site_posts_feed', $_POST['external-posts-url'] );
+				groups_update_groupmeta( $group_id, 'external_site_posts_feed', $_POST['external-posts-url'] );
 			}
 
 			if ( ! empty( $_POST['external-comments-url'] ) ) {
-				groups_update_groupmeta( $group->id, 'external_site_comments_feed', $_POST['external-comments-url'] );
+				groups_update_groupmeta( $group_id, 'external_site_comments_feed', $_POST['external-comments-url'] );
 			}
 		}
 
-		$group_type = cboxol_get_group_group_type( $group->id );
+		$group_type = cboxol_get_group_group_type( $group_id );
 		if ( ! is_wp_error( $group_type ) && $group_type->get_is_portfolio() ) {
-			openlab_associate_portfolio_group_with_user( $group->id, bp_loggedin_user_id() );
+			if ( bp_is_group_create() ) {
+				$portfolio_user_id = bp_loggedin_user_id();
+			} else {
+				$portfolio_user_id = openlab_get_user_id_from_portfolio_group_id( $group_id );
+			}
+
+			openlab_associate_portfolio_group_with_user( $group_id, $portfolio_user_id );
 		}
 	}
 }
