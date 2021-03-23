@@ -2100,7 +2100,30 @@ function openlab_show_site_posts_and_comments() {
 }
 
 /**
+ * Generates the 'contact' line that appears under group names in directories.
+ *
+ * @param int $group_id ID of the group.
+ * @return string
+ */
+function openlab_output_group_contact_line( $group_id ) {
+	$names = array_map(
+		function( $user_id ) {
+			return bp_core_get_user_displayname( $user_id );
+		},
+		cboxol_get_all_group_contact_ids( $group_id )
+	);
+
+	$list = implode( ', ', $names );
+
+	return '<span class="truncate-on-the-fly" data-basevalue="35">' . esc_html( $list ) . '</span>';
+}
+
+/**
  * Generates the 'faculty' line that appears under group names in course directories.
+ *
+ * No longer used. See openlab_output_group_contact_line().
+ *
+ * @deprecated 1.3.0
  *
  * @param int $group_id ID of the group.
  * @return string
