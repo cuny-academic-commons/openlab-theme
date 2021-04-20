@@ -39,6 +39,13 @@ if ( defined( 'BP_DOCS_VERSION' ) ) {
 }
 
 /**
+ * OpenLab Badges
+ */
+if ( defined( 'OLBADGES_VERSION' ) ) {
+	require_once get_template_directory() . '/lib/plugin-mods/badges.php';
+}
+
+/**
  * BuddyPress Group Email Subscription
  * See also: openlab/buddypress/groups/single/notifications.php for template overrides
  */
