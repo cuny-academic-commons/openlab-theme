@@ -54,6 +54,10 @@ var OLAcadUnits = ' . wp_json_encode( $academic_unit_map ) . ';
 					<?php get_template_part( 'parts/sidebar/filter-group-type' ); ?>
 				<?php endif; ?>
 
+				<?php if ( ( bp_is_groups_directory() && $group_type_object && ! is_wp_error( $group_type_object ) && $group_type_object->get_is_portfolio() ) || bp_is_members_directory() || $is_search ) : ?>
+					<?php get_template_part( 'parts/sidebar/filter-member-type' ); ?>
+				<?php endif; ?>
+
 				<?php foreach ( $academic_unit_types as $academic_unit_type ) : ?>
 					<?php
 					set_query_var( 'academic_unit_type', $academic_unit_type->get_slug() );
@@ -67,10 +71,6 @@ var OLAcadUnits = ' . wp_json_encode( $academic_unit_map ) . ';
 
 				<?php if ( ( bp_is_groups_directory() && $group_type_object && $group_type_object->get_is_course() ) || $is_search ) : ?>
 					<?php get_template_part( 'parts/sidebar/filter-term' ); ?>
-				<?php endif; ?>
-
-				<?php if ( ( bp_is_groups_directory() && $group_type_object && ! is_wp_error( $group_type_object ) && $group_type_object->get_is_portfolio() ) || bp_is_members_directory() || $is_search ) : ?>
-					<?php get_template_part( 'parts/sidebar/filter-member-type' ); ?>
 				<?php endif; ?>
 
 				<?php get_template_part( 'parts/sidebar/filter-sort' ); ?>
