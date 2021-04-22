@@ -11,11 +11,12 @@
 				<?php
 				printf(
 					// translators: list of thread recipients
-					esc_html__( 'Sent between %s', 'commons-in-a-box' ),
+					esc_html__( 'Sent between %1$s', 'commons-in-a-box' ),
 					// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 					bp_get_the_thread_recipients()
 				);
 				?>
+				<span class="sep">|</a><a class="delete-button confirm" href="<?php echo esc_attr( bp_get_the_thread_delete_link() ); ?>" title="<?php esc_html_e( 'Delete Message', 'commons-in-a-box' ); ?>"><i class="fa fa-minus-circle"></i><?php esc_html_e( 'Delete', 'commons-in-a-box' ); ?></a>
 			</span>
 		</p>
 
