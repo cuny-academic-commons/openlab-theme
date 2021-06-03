@@ -7728,21 +7728,16 @@ input[type="submit"] {
 /**page**/
 .entry-title {
   border-bottom: 1px solid #bbbbbb;
-  height: 50px;
   margin-bottom: 10px;
   margin-top: -3px;
   overflow: hidden;
   padding-bottom: 6px;
+  padding-right: 90px;
   position: relative;
   vertical-align: bottom;
 }
 .entry-title h1 {
-  position: absolute;
-}
-@media (max-width: 767px) {
-  .entry-title h1 {
-    bottom: -13px;
-  }
+  margin-bottom: 0;
 }
 .entry-title .directory-title-meta {
   bottom: 5px;
@@ -7759,6 +7754,12 @@ input[type="submit"] {
 }
 .entry-title .directory-title-meta button.direct-toggle {
   font-size: 18px;
+}
+@media (max-width: 767px) {
+  .entry-title .directory-title-meta {
+    bottom: auto;
+    top: 0;
+  }
 }
 .entry-title .profile-name-group-type {
   font-weight: normal;
@@ -7783,13 +7784,13 @@ input[type="submit"] {
 }
 @media (max-width: 767px) {
   .entry-title .direct-toggle {
-    top: -42px;
+    top: 6px;
   }
 }
 @media (max-width: 767px) {
   .entry-title {
-    height: 54px;
     margin-top: -17px;
+    min-height: 56px;
     padding-bottom: 2px;
   }
   .entry-title .profile-name {
