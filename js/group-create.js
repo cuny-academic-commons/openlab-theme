@@ -47,7 +47,6 @@ jQuery( document ).ready(
 			}
 
 			var showSiteFields = $setuptoggle.is( ':checked' );
-			console.log(showSiteFields);
 
 			if ( showSiteFields || 'portfolio' === new_group_type ) {
 				$( '#site-options' ).show();
