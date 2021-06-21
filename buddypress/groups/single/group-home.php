@@ -189,7 +189,9 @@ $academic_unit_data = cboxol_get_object_academic_unit_data_for_display(
 										<?php
 										$view_clones_link = trailingslashit( bp_get_group_type_directory_permalink( $group_type->get_slug() ) );
 										$view_clones_link = add_query_arg( 'descendant-of', $group_id, $view_clones_link );
-										$count_message    = _n( __( 'It has been cloned or re-cloned %s time', 'commons-in-a-box' ), __( 'It has been cloned or re-cloned %s times', 'commons-in-a-box' ), $descendant_count, 'commons-in-a-box' );
+
+										// translators: Number of times that the group has been cloned.
+										$count_message = _n( 'It has been cloned or re-cloned %s time', 'It has been cloned or re-cloned %s times', $descendant_count, 'commons-in-a-box' );
 										?>
 										<?php echo esc_html( sprintf( $count_message, number_format_i18n( $descendant_count ) ) ); ?>; <a href="<?php echo esc_attr( $view_clones_link ); ?>"><?php esc_html_e( 'view clones', 'commons-in-a-box' ); ?></a>.
 									<?php endif; ?>
@@ -283,7 +285,9 @@ $academic_unit_data = cboxol_get_object_academic_unit_data_for_display(
 										<?php
 										$view_clones_link = trailingslashit( bp_get_group_type_directory_permalink( $group_type->get_slug() ) );
 										$view_clones_link = add_query_arg( 'descendant-of', $group_id, $view_clones_link );
-										$count_message    = _n( __( 'It has been cloned or re-cloned %s time', 'commons-in-a-box' ), __( 'It has been cloned or re-cloned %s times', 'commons-in-a-box' ), $descendant_count, 'commons-in-a-box' );
+
+										// translators: Number of times that the group has been cloned.
+										$count_message = _n( 'It has been cloned or re-cloned %s time', 'It has been cloned or re-cloned %s times', $descendant_count, 'commons-in-a-box' );
 										?>
 										<?php echo esc_html( sprintf( $count_message, number_format_i18n( $descendant_count ) ) ); ?>; <a href="<?php echo esc_attr( $view_clones_link ); ?>"><?php esc_html_e( 'view clones', 'commons-in-a-box' ); ?></a>.
 									<?php endif; ?>

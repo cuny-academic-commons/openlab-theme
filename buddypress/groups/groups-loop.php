@@ -132,11 +132,11 @@ if ( $descendant_of ) {
 
 	$descendant_of_string = sprintf(
 		/* translators: 1. Link to group whose descendants are being viewed; 2. list of links to administrators of that group */
-		esc_html__( 'Displaying clones of %s by %s.', 'commons-in-a-box' ),
+		esc_html__( 'Displaying clones of %1$s by %2$s.', 'commons-in-a-box' ),
 		sprintf(
 			'<a href="%s">%s</a>',
 			esc_attr( bp_get_group_permalink( $descendant_of_group ) ),
-			esc_html( $descendant_of_group->name ),
+			esc_html( $descendant_of_group->name )
 		),
 		implode( ', ', $descendant_of_admin_links )
 	);
