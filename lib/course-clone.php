@@ -133,19 +133,13 @@ add_action( 'groups_create_group_step_complete', 'openlab_clone_create_form_catc
 /** FILTERS ***********************************************************/
 
 /**
- * Swap out the group privacy status, if available
+ * No longer used.
+ *
+ * @deprecated 1.3.0
  */
 function openlab_clone_bp_get_new_group_status( $status ) {
-	$clone_source_group_id = intval( groups_get_groupmeta( bp_get_new_group_id(), 'clone_source_group_id' ) );
-
-	if ( $clone_source_group_id ) {
-		$clone_source_group = groups_get_group( array( 'group_id' => $clone_source_group_id ) );
-		$status             = $clone_source_group->status;
-	}
-
 	return $status;
 }
-add_filter( 'bp_get_new_group_status', 'openlab_clone_bp_get_new_group_status' );
 
 /**
  * AJAX handler for fetching group details
@@ -602,7 +596,7 @@ class Openlab_Clone_Course_Site {
 		$user_id = $group->creator_id;
 
 		$meta = array(
-			'public' => get_blog_option( $this->source_site_id, 'blog_public' ),
+			'public' => 1,
 		);
 
 		// We take care of this ourselves later on
@@ -670,6 +664,7 @@ class Openlab_Clone_Course_Site {
 			'home',
 			'upload_path',
 			'db_version',
+			'blog_public',
 			$wpdb->get_blog_prefix( $this->site_id ) . 'user_roles',
 			'fileupload_url',
 		);

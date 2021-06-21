@@ -523,16 +523,7 @@ function openlab_group_site_privacy_settings_markup() {
 		$site_id     = cboxol_get_group_site_id();
 		$blog_public = get_blog_option( $site_id, 'blog_public' );
 	} else {
-		$group_id = bp_get_new_group_id();
-
-		// If this is a clone of a group with a site, default to the clone source settings.
-		$clone_source_group_id = groups_get_groupmeta( $group_id, 'clone_source_group_id' );
-		if ( $clone_source_group_id ) {
-			$clone_source_site_id = openlab_get_site_id_by_group_id( $clone_source_group_id );
-			if ( $clone_source_site_id ) {
-				$blog_public = get_blog_option( $clone_source_site_id, 'blog_public' );
-			}
-		}
+		$group_id    = bp_get_new_group_id();
 	}
 
 	// Fall back on group status.
@@ -1085,7 +1076,7 @@ function openlab_group_privacy_settings( $group_type ) {
 			<?php
 			$new_group_status = bp_get_new_group_status();
 			if ( ! $new_group_status ) {
-				$new_group_status = ! empty( $clone_source_group_status ) ? $clone_source_group_status : 'public';
+				$new_group_status = 'public';
 			}
 			?>
 			<div class="row">

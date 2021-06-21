@@ -287,7 +287,6 @@ jQuery( document ).ready(
 
 						// Description
 						$( '#group-desc' ).val( r.description );
-						$( '#group-status-' + r.status ).prop( 'checked',true );
 
 						// Categories
 						$.each(
