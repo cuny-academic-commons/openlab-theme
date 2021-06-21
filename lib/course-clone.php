@@ -831,7 +831,7 @@ class Openlab_Clone_Course_Site {
 		$site_posts          = $wpdb->get_results( "SELECT ID, guid, post_author, post_status, post_title, post_type FROM {$wpdb->posts}" );
 		$source_group_admins = $this->get_source_group_admins();
 		foreach ( $site_posts as $sp ) {
-			if ( ! is_super_admin( $sp->post_author ) && ! in_array( $sp->post_author, $source_group_admins ) && 'nav_menu_item' !== $sp->post_type ) {
+			if ( ! is_super_admin( $sp->post_author ) && ! in_array( (int) $sp->post_author, $source_group_admins, true ) && 'nav_menu_item' !== $sp->post_type ) {
 				// Non-admins have their stuff deleted.
 				if ( 'attachment' === $sp->post_type ) {
 					$atts_to_delete_ids[] = $sp->ID;

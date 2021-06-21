@@ -524,7 +524,7 @@ function openlab_group_site_privacy_settings_markup() {
 		$site_id     = cboxol_get_group_site_id();
 		$blog_public = get_blog_option( $site_id, 'blog_public' );
 	} else {
-		$group_id    = bp_get_new_group_id();
+		$group_id = bp_get_new_group_id();
 	}
 
 	// Fall back on group status.
