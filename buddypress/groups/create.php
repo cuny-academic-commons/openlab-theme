@@ -49,6 +49,14 @@
 	}
 	// phpcs:enable WordPress.Security.NonceVerification.Recommended
 
+	$is_shared_clone = false;
+	if ( $group_id_to_clone ) {
+		$source_group_admin_ids = cboxol_get_all_group_contact_ids( $group_id_to_clone );
+		if ( ! in_array( bp_loggedin_user_id(), $source_group_admin_ids, true ) ) {
+			$is_shared_clone = true;
+		}
+	}
+
 	openlab_group_admin_js_data( $group_type );
 	?>
 
@@ -86,44 +94,50 @@
 					<div class="panel panel-default create-or-clone-selector">
 						<div class="panel-heading semibold"><?php esc_html_e( 'Create New or Clone Existing?', 'commons-in-a-box' ); ?></div>
 						<div class="panel-body">
-						<?php
-						/* @todo Rephrase?
-						<p class="ol-tooltip clone-course-tooltip" id="clone-course-tooltip-2">If you taught the same course in a previous semester or year, cloning can save you time.</p>
-						*/
-						?>
-
-						<ul class="create-or-clone-options">
-							<li class="radio">
-								<label for="create-or-clone-create"><input type="radio" name="create-or-clone" id="create-or-clone-create" value="create" <?php checked( ! (bool) $group_id_to_clone ); ?> /><?php esc_html_e( 'Create New', 'commons-in-a-box' ); ?></label>
-							</li>
-
 							<?php
-							// Only show 'Existing' field if there's something to clone.
-							$group_args = array(
-								'show_hidden' => true,
-								'user_id'     => bp_loggedin_user_id(),
-								'group_type'  => $group_type->get_slug(),
-								'clone_id'    => $group_id_to_clone,
-							);
-
-							$groups_of_type = openlab_get_groups_owned_by_user( $group_args );
+							/* @todo Rephrase?
+							<p class="ol-tooltip clone-course-tooltip" id="clone-course-tooltip-2">If you taught the same course in a previous semester or year, cloning can save you time.</p>
+							*/
 							?>
 
-							<li class="disable-if-js form-group radio form-inline">
-								<label for="create-or-clone-clone" <?php echo ( $groups_of_type['total'] < 1 ? 'class="disabled-opt"' : '' ); ?>><input type="radio" name="create-or-clone" id="create-or-clone-clone" value="clone" <?php checked( (bool) $group_id_to_clone ); ?> <?php echo ( $groups_of_type['total'] < 1 ? 'disabled' : '' ); ?> /><?php esc_html_e( 'Clone Existing', 'commons-in-a-box' ); ?></label>
+							<ul class="create-or-clone-options">
+								<li class="radio">
+									<label for="create-or-clone-create"><input type="radio" name="create-or-clone" id="create-or-clone-create" value="create" <?php checked( ! (bool) $group_id_to_clone ); ?> /><?php esc_html_e( 'Create New', 'commons-in-a-box' ); ?></label>
+								</li>
 
-								<label class="sr-only" for="group-to-clone"><?php esc_html_e( 'Choose Clone Source', 'commons-in-a-box' ); ?></label>
-								<select class="form-control" id="group-to-clone" name="group-to-clone">
-									<option value="" <?php selected( $group_id_to_clone, 0 ); ?>>-</option>
+								<?php
+								// Only show 'Existing' field if there's something to clone.
+								$group_args = array(
+									'show_hidden' => true,
+									'user_id'     => bp_loggedin_user_id(),
+									'group_type'  => $group_type->get_slug(),
+									'clone_id'    => $group_id_to_clone,
+								);
 
-									<?php foreach ( $groups_of_type['groups'] as $user_group ) : ?>
-										<option value="<?php echo esc_attr( $user_group->id ); ?>" <?php selected( $group_id_to_clone, $user_group->id ); ?>><?php echo esc_attr( $user_group->name ); ?></option>
-									<?php endforeach ?>
-								</select>
-							</li>
-						</ul>
+								$groups_of_type = openlab_get_groups_owned_by_user( $group_args );
+								?>
 
-						<p class="ol-clone-description italics" id="ol-clone-description"><?php esc_html_e( 'Note: The profile, site set-up, and all docs, files, discussions, posts, and pages created by admins will be copied to the clone. Membership or member-created documents, files, discussions, comments or posts will not be copied.', 'commons-in-a-box' ); ?></p>
+								<li class="disable-if-js form-group radio form-inline">
+									<label for="create-or-clone-clone" <?php echo ( $groups_of_type['total'] < 1 ? 'class="disabled-opt"' : '' ); ?>><input type="radio" name="create-or-clone" id="create-or-clone-clone" value="clone" <?php checked( (bool) $group_id_to_clone ); ?> <?php echo ( $groups_of_type['total'] < 1 ? 'disabled' : '' ); ?> /><?php esc_html_e( 'Clone Existing', 'commons-in-a-box' ); ?></label>
+
+									<label class="sr-only" for="group-to-clone"><?php esc_html_e( 'Choose Clone Source', 'commons-in-a-box' ); ?></label>
+									<select class="form-control" id="group-to-clone" name="group-to-clone">
+										<option value="" <?php selected( $group_id_to_clone, 0 ); ?>>-</option>
+
+										<?php foreach ( $groups_of_type['groups'] as $user_group ) : ?>
+											<option value="<?php echo esc_attr( $user_group->id ); ?>" <?php selected( $group_id_to_clone, $user_group->id ); ?>><?php echo esc_attr( $user_group->name ); ?></option>
+										<?php endforeach ?>
+									</select>
+								</li>
+							</ul>
+
+							<p class="ol-clone-description italics" id="ol-clone-description"><?php esc_html_e( 'Note: The profile, site set-up, and all docs, files, discussions, posts, and pages created by admins will be copied to the clone. Membership or member-created documents, files, discussions, comments or posts will not be copied.', 'commons-in-a-box' ); ?></p>
+
+							<?php $authorship_settings_clone_class = $is_shared_clone ? '' : 'hidden'; ?>
+							<div id="shared-cloning-authorship-settings" class="shared-cloning-authorship-settings <?php echo esc_attr( $authorship_settings_clone_class ); ?>">
+								<p><?php esc_html_e( 'Shared cloning is enabled for the group you are cloning. The author for all materials copied will be switched to you, unless you uncheck the box below:', 'commons-in-a-box' ); ?></p>
+								<input type="checkbox" <?php checked( $is_shared_clone ); ?> name="change-cloned-content-attribution" id="change-cloned-content-attribution" value="1" /> <label for="change-cloned-content-attribution"><?php esc_html_e( 'Switch author to cloner (recommended)', 'commons-in-a-box' ); ?></label>
+							</div>
 
 						</div>
 					</div>
