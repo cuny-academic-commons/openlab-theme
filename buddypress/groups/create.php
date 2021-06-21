@@ -123,7 +123,8 @@
 							</li>
 						</ul>
 
-						<p class="ol-clone-description italics" id="ol-clone-description"><?php echo esc_html( $group_type->get_label( 'clone_help_text' ) ); ?></p>
+						<p class="ol-clone-description italics" id="ol-clone-description"><?php esc_html_e( 'Note: The profile, site set-up, and all docs, files, discussions, posts, and pages created by admins will be copied to the clone. Membership or member-created documents, files, discussions, comments or posts will not be copied.', 'commons-in-a-box' ); ?></p>
+
 						</div>
 					</div>
 
