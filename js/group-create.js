@@ -131,11 +131,7 @@ jQuery( document ).ready(
 		}
 
 		function showHideAll() {
-			showHide( 'wds-website' );
-			showHide( 'wds-website-existing' );
-			showHide( 'wds-website-external' );
 			showHide( 'wds-website-tooltips' );
-			showHide( 'wds-website-clone' );
 			showHide( 'check-note-wrapper' );
 		}
 
