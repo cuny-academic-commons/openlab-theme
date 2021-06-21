@@ -123,6 +123,25 @@ if ( $category ) {
 	);
 }
 
+$descendant_of = openlab_get_current_filter( 'descendant-of' );
+if ( $descendant_of ) {
+	$descendant_of_group = groups_get_group( $descendant_of );
+
+	$descendant_of_admin_ids   = cboxol_get_all_group_contact_ids( $descendant_of );
+	$descendant_of_admin_links = array_map( 'bp_core_get_userlink', $descendant_of_admin_ids );
+
+	$descendant_of_string = sprintf(
+		/* translators: 1. Link to group whose descendants are being viewed; 2. list of links to administrators of that group */
+		esc_html__( 'Displaying clones of %s by %s.', 'commons-in-a-box' ),
+		sprintf(
+			'<a href="%s">%s</a>',
+			esc_attr( bp_get_group_permalink( $descendant_of_group ) ),
+			esc_html( $descendant_of_group->name ),
+		),
+		implode( ', ', $descendant_of_admin_links )
+	);
+}
+
 ?>
 
 <?php if ( bp_has_groups( $group_args ) ) : ?>
@@ -132,6 +151,9 @@ if ( $category ) {
 		<?php if ( openlab_is_my_profile() ) : ?>
 			<?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 			<?php echo openlab_submenu_markup( 'groups', $group_type_obj, false ); ?>
+		<?php elseif ( $descendant_of ) : ?>
+			<?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+			<?php echo $descendant_of_string; ?>
 		<?php elseif ( bp_is_groups_directory() || openlab_is_search_results_page() ) : ?>
 			<div class="col-lg-19 col-md-18 col-sm-16">
 				<?php esc_html_e( 'Narrow down your results using the search filters.', 'commons-in-a-box' ); ?>

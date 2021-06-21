@@ -99,10 +99,8 @@ function openlab_clone_create_form_catcher() {
 				$change_authorship = ! empty( $_POST['change-cloned-content-attribution'] );
 				groups_update_groupmeta( $new_group_id, 'change_cloned_content_attribution', $change_authorship );
 
-				// Store history.
-				$clone_history   = openlab_get_group_clone_history( $clone_source_group_id );
-				$clone_history[] = $clone_source_group_id;
-				groups_update_groupmeta( $new_group_id, 'clone_history', $clone_history );
+				// Bust ancestor cache.
+				openlab_invalidate_ancestor_clone_cache( $new_group_id );
 
 				openlab_clone_course_group( $new_group_id, $clone_source_group_id );
 			}
@@ -332,6 +330,36 @@ function openlab_add_clone_button_to_profile() {
 	<?php
 }
 add_action( 'bp_group_header_actions', 'openlab_add_clone_button_to_profile', 50 );
+
+/**
+ * 'descendant-of' parameter support for group directories.
+ *
+ * @since 1.3.0
+ *
+ * @param array $args
+ * @return array
+ */
+add_filter(
+	'bp_before_groups_get_groups_parse_args',
+	function( $args ) {
+		$group_id = openlab_get_current_filter( 'descendant-of' );
+		if ( ! $group_id ) {
+			return $args;
+		}
+
+		$group = groups_get_group( $group_id );
+
+		$exclude_hidden = ! current_user_can( 'bp_moderate' );
+		$descendant_ids = openlab_get_clone_descendants_of_group( $group_id, [ $group->creator_id ], $exclude_hidden );
+		if ( ! $descendant_ids ) {
+			$descendant_ids = [ 0 ];
+		}
+
+		$args['include'] = $descendant_ids;
+
+		return $args;
+	}
+);
 
 /** CLASSES ******************************************************************/
 
