@@ -244,142 +244,144 @@ function openlab_group_site_markup() {
 							<?php $show_website = 'auto'; ?>
 						<?php endif ?>
 
-						<div id="wds-website-tooltips" class="form-field form-required" style="display:<?php echo esc_attr( $show_website ); ?>">
-							<p class="ol-tooltip"><?php echo esc_html( $group_type->get_label( 'site_address_help_text' ) ); ?></p>
-						</div>
+						<div id="site-options">
+							<div id="wds-website-tooltips" class="form-field form-required" style="display:<?php echo esc_attr( $show_website ); ?>">
+								<p class="ol-tooltip"><?php echo esc_html( $group_type->get_label( 'site_address_help_text' ) ); ?></p>
+							</div>
 
-						<?php if ( bp_is_group_create() && $is_clone ) : ?>
-							<?php /* @todo get rid of all 'wds' */ ?>
-							<div id="wds-website-clone" class="form-field form-required">
-								<div id="noo_clone_options">
-									<div class="row">
-										<div class="radio">
-											<label>
-												<input type="radio" class="noo_radio" name="new_or_old" id="new_or_old_clone" value="clone" />
-												<?php esc_html_e( 'Name your cloned site:', 'commons-in-a-box' ); ?>
-											</label>
-										</div>
-
-										<?php if ( is_subdomain_install() ) : ?>
-											<div class="site-label site-path site-path-subdomain">
-												<input id="clone-destination-path" class="form-control domain-validate" size="40" name="clone-destination-path" type="text" title="<?php esc_html_e( 'Domain', 'commons-in-a-box' ); ?>" value="<?php echo esc_html( $suggested_path ); ?>" />
-
-												<span>.<?php echo esc_html( cboxol_get_subdomain_base() ); ?></span>
-											</div>
-
-										<?php else : ?>
-											<div class="site-label site-path site-path-subdirectory">
-												<span><?php echo esc_html( $current_site->domain . $current_site->path ); ?></span>
-
-												<input class="form-control domain-validate" size="40" id="clone-destination-path" name="clone-destination-path" type="text" title="<?php esc_html_e( 'Domain', 'commons-in-a-box' ); ?>" value="<?php echo esc_html( $suggested_path ); ?>" />
-											</div>
-										<?php endif; ?>
-
-										<input id="blog-id-to-clone" name="blog-id-to-clone" value="<?php echo esc_attr( $clone_source_site_id ); ?>" type="hidden" />
-									</div><!-- /.row -->
-
-									<p id="cloned-site-url"></p>
-								</div><!-- /#noo_clone_options -->
-							</div><!-- /#wds-website-clone -->
-						<?php endif; ?>
-
-						<?php if ( ! $is_clone ) : ?>
-							<div id="wds-website" class="form-field form-required">
-								<div id="noo_new_options">
-									<div id="noo_new_options-div" class="row">
-										<div class="radio">
-											<label>
-												<input type="radio" class="noo_radio" name="new_or_old" id="new_or_old_new" value="new" checked />
-												<?php esc_html_e( 'Create a new site:', 'commons-in-a-box' ); ?>
-											</label>
-										</div>
-
-										<?php if ( is_subdomain_install() ) : ?>
-											<div class="site-label site-path site-path-subdomain">
-												<input id="new-site-domain" class="form-control domain-validate" size="40" name="blog[domain]" type="text" title="<?php esc_html_e( 'Domain', 'commons-in-a-box' ); ?>" value="<?php echo esc_html( $suggested_path ); ?>" />
-
-												<span>.<?php echo esc_html( cboxol_get_subdomain_base() ); ?></span>
-											</div>
-
-										<?php else : ?>
-											<div class="site-label site-path site-path-subdirectory">
-												<span><?php echo esc_html( $current_site->domain . $current_site->path ); ?></span>
-
-												<input id="new-site-domain" class="form-control domain-validate" size="40" name="blog[domain]" type="text" title="<?php esc_html_e( 'Domain', 'commons-in-a-box' ); ?>" value="<?php echo esc_html( $suggested_path ); ?>" />
-											</div>
-										<?php endif; ?>
-
-									</div><!-- #noo_new_options-div -->
-								</div><!-- #noo_new_options -->
-							</div><!-- #wds-website -->
-						<?php endif; ?>
-
-						<?php if ( ! $is_clone ) : ?>
-							<?php /* Existing blogs - only display if some are available */ ?>
-							<?php
-							// Exclude blogs already used as groupblogs
-							global $wpdb, $bp;
-							// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-							$current_groupblogs = $wpdb->get_col( "SELECT meta_value FROM {$bp->groups->table_name_groupmeta} WHERE meta_key = 'cboxol_group_site_id'" );
-							$current_groupblogs = array_map( 'intval', $current_groupblogs );
-
-							foreach ( $user_blogs as $ubid => $ub ) {
-								if ( in_array( (int) $ub->userblog_id, $current_groupblogs, true ) ) {
-									unset( $user_blogs[ $ubid ] );
-								}
-							}
-							$user_blogs = array_values( $user_blogs );
-							?>
-
-							<?php if ( ! empty( $user_blogs ) ) : ?>
-								<div id="wds-website-existing" class="form-field form-required">
-
-									<div id="noo_old_options">
+							<?php if ( bp_is_group_create() && $is_clone ) : ?>
+								<?php /* @todo get rid of all 'wds' */ ?>
+								<div id="wds-website-clone" class="form-field form-required">
+									<div id="noo_clone_options">
 										<div class="row">
 											<div class="radio">
 												<label>
-													<input type="radio" class="noo_radio" id="new_or_old_old" name="new_or_old" value="old" />
-													<?php esc_html_e( 'Use an existing site:', 'commons-in-a-box' ); ?></label>
+													<input type="radio" class="noo_radio" name="new_or_old" id="new_or_old_clone" value="clone" />
+													<?php esc_html_e( 'Name your cloned site:', 'commons-in-a-box' ); ?>
+												</label>
 											</div>
-											<div class="site-path">
-												<label class="sr-only" for="groupblog-blogid"><?php esc_html_e( 'Choose a site', 'commons-in-a-box' ); ?></label>
-												<select class="form-control" name="groupblog-blogid" id="groupblog-blogid">
-													<option value="0"><?php esc_html_e( '- Choose a site -', 'commons-in-a-box' ); ?></option>
-													<?php foreach ( (array) $user_blogs as $user_blog ) : ?>
-														<option value="<?php echo esc_attr( $user_blog->userblog_id ); ?>"><?php echo esc_html( $user_blog->blogname ); ?></option>
-													<?php endforeach ?>
-												</select>
+
+											<?php if ( is_subdomain_install() ) : ?>
+												<div class="site-label site-path site-path-subdomain">
+													<input id="clone-destination-path" class="form-control domain-validate" size="40" name="clone-destination-path" type="text" title="<?php esc_html_e( 'Domain', 'commons-in-a-box' ); ?>" value="<?php echo esc_html( $suggested_path ); ?>" />
+
+													<span>.<?php echo esc_html( cboxol_get_subdomain_base() ); ?></span>
+												</div>
+
+											<?php else : ?>
+												<div class="site-label site-path site-path-subdirectory">
+													<span><?php echo esc_html( $current_site->domain . $current_site->path ); ?></span>
+
+													<input class="form-control domain-validate" size="40" id="clone-destination-path" name="clone-destination-path" type="text" title="<?php esc_html_e( 'Domain', 'commons-in-a-box' ); ?>" value="<?php echo esc_html( $suggested_path ); ?>" />
+												</div>
+											<?php endif; ?>
+
+											<input id="blog-id-to-clone" name="blog-id-to-clone" value="<?php echo esc_attr( $clone_source_site_id ); ?>" type="hidden" />
+										</div><!-- /.row -->
+
+										<p id="cloned-site-url"></p>
+									</div><!-- /#noo_clone_options -->
+								</div><!-- /#wds-website-clone -->
+							<?php endif; ?>
+
+							<?php if ( ! $is_clone ) : ?>
+								<div id="wds-website" class="form-field form-required">
+									<div id="noo_new_options">
+										<div id="noo_new_options-div" class="row">
+											<div class="radio">
+												<label>
+													<input type="radio" class="noo_radio" name="new_or_old" id="new_or_old_new" value="new" checked />
+													<?php esc_html_e( 'Create a new site:', 'commons-in-a-box' ); ?>
+												</label>
+											</div>
+
+											<?php if ( is_subdomain_install() ) : ?>
+												<div class="site-label site-path site-path-subdomain">
+													<input id="new-site-domain" class="form-control domain-validate" size="40" name="blog[domain]" type="text" title="<?php esc_html_e( 'Domain', 'commons-in-a-box' ); ?>" value="<?php echo esc_html( $suggested_path ); ?>" />
+
+													<span>.<?php echo esc_html( cboxol_get_subdomain_base() ); ?></span>
+												</div>
+
+											<?php else : ?>
+												<div class="site-label site-path site-path-subdirectory">
+													<span><?php echo esc_html( $current_site->domain . $current_site->path ); ?></span>
+
+													<input id="new-site-domain" class="form-control domain-validate" size="40" name="blog[domain]" type="text" title="<?php esc_html_e( 'Domain', 'commons-in-a-box' ); ?>" value="<?php echo esc_html( $suggested_path ); ?>" />
+												</div>
+											<?php endif; ?>
+
+										</div><!-- #noo_new_options-div -->
+									</div><!-- #noo_new_options -->
+								</div><!-- #wds-website -->
+							<?php endif; ?>
+
+							<?php if ( ! $is_clone ) : ?>
+								<?php /* Existing blogs - only display if some are available */ ?>
+								<?php
+								// Exclude blogs already used as groupblogs
+								global $wpdb, $bp;
+								// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+								$current_groupblogs = $wpdb->get_col( "SELECT meta_value FROM {$bp->groups->table_name_groupmeta} WHERE meta_key = 'cboxol_group_site_id'" );
+								$current_groupblogs = array_map( 'intval', $current_groupblogs );
+
+								foreach ( $user_blogs as $ubid => $ub ) {
+									if ( in_array( (int) $ub->userblog_id, $current_groupblogs, true ) ) {
+										unset( $user_blogs[ $ubid ] );
+									}
+								}
+								$user_blogs = array_values( $user_blogs );
+								?>
+
+								<?php if ( ! empty( $user_blogs ) ) : ?>
+									<div id="wds-website-existing" class="form-field form-required">
+
+										<div id="noo_old_options">
+											<div class="row">
+												<div class="radio">
+													<label>
+														<input type="radio" class="noo_radio" id="new_or_old_old" name="new_or_old" value="old" />
+														<?php esc_html_e( 'Use an existing site:', 'commons-in-a-box' ); ?></label>
+												</div>
+												<div class="site-path">
+													<label class="sr-only" for="groupblog-blogid"><?php esc_html_e( 'Choose a site', 'commons-in-a-box' ); ?></label>
+													<select class="form-control" name="groupblog-blogid" id="groupblog-blogid">
+														<option value="0"><?php esc_html_e( '- Choose a site -', 'commons-in-a-box' ); ?></option>
+														<?php foreach ( (array) $user_blogs as $user_blog ) : ?>
+															<option value="<?php echo esc_attr( $user_blog->userblog_id ); ?>"><?php echo esc_html( $user_blog->blogname ); ?></option>
+														<?php endforeach ?>
+													</select>
+												</div>
 											</div>
 										</div>
 									</div>
-								</div>
-							<?php endif ?>
-						<?php endif; ?>
+								<?php endif ?>
+							<?php endif; ?>
 
-						<div id="wds-website-external" class="form-field form-required">
-							<div id="noo_external_options">
-								<div class="form-group row">
-									<div class="radio">
-										<label>
-											<input type="radio" class="noo_radio" id="new_or_old_external" name="new_or_old" value="external" />
-											<?php esc_html_e( 'Use an external site:', 'commons-in-a-box' ); ?>
-										</label>
+							<div id="wds-website-external" class="form-field form-required">
+								<div id="noo_external_options">
+									<div class="form-group row">
+										<div class="radio">
+											<label>
+												<input type="radio" class="noo_radio" id="new_or_old_external" name="new_or_old" value="external" />
+												<?php esc_html_e( 'Use an external site:', 'commons-in-a-box' ); ?>
+											</label>
+										</div>
+										<div class="site-path">
+											<label class="sr-only" for="external-site-url"><?php esc_html_e( 'Input external site URL', 'commons-in-a-box' ); ?></label>
+											<input class="form-control pull-left" type="text" name="external-site-url" id="external-site-url" placeholder="http://" />
+											<a class="btn btn-primary no-deco top-align pull-right" id="find-feeds" href="#" display="none"><?php echo esc_html_x( 'Check', 'External site RSS feed check button', 'commons-in-a-box' ); ?><span class="sr-only"><?php esc_html_e( 'Check external site for Post and Comment feeds', 'commons-in-a-box' ); ?></span></a>
+										</div>
+									</div><!-- .form-group.row -->
+								</div><!-- #noo_external_options -->
+
+								<div id="check-note-wrapper" style="display:<?php echo esc_attr( $show_website ); ?>">
+									<div colspan="2">
+										<p id="check-note" class="italics disabled-opt"><?php echo esc_html( $group_type->get_label( 'site_feed_check_help_text' ) ); ?></p>
 									</div>
-									<div class="site-path">
-										<label class="sr-only" for="external-site-url"><?php esc_html_e( 'Input external site URL', 'commons-in-a-box' ); ?></label>
-										<input class="form-control pull-left" type="text" name="external-site-url" id="external-site-url" placeholder="http://" />
-										<a class="btn btn-primary no-deco top-align pull-right" id="find-feeds" href="#" display="none"><?php echo esc_html_x( 'Check', 'External site RSS feed check button', 'commons-in-a-box' ); ?><span class="sr-only"><?php esc_html_e( 'Check external site for Post and Comment feeds', 'commons-in-a-box' ); ?></span></a>
-									</div>
-								</div><!-- .form-group.row -->
-							</div><!-- #noo_external_options -->
-
-							<div id="check-note-wrapper" style="display:<?php echo esc_attr( $show_website ); ?>">
-								<div colspan="2">
-									<p id="check-note" class="italics disabled-opt"><?php echo esc_html( $group_type->get_label( 'site_feed_check_help_text' ) ); ?></p>
 								</div>
-							</div>
 
-						</div><!-- #wds-website-external -->
+							</div><!-- #wds-website-external -->
+						</div><!-- $site-options -->
 					</div><!-- .groupblog-setup -->
 				<?php endif; ?>
 			</div><!-- .panel-body -->

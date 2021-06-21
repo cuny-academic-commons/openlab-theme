@@ -41,6 +41,21 @@ jQuery( document ).ready(
 
 		$required_fields = $form.find( 'input:required' );
 
+		function maybeShowSiteFields() {
+			if ( ! $setuptoggle.length && 'portfolio' !== new_group_type ) {
+				return;
+			}
+
+			var showSiteFields = $setuptoggle.is( ':checked' );
+			console.log(showSiteFields);
+
+			if ( showSiteFields || 'portfolio' === new_group_type ) {
+				$( '#site-options' ).show();
+			} else {
+				$( '#site-options' ).hide();
+			}
+		}
+
 		function new_old_switch( noo ) {
 			var radioid = '#new_or_old_' + noo;
 			$( radioid ).prop( 'checked','checked' );
@@ -392,6 +407,7 @@ jQuery( document ).ready(
 				showHideAll();
 				showHideAssociatedSitePrivacy();
 				showHideMemberRoleSettings();
+				maybeShowSiteFields();
 			}
 		);
 		if ( $setuptoggle.is( ':checked' ) ) {
@@ -399,6 +415,7 @@ jQuery( document ).ready(
 		};
 		showHideAssociatedSitePrivacy();
 		showHideMemberRoleSettings();
+		maybeShowSiteFields();
 
 		// Precheck the box if:
 		// - This is the group creation process, and
