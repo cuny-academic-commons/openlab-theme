@@ -8354,46 +8354,49 @@ body form .checkbox-list-container {
 .ct-group-meta tr #external-site-url {
   width: 88%;
 }
-.ct-group-meta .groupblog-setup p:empty {
+.ct-group-meta p:empty {
   margin: 0;
 }
-.ct-group-meta .groupblog-setup .radio {
+.ct-group-meta .radio {
   margin-bottom: 0;
   margin-top: 7px;
 }
-.ct-group-meta .groupblog-setup .radio label {
+.ct-group-meta .radio label {
   padding-left: 25px;
 }
-.ct-group-meta .groupblog-setup .site-path {
+.ct-group-meta .site-details-query label {
+  padding-left: 5px;
+}
+.ct-group-meta .site-path {
   display: table;
   padding-left: 25px;
   width: 90%;
 }
-.ct-group-meta .groupblog-setup .site-path span {
+.ct-group-meta .site-path span {
   display: table-cell;
   width: 1px;
 }
 @media (max-width: 767px) {
-  .ct-group-meta .groupblog-setup .site-path span {
+  .ct-group-meta .site-path span {
     display: block;
     width: auto;
   }
 }
-.ct-group-meta .groupblog-setup .site-path.site-path-subdomain span {
+.ct-group-meta .site-path.site-path-subdomain span {
   padding-left: 10px;
 }
-.ct-group-meta .groupblog-setup .site-path input.form-control {
+.ct-group-meta .site-path input.form-control {
   display: table-cell;
   margin-left: 8px;
   width: 100%;
 }
 @media (max-width: 767px) {
-  .ct-group-meta .groupblog-setup .site-path input.form-control {
+  .ct-group-meta .site-path input.form-control {
     display: block;
     margin-left: 0;
   }
 }
-.ct-group-meta .groupblog-setup #noo_external_options .site-path input.form-control {
+.ct-group-meta #noo_external_options .site-path input.form-control {
   margin-left: 0;
   width: 85%;
 }
