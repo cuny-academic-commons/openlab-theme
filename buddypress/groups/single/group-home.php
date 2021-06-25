@@ -89,11 +89,9 @@ if ( ! $clone_history || $has_non_member_creator || $has_non_contact_creator ) {
 							esc_attr( bp_core_get_user_domain( $user->ID ) ),
 							esc_html( bp_core_get_user_displayname( $user->ID ) )
 						);
-					break;
 
 					case 'non-member' :
 						return esc_html( $creator['non-member-name'] );
-					break;
 				}
 			},
 			$group_creators
@@ -131,6 +129,7 @@ if ( ! $clone_history || $has_non_member_creator || $has_non_contact_creator ) {
 	} elseif ( $additional_text ) {
 		$show_acknowledgements = true;
 		$credits_intro_text    = sprintf(
+			// translators: Acknowledgement text as provided by group administrator
 			esc_html__( 'Acknowledgements: %s', 'commons-in-a-box' ),
 			wp_kses( $additional_text, openlab_creators_additional_text_allowed_tags() )
 		);
@@ -141,8 +140,8 @@ if ( ! $clone_history || $has_non_member_creator || $has_non_contact_creator ) {
 		];
 	}
 } else {
-	$credits_markup        = openlab_format_group_clone_history_data_list( $clone_history );
-	$credits_intro_text    = esc_html__( 'Acknowledgements: Based on the following:', 'commons-in-a-box' );
+	$credits_markup     = openlab_format_group_clone_history_data_list( $clone_history );
+	$credits_intro_text = esc_html__( 'Acknowledgements: Based on the following:', 'commons-in-a-box' );
 
 	$credits_chunks[] = [
 		'intro' => $credits_intro_text,
@@ -300,17 +299,20 @@ $academic_unit_data = cboxol_get_object_academic_unit_data_for_display(
 								<div class="col-xs-24 status-message clone-acknowledgements">
 									<?php foreach ( $credits_chunks as $credits_chunk ) : ?>
 										<?php if ( ! empty( $credits_chunk['intro'] ) ) : ?>
+											<?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 											<p><?php echo $credits_chunk['intro']; ?></p>
 										<?php endif; ?>
 
 										<?php if ( ! empty( $credits_chunk['items'] ) ) : ?>
 											<ul class="group-credits">
+												<?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 												<?php echo $credits_chunk['items']; ?>
 											</ul>
 										<?php endif; ?>
 									<?php endforeach; ?>
 
 									<?php if ( ! empty( $post_credits_markup ) ) : ?>
+										<?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 										<?php echo $post_credits_markup; ?>
 									<?php endif; ?>
 								</div>
