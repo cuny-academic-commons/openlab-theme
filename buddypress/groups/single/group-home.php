@@ -19,8 +19,138 @@ $group_slug = bp_get_group_slug();
 $group_id          = bp_get_current_group_id();
 $group_name        = groups_get_current_group()->name;
 $group_description = groups_get_current_group()->description;
-$group_history     = openlab_get_group_clone_history_list( $group_id, groups_get_current_group()->creator_id );
-$html              = groups_get_groupmeta( $group_id, 'cboxol_additional_desc_html' );
+
+// Remove items that have been deleted, or have incomplete values.
+$clone_history = openlab_get_group_clone_history_data( $group_id );
+$clone_history = array_filter(
+	$clone_history,
+	function( $item ) {
+		return ! empty( $item['group_creator_id'] );
+	}
+);
+
+// Remove items that exactly match the credits of the current group.
+$this_item_clone_data = openlab_get_group_data_for_clone_history( $group_id );
+
+$clone_history = array_filter(
+	$clone_history,
+	function( $item ) use ( $this_item_clone_data ) {
+		return $item['group_admins'] !== $this_item_clone_data['group_admins'];
+	}
+);
+
+$has_non_member_creator  = false;
+$has_non_contact_creator = false;
+
+$additional_text = openlab_get_group_creators_additional_text( $group_id );
+
+$all_group_contacts = cboxol_get_all_group_contact_ids( $group_id );
+
+$group_creators = openlab_get_group_creators( $group_id );
+foreach ( $group_creators as $group_creator ) {
+	if ( 'member' === $group_creator['type'] ) {
+		$user = get_user_by( 'slug', $group_creator['member-login'] );
+
+		if ( ! $user || ! in_array( $user->ID, $all_group_contacts, true ) ) {
+			$has_non_contact_creator = true;
+			break;
+		}
+	} elseif ( 'non-member' === $group_creator['type'] ) {
+		$has_non_member_creator = true;
+		break;
+	}
+}
+
+$credits_chunks = [];
+
+/*
+ * Non-clones show Acknowledgements only if Creators differ from Contacts,
+ * or if there is Additional Text to show.
+ */
+$show_acknowledgements = false;
+if ( ! $clone_history || $has_non_member_creator || $has_non_contact_creator ) {
+	$credits_markup = '';
+
+	$additional_text = openlab_get_group_creators_additional_text( $group_id );
+
+	if ( $has_non_member_creator || $has_non_contact_creator ) {
+		$creator_items = array_map(
+			function( $creator ) {
+				switch ( $creator['type'] ) {
+					case 'member' :
+						$user = get_user_by( 'slug', $creator['member-login'] );
+
+						if ( ! $user ) {
+							return null;
+						}
+
+						return sprintf(
+							'<a href="%s">%s</a>',
+							esc_attr( bp_core_get_user_domain( $user->ID ) ),
+							esc_html( bp_core_get_user_displayname( $user->ID ) )
+						);
+					break;
+
+					case 'non-member' :
+						return esc_html( $creator['non-member-name'] );
+					break;
+				}
+			},
+			$group_creators
+		);
+
+		$creator_items = array_filter( $creator_items );
+
+		if ( $creator_items ) {
+			$show_acknowledgements = true;
+
+			$credits_intro_text = sprintf(
+				// translators: Names/links of group 'Creators'
+				esc_html__( 'Acknowledgements: Created by: %s', 'commons-in-a-box' ),
+				implode( ', ', $creator_items )
+			);
+
+			$credits_chunks[] = [
+				'intro' => $credits_intro_text,
+				'items' => '',
+			];
+		}
+
+		if ( $clone_history ) {
+			$clone_intro_text = esc_html__( 'It is based on the following:', 'commons-in-a-box' );
+
+			$credits_chunks[] = [
+				'intro' => $clone_intro_text,
+				'items' => openlab_format_group_clone_history_data_list( $clone_history ),
+			];
+		}
+
+		if ( $additional_text ) {
+			$post_credits_markup = '<p>' . wp_kses( $additional_text, openlab_creators_additional_text_allowed_tags() ) . '</p>';
+		}
+	} elseif ( $additional_text ) {
+		$show_acknowledgements = true;
+		$credits_intro_text    = sprintf(
+			esc_html__( 'Acknowledgements: %s', 'commons-in-a-box' ),
+			wp_kses( $additional_text, openlab_creators_additional_text_allowed_tags() )
+		);
+
+		$credits_chunks[] = [
+			'intro' => $credits_intro_text,
+			'items' => '',
+		];
+	}
+} else {
+	$credits_markup        = openlab_format_group_clone_history_data_list( $clone_history );
+	$credits_intro_text    = esc_html__( 'Acknowledgements: Based on the following:', 'commons-in-a-box' );
+
+	$credits_chunks[] = [
+		'intro' => $credits_intro_text,
+		'items' => $credits_markup,
+	];
+
+	$show_acknowledgements = true;
+}
 
 $academic_unit_data = cboxol_get_object_academic_unit_data_for_display(
 	array(
@@ -165,12 +295,24 @@ $academic_unit_data = cboxol_get_object_academic_unit_data_for_display(
 							<div class="col-sm-17 row-content"><?php echo apply_filters( 'the_content', $group_description ); ?></div>
 						</div>
 
-						<?php if ( ! empty( $group_history ) ) : ?>
+						<?php if ( $show_acknowledgements ) : ?>
 							<div class="table-row row">
-								<div class="bold col-sm-7"><?php esc_html_e( 'Credits', 'commons-in-a-box' ); ?></div>
-								<div class="col-sm-17 row-content">
-									<?php // phpcs:ignore WordPress.Security.EscapeOutput ?>
-									<?php echo $group_history; ?>
+								<div class="col-xs-24 status-message clone-acknowledgements">
+									<?php foreach ( $credits_chunks as $credits_chunk ) : ?>
+										<?php if ( ! empty( $credits_chunk['intro'] ) ) : ?>
+											<p><?php echo $credits_chunk['intro']; ?></p>
+										<?php endif; ?>
+
+										<?php if ( ! empty( $credits_chunk['items'] ) ) : ?>
+											<ul class="group-credits">
+												<?php echo $credits_chunk['items']; ?>
+											</ul>
+										<?php endif; ?>
+									<?php endforeach; ?>
+
+									<?php if ( ! empty( $post_credits_markup ) ) : ?>
+										<?php echo $post_credits_markup; ?>
+									<?php endif; ?>
 								</div>
 							</div>
 						<?php endif; ?>
