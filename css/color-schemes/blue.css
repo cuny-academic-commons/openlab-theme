@@ -7563,6 +7563,13 @@ input[type="submit"] {
   font-weight: 600;
   margin-bottom: 0;
 }
+.form-panel .panel-body legend {
+  border-bottom: none;
+  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 5px;
+  width: auto;
+}
 .form-panel .panel-body .radio {
   margin-top: 0;
 }
@@ -7861,6 +7868,82 @@ body .font-size.font-14 {
 }
 body .font-size.font-18 {
   font-size: 18px !important;
+}
+body.js .group-creator-empty-row {
+  display: none;
+}
+body .group-creators-section {
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+body ul.group-creator-edit-list {
+  list-style-type: none;
+  padding-left: 0;
+}
+body ul.group-creator-edit-list > li {
+  padding: 5px 10px;
+}
+body ul.group-creator-edit-list > li:nth-of-type(even) {
+  background: #efefef;
+}
+body .group-creator-form-entry {
+  display: flex;
+}
+body .group-creator-form-entry.creator-type-member .creator-fields-non-member-name {
+  display: none;
+}
+body .group-creator-form-entry.creator-type-non-member .creator-fields-member-login {
+  display: none;
+}
+body .group-creator-form-entry > div {
+  flex: 0 1 auto;
+  margin-right: 20px;
+  width: 50%;
+}
+body .group-creator-form-entry > div.creator-fields-member-login {
+  width: 100%;
+}
+body .group-creator-form-entry > div.creator-preview {
+  width: 100%;
+}
+body .group-creator-form-entry input {
+  width: 100%;
+}
+body .group-creator-form-entry .entry-actions {
+  flex-grow: 0;
+  flex-shrink: 1;
+  width: 100px;
+}
+body .group-creator-form-entry .entry-actions button {
+  background: transparent;
+  border: none;
+  padding: 3px 8px;
+}
+body .group-creator-form-entry .creator-preview {
+  display: none;
+}
+body .group-creator-form-entry .edit-entry {
+  display: none;
+}
+body .group-creator-form-entry.is-preview-mode .creator-form-fields {
+  display: none;
+}
+body .group-creator-form-entry.is-preview-mode .creator-preview {
+  display: inherit;
+}
+body .group-creator-form-entry.is-preview-mode .edit-entry {
+  display: inline;
+}
+body .group-creator-edit-list-add-new {
+  margin-bottom: 15px;
+}
+body .group-creator-edit-list-add-new button {
+  background: 0;
+  border: 0;
+  text-decoration: underline;
+}
+body .group-creator-edit-list-add-new button:hover {
+  text-decoration: none;
 }
 body .line-height.height-200 {
   line-height: 200% !important;
