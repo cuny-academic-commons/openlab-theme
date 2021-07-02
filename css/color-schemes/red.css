@@ -8303,6 +8303,7 @@ body .group-header .bp-template-notice {
   margin-top: 4px;
   padding: 6px 12px;
   text-align: left;
+  white-space: normal;
 }
 body .group-credits {
   list-style-type: none;
