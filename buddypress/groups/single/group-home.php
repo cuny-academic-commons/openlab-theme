@@ -294,6 +294,30 @@ $academic_unit_data = cboxol_get_object_academic_unit_data_for_display(
 							<div class="col-sm-17 row-content"><?php echo apply_filters( 'the_content', $group_description ); ?></div>
 						</div>
 
+						<?php if ( openlab_group_can_be_cloned( bp_get_current_group_id() ) ) : ?>
+							<div class="table-row row">
+								<div class="col-xs-24 status-message italics">
+									<?php esc_html_e( 'May be cloned by logged-in community members.', 'commons-in-a-box' ); ?>
+
+									<?php
+									$exclude_hidden   = ! current_user_can( 'bp_moderate' );
+									$descendant_count = openlab_get_clone_descendant_count_of_group( $group_id, $exclude_hidden );
+									?>
+
+									<?php if ( $descendant_count > 0 ) : ?>
+										<?php
+										$view_clones_link = trailingslashit( bp_get_group_type_directory_permalink( $group_type->get_slug() ) );
+										$view_clones_link = add_query_arg( 'descendant-of', $group_id, $view_clones_link );
+
+										// translators: Number of times that the group has been cloned.
+										$count_message = _n( 'It has been cloned or re-cloned %s time', 'It has been cloned or re-cloned %s times', $descendant_count, 'commons-in-a-box' );
+										?>
+										<?php echo esc_html( sprintf( $count_message, number_format_i18n( $descendant_count ) ) ); ?>; <a href="<?php echo esc_attr( $view_clones_link ); ?>"><?php esc_html_e( 'view clones', 'commons-in-a-box' ); ?></a>.
+									<?php endif; ?>
+								</div>
+							</div>
+						<?php endif; ?>
+
 						<?php if ( $show_acknowledgements ) : ?>
 							<div class="table-row row">
 								<div class="col-xs-24 status-message clone-acknowledgements">
@@ -319,29 +343,6 @@ $academic_unit_data = cboxol_get_object_academic_unit_data_for_display(
 							</div>
 						<?php endif; ?>
 
-						<?php if ( openlab_group_can_be_cloned( bp_get_current_group_id() ) ) : ?>
-							<div class="table-row row">
-								<div class="col-xs-24 status-message italics">
-									<?php esc_html_e( 'May be cloned by logged-in community members.', 'commons-in-a-box' ); ?>
-
-									<?php
-									$exclude_hidden   = ! current_user_can( 'bp_moderate' );
-									$descendant_count = openlab_get_clone_descendant_count_of_group( $group_id, $exclude_hidden );
-									?>
-
-									<?php if ( $descendant_count > 0 ) : ?>
-										<?php
-										$view_clones_link = trailingslashit( bp_get_group_type_directory_permalink( $group_type->get_slug() ) );
-										$view_clones_link = add_query_arg( 'descendant-of', $group_id, $view_clones_link );
-
-										// translators: Number of times that the group has been cloned.
-										$count_message = _n( 'It has been cloned or re-cloned %s time', 'It has been cloned or re-cloned %s times', $descendant_count, 'commons-in-a-box' );
-										?>
-										<?php echo esc_html( sprintf( $count_message, number_format_i18n( $descendant_count ) ) ); ?>; <a href="<?php echo esc_attr( $view_clones_link ); ?>"><?php esc_html_e( 'view clones', 'commons-in-a-box' ); ?></a>.
-									<?php endif; ?>
-								</div>
-							</div>
-						<?php endif; ?>
 					</div>
 
 				</div>
