@@ -641,9 +641,11 @@ function openlab_get_register_fields( $account_type = '', $post_data = array() )
 		return;
 	}
 
-	$args = [
-		'member_type' => $account_type,
-	];
+	$args = bp_xprofile_signup_args(
+		[
+			'member_type' => $account_type,
+		]
+	);
 
 	if ( bp_has_profile( $args ) ) {
 		while ( bp_profile_groups() ) {
