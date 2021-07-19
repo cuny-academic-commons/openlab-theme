@@ -188,7 +188,7 @@ function openlab_group_site_markup() {
 						<?php if ( ! $site_is_external ) : ?>
 							<div class="show-admin-bar-on-site-setting">
 								<p><input type="checkbox" name="show-admin-bar-on-site" id="show-admin-bar-on-site" <?php checked( $show_admin_bar ); ?>> <label for="show-admin-bar-on-site"><?php esc_html_e( 'Show WordPress admin bar to non-logged-in visitors to my site?', 'commons-in-a-box' ); ?></label></p>
-								<p class="group-setting-note italics note"><?php esc_html_e( 'Logged-in visitors will always see the admin bar.', 'commons-in-a-box' ); ?></p>
+								<p class="group-setting-note italics note"><?php esc_html_e( 'The admin bar appears at the top of your site. Logged-in visitors will always see it but you can hide it for site visitors who are not logged in.', 'commons-in-a-box' ); ?></p>
 								<?php wp_nonce_field( 'openlab_site_admin_bar_settings', 'openlab-site-admin-bar-settings-nonce', false ); ?>
 							</div>
 						<?php endif; ?>
