@@ -138,6 +138,13 @@ function openlab_get_open_badge() {
  * @return array
  */
 function openlab_filter_group_badges( $badges, OpenLab\Badges\Group $group ) {
+	if ( openlab_group_is_open( $group->get_group_id() ) ) {
+		$open_badge = openlab_get_open_badge();
+		if ( $open_badge ) {
+			$badges[] = $open_badge;
+		}
+	}
+
 	if ( openlab_group_can_be_cloned( $group->get_group_id() ) ) {
 		$cloneable_badge = openlab_get_cloneable_badge();
 		if ( $cloneable_badge ) {
@@ -145,12 +152,12 @@ function openlab_filter_group_badges( $badges, OpenLab\Badges\Group $group ) {
 		}
 	}
 
-	if ( openlab_group_is_open( $group->get_group_id() ) ) {
-		$open_badge = openlab_get_open_badge();
-		if ( $open_badge ) {
-			$badges[] = $open_badge;
+	usort(
+		$badges,
+		function( $a, $b ) {
+			return $a->get_position() > $b->get_position();
 		}
-	}
+	);
 
 	return $badges;
 }
