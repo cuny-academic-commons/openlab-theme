@@ -3130,3 +3130,36 @@ function openlab_notify_group_members_of_this_action() {
 	// phpcs:ignore WordPress.Security.NonceVerification.Missing
 	return ! empty( $_POST['ol-notify-group-members'] );
 }
+
+/**
+ * Copy feature toggle settings from clone source on clone.
+ */
+add_filter(
+	'openlab_after_group_clone',
+	function( $group_id, $clone_source_group_id ) {
+		_b( 'go' );
+
+		if ( openlab_is_forum_enabled_for_group( $clone_source_group_id ) ) {
+			groups_delete_groupmeta( $group_id, 'openlab_disable_forum' );
+		} else {
+			groups_update_groupmeta( $group_id, 'openlab_disable_forum', '1' );
+		}
+
+		if ( openlab_is_files_enabled_for_group( $clone_source_group_id ) ) {
+			groups_delete_groupmeta( $group_id, 'group_documents_documents_disabled' );
+		} else {
+			groups_update_groupmeta( $group_id, 'group_documents_documents_disabled', '1' );
+		}
+
+		$doc_settings = bp_docs_get_group_settings( $clone_source_group_id );
+		groups_update_groupmeta( $group_id, 'bp-docs', $doc_settings );
+
+		if ( openlab_is_calendar_enabled_for_group( $clone_source_group_id ) ) {
+			groups_update_groupmeta( $group_id, 'calendar_is_disabled', '0' );
+		} else {
+			groups_update_groupmeta( $group_id, 'calendar_is_disabled', '1' );
+		}
+	},
+	20,
+	2
+);

@@ -103,6 +103,16 @@ function openlab_clone_create_form_catcher() {
 				openlab_invalidate_ancestor_clone_cache( $new_group_id );
 
 				openlab_clone_course_group( $new_group_id, $clone_source_group_id );
+
+				/**
+				 * Fires after the initial group clone is complete.
+				 *
+				 * @since 1.3.0
+				 *
+				 * @param int $new_group_id
+				 * @param int $clone_source_group_id
+				 */
+				do_action( 'openlab_after_group_clone', $new_group_id, $clone_source_group_id );
 			}
 			break;
 
