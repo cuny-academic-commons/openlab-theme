@@ -1188,7 +1188,9 @@ function openlab_forum_tabs() {
 	);
 
 	// Setup the topic
-	bbp_the_topic();
+	while ( bbp_topics() ) {
+		bbp_the_topic();
+	}
 	?>
 
 	<li <?php echo ( ! bp_action_variable() ? 'class="current-menu-item"' : '' ); ?> ><a href="<?php echo esc_attr( bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug ); ?>/forum/"><?php esc_html_e( 'Discussion', 'commons-in-a-box' ); ?></a></li><!--
