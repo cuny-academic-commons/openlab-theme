@@ -162,3 +162,15 @@ function openlab_filter_group_badges( $badges, OpenLab\Badges\Group $group ) {
 	return $badges;
 }
 add_filter( 'openlab_badges_badges_of_group', 'openlab_filter_group_badges', 10, 2 );
+
+/**
+ * Additional helper text for the Badges admin panel.
+ *
+ * @since 1.3.0
+ */
+function openlab_add_badges_helper_text() {
+	echo '<p>';
+	esc_html_e( '‘Open’ and ‘Cloneable’ badges, which can be edited below, cannot be deleted or manually added to groups. They are automatically applied to groups with open privacy settings and/or groups with shared cloning enabled.', 'commons-in-a-box' );
+	echo '</p>';
+}
+add_action( 'openlab_badges_after_admin_helper_text', 'openlab_add_badges_helper_text' );
