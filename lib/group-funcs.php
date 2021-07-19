@@ -3137,8 +3137,6 @@ function openlab_notify_group_members_of_this_action() {
 add_filter(
 	'openlab_after_group_clone',
 	function( $group_id, $clone_source_group_id ) {
-		_b( 'go' );
-
 		if ( openlab_is_forum_enabled_for_group( $clone_source_group_id ) ) {
 			groups_delete_groupmeta( $group_id, 'openlab_disable_forum' );
 		} else {
