@@ -10583,7 +10583,7 @@ body.single-event #content .eo-event-venue-map {
   right: 8px;
 }
 .messages .message-actions .message-unread {
-  color: #ff5959;
+  color: #333;
 }
 .my-friends .group-list .group-item-wrapper .generic-button.friendship-button {
   margin-top: 8px;
