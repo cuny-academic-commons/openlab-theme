@@ -9,6 +9,12 @@
 
 <?php
 $group_type = cboxol_get_group_group_type( bp_get_current_group_id() );
+
+if ( $group_type && ! is_wp_error( $group_type ) ) {
+	$group_type_label = $group_type->get_label( 'group_discussion' );
+} else {
+	$group_type_label = __( 'Discussion', 'commons-in-a-box' );
+}
 ?>
 
 <div id="bbpress-forums">
@@ -66,7 +72,7 @@ $group_type = cboxol_get_group_group_type( bp_get_current_group_id() );
 
 			<div class="bbp-back-to-course-discussion">
 				<?php /* Trick: use the buddypress string so it gets translated */ ?>
-				<p><a class="btn btn-primary link-btn" href="<?php bp_group_permalink(); ?>forum/"><span class="fa fa-chevron-circle-left"></span> <?php echo esc_html( $group_type->get_label( 'group_discussion' ) ); ?></a></p>
+				<p><a class="btn btn-primary link-btn" href="<?php bp_group_permalink(); ?>forum/"><span class="fa fa-chevron-circle-left"></span> <?php echo esc_html( $group_type_label ); ?></a></p>
 			</div>
 
 			<div class="panel panel-default">
