@@ -306,18 +306,22 @@ jQuery( document ).ready(
 							}
 						);
 
-						// Schools and Departments
+						// Academic Units
 						$.each(
-							r.academic_units,
-							function( unitType, unitsOfType ) {
+							r.academic_unit_types,
+							function( index, unitType ) {
 								$typeSelector = $( '.cboxol-academic-unit-selector-for-type-' + unitType );
 
-								$.each(
-									unitsOfType,
-									function( key, unitValue ) {
-										$typeSelector.find( '#academic-unit-' + unitValue ).attr( 'checked', true ).trigger( 'change' );
-									}
-								);
+								if ( r.academic_units.hasOwnProperty( unitType ) ) {
+									var unitsOfType = r.academic_units[ unitType ];
+
+									$.each(
+										unitsOfType,
+										function( key, unitValue ) {
+											$typeSelector.find( '#academic-unit-' + unitValue ).prop( 'checked', true ).trigger( 'change' );
+										}
+									);
+								}
 							}
 						);
 

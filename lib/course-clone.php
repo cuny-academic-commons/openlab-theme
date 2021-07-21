@@ -188,6 +188,8 @@ function openlab_group_clone_details( $group_id ) {
 		'site_url'               => '',
 		'site_path'              => '',
 		'term'                   => '',
+		'academic_units'         => [],
+		'academic_unit_types'    => [],
 	);
 
 	if ( $group_id ) {
@@ -196,6 +198,39 @@ function openlab_group_clone_details( $group_id ) {
 		$retval['name']        = $group->name;
 		$retval['description'] = $group->description;
 		$retval['status']      = $group->status;
+
+		// Must be sorted so that parents come before children.
+		$type_map  = [];
+		$all_types = cboxol_get_academic_unit_types();
+
+		foreach ( $all_types as $type ) {
+			$parent = $type->get_parent();
+			if ( ! $parent ) {
+				$parent = '_null';
+			}
+
+			$type_map[ $parent ][] = $type->get_slug();
+		}
+
+		$sorted_types  = [];
+		$level_parents = [ '_null' ];
+
+		do {
+			$level_children = [];
+			foreach ( $level_parents as $level_parent ) {
+				if ( isset( $type_map[ $level_parent ] ) ) {
+					$level_children = array_merge( $level_children, $type_map[ $level_parent ] );
+				}
+			}
+
+			if ( $level_children ) {
+				$sorted_types = array_merge( $sorted_types, $level_children );
+			}
+
+			$level_parents = $level_children;
+		} while ( $level_parents );
+
+		$retval['academic_unit_types'] = $sorted_types;
 
 		$academic_units = cboxol_get_object_academic_units(
 			array(
