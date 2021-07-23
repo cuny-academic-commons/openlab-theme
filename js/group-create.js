@@ -24,8 +24,7 @@ jQuery( document ).ready(
 		form_validated = false,
 		new_group_type = CBOXOL_Group_Create.new_group_type,
 		$body          = $( 'body' ),
-		$gc_submit     = $( '#group-creation-create' ),
-		$required_fields;
+		$gc_submit     = $( '#group-creation-create' );
 
 		var $setuptoggle = $( 'input[name="set-up-site-toggle"]' );
 
@@ -38,8 +37,6 @@ jQuery( document ).ready(
 		}
 
 		$form = $( form );
-
-		$required_fields = $form.find( 'input:required' );
 
 		function maybeShowSiteFields() {
 			if ( ! $setuptoggle.length && 'portfolio' !== new_group_type ) {
@@ -500,7 +497,21 @@ jQuery( document ).ready(
 
 			description = $( '#group-desc' ).val();
 			if ( description.trim() == '' ) {
-				$( '#group-desc' ).val( '&nbsp;' );
+				$( '#group-desc' ).val( '' );
+			}
+
+			// Don't allow submission if any required fields are not filled.
+			var $required_fields = $form.find( ':required' );
+			var hasEmptyRequiredFields = false;
+			$required_fields.each( function( k, v ) {
+				if ( $(v).val().trim() === '' ) {
+					hasEmptyRequiredFields = true;
+					return false;
+				}
+			} );
+
+			if ( hasEmptyRequiredFields ) {
+				return false;
 			}
 
 			// Don't allow submission if avatar is not cropped.
