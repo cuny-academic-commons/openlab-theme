@@ -501,14 +501,16 @@ jQuery( document ).ready(
 			}
 
 			// Don't allow submission if any required fields are not filled.
-			var $required_fields = $form.find( ':required' );
+			var $required_fields       = $form.find( ':required' );
 			var hasEmptyRequiredFields = false;
-			$required_fields.each( function( k, v ) {
-				if ( $(v).val().trim() === '' ) {
-					hasEmptyRequiredFields = true;
-					return false;
+			$required_fields.each(
+				function( k, v ) {
+					if ( $( v ).val().trim() === '' ) {
+						hasEmptyRequiredFields = true;
+						return false;
+					}
 				}
-			} );
+			);
 
 			if ( hasEmptyRequiredFields ) {
 				return false;
