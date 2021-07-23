@@ -1557,7 +1557,7 @@ function openlab_get_group_activity_content( $title, $content, $link ) {
 	$markup .= '<p class="activity-content">';
 	// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	$markup .= '<span class="hyphenate truncate-on-the-fly" data-basevalue="120" data-minvalue="75" data-basewidth="376">' . $content . '</span>';
-	$markup .= '<span><a href="' . esc_attr( $link ) . '" class="read-more">' . esc_html__( 'See More', 'commons-in-a-box' ) . '<span class="sr-only">' . esc_html( $title ) . '</span></a><span>';
+	$markup .= '&nbsp;<span><a href="' . esc_attr( $link ) . '" class="read-more">' . esc_html__( 'See More', 'commons-in-a-box' ) . '<span class="sr-only">' . esc_html( $title ) . '</span></a><span>';
 	// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	$markup .= '<span class="original-copy hidden">' . $content . '</span></p>';
 
