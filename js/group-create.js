@@ -499,7 +499,7 @@ jQuery( document ).ready(
 			}
 
 			description = $( '#group-desc' ).val();
-			if ( $.trim( description ) == '' ) {
+			if ( description.trim() == '' ) {
 				$( '#group-desc' ).val( '&nbsp;' );
 			}
 
