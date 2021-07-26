@@ -8308,10 +8308,10 @@ body .group-header .bp-template-notice {
 body .group-credits {
   list-style-type: none;
   margin: 0;
-  padding-left: 0;
+  padding-left: 15px;
 }
 body .group-credits li {
-  margin-bottom: 0.5em;
+  margin-bottom: 0.25em;
 }
 body .group-credits li:last-child {
   margin-bottom: 0;
