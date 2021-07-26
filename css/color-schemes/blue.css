@@ -8305,6 +8305,13 @@ body .group-header .bp-template-notice {
   text-align: left;
   white-space: normal;
 }
+body .clone-acknowledgements p {
+  margin-bottom: 0.5em;
+  margin-top: 0.5em;
+}
+body .clone-acknowledgements p:first-child {
+  margin-top: 0;
+}
 body .group-credits {
   list-style-type: none;
   margin: 0;
