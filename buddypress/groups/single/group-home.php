@@ -315,6 +315,30 @@ $academic_unit_data = cboxol_get_object_academic_unit_data_for_display(
 							</div>
 						<?php endif; ?>
 
+						<?php if ( $show_acknowledgements ) : ?>
+							<div class="table-row row">
+								<div class="col-xs-24 status-message clone-acknowledgements">
+									<?php foreach ( $credits_chunks as $credits_chunk ) : ?>
+										<?php if ( ! empty( $credits_chunk['intro'] ) ) : ?>
+											<?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+											<p><?php echo $credits_chunk['intro']; ?></p>
+										<?php endif; ?>
+
+										<?php if ( ! empty( $credits_chunk['items'] ) ) : ?>
+											<ul class="group-credits">
+												<?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+												<?php echo $credits_chunk['items']; ?>
+											</ul>
+										<?php endif; ?>
+									<?php endforeach; ?>
+
+									<?php if ( ! empty( $post_credits_markup ) ) : ?>
+										<?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+										<?php echo $post_credits_markup; ?>
+									<?php endif; ?>
+								</div>
+							</div>
+						<?php endif; ?>
 
 					</div>
 				</div>
