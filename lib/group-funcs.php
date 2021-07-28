@@ -1965,42 +1965,39 @@ function openlab_show_site_posts_and_comments() {
 			}
 
 			// Set up comments
-			$comment_args = array(
-				'status' => 'approve',
-				'number' => '3',
-			);
-
-			/*
-			 * WP Grade Comments support.
-			 *
-			 * We reproduce the logic of olgc_get_inaccessible_comments() because there's
-			 * no way to use that function directly inside switch_to_blog().
-			 */
-			$comment__not_in  = array();
-			$pc_query         = new WP_Comment_Query(
-				array(
-					'meta_query' => array(
-						array(
+			$comment_args = [
+				'status'     => 'approve',
+				'number'     => 3,
+				'meta_query' => [
+					'relation' => 'AND',
+					[
+						'relation' => 'OR',
+						[
 							'key'   => 'olgc_is_private',
-							'value' => '1',
-						),
-					),
-					'status'     => 'any',
-				)
-			);
-			$private_comments = $pc_query->comments;
+							'value' => '0',
+						],
+						[
+							'key' => 'olgc_is_private',
+							'compare' => 'NOT EXISTS',
+						],
+					],
+					[
+						'relation' => 'OR',
+						[
+							'key'   => 'ol_is_private',
+							'value' => '0',
+						],
+						[
+							'key' => 'ol_is_private',
+							'compare' => 'NOT EXISTS',
+						],
+					],
+				],
+			];
 
-			if ( $private_comments ) {
-				foreach ( $private_comments as $private_comment ) {
-					$comment__not_in[] = $private_comment->comment_ID;
-				}
-
-				$comment__not_in = wp_parse_id_list( $comment__not_in );
-
-				if ( $comment__not_in ) {
-					$comment_args['comment__not_in'] = $comment__not_in;
-				}
-			}
+			// This isn't official argument just a custom flag.
+			// Used by `openlab_private_comments_fallback()`.
+			$comment_args['main_site'] = true;
 
 			$wp_comments = get_comments( $comment_args );
 
