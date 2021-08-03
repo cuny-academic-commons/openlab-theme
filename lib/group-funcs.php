@@ -128,6 +128,17 @@ function openlab_group_site_markup() {
 		$the_group_id = bp_get_current_group_id();
 	}
 
+	$is_clone = false;
+	if ( $group_type->get_can_be_cloned() ) {
+		$clone_source_group_id = cboxol_get_clone_source_group_id( $the_group_id );
+		if ( $clone_source_group_id ) {
+			$clone_source_site_id = cboxol_get_group_site_id( $clone_source_group_id );
+			if ( $clone_source_site_id ) {
+				$is_clone = true;
+			}
+		}
+	}
+
 	?>
 
 	<div class="ct-group-meta">
@@ -138,10 +149,9 @@ function openlab_group_site_markup() {
 
 		<div class="panel panel-default">
 			<div class="panel-heading"><?php esc_html_e( 'Associated Site Details', 'commons-in-a-box' ); ?></div>
+
 			<div class="panel-body">
-
 				<?php if ( ! empty( $group_site_url ) ) : ?>
-
 					<div id="current-group-site">
 						<?php
 						$maybe_site_id = openlab_get_site_id_by_group_id( $the_group_id );
@@ -151,11 +161,13 @@ function openlab_group_site_markup() {
 							$group_site_name    = get_blog_option( $maybe_site_id, 'blogname' );
 							$group_site_text    = '<strong>' . esc_html( $group_site_name ) . '</strong>';
 							$group_site_url_out = '<a class="bold" href="' . esc_url( $group_site_url ) . '">' . esc_html( $group_site_url ) . '</a>';
+							$show_admin_bar     = cboxol_show_admin_bar_for_anonymous_users( $maybe_site_id );
 						} else {
 							$site_is_external   = true;
 							$group_site_text    = esc_url( $group_site_url );
 							$group_site_url_out = '<a class="bold" href="' . esc_url( $group_site_url ) . '">' . esc_html( $group_site_url ) . '</a>';
 						}
+
 						?>
 
 						<p>
@@ -173,7 +185,14 @@ function openlab_group_site_markup() {
 						<ul id="change-group-site"><li><?php echo $group_site_url_out; ?> <a class="button underline confirm" href="<?php echo esc_attr( wp_nonce_url( bp_get_group_permalink( groups_get_current_group() ) . 'admin/site-details/unlink-site/', 'unlink-site' ) ); ?>" id="change-group-site-toggle"><?php esc_html_e( 'Unlink', 'commons-in-a-box' ); ?></a></li></ul>
 						<input type="hidden" id="site-is-external" value="<?php echo intval( $site_is_external ); ?>" />
 
-					</div>
+						<?php if ( ! $site_is_external ) : ?>
+							<div class="show-admin-bar-on-site-setting">
+								<p><input type="checkbox" name="show-admin-bar-on-site" id="show-admin-bar-on-site" <?php checked( $show_admin_bar ); ?>> <label for="show-admin-bar-on-site"><?php esc_html_e( 'Show WordPress admin bar to non-logged-in visitors to my site?', 'commons-in-a-box' ); ?></label></p>
+								<p class="group-setting-note italics note"><?php esc_html_e( 'The admin bar appears at the top of your site. Logged-in visitors will always see it but you can hide it for site visitors who are not logged in.', 'commons-in-a-box' ); ?></p>
+								<?php wp_nonce_field( 'openlab_site_admin_bar_settings', 'openlab-site-admin-bar-settings-nonce', false ); ?>
+							</div>
+						<?php endif; ?>
+					</div><!-- #current-group-site -->
 
 				<?php else : ?>
 
@@ -195,20 +214,9 @@ function openlab_group_site_markup() {
 					}
 					$user_blogs = array_values( $user_blogs );
 
-					$is_clone = false;
-					if ( $group_type->get_can_be_cloned() ) {
-						$clone_source_group_id = cboxol_get_clone_source_group_id( $the_group_id );
-						$clone_source_site_id  = '';
-						if ( $clone_source_group_id ) {
-							$clone_source_site_id = cboxol_get_group_site_id( $clone_source_group_id );
-							if ( $clone_source_site_id ) {
-								$is_clone = true;
-							}
-						}
-					}
-
 					if ( $group_type->get_is_portfolio() ) {
-						$suggested_path = openlab_suggest_portfolio_path();
+						$portfolio_user_id = openlab_get_user_id_from_portfolio_group_id( $the_group_id );
+						$suggested_path    = openlab_suggest_portfolio_path( $portfolio_user_id );
 					} else {
 						$suggested_path = groups_get_current_group()->slug;
 					}
@@ -228,7 +236,7 @@ function openlab_group_site_markup() {
 						<?php if ( ! $group_type->get_requires_site() ) : ?>
 							<?php $show_website = 'none'; ?>
 							<div class="form-field form-required">
-								<div scope='row' class="site-details-query">
+								<div class="row site-details-query">
 									<label><input type="checkbox" id="set-up-site-toggle" name="set-up-site-toggle" value="yes" <?php checked( $is_clone ); ?> /> <?php esc_html_e( 'Set up a site?', 'commons-in-a-box' ); ?></label>
 								</div>
 							</div>
@@ -236,146 +244,149 @@ function openlab_group_site_markup() {
 							<?php $show_website = 'auto'; ?>
 						<?php endif ?>
 
-						<div id="wds-website-tooltips" class="form-field form-required" style="display:<?php echo esc_attr( $show_website ); ?>"><div>
-
-						<p class="ol-tooltip"><?php echo esc_html( $group_type->get_label( 'site_address_help_text' ) ); ?></p>
-
-					</div><!-- /.groupblog-setup -->
-				</div><!-- /.panel-body -->
-
-					<?php if ( bp_is_group_create() && $clone_source_site_id ) : ?>
-						<?php /* @todo get rid of all 'wds' */ ?>
-					<div id="wds-website-clone" class="form-field form-required" style="display:<?php echo esc_attr( $show_website ); ?>">
-						<div id="noo_clone_options">
-							<div class="row">
-								<div class="radio
-								<?php
-								if ( ! $is_clone ) :
-									?>
-									disabled-opt<?php endif; ?>">
-									<label>
-										<input type="radio" class="noo_radio" name="new_or_old" id="new_or_old_clone" value="clone" <?php disabled( ! $is_clone ); ?> <?php checked( $is_clone ); ?> />
-										<?php esc_html_e( 'Name your cloned site:', 'commons-in-a-box' ); ?>
-									</label>
-								</div>
-
-								<?php if ( is_subdomain_install() ) : ?>
-									<div class="site-label site-path site-path-subdomain">
-										<input id="clone-destination-path" class="form-control domain-validate" size="40" name="clone-destination-path" type="text" title="<?php esc_html_e( 'Domain', 'commons-in-a-box' ); ?>" value="<?php echo esc_html( $suggested_path ); ?>" />
-
-										<span>.<?php echo esc_html( cboxol_get_subdomain_base() ); ?></span>
-									</div>
-
-								<?php else : ?>
-									<div class="site-label site-path site-path-subdirectory">
-										<span><?php echo esc_html( $current_site->domain . $current_site->path ); ?></span>
-
-										<input class="form-control domain-validate" size="40" id="clone-destination-path" name="clone-destination-path" type="text" title="<?php esc_html_e( 'Domain', 'commons-in-a-box' ); ?>" value="<?php echo esc_html( $suggested_path ); ?>" />
-									</div>
-								<?php endif; ?>
-
-								<input id="blog-id-to-clone" name="blog-id-to-clone" value="<?php echo esc_attr( $clone_source_site_id ); ?>" type="hidden" />
-							</div><!-- /.row -->
-
-							<p id="cloned-site-url"></p>
-						</div><!-- /#noo_clone_options -->
-					</div><!-- /#wds-website-clone -->
-				<?php endif ?>
-
-				<div id="wds-website" class="form-field form-required" style="display:<?php echo esc_attr( $show_website ); ?>">
-					<div id="noo_new_options">
-						<div id="noo_new_options-div" class="row">
-							<div class="radio">
-								<label>
-									<input type="radio" class="noo_radio" name="new_or_old" id="new_or_old_new" value="new" <?php checked( ! $is_clone ); ?> />
-									<?php esc_html_e( 'Create a new site:', 'commons-in-a-box' ); ?>
-								</label>
+						<div id="site-options">
+							<div id="wds-website-tooltips" class="form-field form-required" style="display:<?php echo esc_attr( $show_website ); ?>">
+								<p class="ol-tooltip"><?php echo esc_html( $group_type->get_label( 'site_address_help_text' ) ); ?></p>
 							</div>
 
-							<?php if ( is_subdomain_install() ) : ?>
-								<div class="site-label site-path site-path-subdomain">
-									<input id="new-site-domain" class="form-control domain-validate" size="40" name="blog[domain]" type="text" title="<?php esc_html_e( 'Domain', 'commons-in-a-box' ); ?>" value="<?php echo esc_html( $suggested_path ); ?>" />
+							<?php if ( bp_is_group_create() && $is_clone ) : ?>
+								<?php /* @todo get rid of all 'wds' */ ?>
+								<div id="wds-website-clone" class="form-field form-required">
+									<div id="noo_clone_options">
+										<div class="row">
+											<div class="radio">
+												<label>
+													<input type="radio" class="noo_radio" name="new_or_old" id="new_or_old_clone" value="clone" />
+													<?php esc_html_e( 'Name your cloned site:', 'commons-in-a-box' ); ?>
+												</label>
+											</div>
 
-									<span>.<?php echo esc_html( cboxol_get_subdomain_base() ); ?></span>
-								</div>
+											<?php if ( is_subdomain_install() ) : ?>
+												<div class="site-label site-path site-path-subdomain">
+													<input id="clone-destination-path" class="form-control domain-validate" size="40" name="clone-destination-path" type="text" title="<?php esc_html_e( 'Domain', 'commons-in-a-box' ); ?>" value="<?php echo esc_html( $suggested_path ); ?>" />
 
-							<?php else : ?>
-								<div class="site-label site-path site-path-subdirectory">
-									<span><?php echo esc_html( $current_site->domain . $current_site->path ); ?></span>
+													<span>.<?php echo esc_html( cboxol_get_subdomain_base() ); ?></span>
+												</div>
 
-									<input id="new-site-domain" class="form-control domain-validate" size="40" name="blog[domain]" type="text" title="<?php esc_html_e( 'Domain', 'commons-in-a-box' ); ?>" value="<?php echo esc_html( $suggested_path ); ?>" />
-								</div>
+											<?php else : ?>
+												<div class="site-label site-path site-path-subdirectory">
+													<span><?php echo esc_html( $current_site->domain . $current_site->path ); ?></span>
+
+													<input class="form-control domain-validate" size="40" id="clone-destination-path" name="clone-destination-path" type="text" title="<?php esc_html_e( 'Domain', 'commons-in-a-box' ); ?>" value="<?php echo esc_html( $suggested_path ); ?>" />
+												</div>
+											<?php endif; ?>
+
+											<input id="blog-id-to-clone" name="blog-id-to-clone" value="<?php echo esc_attr( $clone_source_site_id ); ?>" type="hidden" />
+										</div><!-- /.row -->
+
+										<p id="cloned-site-url"></p>
+									</div><!-- /#noo_clone_options -->
+								</div><!-- /#wds-website-clone -->
 							<?php endif; ?>
 
-						</div><!-- #noo_new_options-div -->
-					</div><!-- #noo_new_options -->
-				</div><!-- #wds-website -->
+							<?php if ( ! $is_clone ) : ?>
+								<div id="wds-website" class="form-field form-required">
+									<div id="noo_new_options">
+										<div id="noo_new_options-div" class="row">
+											<div class="radio">
+												<label>
+													<input type="radio" class="noo_radio" name="new_or_old" id="new_or_old_new" value="new" checked />
+													<?php esc_html_e( 'Create a new site:', 'commons-in-a-box' ); ?>
+												</label>
+											</div>
 
-						<?php /* Existing blogs - only display if some are available */ ?>
-						<?php
-						// Exclude blogs already used as groupblogs
-						global $wpdb, $bp;
-						// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-						$current_groupblogs = $wpdb->get_col( "SELECT meta_value FROM {$bp->groups->table_name_groupmeta} WHERE meta_key = 'cboxol_group_site_id'" );
-						$current_groupblogs = array_map( 'intval', $current_groupblogs );
+											<?php if ( is_subdomain_install() ) : ?>
+												<div class="site-label site-path site-path-subdomain">
+													<input id="new-site-domain" class="form-control domain-validate" size="40" name="blog[domain]" type="text" title="<?php esc_html_e( 'Domain', 'commons-in-a-box' ); ?>" value="<?php echo esc_html( $suggested_path ); ?>" />
 
-						foreach ( $user_blogs as $ubid => $ub ) {
-							if ( in_array( (int) $ub->userblog_id, $current_groupblogs, true ) ) {
-								unset( $user_blogs[ $ubid ] );
-							}
-						}
-						$user_blogs = array_values( $user_blogs );
-						?>
+													<span>.<?php echo esc_html( cboxol_get_subdomain_base() ); ?></span>
+												</div>
 
-						<?php if ( ! empty( $user_blogs ) ) : ?>
-							<div id="wds-website-existing" class="form-field form-required" style="display:<?php echo esc_attr( $show_website ); ?>">
+											<?php else : ?>
+												<div class="site-label site-path site-path-subdirectory">
+													<span><?php echo esc_html( $current_site->domain . $current_site->path ); ?></span>
 
-								<div id="noo_old_options">
-									<div class="row">
+													<input id="new-site-domain" class="form-control domain-validate" size="40" name="blog[domain]" type="text" title="<?php esc_html_e( 'Domain', 'commons-in-a-box' ); ?>" value="<?php echo esc_html( $suggested_path ); ?>" />
+												</div>
+											<?php endif; ?>
+
+										</div><!-- #noo_new_options-div -->
+									</div><!-- #noo_new_options -->
+								</div><!-- #wds-website -->
+							<?php endif; ?>
+
+							<?php if ( ! $is_clone ) : ?>
+								<?php /* Existing blogs - only display if some are available */ ?>
+								<?php
+								// Exclude blogs already used as groupblogs
+								global $wpdb, $bp;
+								// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+								$current_groupblogs = $wpdb->get_col( "SELECT meta_value FROM {$bp->groups->table_name_groupmeta} WHERE meta_key = 'cboxol_group_site_id'" );
+								$current_groupblogs = array_map( 'intval', $current_groupblogs );
+
+								foreach ( $user_blogs as $ubid => $ub ) {
+									if ( in_array( (int) $ub->userblog_id, $current_groupblogs, true ) ) {
+										unset( $user_blogs[ $ubid ] );
+									}
+								}
+								$user_blogs = array_values( $user_blogs );
+								?>
+
+								<?php if ( ! empty( $user_blogs ) ) : ?>
+									<div id="wds-website-existing" class="form-field form-required">
+
+										<div id="noo_old_options">
+											<div class="row">
+												<div class="radio">
+													<label>
+														<input type="radio" class="noo_radio" id="new_or_old_old" name="new_or_old" value="old" />
+														<?php esc_html_e( 'Use an existing site:', 'commons-in-a-box' ); ?></label>
+												</div>
+												<div class="site-path">
+													<label class="sr-only" for="groupblog-blogid"><?php esc_html_e( 'Choose a site', 'commons-in-a-box' ); ?></label>
+													<select class="form-control" name="groupblog-blogid" id="groupblog-blogid">
+														<option value="0"><?php esc_html_e( '- Choose a site -', 'commons-in-a-box' ); ?></option>
+														<?php foreach ( (array) $user_blogs as $user_blog ) : ?>
+															<option value="<?php echo esc_attr( $user_blog->userblog_id ); ?>"><?php echo esc_html( $user_blog->blogname ); ?></option>
+														<?php endforeach ?>
+													</select>
+												</div>
+											</div>
+										</div>
+									</div>
+								<?php endif ?>
+							<?php endif; ?>
+
+							<div id="wds-website-external" class="form-field form-required">
+								<div id="noo_external_options">
+									<div class="form-group row">
 										<div class="radio">
 											<label>
-												<input type="radio" class="noo_radio" id="new_or_old_old" name="new_or_old" value="old" />
-												<?php esc_html_e( 'Use an existing site:', 'commons-in-a-box' ); ?></label>
+												<input type="radio" class="noo_radio" id="new_or_old_external" name="new_or_old" value="external" />
+												<?php esc_html_e( 'Use an external site:', 'commons-in-a-box' ); ?>
+											</label>
 										</div>
 										<div class="site-path">
-											<label class="sr-only" for="groupblog-blogid"><?php esc_html_e( 'Choose a site', 'commons-in-a-box' ); ?></label>
-											<select class="form-control" name="groupblog-blogid" id="groupblog-blogid">
-												<option value="0"><?php esc_html_e( '- Choose a site -', 'commons-in-a-box' ); ?></option>
-												<?php foreach ( (array) $user_blogs as $user_blog ) : ?>
-													<option value="<?php echo esc_attr( $user_blog->userblog_id ); ?>"><?php echo esc_html( $user_blog->blogname ); ?></option>
-												<?php endforeach ?>
-											</select>
+											<label class="sr-only" for="external-site-url"><?php esc_html_e( 'Input external site URL', 'commons-in-a-box' ); ?></label>
+											<input class="form-control pull-left" type="text" name="external-site-url" id="external-site-url" placeholder="http://" />
+											<a class="btn btn-primary no-deco top-align pull-right" id="find-feeds" href="#" display="none"><?php echo esc_html_x( 'Check', 'External site RSS feed check button', 'commons-in-a-box' ); ?><span class="sr-only"><?php esc_html_e( 'Check external site for Post and Comment feeds', 'commons-in-a-box' ); ?></span></a>
 										</div>
+									</div><!-- .form-group.row -->
+								</div><!-- #noo_external_options -->
+
+								<div id="check-note-wrapper" style="display:<?php echo esc_attr( $show_website ); ?>">
+									<div colspan="2">
+										<p id="check-note" class="italics disabled-opt"><?php echo esc_html( $group_type->get_label( 'site_feed_check_help_text' ) ); ?></p>
 									</div>
 								</div>
-							</div>
-						<?php endif ?>
 
-						<div id="wds-website-external" class="form-field form-required" style="display:<?php echo esc_attr( $show_website ); ?>">
-
-							<div id="noo_external_options">
-								<div class="form-group row">
-									<div class="radio">
-										<label>
-											<input type="radio" class="noo_radio" id="new_or_old_external" name="new_or_old" value="external" />
-											<?php esc_html_e( 'Use an external site:', 'commons-in-a-box' ); ?>
-										</label>
-									</div>
-									<div class="site-path">
-										<label class="sr-only" for="external-site-url"><?php esc_html_e( 'Input external site URL', 'commons-in-a-box' ); ?></label>
-										<input class="form-control pull-left" type="text" name="external-site-url" id="external-site-url" placeholder="http://" />
-										<a class="btn btn-primary no-deco top-align pull-right" id="find-feeds" href="#" display="none"><?php echo esc_html_x( 'Check', 'External site RSS feed check button', 'commons-in-a-box' ); ?><span class="sr-only"><?php esc_html_e( 'Check external site for Post and Comment feeds', 'commons-in-a-box' ); ?></span></a>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div id="check-note-wrapper" style="display:<?php echo esc_attr( $show_website ); ?>"><div colspan="2"><p id="check-note" class="italics disabled-opt"><?php echo esc_html( $group_type->get_label( 'site_feed_check_help_text' ) ); ?></p></div></div>
-					</div>
-
+							</div><!-- #wds-website-external -->
+						</div><!-- $site-options -->
+					</div><!-- .groupblog-setup -->
 				<?php endif; ?>
-			</div>
-		</div>
-	</div>
+			</div><!-- .panel-body -->
+		</div><!-- .panel -->
+	</div><!-- .ct-group-meta -->
 
 	<?php wp_nonce_field( 'openlab_site_settings', 'openlab-site-settings-nonce', false ); ?>
 
@@ -411,17 +422,11 @@ function openlab_group_site_member_role_settings_markup() {
 	);
 
 	if ( bp_is_group_create() ) {
-		$new_group_id          = bp_get_new_group_id();
-		$clone_source_group_id = groups_get_groupmeta( $new_group_id, 'clone_source_group_id' );
-		if ( $clone_source_group_id ) {
-			$settings = openlab_get_group_member_role_settings( $clone_source_group_id );
-		} else {
-			$settings = array(
-				'admin'  => 'administrator',
-				'mod'    => 'editor',
-				'member' => 'author',
-			);
-		}
+		$settings = [
+			'admin'  => 'administrator',
+			'mod'    => 'editor',
+			'member' => 'author',
+		];
 	} else {
 		$settings = openlab_get_group_member_role_settings( $the_group_id );
 	}
@@ -514,15 +519,6 @@ function openlab_group_site_privacy_settings_markup() {
 		$blog_public = get_blog_option( $site_id, 'blog_public' );
 	} else {
 		$group_id = bp_get_new_group_id();
-
-		// If this is a clone of a group with a site, default to the clone source settings.
-		$clone_source_group_id = groups_get_groupmeta( $group_id, 'clone_source_group_id' );
-		if ( $clone_source_group_id ) {
-			$clone_source_site_id = openlab_get_site_id_by_group_id( $clone_source_group_id );
-			if ( $clone_source_site_id ) {
-				$blog_public = get_blog_option( $clone_source_site_id, 'blog_public' );
-			}
-		}
 	}
 
 	// Fall back on group status.
@@ -557,7 +553,7 @@ function openlab_group_site_privacy_settings_markup() {
 							<p><label for="blog-private1"><input id="blog-private1" type="radio" name="blog_public" value="1" <?php checked( '1', $blog_public ); ?> /><?php esc_html_e( 'Allow search engines to index this site. The site will show up in web search results.', 'commons-in-a-box' ); ?></label></p>
 
 							<p><label for="blog-private0"><input id="blog-private0" type="radio" name="blog_public" value="0" <?php checked( '0', $blog_public ); ?> /><?php esc_html_e( 'Ask search engines not to index this site. The site should not show up in web search results.', 'commons-in-a-box' ); ?></label></p>
-							<p id="search-setting-note" class="italics note"><?php esc_html_e( 'Note: This option will NOT block access to the site. It is up to search engines to honor your request.', 'commons-in-a-box' ); ?></p>
+							<p id="search-setting-note" class="group-setting-note italics note"><?php esc_html_e( 'Note: This option will NOT block access to the site. It is up to search engines to honor your request.', 'commons-in-a-box' ); ?></p>
 						</div>
 					</div>
 
@@ -895,41 +891,51 @@ function openlab_save_group_site() {
 
 	check_admin_referer( 'openlab_site_settings', 'openlab-site-settings-nonce' );
 
-	$group = groups_get_current_group();
+	if ( bp_is_group_create() ) {
+		$group_id = bp_get_new_group_id();
+	} else {
+		$group_id = bp_get_current_group_id();
+	}
 
-	$group_type = cboxol_get_group_group_type( $group->id );
+	$group_type = cboxol_get_group_group_type( $group_id );
 	if ( isset( $_POST['set-up-site-toggle'] ) || ( ! is_wp_error( $group_type ) && $group_type->get_requires_site() ) ) {
 		if ( isset( $_POST['new_or_old'] ) && 'new' === $_POST['new_or_old'] ) {
 
 			// Create a new site
-			cboxol_copy_blog_page( $group->id );
+			cboxol_copy_blog_page( $group_id );
 		} elseif ( isset( $_POST['new_or_old'] ) && 'old' === $_POST['new_or_old'] && isset( $_POST['groupblog-blogid'] ) ) {
 
 			// Associate an existing site
-			cboxol_set_group_site_id( $group->id, (int) $_POST['groupblog-blogid'] );
+			cboxol_set_group_site_id( $group_id, (int) $_POST['groupblog-blogid'] );
 		} elseif ( isset( $_POST['new_or_old'] ) && 'external' === $_POST['new_or_old'] && isset( $_POST['external-site-url'] ) ) {
 
 			// External site
 			// Some validation
 			$url = openlab_validate_url( $_POST['external-site-url'] );
-			groups_update_groupmeta( $group->id, 'external_site_url', $url );
+			groups_update_groupmeta( $group_id, 'external_site_url', $url );
 
 			if ( ! empty( $_POST['external-site-type'] ) ) {
-				groups_update_groupmeta( $group->id, 'external_site_type', $_POST['external-site-type'] );
+				groups_update_groupmeta( $group_id, 'external_site_type', $_POST['external-site-type'] );
 			}
 
 			if ( ! empty( $_POST['external-posts-url'] ) ) {
-				groups_update_groupmeta( $group->id, 'external_site_posts_feed', $_POST['external-posts-url'] );
+				groups_update_groupmeta( $group_id, 'external_site_posts_feed', $_POST['external-posts-url'] );
 			}
 
 			if ( ! empty( $_POST['external-comments-url'] ) ) {
-				groups_update_groupmeta( $group->id, 'external_site_comments_feed', $_POST['external-comments-url'] );
+				groups_update_groupmeta( $group_id, 'external_site_comments_feed', $_POST['external-comments-url'] );
 			}
 		}
 
-		$group_type = cboxol_get_group_group_type( $group->id );
+		$group_type = cboxol_get_group_group_type( $group_id );
 		if ( ! is_wp_error( $group_type ) && $group_type->get_is_portfolio() ) {
-			openlab_associate_portfolio_group_with_user( $group->id, bp_loggedin_user_id() );
+			if ( bp_is_group_create() ) {
+				$portfolio_user_id = bp_loggedin_user_id();
+			} else {
+				$portfolio_user_id = openlab_get_user_id_from_portfolio_group_id( $group_id );
+			}
+
+			openlab_associate_portfolio_group_with_user( $group_id, $portfolio_user_id );
 		}
 	}
 }
@@ -959,6 +965,32 @@ function openlab_save_group_site_settings() {
 
 	update_blog_option( $site_id, 'blog_public', $blog_public );
 	groups_update_groupmeta( $group->id, 'blog_public', $blog_public );
+}
+
+/**
+ * Catches and processes admin-bar settings.
+ */
+function openlab_save_group_site_admin_bar_settings() {
+	if ( ! isset( $_POST['openlab-site-admin-bar-settings-nonce'] ) ) {
+		return;
+	}
+
+	check_admin_referer( 'openlab_site_admin_bar_settings', 'openlab-site-admin-bar-settings-nonce' );
+
+	$group = groups_get_current_group();
+
+	$site_id = cboxol_get_group_site_id( $group->id );
+	if ( ! $site_id ) {
+		return;
+	}
+
+	$show_admin_bar = ! empty( $_POST['show-admin-bar-on-site'] );
+
+	if ( $show_admin_bar ) {
+		delete_blog_option( $site_id, 'cboxol_hide_admin_bar_for_anonymous_users' );
+	} else {
+		update_blog_option( $site_id, 'cboxol_hide_admin_bar_for_anonymous_users', 1 );
+	}
 }
 
 /**
@@ -1039,7 +1071,7 @@ function openlab_group_privacy_settings( $group_type ) {
 			<?php
 			$new_group_status = bp_get_new_group_status();
 			if ( ! $new_group_status ) {
-				$new_group_status = ! empty( $clone_source_group_status ) ? $clone_source_group_status : 'public';
+				$new_group_status = 'public';
 			}
 			?>
 			<div class="row">
@@ -1519,7 +1551,7 @@ function openlab_get_group_activity_content( $title, $content, $link ) {
 	$markup .= '<p class="activity-content">';
 	// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	$markup .= '<span class="hyphenate truncate-on-the-fly" data-basevalue="120" data-minvalue="75" data-basewidth="376">' . $content . '</span>';
-	$markup .= '<span><a href="' . esc_attr( $link ) . '" class="read-more">' . esc_html__( 'See More', 'commons-in-a-box' ) . '<span class="sr-only">' . esc_html( $title ) . '</span></a><span>';
+	$markup .= '&nbsp;<span><a href="' . esc_attr( $link ) . '" class="read-more">' . esc_html__( 'See More', 'commons-in-a-box' ) . '<span class="sr-only">' . esc_html( $title ) . '</span></a><span>';
 	// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	$markup .= '<span class="original-copy hidden">' . $content . '</span></p>';
 
@@ -1559,6 +1591,7 @@ function openlab_group_site_settings() {
 	// phpcs:ignore WordPress.Security.NonceVerification.Missing
 	if ( isset( $_POST['save'] ) ) {
 		openlab_save_group_site();
+		openlab_save_group_site_admin_bar_settings();
 		openlab_save_group_site_settings();
 		openlab_save_group_site_member_role_settings();
 
@@ -1932,42 +1965,39 @@ function openlab_show_site_posts_and_comments() {
 			}
 
 			// Set up comments
-			$comment_args = array(
-				'status' => 'approve',
-				'number' => '3',
-			);
-
-			/*
-			 * WP Grade Comments support.
-			 *
-			 * We reproduce the logic of olgc_get_inaccessible_comments() because there's
-			 * no way to use that function directly inside switch_to_blog().
-			 */
-			$comment__not_in  = array();
-			$pc_query         = new WP_Comment_Query(
-				array(
-					'meta_query' => array(
-						array(
+			$comment_args = [
+				'status'     => 'approve',
+				'number'     => 3,
+				'meta_query' => [
+					'relation' => 'AND',
+					[
+						'relation' => 'OR',
+						[
 							'key'   => 'olgc_is_private',
-							'value' => '1',
-						),
-					),
-					'status'     => 'any',
-				)
-			);
-			$private_comments = $pc_query->comments;
+							'value' => '0',
+						],
+						[
+							'key' => 'olgc_is_private',
+							'compare' => 'NOT EXISTS',
+						],
+					],
+					[
+						'relation' => 'OR',
+						[
+							'key'   => 'ol_is_private',
+							'value' => '0',
+						],
+						[
+							'key' => 'ol_is_private',
+							'compare' => 'NOT EXISTS',
+						],
+					],
+				],
+			];
 
-			if ( $private_comments ) {
-				foreach ( $private_comments as $private_comment ) {
-					$comment__not_in[] = $private_comment->comment_ID;
-				}
-
-				$comment__not_in = wp_parse_id_list( $comment__not_in );
-
-				if ( $comment__not_in ) {
-					$comment_args['comment__not_in'] = $comment__not_in;
-				}
-			}
+			// This isn't official argument just a custom flag.
+			// Used by `openlab_private_comments_fallback()`.
+			$comment_args['main_site'] = true;
 
 			$wp_comments = get_comments( $comment_args );
 
@@ -2053,7 +2083,30 @@ function openlab_show_site_posts_and_comments() {
 }
 
 /**
+ * Generates the 'contact' line that appears under group names in directories.
+ *
+ * @param int $group_id ID of the group.
+ * @return string
+ */
+function openlab_output_group_contact_line( $group_id ) {
+	$names = array_map(
+		function( $user_id ) {
+			return bp_core_get_user_displayname( $user_id );
+		},
+		cboxol_get_all_group_contact_ids( $group_id )
+	);
+
+	$list = implode( ', ', $names );
+
+	return '<span class="truncate-on-the-fly" data-basevalue="35">' . esc_html( $list ) . '</span>';
+}
+
+/**
  * Generates the 'faculty' line that appears under group names in course directories.
+ *
+ * No longer used. See openlab_output_group_contact_line().
+ *
+ * @deprecated 1.3.0
  *
  * @param int $group_id ID of the group.
  * @return string
@@ -2519,7 +2572,7 @@ function openlab_group_contact_save( $group ) {
 	}
 
 	// Admins only.
-	if ( ! groups_is_user_admin( bp_loggedin_user_id(), $group->id ) ) {
+	if ( ! current_user_can( 'bp_moderate' ) && ! groups_is_user_admin( bp_loggedin_user_id(), $group->id ) ) {
 		return;
 	}
 
@@ -3005,124 +3058,6 @@ function openlab_group_avatar_script_data( $script_data ) {
 add_filter( 'bp_attachment_avatar_script_data', 'openlab_group_avatar_script_data' );
 
 /**
- * Outputs the badge markup for the group directory.
- *
- * @since 1.2.0
- */
-function openlab_group_directory_badges() {
-	if ( ! defined( 'OLBADGES_VERSION' ) ) {
-		return;
-	}
-
-	echo '<div class="col-xs-18 alignright group-directory-badges">';
-	\OpenLab\Badges\Template::badge_links( 'directory' );
-	echo '</div>';
-}
-add_action( 'openlab_theme_after_group_group_directory', 'openlab_group_directory_badges' );
-
-/**
- * Outputs the badge markup for single group pages.
- *
- * @since 1.2.0
- */
-function openlab_group_single_badges() {
-	if ( ! defined( 'OLBADGES_VERSION' ) ) {
-		return;
-	}
-
-	echo '<div class="group-single-badges">';
-	\OpenLab\Badges\Template::badge_links( 'single' );
-	echo '</div>';
-}
-
-/**
- * Checks whether a group has badges.
- *
- * @since 1.2.0
- *
- * @param int $group_id Group ID.
- * @return bool
- */
-function openlab_group_has_badges( $group_id ) {
-	if ( ! defined( 'OLBADGES_VERSION' ) ) {
-		return false;
-	}
-
-	$badge_group  = new \OpenLab\Badges\Group( $group_id );
-	$group_badges = $badge_group->get_badges();
-
-	return ! empty( $group_badges );
-}
-
-/**
- * Filters the badge link markup to dynamically inject our badge-like flags.
- *
- * @param array  $badge_links Array of badge flags.
- * @param int    $group_id    ID of the group.
- * @param string $context     Context. 'directory' or 'single'.
- * @return array
- */
-function openlab_filter_badge_links( $badge_links, $group_id, $context ) {
-	// Note that they're applied in reverse order, so 'open' is first.
-	$faux_badges = [
-		// phpcs:ignore Squiz.PHP.CommentedOutCode.Found
-		'cloneable' => [
-			'add'        => openlab_group_can_be_cloned( $group_id ),
-			'link'       => 'someotherlink',
-			'name'       => 'Cloneable',
-			'short_name' => 'Clone',
-		],
-		'open'      => [
-			'add'        => openlab_group_is_open( $group_id ),
-			'link'       => 'somelink',
-			'name'       => 'Open',
-			'short_name' => 'Open',
-		],
-	];
-
-	foreach ( $faux_badges as $badge_type => $faux_badge ) {
-		if ( ! $faux_badge['add'] ) {
-			continue;
-		}
-
-		// Copied from \OpenLab\Badges\Badge::get_avatar_flag_html().
-		$group = groups_get_group( $group_id );
-
-		$tooltip_id = 'badge-tooltip-' . $group->slug . '-' . $badge_type;
-
-		$badge_link_start = '';
-		$badge_link_end   = '';
-
-		if ( 'single' === $context ) {
-			$badge_link_start = sprintf(
-				'<a class="group-badge-shortname" href="%s">',
-				esc_attr( $faux_badge['link'] )
-			);
-
-			$badge_link_end = '</a>';
-		} else {
-			$badge_link_start = '<span class="group-badge-shortname">';
-			$badge_link_end   = '</span>';
-		}
-
-		$html  = '<div class="group-badge">';
-		$html .= $badge_link_start;
-		$html .= esc_html( $faux_badge['short_name'] );
-		$html .= $badge_link_end;
-
-		$html .= '<div id="' . esc_attr( $tooltip_id ) . '" class="badge-tooltip" role="tooltip">';
-		$html .= esc_html( $faux_badge['name'] );
-		$html .= '</div>';
-		$html .= '</div>';
-
-		array_unshift( $badge_links, $html );
-	}
-
-	return $badge_links;
-}
-add_filter( 'openlab_badges_badge_links', 'openlab_filter_badge_links', 10, 3 );
-
-/**
  * Checks whether a group is "open".
  *
  * @param int $group_id Group ID.
@@ -3160,4 +3095,60 @@ add_filter(
 		}
 		return $args;
 	}
+);
+
+/**
+ * Reusable markup for the "Notify subscribed..." UI.
+ *
+ * @since 1.3.0
+ *
+ * @param bool $checked Whether the checkbox should be checked.
+ */
+function openlab_notify_group_members_ui( $checked = false ) {
+	?>
+<label><input type="checkbox" name="ol-notify-group-members" value="1" class="ol-notify-group-members" <?php checked( $checked ); ?> /> <?php esc_html_e( 'Notify subscribed members by email', 'commons-in-a-box' ); ?></label>
+	<?php
+}
+
+/**
+ * Reusable wrapper for checking whether the "Notify subscribed..." checkbox was checked.
+ *
+ * @since 1.3.0
+ *
+ * @return bool
+ */
+function openlab_notify_group_members_of_this_action() {
+	// phpcs:ignore WordPress.Security.NonceVerification.Missing
+	return ! empty( $_POST['ol-notify-group-members'] );
+}
+
+/**
+ * Copy feature toggle settings from clone source on clone.
+ */
+add_filter(
+	'openlab_after_group_clone',
+	function( $group_id, $clone_source_group_id ) {
+		if ( openlab_is_forum_enabled_for_group( $clone_source_group_id ) ) {
+			groups_delete_groupmeta( $group_id, 'openlab_disable_forum' );
+		} else {
+			groups_update_groupmeta( $group_id, 'openlab_disable_forum', '1' );
+		}
+
+		if ( openlab_is_files_enabled_for_group( $clone_source_group_id ) ) {
+			groups_delete_groupmeta( $group_id, 'group_documents_documents_disabled' );
+		} else {
+			groups_update_groupmeta( $group_id, 'group_documents_documents_disabled', '1' );
+		}
+
+		$doc_settings = bp_docs_get_group_settings( $clone_source_group_id );
+		groups_update_groupmeta( $group_id, 'bp-docs', $doc_settings );
+
+		if ( openlab_is_calendar_enabled_for_group( $clone_source_group_id ) ) {
+			groups_update_groupmeta( $group_id, 'calendar_is_disabled', '0' );
+		} else {
+			groups_update_groupmeta( $group_id, 'calendar_is_disabled', '1' );
+		}
+	},
+	20,
+	2
 );

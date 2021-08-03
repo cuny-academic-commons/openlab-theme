@@ -96,12 +96,23 @@ function openlab_clone_create_form_catcher() {
 
 				groups_update_groupmeta( $new_group_id, 'clone_source_group_id', $clone_source_group_id );
 
-				// Store history.
-				$clone_history   = openlab_get_group_clone_history( $clone_source_group_id );
-				$clone_history[] = $clone_source_group_id;
-				groups_update_groupmeta( $new_group_id, 'clone_history', $clone_history );
+				$change_authorship = ! empty( $_POST['change-cloned-content-attribution'] );
+				groups_update_groupmeta( $new_group_id, 'change_cloned_content_attribution', $change_authorship );
+
+				// Bust ancestor cache.
+				openlab_invalidate_ancestor_clone_cache( $new_group_id );
 
 				openlab_clone_course_group( $new_group_id, $clone_source_group_id );
+
+				/**
+				 * Fires after the initial group clone is complete.
+				 *
+				 * @since 1.3.0
+				 *
+				 * @param int $new_group_id
+				 * @param int $clone_source_group_id
+				 */
+				do_action( 'openlab_after_group_clone', $new_group_id, $clone_source_group_id );
 			}
 			break;
 
@@ -133,19 +144,13 @@ add_action( 'groups_create_group_step_complete', 'openlab_clone_create_form_catc
 /** FILTERS ***********************************************************/
 
 /**
- * Swap out the group privacy status, if available
+ * No longer used.
+ *
+ * @deprecated 1.3.0
  */
 function openlab_clone_bp_get_new_group_status( $status ) {
-	$clone_source_group_id = intval( groups_get_groupmeta( bp_get_new_group_id(), 'clone_source_group_id' ) );
-
-	if ( $clone_source_group_id ) {
-		$clone_source_group = groups_get_group( array( 'group_id' => $clone_source_group_id ) );
-		$status             = $clone_source_group->status;
-	}
-
 	return $status;
 }
-add_filter( 'bp_get_new_group_status', 'openlab_clone_bp_get_new_group_status' );
 
 /**
  * AJAX handler for fetching group details
@@ -164,8 +169,12 @@ function openlab_group_clone_fetch_details() {
 add_action( 'wp_ajax_openlab_group_clone_fetch_details', 'openlab_group_clone_fetch_details' );
 
 function openlab_group_clone_details( $group_id ) {
+	$group_admin_ids = cboxol_get_all_group_contact_ids( $group_id );
+	$is_shared_clone = ! in_array( bp_loggedin_user_id(), $group_admin_ids, true );
+
 	$retval = array(
 		'group_id'               => $group_id,
+		'is_shared_clone'        => $is_shared_clone,
 		'name'                   => '',
 		'description'            => '',
 		'status'                 => '',
@@ -179,6 +188,8 @@ function openlab_group_clone_details( $group_id ) {
 		'site_url'               => '',
 		'site_path'              => '',
 		'term'                   => '',
+		'academic_units'         => [],
+		'academic_unit_types'    => [],
 	);
 
 	if ( $group_id ) {
@@ -187,6 +198,39 @@ function openlab_group_clone_details( $group_id ) {
 		$retval['name']        = $group->name;
 		$retval['description'] = $group->description;
 		$retval['status']      = $group->status;
+
+		// Must be sorted so that parents come before children.
+		$type_map  = [];
+		$all_types = cboxol_get_academic_unit_types();
+
+		foreach ( $all_types as $type ) {
+			$parent = $type->get_parent();
+			if ( ! $parent ) {
+				$parent = '_null';
+			}
+
+			$type_map[ $parent ][] = $type->get_slug();
+		}
+
+		$sorted_types  = [];
+		$level_parents = [ '_null' ];
+
+		do {
+			$level_children = [];
+			foreach ( $level_parents as $level_parent ) {
+				if ( isset( $type_map[ $level_parent ] ) ) {
+					$level_children = array_merge( $level_children, $type_map[ $level_parent ] );
+				}
+			}
+
+			if ( $level_children ) {
+				$sorted_types = array_merge( $sorted_types, $level_children );
+			}
+
+			$level_parents = $level_children;
+		} while ( $level_parents );
+
+		$retval['academic_unit_types'] = $sorted_types;
 
 		$academic_units = cboxol_get_object_academic_units(
 			array(
@@ -332,6 +376,36 @@ function openlab_add_clone_button_to_profile() {
 }
 add_action( 'bp_group_header_actions', 'openlab_add_clone_button_to_profile', 50 );
 
+/**
+ * 'descendant-of' parameter support for group directories.
+ *
+ * @since 1.3.0
+ *
+ * @param array $args
+ * @return array
+ */
+add_filter(
+	'bp_before_groups_get_groups_parse_args',
+	function( $args ) {
+		$group_id = openlab_get_current_filter( 'descendant-of' );
+		if ( ! $group_id ) {
+			return $args;
+		}
+
+		$group = groups_get_group( $group_id );
+
+		$exclude_hidden = ! current_user_can( 'bp_moderate' );
+		$descendant_ids = openlab_get_clone_descendants_of_group( $group_id, [ $group->creator_id ], $exclude_hidden );
+		if ( ! $descendant_ids ) {
+			$descendant_ids = [ 0 ];
+		}
+
+		$args['include'] = $descendant_ids;
+
+		return $args;
+	}
+);
+
 /** CLASSES ******************************************************************/
 
 class Openlab_Clone_Course_Group {
@@ -400,6 +474,11 @@ class Openlab_Clone_Course_Group {
 					// add the metadata
 					$post_a = (array) $post;
 					unset( $post_a['ID'] );
+
+					if ( $this->change_content_attribution() ) {
+						$post_a['post_author'] = bp_loggedin_user_id();
+					}
+
 					$new_doc_id = wp_insert_post( $post_a );
 
 					// Associated group
@@ -451,7 +530,12 @@ class Openlab_Clone_Course_Group {
 
 			$document->group_id = $this->group_id;
 
-			$document->user_id     = $source_file['user_id'];
+			if ( $this->change_content_attribution() ) {
+				$document->user_id = bp_loggedin_user_id();
+			} else {
+				$document->user_id = $source_file['user_id'];
+			}
+
 			$document->name        = $source_file['name'];
 			$document->description = $source_file['description'];
 			$document->file        = $source_file['file'];
@@ -519,15 +603,21 @@ class Openlab_Clone_Course_Group {
 
 		// Then post them
 		foreach ( $source_forum_topics->posts as $sftk ) {
+			$topic_args = [
+				'post_parent'  => $forum_id,
+				'post_status'  => $status,
+				'post_author'  => $sftk->post_author,
+				'post_content' => $sftk->post_content,
+				'post_title'   => $sftk->post_title,
+				'post_date'    => $sftk->post_date,
+			];
+
+			if ( $this->change_content_attribution() ) {
+				$topic_args['post_author'] = bp_loggedin_user_id();
+			}
+
 			bbp_insert_topic(
-				array(
-					'post_parent'  => $forum_id,
-					'post_status'  => $status,
-					'post_author'  => $sftk->post_author,
-					'post_content' => $sftk->post_content,
-					'post_title'   => $sftk->post_title,
-					'post_date'    => $sftk->post_date,
-				),
+				$topic_args,
 				array(
 					'forum_id' => $forum_id,
 				)
@@ -549,6 +639,18 @@ class Openlab_Clone_Course_Group {
 		}
 
 		return $this->source_group_admins;
+	}
+
+	/**
+	 * Determines whether content attribution should be switched to current user.
+	 *
+	 * @since 1.3.0
+	 *
+	 * @return bool
+	 */
+	protected function change_content_attribution() {
+		$change = groups_get_groupmeta( $this->group_id, 'change_cloned_content_attribution' );
+		return (bool) $change;
 	}
 }
 
@@ -602,7 +704,7 @@ class Openlab_Clone_Course_Site {
 		$user_id = $group->creator_id;
 
 		$meta = array(
-			'public' => get_blog_option( $this->source_site_id, 'blog_public' ),
+			'public' => 1,
 		);
 
 		// We take care of this ourselves later on
@@ -670,6 +772,7 @@ class Openlab_Clone_Course_Site {
 			'home',
 			'upload_path',
 			'db_version',
+			'blog_public',
 			$wpdb->get_blog_prefix( $this->site_id ) . 'user_roles',
 			'fileupload_url',
 		);
@@ -773,6 +876,25 @@ class Openlab_Clone_Course_Site {
 		$site_posts          = $wpdb->get_results( "SELECT ID, guid, post_author, post_status, post_title, post_type FROM {$wpdb->posts}" );
 		$source_group_admins = $this->get_source_group_admins();
 		foreach ( $site_posts as $sp ) {
+			if ( ! is_super_admin( $sp->post_author ) && ! in_array( (int) $sp->post_author, $source_group_admins, true ) && 'nav_menu_item' !== $sp->post_type ) {
+				// Non-admins have their stuff deleted.
+				if ( 'attachment' === $sp->post_type ) {
+					$atts_to_delete_ids[] = $sp->ID;
+				} else {
+					$posts_to_delete_ids[] = $sp->ID;
+				}
+			} else {
+				// Admin-created content comes along, but may have its authorship changed.
+				if ( $this->change_content_attribution() ) {
+					wp_update_post(
+						[
+							'ID'          => $sp->ID,
+							'post_author' => bp_loggedin_user_id(),
+						]
+					);
+				}
+			}
+
 			if ( 'nav_menu_item' === $sp->post_type ) {
 				$wpdb->update(
 					$wpdb->posts,
@@ -894,6 +1016,18 @@ class Openlab_Clone_Course_Site {
 		// Clean up
 		$dir->close();
 		return true;
+	}
+
+	/**
+	 * Determines whether content attribution should be switched to current user.
+	 *
+	 * @since 1.3.0
+	 *
+	 * @return bool
+	 */
+	protected function change_content_attribution() {
+		$change = groups_get_groupmeta( $this->group_id, 'change_cloned_content_attribution' );
+		return (bool) $change;
 	}
 }
 

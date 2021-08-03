@@ -1,11 +1,11 @@
 /*
-Theme Name: OpenLab
-Theme URL: http://openlab.early-adopter.com
-Description: OpenLab Bootstrap based theme
-Author: CityTech OpenLab Dev Team
-Author URI:http://openlab.early-adopter.com
-Version: 1.2.4
-Text Domain: openlab
+Theme Name: OpenLab Theme
+Theme URL: https://commonsinabox.org
+Description: Commons In A Box theme, based on the OpenLab at City Tech.
+Author: The Commons In A Box OpenLab team
+Author URI: https://commonsinabox.org
+Version: 1.3.0
+Text Domain: commons-in-a-box
 */
 
 /**import bootstrap**/
@@ -372,6 +372,13 @@ input[type="submit"]{
         }
     }
     .panel-body {
+		legend {
+			border-bottom: none;
+			font-size: 14px;
+			font-weight: bold;
+			margin-bottom: 5px;
+			width: auto;
+		}
         .radio {
             margin-top: 0;
         }
@@ -571,20 +578,16 @@ input[type="submit"]{
 /**page**/
 .entry-title{
     border-bottom: 1px solid @30gray;
-	height: 50px;
     margin-bottom: 10px;
     margin-top: -3px;
 	overflow: hidden;
     padding-bottom: 6px;
+	padding-right: 90px;
     position: relative;
 	vertical-align: bottom;
 
 	h1 {
-		position: absolute;
-
-		@media (max-width: @screen-xs-max){
-			bottom: -13px;
-		}
+		margin-bottom: 0;
 	}
 
 	.directory-title-meta {
@@ -604,6 +607,11 @@ input[type="submit"]{
 
 		button.direct-toggle {
 			font-size: 18px;
+		}
+
+		@media (max-width: @screen-xs-max){
+			bottom: auto;
+			top: 0;
 		}
 	}
 
@@ -630,12 +638,12 @@ input[type="submit"]{
         }
 
 		@media (max-width: @screen-xs-max){
-			top: -42px;
+			top: 6px;
 		}
     }
     @media (max-width: @screen-xs-max){
-		height: 54px;
         margin-top: -17px;
+		min-height: 56px;
         padding-bottom: 2px;
         .profile-name{
             display: inline-block;
@@ -723,6 +731,114 @@ body{
             font-size: 18px !important;
         }
     }
+
+	&.js {
+		.group-creator-empty-row {
+			display: none;
+		}
+
+		.group-creator-form-entry {
+		}
+	}
+	.group-creators-section {
+		margin-bottom: 20px;
+		margin-top: 20px;
+	}
+
+	ul.group-creator-edit-list {
+		list-style-type: none;
+		padding-left: 0;
+
+		& > li {
+			padding: 5px 10px;
+
+			&:nth-of-type(even) {
+				background: #efefef;
+			}
+		}
+	}
+
+	.group-creator-form-entry {
+		display: flex;
+
+		&.creator-type-member {
+			.creator-fields-non-member-name {
+				display: none;
+			}
+		}
+
+		&.creator-type-non-member {
+			.creator-fields-member-login {
+				display: none;
+			}
+		}
+
+		& > div {
+			flex: 0 1 auto;
+			margin-right: 20px;
+			width: 50%;
+
+			&.creator-fields-member-login {
+				width: 100%;
+			}
+
+			&.creator-preview {
+				width: 100%;
+			}
+		}
+
+		input {
+			width: 100%;
+		}
+
+		.entry-actions {
+			flex-grow: 0;
+			flex-shrink: 1;
+			width: 100px;
+
+			button {
+				background: transparent;
+				border: none;
+				padding: 3px 8px;
+			}
+		}
+
+		.creator-preview {
+			display: none;
+		}
+
+		.edit-entry {
+			display: none;
+		}
+
+		&.is-preview-mode {
+			.creator-form-fields {
+				display: none;
+			}
+
+			.creator-preview {
+				display: inherit;
+			}
+
+			.edit-entry {
+				display: inline;
+			}
+		}
+	}
+
+	.group-creator-edit-list-add-new {
+		margin-bottom: 15px;
+
+		button {
+			background: 0;
+			border: 0;
+			text-decoration: underline;
+		}
+
+		button:hover {
+			text-decoration: none;
+		}
+	}
     .line-height{
         &.height-200{
             line-height: 200% !important;
@@ -767,7 +883,7 @@ body{
         }
     }
     .note{
-        color: @40gray;
+        color: #757575;
     }
     .padded-img{
         border-radius: @border-radius-base;
@@ -1085,15 +1201,26 @@ body{
             margin-top: 4px;
             padding: 6px 12px;
             text-align: left;
+			white-space: normal;
         }
     }
+	.clone-acknowledgements {
+		p {
+			margin-bottom: .5em;
+			margin-top: .5em;
+
+			&:first-child {
+				margin-top: 0;
+			}
+		}
+	}
     .group-credits{
         list-style-type: none;
 		margin: 0;
-		padding-left: 0;
+		padding-left: 15px;
 
         li {
-            margin-bottom: .5em;
+            margin-bottom: .25em;
             &:last-child {
                 margin-bottom: 0;
             }
@@ -1233,54 +1360,55 @@ body form{
             width: 88%;
         }
     }
-    .groupblog-setup{
-		p:empty {
-			margin: 0;
-		}
-        .radio{
-            margin-bottom: 0;
-            margin-top: 7px;
-			label {
-				padding-left: 25px;
-			}
-        }
-		.site-path {
-			display: table;
+	p:empty {
+		margin: 0;
+	}
+	.radio{
+		margin-bottom: 0;
+		margin-top: 7px;
+		label {
 			padding-left: 25px;
-			width: 90%;
-			span {
-				display: table-cell;
-				width: 1px;
+		}
+	}
+	.site-details-query label {
+		padding-left: 5px;
+	}
+	.site-path {
+		display: table;
+		padding-left: 25px;
+		width: 90%;
+		span {
+			display: table-cell;
+			width: 1px;
 
-				@media (max-width: @screen-xs-max){
-					& {
-						display: block;
-						width: auto;
-					}
-				}
-			}
-			&.site-path-subdomain span {
-				padding-left: 10px;
-			}
-			input.form-control {
-				display: table-cell;
-				margin-left: 8px;
-				width: 100%;
-
-				@media (max-width: @screen-xs-max){
-					& {
-						display: block;
-						margin-left: 0;
-					}
+			@media (max-width: @screen-xs-max){
+				& {
+					display: block;
+					width: auto;
 				}
 			}
 		}
-
-		#noo_external_options .site-path input.form-control {
-			margin-left: 0;
-			width: 85%;
+		&.site-path-subdomain span {
+			padding-left: 10px;
 		}
-    }
+		input.form-control {
+			display: table-cell;
+			margin-left: 8px;
+			width: 100%;
+
+			@media (max-width: @screen-xs-max){
+				& {
+					display: block;
+					margin-left: 0;
+				}
+			}
+		}
+	}
+
+	#noo_external_options .site-path input.form-control {
+		margin-left: 0;
+		width: 85%;
+	}
 }
 .notification-settings{
     .no,
@@ -1988,7 +2116,10 @@ body form{
 		font-size: 1.75rem;
 	}
 }
-#search-setting-note {
+.show-admin-bar-on-site-setting {
+	margin-top: 25px;
+}
+.group-setting-note {
 	margin-top: -10px;
 }
 .sidebar{
@@ -2936,6 +3067,12 @@ h3#message-subject {
             margin-bottom: 0;
             padding: 0;
         }
+		.bbp-submit-wrapper {
+			float: none;
+		}
+		.notify-group-members-ui {
+			margin-bottom: 10px;
+		}
         @media (max-width: @screen-xs-max){
             .forum-titles,
             .bp_group{
@@ -3273,9 +3410,20 @@ body{
     .group-list{
         .group-item-wrapper{
             height: 152px;
+			position: relative;
             @media (max-width: @screen-sm-max){
                 height: 221px;
             }
+        }
+    }
+    .message-actions {
+        bottom: 8px;
+        font-size: 1rem;
+        position: absolute;
+        right: 8px;
+
+        .message-unread {
+            color: #333;
         }
     }
 }

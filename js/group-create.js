@@ -24,8 +24,7 @@ jQuery( document ).ready(
 		form_validated = false,
 		new_group_type = CBOXOL_Group_Create.new_group_type,
 		$body          = $( 'body' ),
-		$gc_submit     = $( '#group-creation-create' ),
-		$required_fields;
+		$gc_submit     = $( '#group-creation-create' );
 
 		var $setuptoggle = $( 'input[name="set-up-site-toggle"]' );
 
@@ -39,7 +38,19 @@ jQuery( document ).ready(
 
 		$form = $( form );
 
-		$required_fields = $form.find( 'input:required' );
+		function maybeShowSiteFields() {
+			if ( ! $setuptoggle.length && 'portfolio' !== new_group_type ) {
+				return;
+			}
+
+			var showSiteFields = $setuptoggle.is( ':checked' );
+
+			if ( showSiteFields || 'portfolio' === new_group_type ) {
+				$( '#site-options' ).show();
+			} else {
+				$( '#site-options' ).hide();
+			}
+		}
 
 		function new_old_switch( noo ) {
 			var radioid = '#new_or_old_' + noo;
@@ -54,7 +65,7 @@ jQuery( document ).ready(
 						$( thisid ).find( 'input' ).each(
 							function(index,element){
 								$( element ).removeClass( 'disabled-opt' );
-								$( element ).removeProp( 'disabled' ).removeClass( 'disabled' );
+								$( element ).prop( 'disabled', false ).removeClass( 'disabled' );
 							}
 						);
 
@@ -62,7 +73,7 @@ jQuery( document ).ready(
 							function(index,element){
 								if ($( element ).attr( 'type' ) !== 'radio') {
 									$( element ).removeClass( 'disabled-opt' );
-									$( element ).removeProp( 'disabled' ).removeClass( 'disabled' );
+									$( element ).prop( 'disabled', false ).removeClass( 'disabled' );
 								}
 							}
 						);
@@ -131,11 +142,7 @@ jQuery( document ).ready(
 		}
 
 		function showHideAll() {
-			showHide( 'wds-website' );
-			showHide( 'wds-website-existing' );
-			showHide( 'wds-website-external' );
 			showHide( 'wds-website-tooltips' );
-			showHide( 'wds-website-clone' );
 			showHide( 'check-note-wrapper' );
 		}
 
@@ -287,7 +294,6 @@ jQuery( document ).ready(
 
 						// Description
 						$( '#group-desc' ).val( r.description );
-						$( '#group-status-' + r.status ).prop( 'checked',true );
 
 						// Categories
 						$.each(
@@ -297,18 +303,22 @@ jQuery( document ).ready(
 							}
 						);
 
-						// Schools and Departments
+						// Academic Units
 						$.each(
-							r.academic_units,
-							function( unitType, unitsOfType ) {
+							r.academic_unit_types,
+							function( index, unitType ) {
 								$typeSelector = $( '.cboxol-academic-unit-selector-for-type-' + unitType );
 
-								$.each(
-									unitsOfType,
-									function( key, unitValue ) {
-										$typeSelector.find( '#academic-unit-' + unitValue ).attr( 'checked', true ).trigger( 'change' );
-									}
-								);
+								if ( r.academic_units.hasOwnProperty( unitType ) ) {
+									var unitsOfType = r.academic_units[ unitType ];
+
+									$.each(
+										unitsOfType,
+										function( key, unitValue ) {
+											$typeSelector.find( '#academic-unit-' + unitValue ).prop( 'checked', true ).trigger( 'change' );
+										}
+									);
+								}
 							}
 						);
 
@@ -397,6 +407,7 @@ jQuery( document ).ready(
 				showHideAll();
 				showHideAssociatedSitePrivacy();
 				showHideMemberRoleSettings();
+				maybeShowSiteFields();
 			}
 		);
 		if ( $setuptoggle.is( ':checked' ) ) {
@@ -404,6 +415,7 @@ jQuery( document ).ready(
 		};
 		showHideAssociatedSitePrivacy();
 		showHideMemberRoleSettings();
+		maybeShowSiteFields();
 
 		// Precheck the box if:
 		// - This is the group creation process, and
@@ -484,8 +496,24 @@ jQuery( document ).ready(
 			}
 
 			description = $( '#group-desc' ).val();
-			if ( $.trim( description ) == '' ) {
-				$( '#group-desc' ).val( '&nbsp;' );
+			if ( description.trim() == '' ) {
+				$( '#group-desc' ).val( '' );
+			}
+
+			// Don't allow submission if any required fields are not filled.
+			var $required_fields       = $form.find( ':required' );
+			var hasEmptyRequiredFields = false;
+			$required_fields.each(
+				function( k, v ) {
+					if ( $( v ).val().trim() === '' ) {
+						hasEmptyRequiredFields = true;
+						return false;
+					}
+				}
+			);
+
+			if ( hasEmptyRequiredFields ) {
+				return false;
 			}
 
 			// Don't allow submission if avatar is not cropped.

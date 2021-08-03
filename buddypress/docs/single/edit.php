@@ -130,6 +130,10 @@ if ( ! function_exists( 'wp_editor' ) ) {
 
 					<div id="doc-submit-options">
 
+						<div class="notify-group-members-ui">
+							<?php openlab_notify_group_members_ui( ! bp_docs_is_existing_doc() ); ?>
+						</div>
+
 						<?php wp_nonce_field( 'bp_docs_save' ); ?>
 
 						<input class="btn btn-primary" type="submit" name="doc-edit-submit" id="doc-edit-submit" value="<?php esc_html_e( 'Save', 'commons-in-a-box' ); ?>"> <a href="<?php bp_docs_cancel_edit_link(); ?>" class="action safe btn btn-default no-deco"><?php esc_html_e( 'Cancel', 'commons-in-a-box' ); ?></a>

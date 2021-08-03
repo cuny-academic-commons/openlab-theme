@@ -45,10 +45,10 @@ openlab_group_admin_js_data( $group_type );
 					<?php do_action( 'bp_before_group_details_admin' ); ?>
 
 					<label for="group-name"><?php esc_html_e( 'Name', 'commons-in-a-box' ); ?> <?php esc_html_e( '(required)', 'commons-in-a-box' ); ?></label>
-					<input class="form-control" type="text" name="group-name" id="group-name" value="<?php bp_group_name(); ?>" />
+					<input class="form-control" type="text" name="group-name" id="group-name" value="<?php bp_group_name(); ?>" required />
 
 					<label for="group-desc"><?php esc_html_e( 'Description', 'commons-in-a-box' ); ?> <?php esc_html_e( '(required)', 'commons-in-a-box' ); ?></label>
-					<textarea class="form-control" name="group-desc" id="group-desc"><?php bp_group_description_editable(); ?></textarea>
+					<textarea class="form-control" name="group-desc" id="group-desc" required><?php bp_group_description_editable(); ?></textarea>
 
 					<?php do_action( 'groups_custom_group_fields_editable' ); ?>
 

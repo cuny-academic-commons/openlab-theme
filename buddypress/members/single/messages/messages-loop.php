@@ -57,6 +57,14 @@
 						<p class="thread-excerpt"><?php bp_message_thread_excerpt(); ?>... <a href="<?php bp_message_thread_view_link(); ?>" class="read-more" title="<?php esc_attr_e( 'View Message', 'commons-in-a-box' ); ?>"><?php esc_html_e( 'See More', 'commons-in-a-box' ); ?></a></p>
 
 						<?php do_action( 'bp_messages_inbox_list_item' ); ?>
+
+					</div>
+
+					<div class="message-actions">
+						<?php if ( bp_message_thread_has_unread() ) : ?>
+							<span class="message-unread"><?php esc_html_e( 'Unread', 'commons-in-a-box' ); ?></span> <span class="sep">|</span>
+						<?php endif; ?>
+						<a class="delete-button confirm" href="<?php echo esc_attr( bp_get_message_thread_delete_link() ); ?>" title="<?php esc_attr_e( 'Delete Message', 'commons-in-a-box' ); ?>"><i class="fa fa-minus-circle"></i><?php esc_html_e( 'Delete', 'commons-in-a-box' ); ?></a>
 					</div>
 				</div>
 			</div>

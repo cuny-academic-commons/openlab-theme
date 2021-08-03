@@ -1,11 +1,11 @@
 /*
-Theme Name: OpenLab
-Theme URL: http://openlab.early-adopter.com
-Description: OpenLab Bootstrap based theme
-Author: CityTech OpenLab Dev Team
-Author URI:http://openlab.early-adopter.com
-Version: 1.2.4
-Text Domain: openlab
+Theme Name: OpenLab Theme
+Theme URL: https://commonsinabox.org
+Description: Commons In A Box theme, based on the OpenLab at City Tech.
+Author: The Commons In A Box OpenLab team
+Author URI: https://commonsinabox.org
+Version: 1.3.0
+Text Domain: commons-in-a-box
 */
 /**import bootstrap**/
 /*! normalize.css v3.0.1 | MIT License | git.io/normalize */
@@ -1119,7 +1119,7 @@ cite {
 mark,
 .mark {
   background-color: #fcf8e3;
-  padding: .2em;
+  padding: 0.2em;
 }
 .text-left {
   text-align: left;
@@ -1415,13 +1415,131 @@ pre code {
   margin-left: -7.5px;
   margin-right: -7.5px;
 }
-.col-xs-1, .col-sm-1, .col-md-1, .col-lg-1, .col-xs-2, .col-sm-2, .col-md-2, .col-lg-2, .col-xs-3, .col-sm-3, .col-md-3, .col-lg-3, .col-xs-4, .col-sm-4, .col-md-4, .col-lg-4, .col-xs-5, .col-sm-5, .col-md-5, .col-lg-5, .col-xs-6, .col-sm-6, .col-md-6, .col-lg-6, .col-xs-7, .col-sm-7, .col-md-7, .col-lg-7, .col-xs-8, .col-sm-8, .col-md-8, .col-lg-8, .col-xs-9, .col-sm-9, .col-md-9, .col-lg-9, .col-xs-10, .col-sm-10, .col-md-10, .col-lg-10, .col-xs-11, .col-sm-11, .col-md-11, .col-lg-11, .col-xs-12, .col-sm-12, .col-md-12, .col-lg-12, .col-xs-13, .col-sm-13, .col-md-13, .col-lg-13, .col-xs-14, .col-sm-14, .col-md-14, .col-lg-14, .col-xs-15, .col-sm-15, .col-md-15, .col-lg-15, .col-xs-16, .col-sm-16, .col-md-16, .col-lg-16, .col-xs-17, .col-sm-17, .col-md-17, .col-lg-17, .col-xs-18, .col-sm-18, .col-md-18, .col-lg-18, .col-xs-19, .col-sm-19, .col-md-19, .col-lg-19, .col-xs-20, .col-sm-20, .col-md-20, .col-lg-20, .col-xs-21, .col-sm-21, .col-md-21, .col-lg-21, .col-xs-22, .col-sm-22, .col-md-22, .col-lg-22, .col-xs-23, .col-sm-23, .col-md-23, .col-lg-23, .col-xs-24, .col-sm-24, .col-md-24, .col-lg-24 {
+.col-xs-1,
+.col-sm-1,
+.col-md-1,
+.col-lg-1,
+.col-xs-2,
+.col-sm-2,
+.col-md-2,
+.col-lg-2,
+.col-xs-3,
+.col-sm-3,
+.col-md-3,
+.col-lg-3,
+.col-xs-4,
+.col-sm-4,
+.col-md-4,
+.col-lg-4,
+.col-xs-5,
+.col-sm-5,
+.col-md-5,
+.col-lg-5,
+.col-xs-6,
+.col-sm-6,
+.col-md-6,
+.col-lg-6,
+.col-xs-7,
+.col-sm-7,
+.col-md-7,
+.col-lg-7,
+.col-xs-8,
+.col-sm-8,
+.col-md-8,
+.col-lg-8,
+.col-xs-9,
+.col-sm-9,
+.col-md-9,
+.col-lg-9,
+.col-xs-10,
+.col-sm-10,
+.col-md-10,
+.col-lg-10,
+.col-xs-11,
+.col-sm-11,
+.col-md-11,
+.col-lg-11,
+.col-xs-12,
+.col-sm-12,
+.col-md-12,
+.col-lg-12,
+.col-xs-13,
+.col-sm-13,
+.col-md-13,
+.col-lg-13,
+.col-xs-14,
+.col-sm-14,
+.col-md-14,
+.col-lg-14,
+.col-xs-15,
+.col-sm-15,
+.col-md-15,
+.col-lg-15,
+.col-xs-16,
+.col-sm-16,
+.col-md-16,
+.col-lg-16,
+.col-xs-17,
+.col-sm-17,
+.col-md-17,
+.col-lg-17,
+.col-xs-18,
+.col-sm-18,
+.col-md-18,
+.col-lg-18,
+.col-xs-19,
+.col-sm-19,
+.col-md-19,
+.col-lg-19,
+.col-xs-20,
+.col-sm-20,
+.col-md-20,
+.col-lg-20,
+.col-xs-21,
+.col-sm-21,
+.col-md-21,
+.col-lg-21,
+.col-xs-22,
+.col-sm-22,
+.col-md-22,
+.col-lg-22,
+.col-xs-23,
+.col-sm-23,
+.col-md-23,
+.col-lg-23,
+.col-xs-24,
+.col-sm-24,
+.col-md-24,
+.col-lg-24 {
   position: relative;
   min-height: 1px;
   padding-left: 7.5px;
   padding-right: 7.5px;
 }
-.col-xs-1, .col-xs-2, .col-xs-3, .col-xs-4, .col-xs-5, .col-xs-6, .col-xs-7, .col-xs-8, .col-xs-9, .col-xs-10, .col-xs-11, .col-xs-12, .col-xs-13, .col-xs-14, .col-xs-15, .col-xs-16, .col-xs-17, .col-xs-18, .col-xs-19, .col-xs-20, .col-xs-21, .col-xs-22, .col-xs-23, .col-xs-24 {
+.col-xs-1,
+.col-xs-2,
+.col-xs-3,
+.col-xs-4,
+.col-xs-5,
+.col-xs-6,
+.col-xs-7,
+.col-xs-8,
+.col-xs-9,
+.col-xs-10,
+.col-xs-11,
+.col-xs-12,
+.col-xs-13,
+.col-xs-14,
+.col-xs-15,
+.col-xs-16,
+.col-xs-17,
+.col-xs-18,
+.col-xs-19,
+.col-xs-20,
+.col-xs-21,
+.col-xs-22,
+.col-xs-23,
+.col-xs-24 {
   float: left;
 }
 .col-xs-24 {
@@ -1722,7 +1840,30 @@ pre code {
   margin-left: 0%;
 }
 @media (min-width: 768px) {
-  .col-sm-1, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, .col-sm-10, .col-sm-11, .col-sm-12, .col-sm-13, .col-sm-14, .col-sm-15, .col-sm-16, .col-sm-17, .col-sm-18, .col-sm-19, .col-sm-20, .col-sm-21, .col-sm-22, .col-sm-23, .col-sm-24 {
+  .col-sm-1,
+  .col-sm-2,
+  .col-sm-3,
+  .col-sm-4,
+  .col-sm-5,
+  .col-sm-6,
+  .col-sm-7,
+  .col-sm-8,
+  .col-sm-9,
+  .col-sm-10,
+  .col-sm-11,
+  .col-sm-12,
+  .col-sm-13,
+  .col-sm-14,
+  .col-sm-15,
+  .col-sm-16,
+  .col-sm-17,
+  .col-sm-18,
+  .col-sm-19,
+  .col-sm-20,
+  .col-sm-21,
+  .col-sm-22,
+  .col-sm-23,
+  .col-sm-24 {
     float: left;
   }
   .col-sm-24 {
@@ -2024,7 +2165,30 @@ pre code {
   }
 }
 @media (min-width: 992px) {
-  .col-md-1, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-md-10, .col-md-11, .col-md-12, .col-md-13, .col-md-14, .col-md-15, .col-md-16, .col-md-17, .col-md-18, .col-md-19, .col-md-20, .col-md-21, .col-md-22, .col-md-23, .col-md-24 {
+  .col-md-1,
+  .col-md-2,
+  .col-md-3,
+  .col-md-4,
+  .col-md-5,
+  .col-md-6,
+  .col-md-7,
+  .col-md-8,
+  .col-md-9,
+  .col-md-10,
+  .col-md-11,
+  .col-md-12,
+  .col-md-13,
+  .col-md-14,
+  .col-md-15,
+  .col-md-16,
+  .col-md-17,
+  .col-md-18,
+  .col-md-19,
+  .col-md-20,
+  .col-md-21,
+  .col-md-22,
+  .col-md-23,
+  .col-md-24 {
     float: left;
   }
   .col-md-24 {
@@ -2326,7 +2490,30 @@ pre code {
   }
 }
 @media (min-width: 1200px) {
-  .col-lg-1, .col-lg-2, .col-lg-3, .col-lg-4, .col-lg-5, .col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9, .col-lg-10, .col-lg-11, .col-lg-12, .col-lg-13, .col-lg-14, .col-lg-15, .col-lg-16, .col-lg-17, .col-lg-18, .col-lg-19, .col-lg-20, .col-lg-21, .col-lg-22, .col-lg-23, .col-lg-24 {
+  .col-lg-1,
+  .col-lg-2,
+  .col-lg-3,
+  .col-lg-4,
+  .col-lg-5,
+  .col-lg-6,
+  .col-lg-7,
+  .col-lg-8,
+  .col-lg-9,
+  .col-lg-10,
+  .col-lg-11,
+  .col-lg-12,
+  .col-lg-13,
+  .col-lg-14,
+  .col-lg-15,
+  .col-lg-16,
+  .col-lg-17,
+  .col-lg-18,
+  .col-lg-19,
+  .col-lg-20,
+  .col-lg-21,
+  .col-lg-22,
+  .col-lg-23,
+  .col-lg-24 {
     float: left;
   }
   .col-lg-24 {
@@ -5243,7 +5430,7 @@ fieldset[disabled] .navbar-inverse .btn-link:focus {
 }
 .label {
   display: inline;
-  padding: .2em .6em .3em;
+  padding: 0.2em 0.6em 0.3em;
   font-size: 75%;
   font-weight: bold;
   line-height: 1;
@@ -5251,7 +5438,7 @@ fieldset[disabled] .navbar-inverse .btn-link:focus {
   text-align: center;
   white-space: nowrap;
   vertical-align: baseline;
-  border-radius: .25em;
+  border-radius: 0.25em;
 }
 a.label:hover,
 a.label:focus {
@@ -7376,6 +7563,13 @@ input[type="submit"] {
   font-weight: 600;
   margin-bottom: 0;
 }
+.form-panel .panel-body legend {
+  border-bottom: none;
+  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 5px;
+  width: auto;
+}
 .form-panel .panel-body .radio {
   margin-top: 0;
 }
@@ -7541,21 +7735,16 @@ input[type="submit"] {
 /**page**/
 .entry-title {
   border-bottom: 1px solid #bbbbbb;
-  height: 50px;
   margin-bottom: 10px;
   margin-top: -3px;
   overflow: hidden;
   padding-bottom: 6px;
+  padding-right: 90px;
   position: relative;
   vertical-align: bottom;
 }
 .entry-title h1 {
-  position: absolute;
-}
-@media (max-width: 767px) {
-  .entry-title h1 {
-    bottom: -13px;
-  }
+  margin-bottom: 0;
 }
 .entry-title .directory-title-meta {
   bottom: 5px;
@@ -7572,6 +7761,12 @@ input[type="submit"] {
 }
 .entry-title .directory-title-meta button.direct-toggle {
   font-size: 18px;
+}
+@media (max-width: 767px) {
+  .entry-title .directory-title-meta {
+    bottom: auto;
+    top: 0;
+  }
 }
 .entry-title .profile-name-group-type {
   font-weight: normal;
@@ -7596,13 +7791,13 @@ input[type="submit"] {
 }
 @media (max-width: 767px) {
   .entry-title .direct-toggle {
-    top: -42px;
+    top: 6px;
   }
 }
 @media (max-width: 767px) {
   .entry-title {
-    height: 54px;
     margin-top: -17px;
+    min-height: 56px;
     padding-bottom: 2px;
   }
   .entry-title .profile-name {
@@ -7674,6 +7869,82 @@ body .font-size.font-14 {
 body .font-size.font-18 {
   font-size: 18px !important;
 }
+body.js .group-creator-empty-row {
+  display: none;
+}
+body .group-creators-section {
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+body ul.group-creator-edit-list {
+  list-style-type: none;
+  padding-left: 0;
+}
+body ul.group-creator-edit-list > li {
+  padding: 5px 10px;
+}
+body ul.group-creator-edit-list > li:nth-of-type(even) {
+  background: #efefef;
+}
+body .group-creator-form-entry {
+  display: flex;
+}
+body .group-creator-form-entry.creator-type-member .creator-fields-non-member-name {
+  display: none;
+}
+body .group-creator-form-entry.creator-type-non-member .creator-fields-member-login {
+  display: none;
+}
+body .group-creator-form-entry > div {
+  flex: 0 1 auto;
+  margin-right: 20px;
+  width: 50%;
+}
+body .group-creator-form-entry > div.creator-fields-member-login {
+  width: 100%;
+}
+body .group-creator-form-entry > div.creator-preview {
+  width: 100%;
+}
+body .group-creator-form-entry input {
+  width: 100%;
+}
+body .group-creator-form-entry .entry-actions {
+  flex-grow: 0;
+  flex-shrink: 1;
+  width: 100px;
+}
+body .group-creator-form-entry .entry-actions button {
+  background: transparent;
+  border: none;
+  padding: 3px 8px;
+}
+body .group-creator-form-entry .creator-preview {
+  display: none;
+}
+body .group-creator-form-entry .edit-entry {
+  display: none;
+}
+body .group-creator-form-entry.is-preview-mode .creator-form-fields {
+  display: none;
+}
+body .group-creator-form-entry.is-preview-mode .creator-preview {
+  display: inherit;
+}
+body .group-creator-form-entry.is-preview-mode .edit-entry {
+  display: inline;
+}
+body .group-creator-edit-list-add-new {
+  margin-bottom: 15px;
+}
+body .group-creator-edit-list-add-new button {
+  background: 0;
+  border: 0;
+  text-decoration: underline;
+}
+body .group-creator-edit-list-add-new button:hover {
+  text-decoration: none;
+}
 body .line-height.height-200 {
   line-height: 200% !important;
 }
@@ -7714,7 +7985,7 @@ body .spaced-list label {
   margin-bottom: 12px;
 }
 body .note {
-  color: #999999;
+  color: #757575;
 }
 body .padded-img {
   border-radius: 4px;
@@ -8032,14 +8303,22 @@ body .group-header .bp-template-notice {
   margin-top: 4px;
   padding: 6px 12px;
   text-align: left;
+  white-space: normal;
+}
+body .clone-acknowledgements p {
+  margin-bottom: 0.5em;
+  margin-top: 0.5em;
+}
+body .clone-acknowledgements p:first-child {
+  margin-top: 0;
 }
 body .group-credits {
   list-style-type: none;
   margin: 0;
-  padding-left: 0;
+  padding-left: 15px;
 }
 body .group-credits li {
-  margin-bottom: .5em;
+  margin-bottom: 0.25em;
 }
 body .group-credits li:last-child {
   margin-bottom: 0;
@@ -8166,46 +8445,49 @@ body form .checkbox-list-container {
 .ct-group-meta tr #external-site-url {
   width: 88%;
 }
-.ct-group-meta .groupblog-setup p:empty {
+.ct-group-meta p:empty {
   margin: 0;
 }
-.ct-group-meta .groupblog-setup .radio {
+.ct-group-meta .radio {
   margin-bottom: 0;
   margin-top: 7px;
 }
-.ct-group-meta .groupblog-setup .radio label {
+.ct-group-meta .radio label {
   padding-left: 25px;
 }
-.ct-group-meta .groupblog-setup .site-path {
+.ct-group-meta .site-details-query label {
+  padding-left: 5px;
+}
+.ct-group-meta .site-path {
   display: table;
   padding-left: 25px;
   width: 90%;
 }
-.ct-group-meta .groupblog-setup .site-path span {
+.ct-group-meta .site-path span {
   display: table-cell;
   width: 1px;
 }
 @media (max-width: 767px) {
-  .ct-group-meta .groupblog-setup .site-path span {
+  .ct-group-meta .site-path span {
     display: block;
     width: auto;
   }
 }
-.ct-group-meta .groupblog-setup .site-path.site-path-subdomain span {
+.ct-group-meta .site-path.site-path-subdomain span {
   padding-left: 10px;
 }
-.ct-group-meta .groupblog-setup .site-path input.form-control {
+.ct-group-meta .site-path input.form-control {
   display: table-cell;
   margin-left: 8px;
   width: 100%;
 }
 @media (max-width: 767px) {
-  .ct-group-meta .groupblog-setup .site-path input.form-control {
+  .ct-group-meta .site-path input.form-control {
     display: block;
     margin-left: 0;
   }
 }
-.ct-group-meta .groupblog-setup #noo_external_options .site-path input.form-control {
+.ct-group-meta #noo_external_options .site-path input.form-control {
   margin-left: 0;
   width: 85%;
 }
@@ -8364,7 +8646,7 @@ body form .checkbox-list-container {
 .home-page .row-home-top .login .log-box#open-lab-login #user-info .content-list {
   bottom: 0;
   display: inline-block;
-  opacity: .7;
+  opacity: 0.7;
   position: absolute;
   vertical-align: bottom;
 }
@@ -8902,7 +9184,10 @@ body form .checkbox-list-container {
 .mobile-group-site-links .portfolio-site-link {
   font-size: 1.75rem;
 }
-#search-setting-note {
+.show-admin-bar-on-site-setting {
+  margin-top: 25px;
+}
+.group-setting-note {
   margin-top: -10px;
 }
 @media (max-width: 767px) {
@@ -9142,7 +9427,7 @@ body form .checkbox-list-container {
 .sidebar-filter-open-cloneable .sidebar-filter-checkbox {
   float: left;
   margin-right: 16px;
-  width: calc(34%);
+  width: calc(50% - 16px);
 }
 .sidebar-filter-group-type .sidebar-filter-checkbox label,
 .sidebar-filter-open-cloneable .sidebar-filter-checkbox label {
@@ -9593,7 +9878,7 @@ input#group-request-send {
   text-decoration: none;
 }
 .group-manage-members.group-list .group-item .group-item-wrapper h5 {
-  font-size: .9em;
+  font-size: 0.9em;
   color: #333;
   margin-top: 20px;
   font-weight: bold;
@@ -9602,7 +9887,7 @@ input#group-request-send {
   margin-left: 0;
   padding-left: 0;
   list-style-type: none;
-  font-size: .9em;
+  font-size: 0.9em;
   font-weight: 600;
 }
 .group-manage-members.group-list .group-item .group-item-wrapper ul.group-manage-members-bpges-status {
@@ -9814,6 +10099,12 @@ h3#message-subject {
   border: none;
   margin-bottom: 0;
   padding: 0;
+}
+#content #bbpress-forums .bbp-submit-wrapper {
+  float: none;
+}
+#content #bbpress-forums .notify-group-members-ui {
+  margin-bottom: 10px;
 }
 @media (max-width: 767px) {
   #content #bbpress-forums .forum-titles .bbp-topic-title,
@@ -10202,13 +10493,13 @@ body.single-event #content .eo-event-venue-map {
 }
 #ui-timepicker-div .ui-timepicker-table {
   width: 100%;
-  font-size: .9em;
+  font-size: 0.9em;
   border-collapse: collapse;
-  margin: 0 0 .4em;
+  margin: 0 0 0.4em;
 }
 #ui-timepicker-div .ui-timepicker-table .ui-timepicker-hours,
 #ui-timepicker-div .ui-timepicker-table .ui-timepicker-minutes {
-  padding: .2em;
+  padding: 0.2em;
 }
 #ui-timepicker-div .ui-timepicker-table .ui-timepicker-hours .ui-timepicker td a,
 #ui-timepicker-div .ui-timepicker-table .ui-timepicker-minutes .ui-timepicker td a {
@@ -10285,11 +10576,21 @@ body.single-event #content .eo-event-venue-map {
 }
 .messages .group-list .group-item-wrapper {
   height: 152px;
+  position: relative;
 }
 @media (max-width: 991px) {
   .messages .group-list .group-item-wrapper {
     height: 221px;
   }
+}
+.messages .message-actions {
+  bottom: 8px;
+  font-size: 1rem;
+  position: absolute;
+  right: 8px;
+}
+.messages .message-actions .message-unread {
+  color: #333;
 }
 .my-friends .group-list .group-item-wrapper .generic-button.friendship-button {
   margin-top: 8px;
