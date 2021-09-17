@@ -57,23 +57,6 @@ add_filter(
 	}
 );
 
-/**
- * WordPress adds dimensions to embedded images; this is totally not responsive WordPress
- *
- * @param type $html
- * @return type
- */
-function openlab_remove_thumbnail_dimensions( $html ) {
-
-	$html = preg_replace( '/(width|height)=\"\d*\"\s/', '', $html );
-
-	return $html;
-}
-
-add_filter( 'post_thumbnail_html', 'openlab_remove_thumbnail_dimensions', 10 );
-add_filter( 'image_send_to_editor', 'openlab_remove_thumbnail_dimensions', 10 );
-add_filter( 'the_content', 'openlab_remove_thumbnail_dimensions', 10 );
-
 function openlab_activity_user_avatar() {
 	global $activities_template;
 	$current_activity_item = isset( $activities_template->activity->current_comment ) ? $activities_template->activity->current_comment : $activities_template->activity;
