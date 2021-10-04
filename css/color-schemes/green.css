@@ -9561,7 +9561,7 @@ body form .checkbox-list-container {
 .group-list .group-directory-badges {
   position: absolute;
   bottom: 6px;
-  padding-left: 27%;
+  padding-left: calc(25% + 5px);
   width: 100%;
 }
 @media (max-width: 1199px) {
@@ -9718,7 +9718,7 @@ body form .checkbox-list-container {
   width: 70%;
 }
 #group-list .group-item-wrapper .item-content-wrapper {
-  padding: 0 2%;
+  padding: 0 5px;
 }
 #people-listing .group-item-wrapper {
   height: 110px;
