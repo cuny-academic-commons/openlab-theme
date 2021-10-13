@@ -154,3 +154,46 @@ function openlab_invalidate_whats_happening_cache( $args ) {
 	}
 }
 add_action( 'bp_activity_add', 'openlab_invalidate_whats_happening_cache' );
+
+/**
+ * Make media embeds responsive with our theme.
+ *
+ * Applies to the following elements: iframe, object, and embed.
+ */
+function openlab_embeds_make_responsive( $retval ) {
+	// If not an iframe, object or embed, bail.
+	if ( empty( $retval ) || false === strpos( $retval, '<iframe ' ) && false === strpos( $retval, '<object ' ) && false === strpos( $retval, '<embed ' ) ) {
+		return $retval;
+	}
+
+	$ratio = '16by9';
+
+	$width_start_pos  = strpos( $retval, 'width="' );
+	$height_start_pos = strpos( $retval, 'height="' );
+
+	// Determine if item is 16x9 or 4x3.
+	if ( false !== $width_start_pos && false !== $height_start_pos ) {
+		$width_start_pos += 7;
+		$width            = substr( $retval, $width_start_pos, strpos( $retval, '"', $width_start_pos ) - $width_start_pos );
+
+		$height_start_pos += 8;
+		$height            = substr( $retval, $height_start_pos, strpos( $retval, '"', $height_start_pos ) - $height_start_pos );
+
+		$ratio = round( $width / $height, 2 );
+
+		// The closest to zero wins.
+		$is_16by9 = abs( 1.77 - $ratio );
+		$is_4by3  = abs( 1.33 - $ratio );
+
+		// If $is_16by9 is greater than $is_4by3, then this item is 4:3.
+		if ( 1 === bccomp( $is_16by9, $is_4by3, 2 ) ) {
+			$ratio = '4by3';
+		} else {
+			$ratio = '16by9';
+		}
+	}
+
+	return '<div class="embed-responsive embed-responsive-' . $ratio . '">' . $retval . '</div>';
+}
+add_filter( 'embed_oembed_html', 'openlab_embeds_make_responsive' );
+add_filter( 'embed_handler_html', 'openlab_embeds_make_responsive' );
