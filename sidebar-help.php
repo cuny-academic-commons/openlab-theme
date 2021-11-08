@@ -75,7 +75,7 @@ wp_nav_menu( $args );
 			$src = wp_get_attachment_image_src( $attachment->ID, 'full' );
 
 			if ( $contact_us_url ) {
-				echo '<a href="' . esc_attr( $contact_us_url ) . '">';
+				echo '<a href="' . esc_url( $contact_us_url ) . '">';
 				echo '<img alt="' . esc_html__( 'Contact Us', 'commons-in-a-box' ) . '" class="img-responsive" src="' . esc_attr( $src[0] ) . '" />';
 				echo '</a>';
 			}
@@ -83,7 +83,7 @@ wp_nav_menu( $args );
 
 			echo '<div class="team-name">';
 			if ( $contact_us_url ) {
-				echo '<a href="' . esc_attr( $contact_us_url ) . '">';
+				echo '<a href="' . esc_url( $contact_us_url ) . '">';
 				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 				echo $attachment->post_excerpt;
 				echo '</a>';
@@ -95,7 +95,7 @@ wp_nav_menu( $args );
 		echo '</div>';
 	} //end if
 	?>
-	<a class="btn btn-default btn-block btn-primary link-btn" href="<?php echo esc_attr( bp_get_root_domain() . '/blog/help/contact-us' ); ?>"><i class="fa fa-paper-plane-o" aria-hidden="true"></i> <?php esc_html_e( 'Contact Us', 'commons-in-a-box' ); ?></a>
+	<a class="btn btn-default btn-block btn-primary link-btn" href="<?php echo esc_url( $contact_us_url ); ?>"><i class="fa fa-paper-plane-o" aria-hidden="true"></i> <?php esc_html_e( 'Contact Us', 'commons-in-a-box' ); ?></a>
 </div><!--support team-->
 </div>
 
