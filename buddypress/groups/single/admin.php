@@ -222,6 +222,9 @@ openlab_group_admin_js_data( $group_type );
 			<?php do_action( 'template_notices' ); ?>
 
 			<?php openlab_group_site_markup(); ?>
+
+			<?php do_action( 'openlab_after_group_site_markup' ); ?>
+
 			<?php openlab_group_site_privacy_settings_markup(); ?>
 			<?php openlab_group_site_member_role_settings_markup(); ?>
 
