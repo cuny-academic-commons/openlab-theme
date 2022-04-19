@@ -62,6 +62,8 @@
 			}
 		}
         #wp-toolbar{
+			display: flex;
+			justify-content: space-between;
             line-height: normal;
             margin: 0 auto;
             max-width: none;
@@ -303,6 +305,10 @@
                     }
                 }
             }
+			.ab-top-menu {
+				display: flex;
+				align-items: stretch;
+			}
             .ab-top-secondary{
                 .menupop{
                     .ab-sub-wrapper{
@@ -1011,10 +1017,9 @@
         #wpadminbar{
             top: 0;
             height: auto;
-            border-bottom: 19px solid @white;
             &:before{
                 border-bottom: 1px solid @black;
-                bottom: -20px;
+                bottom: -1px;
                 content: "";
                 left: 0;
                 position: absolute;
@@ -1040,10 +1045,8 @@
                     }
                 }
                 #wp-admin-bar-openlab{
-                    .box-sizing(border-box);
                 }
                 #wp-admin-bar-top-logout{
-                    .box-sizing(border-box);
                     border-bottom: 1px solid @black;
                 }
                 #wp-admin-bar-bp-login{
