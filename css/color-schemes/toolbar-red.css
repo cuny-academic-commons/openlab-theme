@@ -7202,6 +7202,8 @@ button.oplb-bs .close {
   color: #333333;
 }
 .oplb-bs #wpadminbar #wp-toolbar {
+  display: flex;
+  justify-content: space-between;
   line-height: normal;
   margin: 0 auto;
   max-width: none;
@@ -7436,6 +7438,10 @@ button.oplb-bs .close {
     padding: 6px 12px;
     float: none;
   }
+}
+.oplb-bs #wpadminbar #wp-toolbar .ab-top-menu {
+  display: flex;
+  align-items: stretch;
 }
 .oplb-bs #wpadminbar #wp-toolbar .ab-top-secondary .menupop .ab-sub-wrapper {
   right: -1px;
@@ -8130,11 +8136,10 @@ button.oplb-bs .close {
 .oplb-bs.adminbar-manual-bootstrap #wpadminbar {
   top: 0;
   height: auto;
-  border-bottom: 19px solid #ffffff;
 }
 .oplb-bs.adminbar-manual-bootstrap #wpadminbar:before {
   border-bottom: 1px solid #000000;
-  bottom: -20px;
+  bottom: -1px;
   content: "";
   left: 0;
   position: absolute;
@@ -8150,15 +8155,7 @@ button.oplb-bs .close {
 .oplb-bs.adminbar-manual-bootstrap #wpadminbar #wp-toolbar > ul > li.hamburger .ab-item .navbar-toggle {
   padding-bottom: 14px;
 }
-.oplb-bs.adminbar-manual-bootstrap #wpadminbar #wp-toolbar #wp-admin-bar-openlab {
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
-}
 .oplb-bs.adminbar-manual-bootstrap #wpadminbar #wp-toolbar #wp-admin-bar-top-logout {
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
   border-bottom: 1px solid #000000;
 }
 .oplb-bs.adminbar-manual-bootstrap #wpadminbar #wp-toolbar #wp-admin-bar-bp-login .ab-sub-wrapper {
