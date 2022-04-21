@@ -10917,6 +10917,13 @@ input.help-search {
   display: inline-block;
   margin: 20px 0;
 }
+/* Toolbar overrides for main site */
+body .oplb-bs #wpadminbar #wp-toolbar {
+  max-width: 1140px;
+}
+body .oplb-bs #wpadminbar #wp-toolbar .ab-sub-wrapper {
+  margin-top: 0;
+}
 /**Custom media query items**/
 @media (max-width: 767px) {
   .group-subscription-div {
