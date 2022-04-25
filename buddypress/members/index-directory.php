@@ -9,7 +9,7 @@ $post_obj = $wp_query->get_queried_object();
 ?>
 <div id="content" class="hfeed row">
 	<?php get_template_part( 'parts/sidebar/groups' ); ?>
-	<div <?php post_class( 'col-sm-18 col-xs-24' ); ?>>
+	<div <?php post_class( 'col-sm-18 col-xs-24' ); ?> role="main">
 		<div id="openlab-main-content" class="content-wrapper">
 			<div class="entry-title">
 				<h1><?php echo esc_attr( $post_obj->post_title ); ?></h1>

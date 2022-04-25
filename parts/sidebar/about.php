@@ -7,7 +7,7 @@ $nav_menu_args = array(
 );
 ?>
 
-<div id="sidebar" class="sidebar col-sm-6 col-xs-24 pull-right type-about">
+<div id="sidebar" class="sidebar col-sm-6 col-xs-24 pull-right type-about" role="complementary">
 	<div class="sidebar-wrapper">
 		<h2 class="sidebar-title hidden-xs"><?php esc_html_e( 'About', 'commons-in-a-box' ); ?></h2>
 		<div class="sidebar-block hidden-xs">

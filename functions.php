@@ -426,7 +426,7 @@ function openlab_site_footer() {
 
 	ob_start(); ?>
 
-<div id="openlab-footer" class="oplb-bs page-table-row">
+<div id="openlab-footer" class="oplb-bs page-table-row" role="complementary">
 	<div class="oplb-bs">
 		<div class="footer-wrapper">
 			<div class="container-fluid footer-desktop">

@@ -8,7 +8,7 @@
 get_header();
 ?>
 
-<div id="openlab-main-content" class="clearfix row-home-top">
+<div id="openlab-main-content" class="clearfix row-home-top" role="main">
 	<div class="no-gutter no-gutter-right login">
 		<div id="cuny_openlab_jump_start">
 			<?php get_template_part( 'parts/home/login' ); ?>
@@ -20,7 +20,7 @@ get_header();
 	</div>
 
 </div>
-<div class="row row-home-bottom">
+<div class="row row-home-bottom" role="complementary">
 	<div id="home-left" class="col-sm-8">
 		<?php dynamic_sidebar( 'home-sidebar' ); ?>
 	</div>

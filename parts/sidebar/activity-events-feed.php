@@ -1,4 +1,4 @@
-<div class="sidebar-widget" id="group-member-portfolio-sidebar-widget">
+<div class="sidebar-widget" id="group-member-portfolio-sidebar-widget" role="complementary">
 	<h2 class="sidebar-header"><?php esc_html_e( 'Upcoming Events', 'commons-in-a-box' ); ?></h2>
 
 	<div class="sidebar-block">
