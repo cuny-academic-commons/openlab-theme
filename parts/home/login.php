@@ -71,7 +71,7 @@ if ( is_user_logged_in() ) :
 	<?php echo '</div>'; ?>
 
 	<div id="login-help" class="log-box">
-		<h4 class="title"><?php esc_html_e( 'Need Help?', 'commons-in-a-box' ); ?></h4>
+		<h2 class="title"><?php esc_html_e( 'Need Help?', 'commons-in-a-box' ); ?></h2>
 		<?php /* translators: 1. help link, 2. contact link */ ?>
 		<p class="font-size font-14"><?php printf( 'Visit the <a class="roll-over-loss" href="%1$s">Help section</a> or <a class="roll-over-loss" href="%2$s">contact us</a> with a question.', esc_attr( $help_link ), esc_attr( $contact_link ) ); ?></p>
 	</div><!--login-help-->
