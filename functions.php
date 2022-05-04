@@ -1,6 +1,6 @@
 <?php
 
-define( 'OPENLAB_VERSION', '1.4.0-alpha-1651058081341' );
+define( 'OPENLAB_VERSION', '1.4.0-alpha-1651691669142' );
 
 if ( ! defined( 'CSS_DEBUG' ) ) {
 	define( 'CSS_DEBUG', false );
@@ -426,7 +426,7 @@ function openlab_site_footer() {
 
 	ob_start(); ?>
 
-<div id="openlab-footer" class="oplb-bs page-table-row">
+<div id="openlab-footer" class="oplb-bs page-table-row" role="complementary">
 	<div class="oplb-bs">
 		<div class="footer-wrapper">
 			<div class="container-fluid footer-desktop">
