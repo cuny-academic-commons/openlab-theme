@@ -77,7 +77,9 @@ $academic_unit_data = cboxol_get_object_academic_unit_data_for_display(
 					<?php
 					$course_code  = groups_get_groupmeta( $group_id, 'cboxol_course_code' );
 					$section_code = groups_get_groupmeta( $group_id, 'cboxol_section_code' );
-					$group_term   = openlab_get_group_term( $group_id );
+
+					$group_term      = cboxol_get_group_academic_term( $group_id );
+					$group_term_name = $group_term ? $group_term->get_name() : '';
 					?>
 					<div class="table-div">
 						<?php
@@ -147,10 +149,10 @@ $academic_unit_data = cboxol_get_object_academic_unit_data_for_display(
 							</div>
 						<?php endif; ?>
 
-						<?php if ( $group_term ) : ?>
+						<?php if ( $group_term_name ) : ?>
 							<div class="table-row row">
 								<div class="bold col-sm-7"><?php esc_html_e( 'Term', 'commons-in-a-box' ); ?></div>
-								<div class="col-sm-17 row-content"><?php echo esc_html( $group_term ); ?></div>
+								<div class="col-sm-17 row-content"><?php echo esc_html( $group_term_name ); ?></div>
 							</div>
 						<?php endif; ?>
 						<?php if ( function_exists( 'bpcgc_get_group_selected_terms' ) ) : ?>

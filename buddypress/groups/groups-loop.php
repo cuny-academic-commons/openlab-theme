@@ -74,10 +74,11 @@ $the_term = openlab_get_current_filter( 'term' );
 
 // Set up filters
 if ( ! empty( $the_term ) && 'term_all' !== strtolower( $the_term ) ) {
-	$group_args['meta_query'][] = array(
-		'key'   => 'openlab_term',
-		'value' => $term,
-	);
+	$academic_term_tax_query = cboxol_get_tax_query_for_academic_term( $the_term );
+
+	if ( $academic_term_tax_query ) {
+		$group_args['tax_query']['academic_term'] = $academic_term_tax_query;
+	}
 }
 
 $member_type = openlab_get_current_filter( 'member_type' );

@@ -2830,17 +2830,22 @@ function openlab_group_term_edit_markup() {
 		return;
 	}
 
-	$term = openlab_get_group_term( bp_get_current_group_id() );
-	if ( ! $term && bp_is_group_create() ) {
-		$term = openlab_get_default_group_term();
-	}
+	$all_terms  = cboxol_get_academic_terms();
+	$group_term = cboxol_get_group_academic_term( bp_get_current_group_id() );
+
+	$group_term_id = $group_term ? $group_term->get_wp_post_id() : 0;
 
 	?>
 	<div class="panel panel-default">
 		<div class="panel-heading"><?php esc_html_e( 'Term', 'commons-in-a-box' ); ?></div>
 		<div class="panel-body">
 			<label for="academic-term"><?php esc_html_e( 'Academic term for this course', 'commons-in-a-box' ); ?></label>
-			<input class="form-control" type="text" id="academic-term" name="academic-term" value="<?php echo esc_attr( $term ); ?>" />
+			<select class="form-control" name="academic-term">
+				<option value=""></option>
+				<?php foreach ( $all_terms as $all_term ) : ?>
+					<option value="<?php echo esc_attr( $all_term->get_wp_post_id() ); ?>" <?php selected( $group_term_id, $all_term->get_wp_post_id() ); ?>><?php echo esc_html( $all_term->get_name() ); ?></option>
+				<?php endforeach; ?>
+			</select>
 			<?php wp_nonce_field( 'openlab_academic_term', '_openlab-term-nonce', false ); ?>
 		</div>
 	</div>
@@ -2848,7 +2853,7 @@ function openlab_group_term_edit_markup() {
 }
 
 /**
- * Save Course term
+ * Save group academic term.
  *
  * @param BP_Groups_Group $group
  */
@@ -2861,10 +2866,9 @@ function openlab_course_term_save( BP_Groups_Group $group ) {
 		return;
 	}
 
-	$term = wp_unslash( $_POST['academic-term'] );
+	$term_id = (int) wp_unslash( $_POST['academic-term'] );
 
-	groups_update_groupmeta( $group->id, 'openlab_term', $term );
-	delete_transient( 'openlab_active_terms' );
+	cboxol_associate_group_with_academic_term( $group->id, $term_id );
 }
 add_action( 'groups_group_after_save', 'openlab_course_term_save' );
 
