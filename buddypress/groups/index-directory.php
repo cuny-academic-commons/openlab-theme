@@ -1,8 +1,13 @@
 <?php
-get_header();
-
 $current_type = bp_get_current_group_directory_type();
 $type_object  = cboxol_get_group_type( $current_type );
+
+// Redirect to the home page if we're not on a valid group directory page.
+if ( is_wp_error( $type_object ) ) {
+	bp_core_redirect( bp_get_root_domain() );
+}
+
+get_header();
 
 $can_create = is_user_logged_in() && bp_user_can_create_groups();
 if ( $type_object->get_is_course() ) {
