@@ -623,6 +623,7 @@ function openlab_group_forum_tinymce_footer_js() {
 	</script>
 JS;
 
+	// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	echo $js;
 }
 
