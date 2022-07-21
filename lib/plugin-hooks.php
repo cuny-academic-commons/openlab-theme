@@ -528,6 +528,105 @@ function openlab_remove_bbpress_forum_title( $title ) {
 add_filter( 'bbp_get_forum_title', 'openlab_remove_bbpress_forum_title' );
 
 /**
+ * Enable at-mention autocomplete on BuddyPress group forum textareas.
+ */
+function openlab_enable_mentions_in_group_forum_textareas( $retval ) {
+	/*
+	 * Don't run this more than once on the same page.
+	 *
+	 * @see bp_friends_prime_mentions_results()
+	 */
+	remove_filter( 'bp_activity_maybe_load_mentions_scripts', __FUNCTION__ );
+
+	$bbpress = false;
+
+	// Group forum reply.
+	if ( bp_is_group() && 'topic' === bp_action_variable() && bp_action_variable( 1 ) ) {
+		$bbpress = true;
+	}
+
+	// Group forum topic.
+	if ( bp_is_group() && bp_is_current_action( 'forum' ) ) {
+		$bbpress = true;
+	}
+
+	// Do stuff when on a group forum page.
+	if ( true === $bbpress ) {
+		$retval = true;
+
+		// Modify TinyMCE for bbPress on BP group forums.
+		add_filter( 'tiny_mce_before_init', 'openlab_group_forum_tinymce_settings', 10, 2 );
+		add_action( 'wp_print_footer_scripts', 'openlab_group_forum_tinymce_footer_js' );
+	}
+
+	return $retval;
+}
+add_filter( 'bp_activity_maybe_load_mentions_scripts', 'openlab_enable_mentions_in_group_forum_textareas' );
+
+/**
+ * Modify TinyMCE settings on BP group forum pages.
+ *
+ * Currently:
+ *   - Ensure at-mentions autocomplete works with TinyMCE for bbPress.
+ *
+ * @param array  $settings  An array with TinyMCE config.
+ * @param string $editor_id Unique editor identifier, e.g. 'content'.
+ * @return array $mceInit   An array with TinyMCE config.
+ */
+function openlab_group_forum_tinymce_settings( $settings, $editor_id ) {
+	if ( 'bbp_topic_content' === $editor_id || 'bbp_reply_content' === $editor_id ) {
+		// Enable BuddyPress' at-mentions autocomplete JS.
+		$settings['init_instance_callback'] = 'OpenLabbbPtinyMCEinit';
+	}
+
+	return $settings;
+}
+
+/**
+ * Footer inline JS for bbPress.
+ *
+ * - Fixes atwho.js markup when using the Visual Editor.
+ *
+ * @see cac_group_forum_tinymce_settings()
+ * @see https://redmine.gc.cuny.edu/issues/12675
+ */
+function openlab_group_forum_tinymce_footer_js() {
+	$js = <<<JS
+	<script>
+		function OpenLabbbPtinyMCEinit(editor) {
+			// Same as window.bp.mentions.tinyMCEinit.
+			jQuery( window.tinyMCE.activeEditor.contentDocument.activeElement )
+				.atwho( 'setIframe', jQuery( '.wp-editor-wrap iframe' )[0] )
+				.bp_mentions( bp.mentions.users );
+			// Here's our addition to remove atwho's <span> element.
+			editor.on('NodeChange', function(e) {
+				var bbpContent, atwho, i, item;
+				if ( -1 === e.element.innerText.indexOf('@') ) {
+					return;
+				}
+				bbpContent = jQuery('<div>' + editor.getContent() + '</div>');
+				atwho = bbpContent.find('span.atwho-inserted');
+				if ( 0 === atwho.length ) {
+					return;
+				}
+				for ( i = 0; i < atwho.length; ++i) {
+					item = atwho[i];
+					jQuery(item).replaceWith(item.innerText);
+				}
+				// Set edited contents.
+				editor.setContent( bbpContent.html() );
+				// After editing, set the cursor to the end.
+				editor.selection.select(editor.getBody(), true);
+				editor.selection.collapse(false);
+			});
+		}
+	</script>
+JS;
+
+	echo $js;
+}
+
+/**
  * Plugin: Social
  */
 
