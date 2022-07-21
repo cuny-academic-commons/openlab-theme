@@ -9,12 +9,13 @@
 // Set up the group meta filters
 
 // Set up the bp_has_groups() args: per_page, page, search_terms
+$group_sort = openlab_get_current_filter( 'sort' );
 $group_args = array(
 	'per_page'     => 12,
 	'meta_query'   => array(),
 	'search_terms' => openlab_get_current_filter( 'search' ),
 	'tax_query'    => array( 'relation' => 'AND' ),
-	'type'         => openlab_get_current_filter( 'sort' ),
+	'type'         => $group_sort,
 );
 
 if ( openlab_is_search_results_page() ) {
@@ -165,6 +166,17 @@ if ( $descendant_of ) {
 	</div>
 
 	<div id="group-list" class="item-list group-list row">
+		<?php if ( bp_is_user_groups() ) : ?>
+			<div class="my-group-archive-sort form-inline">
+				<label for="openlab-sort-my-groups" class="sr-only"><?php esc_html_e( 'Select sort order', 'commons-in-a-box' ); ?></label>
+				<select id="openlab-sort-my-groups" class="form-control">
+					<option value="alphabetical" <?php selected( $group_sort, 'alphabetical' ); ?>><?php esc_html_e( 'Alphabetical', 'commons-in-a-box' ); ?></option>
+					<option value="newest" <?php selected( $group_sort, 'newest' ); ?>><?php esc_html_e( 'Newest', 'commons-in-a-box' ); ?></option>
+					<option value="active" <?php selected( $group_sort, 'active' ); ?>><?php esc_html_e( 'Last Active', 'commons-in-a-box' ); ?></option>
+				</select>
+			</div>
+		<?php endif; ?>
+
 		<?php
 		while ( bp_groups() ) :
 			bp_the_group();
