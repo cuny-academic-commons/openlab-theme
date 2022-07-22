@@ -142,7 +142,7 @@ add_action( 'bbp_before_group_forum_display', 'openlab_forum_tabs_output' );
  */
 function openlab_custom_bbp_content( $output ) {
 	if ( strpos( $output, 'textarea' ) !== false ) {
-		$output = str_replace( 'wp-editor-area', 'form-control', $output );
+		$output = str_replace( 'wp-editor-area', 'wp-editor-area form-control', $output );
 	}
 
 	return $output;
