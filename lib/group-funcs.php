@@ -2590,10 +2590,21 @@ function openlab_group_academic_units_edit_markup() {
 	endif;
 }
 
-/** "Term" - temporary implementation ****************************************/
-
+/**
+ * Gets the label of a group's academic term.
+ *
+ * @param int $group_id
+ * @return string
+ */
 function openlab_get_group_term( $group_id ) {
-	return groups_get_groupmeta( $group_id, 'openlab_term', true );
+	$term_obj = cboxol_get_group_academic_term( $group_id );
+
+	$term_label = '';
+	if ( $term_obj ) {
+		$term_label = $term_obj->get_name();
+	}
+
+	return $term_label;
 }
 
 /**
