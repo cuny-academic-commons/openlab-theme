@@ -495,7 +495,7 @@ jQuery( document ).ready(
 				return true;
 			}
 
-			description = $( '#group-desc' ).val();
+			var description = $( '#group-desc' ).val();
 			if ( description.trim() == '' ) {
 				$( '#group-desc' ).val( '' );
 			}
