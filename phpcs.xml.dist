@@ -26,9 +26,6 @@
 	<exclude-pattern>/css/camera.css</exclude-pattern>
 	<exclude-pattern>/css/select2/*</exclude-pattern>
 
-	<!-- Iterate over all PHP files by default -->
-	<file>.</file>
-
 	<rule ref="PHPCompatibilityWP"/>
 
 	<!-- Check for PHP cross-version compatibility. -->
