@@ -330,6 +330,11 @@ add_action( 'bp_ass_send_activity_notification_for_user', 'openlab_forums_activi
  * Handle feature toggling for groups.
  */
 function openlab_group_feature_toggle( $group_id ) {
+	// Bail if in admin as these toggles are only available on the frontend.
+	if ( is_admin() ) {
+		return;
+	}
+
 	// phpcs:disable WordPress.Security.NonceVerification.Missing
 	// Discussion.
 	$enable_forum        = ! empty( $_POST['openlab-edit-group-forum'] );
