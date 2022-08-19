@@ -7195,7 +7195,7 @@ button.oplb-bs .close {
 }
 .oplb-bs #wpadminbar .fa {
   font-size: 14px;
-  line-height: 1;
+  line-height: 49px;
   margin: 0 4px;
 }
 .oplb-bs #wpadminbar .btn-default:hover {
@@ -7227,14 +7227,19 @@ button.oplb-bs .close {
 }
 .oplb-bs #wpadminbar #wp-toolbar > ul > li {
   position: relative;
+  height: 50px;
+}
+.oplb-bs #wpadminbar #wp-toolbar > ul > li.ab-empty-item {
+  padding: 18px 14px 17px;
 }
 .oplb-bs #wpadminbar #wp-toolbar > ul > li > .ab-item {
   color: #ffffff;
   cursor: pointer;
   text-align: center;
-  line-height: 120%;
+  height: 50px;
+  line-height: 49px;
   margin-right: 0;
-  padding: 17px 14px 16px;
+  padding: 0 14px;
   font-size: 14px;
   text-decoration: none;
 }
@@ -7250,9 +7255,6 @@ button.oplb-bs .close {
   .oplb-bs #wpadminbar #wp-toolbar > ul > li > .ab-item {
     font-size: 13px;
   }
-}
-.oplb-bs #wpadminbar #wp-toolbar > ul > li > .ab-item.ab-empty-item {
-  padding: 18px 14px 17px;
 }
 .oplb-bs #wpadminbar #wp-toolbar > ul > li > .fa {
   font-family: FontAwesome;
@@ -7340,6 +7342,7 @@ button.oplb-bs .close {
   border-top: none;
   border-radius: 0 0 4px 4px;
   margin-top: 1px;
+  left: -1px;
   width: 600%;
 }
 .oplb-bs #wpadminbar #wp-toolbar .ab-sub-wrapper .ab-submenu {
@@ -7450,6 +7453,9 @@ button.oplb-bs .close {
   margin: 0 auto;
   overflow: hidden;
 }
+.oplb-bs #wpadminbar #wp-toolbar #wp-admin-bar-mobile-centered.ab-top-menu {
+  display: none;
+}
 .oplb-bs #wpadminbar #wp-toolbar #wp-admin-bar-mobile-centered #wp-admin-bar-my-openlab-mobile {
   float: none;
 }
@@ -7504,7 +7510,7 @@ button.oplb-bs .close {
 }
 .oplb-bs #wpadminbar #wp-toolbar #wp-admin-bar-openlab > .ab-item {
   background-size: 150px Auto;
-  padding: 51px 0 0;
+  padding: 50px 0 0;
   width: 150px;
   overflow: hidden;
   height: 0;
@@ -7557,14 +7563,11 @@ button.oplb-bs .close {
     border-top: 9px solid #d1d1d1;
   }
 }
-.oplb-bs #wpadminbar #wp-toolbar #wp-admin-bar-invites .ab-sub-wrapper,
-.oplb-bs #wpadminbar #wp-toolbar #wp-admin-bar-my-openlab .ab-sub-wrapper {
-  left: -1px;
-}
 .oplb-bs #wpadminbar #wp-toolbar #wp-admin-bar-my-account {
   max-width: 220px;
 }
 .oplb-bs #wpadminbar #wp-toolbar #wp-admin-bar-my-account .ab-sub-wrapper {
+  left: 0;
   width: 150%;
   min-width: 250px;
 }
@@ -8159,7 +8162,6 @@ button.oplb-bs .close {
   border-bottom: 1px solid #000000;
 }
 .oplb-bs.adminbar-manual-bootstrap #wpadminbar #wp-toolbar #wp-admin-bar-bp-login .ab-sub-wrapper {
-  margin-top: 1px;
   position: absolute;
 }
 @media (max-width: 767px) {
