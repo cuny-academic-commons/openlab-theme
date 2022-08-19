@@ -7206,7 +7206,7 @@ button.oplb-bs .close {
   justify-content: space-between;
   line-height: normal;
   margin: 0 auto;
-  max-width: 1140px;
+  max-width: none;
 }
 .oplb-bs #wpadminbar #wp-toolbar #wp-admin-bar-root-default .ab-icon.dashicon-icon {
   font: 400 28px/1 dashicons;
