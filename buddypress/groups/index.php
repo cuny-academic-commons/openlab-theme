@@ -11,7 +11,7 @@ global $bp;
 	$account_type = xprofile_get_field_data( 'Account Type', $bp->loggedin_user->id );
 	?>
 
-	<div class="col-sm-18 col-xs-24 my-groups-grid">
+	<div class="col-sm-18 col-xs-24 my-groups-grid" role="main">
 		<div class="entry-title">
 			<h1 class="mol-title">
 				<?php // translators: Profile user name ?>

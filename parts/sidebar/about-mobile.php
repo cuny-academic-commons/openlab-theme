@@ -7,7 +7,7 @@ $nav_menu_args = array(
 );
 ?>
 
-<div id="sidebar-mobile" class="sidebar clearfix mobile-dropdown">
+<div id="sidebar-mobile" class="sidebar clearfix mobile-dropdown" role="complementary">
 	<div class="sidebar-block">
 		<?php wp_nav_menu( $nav_menu_args ); ?>
 	</div>

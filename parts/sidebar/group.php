@@ -14,7 +14,7 @@ if ( $site_id ) {
 }
 ?>
 
-<div id="sidebar" class="sidebar col-sm-6 col-xs-24 type-actions mobile-enabled">
+<div id="sidebar" class="sidebar col-sm-6 col-xs-24 type-actions mobile-enabled" role="complementary">
 	<div class="sidebar-wrapper">
 		<?php
 		if ( bp_has_groups() ) :

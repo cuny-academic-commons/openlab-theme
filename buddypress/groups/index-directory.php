@@ -1,8 +1,13 @@
 <?php
-get_header();
-
 $current_type = bp_get_current_group_directory_type();
 $type_object  = cboxol_get_group_type( $current_type );
+
+// Redirect to the home page if we're not on a valid group directory page.
+if ( is_wp_error( $type_object ) ) {
+	bp_core_redirect( bp_get_root_domain() );
+}
+
+get_header();
 
 $can_create = is_user_logged_in() && bp_user_can_create_groups();
 if ( $type_object->get_is_course() ) {
@@ -17,7 +22,7 @@ $create_link = bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/create
 
 <div id="content" class="hfeed row">
 	<?php get_template_part( 'parts/sidebar/groups' ); ?>
-	<div <?php post_class( 'col-sm-18 col-xs-24' ); ?>>
+	<div <?php post_class( 'col-sm-18 col-xs-24' ); ?> role="main">
 		<div id="openlab-main-content" class="content-wrapper">
 			<div class="entry-title">
 				<h1><?php echo esc_html( $type_object->get_label( 'plural' ) ); ?></h1>
