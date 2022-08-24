@@ -218,7 +218,7 @@ if ( $descendant_of ) {
 						<div class="item col-xs-18">
 							<div class="item-content-wrapper">
 								<p class="item-title h2">
-									<a class="no-deco he-fly hyphenate truncate-on-the-fly" href="<?php bp_group_permalink(); ?>" data-basevalue="60" data-minvalue="20" data-basewidth="290"><?php bp_group_name(); ?></a>
+									<a class="no-deco he-fly hyphenate truncate-on-the-fly" href="<?php bp_group_permalink(); ?>" data-basevalue="50" data-minvalue="20" data-basewidth="290"><?php bp_group_name(); ?></a>
 									<span class="original-copy hidden"><?php bp_group_name(); ?></span>
 								</p>
 

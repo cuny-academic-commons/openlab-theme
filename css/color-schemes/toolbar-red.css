@@ -7452,6 +7452,8 @@ button.oplb-bs .close {
 .oplb-bs #wpadminbar #wp-toolbar #wp-admin-bar-mobile-centered {
   margin: 0 auto;
   overflow: hidden;
+}
+.oplb-bs #wpadminbar #wp-toolbar #wp-admin-bar-mobile-centered.ab-top-menu {
   display: none;
 }
 .oplb-bs #wpadminbar #wp-toolbar #wp-admin-bar-mobile-centered #wp-admin-bar-my-openlab-mobile {
