@@ -1,5 +1,8 @@
 <?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 <?php echo openlab_submenu_markup( 'messages' ); ?>
+
+<?php do_action( 'template_notices' ); ?>
+
 <?php if ( 'compose' === bp_current_action() ) : ?>
 	<?php bp_get_template_part( 'members/single/messages/compose' ); ?>
 
