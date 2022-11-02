@@ -29,7 +29,9 @@
 	<!-- Iterate over all PHP files by default -->
 	<file>.</file>
 
-	<rule ref="PHPCompatibilityWP"/>
+	<rule ref="PHPCompatibilityWP">
+		 <config name="testVersion" value="4.9.2-"/>
+	</rule>
 
 	<!-- Check for PHP cross-version compatibility. -->
 	<config name="testVersion" value="5.6-"/>
