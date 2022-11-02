@@ -1977,7 +1977,7 @@ function openlab_show_site_posts_and_comments() {
 							'value' => '0',
 						],
 						[
-							'key' => 'olgc_is_private',
+							'key'     => 'olgc_is_private',
 							'compare' => 'NOT EXISTS',
 						],
 					],
@@ -1988,7 +1988,7 @@ function openlab_show_site_posts_and_comments() {
 							'value' => '0',
 						],
 						[
-							'key' => 'ol_is_private',
+							'key'     => 'ol_is_private',
 							'compare' => 'NOT EXISTS',
 						],
 					],
