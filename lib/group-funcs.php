@@ -1918,6 +1918,7 @@ function openlab_group_type_disabled_filters() {
 
 	return $disabled;
 }
+
 /**
  * Get a group's recent posts and comments, and display them in two widgets
  */
@@ -1958,7 +1959,7 @@ function openlab_show_site_posts_and_comments() {
 				);
 
 				if ( ! empty( $wp_post->post_password ) ) {
-					$_post['content'] = 'This content is password protected.';
+					$_post['content'] = __( 'This content is password protected.', 'commons-in-a-box' );
 				}
 
 				$posts[] = $_post;
