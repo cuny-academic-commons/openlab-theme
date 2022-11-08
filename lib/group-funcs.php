@@ -1179,10 +1179,12 @@ function openlab_groups_pagination_links() {
 		)
 	);
 
-	$pagination = str_replace( 'page-numbers', 'page-numbers pagination', $pagination );
+	if ( $pagination ) {
+		$pagination = str_replace( 'page-numbers', 'page-numbers pagination', $pagination );
 
-	// for screen reader only text - current page
-	$pagination = str_replace( 'current\'><span class="sr-only">Page', 'current\'><span class="sr-only">Current Page', $pagination );
+		// for screen reader only text - current page
+		$pagination = str_replace( 'current\'><span class="sr-only">Page', 'current\'><span class="sr-only">Current Page', $pagination );
+	}
 
 	return $pagination;
 }
