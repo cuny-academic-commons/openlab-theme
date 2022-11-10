@@ -1179,10 +1179,12 @@ function openlab_groups_pagination_links() {
 		)
 	);
 
-	$pagination = str_replace( 'page-numbers', 'page-numbers pagination', $pagination );
+	if ( $pagination ) {
+		$pagination = str_replace( 'page-numbers', 'page-numbers pagination', $pagination );
 
-	// for screen reader only text - current page
-	$pagination = str_replace( 'current\'><span class="sr-only">Page', 'current\'><span class="sr-only">Current Page', $pagination );
+		// for screen reader only text - current page
+		$pagination = str_replace( 'current\'><span class="sr-only">Page', 'current\'><span class="sr-only">Current Page', $pagination );
+	}
 
 	return $pagination;
 }
@@ -1720,6 +1722,7 @@ function openlab_group_type_disabled_filters() {
 
 	return $disabled;
 }
+
 /**
  * Get a group's recent posts and comments, and display them in two widgets
  */
@@ -1760,7 +1763,7 @@ function openlab_show_site_posts_and_comments() {
 				);
 
 				if ( ! empty( $wp_post->post_password ) ) {
-					$_post['content'] = 'This content is password protected.';
+					$_post['content'] = __( 'This content is password protected.', 'commons-in-a-box' );
 				}
 
 				$posts[] = $_post;
