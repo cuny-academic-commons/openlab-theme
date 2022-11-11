@@ -7647,7 +7647,6 @@ button.oplb-bs .close {
 .oplb-bs #wpadminbar #wp-toolbar #wp-admin-bar-bp-login {
   background: transparent;
   position: relative;
-  max-width: 70px;
 }
 .oplb-bs #wpadminbar #wp-toolbar #wp-admin-bar-bp-login > a {
   background: #000000;
