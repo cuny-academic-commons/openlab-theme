@@ -6,6 +6,11 @@ if ( ! defined( 'CSS_DEBUG' ) ) {
 	define( 'CSS_DEBUG', false );
 }
 
+// Abort loading if commons-in-a-box is not active.
+if ( ! function_exists( 'cbox_is_main_site' ) ) {
+	return;
+}
+
 // Register sidebars.
 add_action( 'widgets_init', 'openlab_register_sidebars' );
 
