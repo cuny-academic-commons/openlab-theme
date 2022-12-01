@@ -7686,6 +7686,9 @@ button.oplb-bs .close {
     background: #fff;
   }
 }
+.oplb-bs #wpadminbar #wp-toolbar #wp-admin-bar-bp-login.login-form-active {
+  max-width: 70px;
+}
 .oplb-bs #wpadminbar #wp-toolbar #wp-admin-bar-bp-login.login-form-active .ab-submenu {
   border: 1px solid #444444;
   border-top: none;
