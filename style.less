@@ -3520,6 +3520,34 @@ body.settings.data {
 		visibility: hidden;
 	}
 }
+body.no-js {
+	#profile-edit-form {
+		.field-visibility-settings-toggle,
+		.field-visibility-settings-close {
+			display: none;
+		}
+	}
+}
+#profile-edit-form {
+	.current-visibility-level {
+		font-weight: @semibold;
+	}
+	.field-visibility-settings-notoggle,
+	.field-visibility-settings {
+		margin-bottom: 10px;
+	}
+	.field-visibility-settings {
+		display: none;
+		label {
+			font-weight: @normal;
+			margin-right: .75em;
+		}
+		legend {
+			font-style: italic;
+			font-weight: @semibold;
+		}
+	}
+}
 /**help**/
 .col-help{
     /* Unsure whether this is needed */
