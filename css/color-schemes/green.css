@@ -10656,6 +10656,28 @@ body.settings.data #item-body h2 {
   margin-top: -1.5em;
   visibility: hidden;
 }
+body.no-js #profile-edit-form .field-visibility-settings-toggle,
+body.no-js #profile-edit-form .field-visibility-settings-close {
+  display: none;
+}
+#profile-edit-form .current-visibility-level {
+  font-weight: 600;
+}
+#profile-edit-form .field-visibility-settings-notoggle,
+#profile-edit-form .field-visibility-settings {
+  margin-bottom: 10px;
+}
+#profile-edit-form .field-visibility-settings {
+  display: none;
+}
+#profile-edit-form .field-visibility-settings label {
+  font-weight: 400;
+  margin-right: 0.75em;
+}
+#profile-edit-form .field-visibility-settings legend {
+  font-style: italic;
+  font-weight: 600;
+}
 /**help**/
 .col-help {
   /* Unsure whether this is needed */
