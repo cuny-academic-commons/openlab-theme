@@ -10663,10 +10663,6 @@ body.no-js #profile-edit-form .field-visibility-settings-close {
 #profile-edit-form .current-visibility-level {
   font-weight: 600;
 }
-#profile-edit-form .field-visibility-settings-notoggle,
-#profile-edit-form .field-visibility-settings {
-  margin-bottom: 10px;
-}
 #profile-edit-form .field-visibility-settings {
   display: none;
 }
@@ -10677,6 +10673,33 @@ body.no-js #profile-edit-form .field-visibility-settings-close {
 #profile-edit-form .field-visibility-settings legend {
   font-style: italic;
   font-weight: 600;
+}
+#profile-edit-form .editfield {
+  margin-bottom: 2em;
+}
+#profile-edit-form .field-visibility-settings-header {
+  margin-top: -0.5em;
+}
+#profile-edit-form button {
+  margin-left: 4px;
+}
+#profile-edit-form .field-visibility-settings-open fieldset {
+  margin-bottom: 1.5em;
+}
+#profile-edit-form .field-visibility-settings-open fieldset,
+#profile-edit-form button.field-visibility-settings-close {
+  float: left;
+}
+#profile-edit-form button.field-visibility-settings-close {
+  margin: 20px 0 30px;
+}
+@media (max-width: 520px) {
+  #profile-edit-form .field-visibility-settings-open fieldset {
+    margin-bottom: 0;
+  }
+  #profile-edit-form button.field-visibility-settings-close {
+    margin-top: 0;
+  }
 }
 /**help**/
 .col-help {

@@ -3532,10 +3532,6 @@ body.no-js {
 	.current-visibility-level {
 		font-weight: @semibold;
 	}
-	.field-visibility-settings-notoggle,
-	.field-visibility-settings {
-		margin-bottom: 10px;
-	}
 	.field-visibility-settings {
 		display: none;
 		label {
@@ -3545,6 +3541,33 @@ body.no-js {
 		legend {
 			font-style: italic;
 			font-weight: @semibold;
+		}
+	}
+	button {
+		margin-left: 4px;
+	}
+	.editfield {
+		margin-bottom: 2em;
+	}
+	.field-visibility-settings-header {
+		margin-top: -.5em;
+	}
+	.field-visibility-settings-open fieldset {
+		margin-bottom: 1.5em;
+	}
+	.field-visibility-settings-open fieldset,
+	button.field-visibility-settings-close {
+		float: left;
+	}
+	button.field-visibility-settings-close {
+		margin: 20px 0 30px;
+	}
+	@media (max-width: 520px){
+		.field-visibility-settings-open fieldset {
+			margin-bottom: 0;
+		}
+		button.field-visibility-settings-close {
+			margin-top: 0;
 		}
 	}
 }
