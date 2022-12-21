@@ -3546,11 +3546,14 @@ body.no-js {
 	button {
 		margin-left: 4px;
 	}
-	.editfield {
-		margin-bottom: 2em;
+	.editfield:after {
+		clear: both;
+		content: '';
+		display: table;
+		margin-top: -2px;
 	}
 	.field-visibility-settings-header {
-		margin-top: -.5em;
+		margin: -.5em 0 2em;
 	}
 	.field-visibility-settings-open fieldset {
 		margin-bottom: 1.5em;

@@ -10674,14 +10674,17 @@ body.no-js #profile-edit-form .field-visibility-settings-close {
   font-style: italic;
   font-weight: 600;
 }
-#profile-edit-form .editfield {
-  margin-bottom: 2em;
-}
-#profile-edit-form .field-visibility-settings-header {
-  margin-top: -0.5em;
-}
 #profile-edit-form button {
   margin-left: 4px;
+}
+#profile-edit-form .editfield:after {
+  clear: both;
+  content: '';
+  display: table;
+  margin-top: -2px;
+}
+#profile-edit-form .field-visibility-settings-header {
+  margin: -0.5em 0 2em;
 }
 #profile-edit-form .field-visibility-settings-open fieldset {
   margin-bottom: 1.5em;

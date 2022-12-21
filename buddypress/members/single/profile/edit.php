@@ -176,7 +176,7 @@ $field_ids = array( 1 );
 										<?php bp_profile_visibility_radio_buttons(); ?>
 
 									</fieldset>
-									<button class="field-visibility-settings-close button" type="button"><?php echo esc_html_x( 'Close', 'button', 'commons-in-box' ); ?></button>
+									<button class="field-visibility-settings-close button" type="button"><?php echo esc_html_x( 'OK', 'button', 'commons-in-box' ); ?></button>
 								</div>
 
 							<?php else : ?>
