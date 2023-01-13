@@ -1179,10 +1179,12 @@ function openlab_groups_pagination_links() {
 		)
 	);
 
-	$pagination = str_replace( 'page-numbers', 'page-numbers pagination', $pagination );
+	if ( $pagination ) {
+		$pagination = str_replace( 'page-numbers', 'page-numbers pagination', $pagination );
 
-	// for screen reader only text - current page
-	$pagination = str_replace( 'current\'><span class="sr-only">Page', 'current\'><span class="sr-only">Current Page', $pagination );
+		// for screen reader only text - current page
+		$pagination = str_replace( 'current\'><span class="sr-only">Page', 'current\'><span class="sr-only">Current Page', $pagination );
+	}
 
 	return $pagination;
 }
@@ -1331,211 +1333,13 @@ function openlab_render_message() {
 	endif;
 }
 
+/**
+ * Render the activity list for a group profile.
+ *
+ * @since 1.4.0 Moved to template file buddypress/groups/single/activity-list.php
+ */
 function openlab_group_profile_activity_list() {
-	?>
-
-	<div id="single-course-body">
-		<?php
-		//
-		// control the formatting of left and right side by use of variable $first_class.
-		// when it is "first" it places it on left side, when it is "" it places it on right side
-		//
-		// Initialize it to left side to start with
-		//
-		$first_class = 'first';
-
-		$group_slug = bp_get_group_slug();
-		$group_type = cboxol_get_group_group_type( bp_get_current_group_id() );
-
-		$group     = groups_get_current_group();
-		$group_url = bp_get_group_permalink( $group );
-		?>
-
-		<?php if ( bp_is_group_home() ) { ?>
-
-			<?php if ( 'public' === bp_get_group_status() || ( ( 'hidden' === bp_get_group_status() || 'private' === bp_get_group_status() ) && ( bp_is_item_admin() || bp_group_is_member() ) ) ) : ?>
-				<?php
-				if ( cboxol_site_can_be_viewed() ) {
-					openlab_show_site_posts_and_comments();
-				}
-				?>
-
-				<?php if ( ! $group_type->get_is_portfolio() ) : ?>
-					<div class="row group-activity-overview">
-						<?php if ( openlab_is_forum_enabled_for_group( $group->id ) ) : ?>
-							<div class="col-sm-12">
-								<div class="recent-discussions">
-									<div class="recent-posts">
-										<h2 class="title activity-title"><a class="no-deco" href="<?php echo esc_attr( $group_url ); ?>/forum/"><?php esc_html_e( 'Recent Discussions', 'commons-in-a-box' ); ?><span class="fa fa-chevron-circle-right" aria-hidden="true"></span></a></h2>
-										<?php
-										$forum_id  = null;
-										$forum_ids = bbp_get_group_forum_ids( bp_get_current_group_id() );
-
-										// Get the first forum ID
-										if ( ! empty( $forum_ids ) ) {
-											$forum_id = (int) is_array( $forum_ids ) ? $forum_ids[0] : $forum_ids;
-										}
-										?>
-
-										<?php if ( $forum_id && bbp_has_topics( 'posts_per_page=3&post_parent=' . $forum_id ) ) : ?>
-											<?php while ( bbp_topics() ) : ?>
-												<?php bbp_the_topic(); ?>
-
-												<div class="panel panel-default">
-													<div class="panel-body">
-
-														<?php
-														$topic_id      = bbp_get_topic_id();
-														$last_reply_id = bbp_get_topic_last_reply_id( $topic_id );
-
-														// Oh, bbPress.
-														$last_reply = get_post( $last_reply_id );
-														if ( ! empty( $last_reply->post_content ) ) {
-															$last_topic_content = bp_create_excerpt(
-																wp_strip_all_tags( $last_reply->post_content ),
-																250,
-																array(
-																	'ending' => '',
-																)
-															);
-														}
-														?>
-
-														<?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-														<?php echo openlab_get_group_activity_content( bbp_get_topic_title(), $last_topic_content, bbp_get_topic_permalink() ); ?>
-
-													</div>
-												</div>
-											<?php endwhile; ?>
-										<?php else : ?>
-											<div class="panel panel-default">
-												<div class="panel-body">
-													<p><?php esc_html_e( 'Sorry, there were no discussion topics found.', 'commons-in-a-box' ); ?></p>
-												</div>
-											</div>
-										<?php endif; ?>
-									</div><!-- .recent-post -->
-								</div>
-							</div>
-						<?php endif; // Recent Discussions ?>
-						<?php $first_class = ''; ?>
-						<?php if ( function_exists( 'bp_docs_get_slug' ) && openlab_is_docs_enabled_for_group( $group->id ) ) : ?>
-							<div class="col-sm-12">
-								<div id="recent-docs">
-									<div class="recent-posts">
-										<h2 class="title activity-title"><a class="no-deco" href="<?php echo esc_attr( $group_url ); ?><?php echo esc_attr( bp_docs_get_slug() ); ?>/"><?php esc_html_e( 'Recent Docs', 'commons-in-a-box' ); ?><span class="fa fa-chevron-circle-right" aria-hidden="true"></span></a></h2>
-										<?php
-
-										$docs_query = new BP_Docs_Query(
-											array(
-												'group_id' => bp_get_current_group_id(),
-												'orderby'  => 'created',
-												'order'    => 'DESC',
-												'posts_per_page' => 3,
-											)
-										);
-										$query      = $docs_query->get_wp_query();
-
-										global $post;
-										if ( $query->have_posts() ) {
-											while ( $query->have_posts() ) :
-												$query->the_post();
-												$doc_url = bp_docs_get_doc_link( get_the_ID() );
-												?>
-												<div class="panel panel-default">
-													<div class="panel-body">
-														<?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-														<?php echo openlab_get_group_activity_content( get_the_title(), bp_create_excerpt( wp_strip_all_tags( $post->post_content ), 250, array( 'ending' => '' ) ), $doc_url ); ?>
-													</div>
-												</div>
-												<?php
-											endwhile;
-										} else {
-											echo '<div class="panel panel-default"><div class="panel-body"><p>' . esc_html__( 'No Recent Docs', 'commons-in-a-box' ) . '</p></div></div>';
-										}
-
-										$query->reset_postdata();
-										?>
-									</div>
-								</div>
-							</div>
-						<?php endif; // Recent Docs ?>
-					</div>
-
-					<div id="members-list" class="info-group">
-
-						<?php
-						$group_permalink = bp_get_group_permalink( $group );
-
-						if ( bp_is_item_admin() || bp_is_item_mod() ) {
-							$href = $group_permalink . '/admin/manage-members/';
-						} else {
-							$href = $group_permalink . '/members/';
-						}
-						?>
-
-						<h2 class="title activity-title"><a class="no-deco" href="<?php echo esc_attr( $href ); ?>"><?php esc_html_e( 'Members', 'commons-in-a-box' ); ?><span class="fa fa-chevron-circle-right" aria-hidden="true"></span></a></h2>
-						<?php $member_arg = array( 'exclude_admins_mods' => false ); ?>
-						<?php if ( bp_group_has_members( $member_arg ) ) : ?>
-
-							<ul id="member-list" class="inline-element-list">
-								<?php
-								while ( bp_group_members() ) :
-									bp_group_the_member();
-									global $members_template;
-									$member = $members_template->member;
-
-									$user_avatar = bp_core_fetch_avatar(
-										array(
-											'item_id' => $member->ID,
-											'object'  => 'member',
-											'type'    => 'full',
-											'html'    => false,
-										)
-									);
-									?>
-									<li class="inline-element">
-										<a href="<?php echo esc_attr( bp_group_member_domain() ); ?>">
-											<img class="img-responsive" src="<?php echo esc_attr( $user_avatar ); ?>" alt="<?php echo esc_attr( $member->fullname ); ?>"/>
-										</a>
-									</li>
-								<?php endwhile; ?>
-							</ul>
-							<?php bp_group_member_pagination(); ?>
-						<?php else : ?>
-
-							<div id="message" class="info">
-								<p><?php esc_html_e( 'This group has no members.', 'commons-in-a-box' ); ?></p>
-							</div>
-
-						<?php endif; ?>
-
-					</div><!-- .group-activity-overview -->
-
-				<?php endif; // end of if $group != 'portfolio' ?>
-
-			<?php else : ?>
-				<?php
-				// check if blog (site) is NOT private (option blog_public Not = '_2"), in which
-				// case show site posts and comments even though this group is private
-				//
-				if ( cboxol_site_can_be_viewed() ) {
-					openlab_show_site_posts_and_comments();
-					echo "<div class='clear'></div>";
-				}
-				?>
-				<?php /* The group is not visible, show the status message */ ?>
-
-			<?php endif; ?>
-
-			<?php
-		} else {
-			bp_get_template_part( 'groups/single/wds-bp-action-logics.php' );
-		}
-		?>
-
-	</div><!-- #single-course-body -->
-	<?php
+	bp_get_template_part( 'groups/single/activity-list' );
 }
 
 function openlab_get_group_activity_content( $title, $content, $link ) {
@@ -1918,6 +1722,7 @@ function openlab_group_type_disabled_filters() {
 
 	return $disabled;
 }
+
 /**
  * Get a group's recent posts and comments, and display them in two widgets
  */
@@ -1958,7 +1763,7 @@ function openlab_show_site_posts_and_comments() {
 				);
 
 				if ( ! empty( $wp_post->post_password ) ) {
-					$_post['content'] = 'This content is password protected.';
+					$_post['content'] = __( 'This content is password protected.', 'commons-in-a-box' );
 				}
 
 				$posts[] = $_post;
@@ -1977,7 +1782,7 @@ function openlab_show_site_posts_and_comments() {
 							'value' => '0',
 						],
 						[
-							'key' => 'olgc_is_private',
+							'key'     => 'olgc_is_private',
 							'compare' => 'NOT EXISTS',
 						],
 					],
@@ -1988,7 +1793,7 @@ function openlab_show_site_posts_and_comments() {
 							'value' => '0',
 						],
 						[
-							'key' => 'ol_is_private',
+							'key'     => 'ol_is_private',
 							'compare' => 'NOT EXISTS',
 						],
 					],
@@ -1999,7 +1804,10 @@ function openlab_show_site_posts_and_comments() {
 			// Used by `openlab_private_comments_fallback()`.
 			$comment_args['main_site'] = true;
 
+			// See https://buddypress.trac.wordpress.org/ticket/8777, http://redmine.citytech.cuny.edu/issues/3125
+			remove_filter( 'comments_pre_query', 'bp_comments_pre_query', 10, 2 );
 			$wp_comments = get_comments( $comment_args );
+			add_filter( 'comments_pre_query', 'bp_comments_pre_query', 10, 2 );
 
 			foreach ( $wp_comments as $wp_comment ) {
 				// Skip the crummy "Hello World" comment
@@ -2788,10 +2596,21 @@ function openlab_group_academic_units_edit_markup() {
 	endif;
 }
 
-/** "Term" - temporary implementation ****************************************/
-
+/**
+ * Gets the label of a group's academic term.
+ *
+ * @param int $group_id
+ * @return string
+ */
 function openlab_get_group_term( $group_id ) {
-	return groups_get_groupmeta( $group_id, 'openlab_term', true );
+	$term_obj = cboxol_get_group_academic_term( $group_id );
+
+	$term_label = '';
+	if ( $term_obj ) {
+		$term_label = $term_obj->get_name();
+	}
+
+	return $term_label;
 }
 
 /**
@@ -2830,17 +2649,22 @@ function openlab_group_term_edit_markup() {
 		return;
 	}
 
-	$term = openlab_get_group_term( bp_get_current_group_id() );
-	if ( ! $term && bp_is_group_create() ) {
-		$term = openlab_get_default_group_term();
-	}
+	$all_terms  = cboxol_get_academic_terms();
+	$group_term = cboxol_get_group_academic_term( bp_get_current_group_id() );
+
+	$group_term_id = $group_term ? $group_term->get_wp_post_id() : 0;
 
 	?>
 	<div class="panel panel-default">
 		<div class="panel-heading"><?php esc_html_e( 'Term', 'commons-in-a-box' ); ?></div>
 		<div class="panel-body">
 			<label for="academic-term"><?php esc_html_e( 'Academic term for this course', 'commons-in-a-box' ); ?></label>
-			<input class="form-control" type="text" id="academic-term" name="academic-term" value="<?php echo esc_attr( $term ); ?>" />
+			<select class="form-control" name="academic-term">
+				<option value=""></option>
+				<?php foreach ( $all_terms as $all_term ) : ?>
+					<option value="<?php echo esc_attr( $all_term->get_wp_post_id() ); ?>" <?php selected( $group_term_id, $all_term->get_wp_post_id() ); ?>><?php echo esc_html( $all_term->get_name() ); ?></option>
+				<?php endforeach; ?>
+			</select>
 			<?php wp_nonce_field( 'openlab_academic_term', '_openlab-term-nonce', false ); ?>
 		</div>
 	</div>
@@ -2848,7 +2672,7 @@ function openlab_group_term_edit_markup() {
 }
 
 /**
- * Save Course term
+ * Save group academic term.
  *
  * @param BP_Groups_Group $group
  */
@@ -2861,10 +2685,9 @@ function openlab_course_term_save( BP_Groups_Group $group ) {
 		return;
 	}
 
-	$term = wp_unslash( $_POST['academic-term'] );
+	$term_id = (int) wp_unslash( $_POST['academic-term'] );
 
-	groups_update_groupmeta( $group->id, 'openlab_term', $term );
-	delete_transient( 'openlab_active_terms' );
+	cboxol_associate_group_with_academic_term( $group->id, $term_id );
 }
 add_action( 'groups_group_after_save', 'openlab_course_term_save' );
 

@@ -151,6 +151,48 @@ $field_ids = array( 1 );
 							<?php do_action( 'bp_custom_profile_edit_fields' ); ?>
 
 							<p class="description"><?php bp_the_profile_field_description(); ?></p>
+
+							<?php do_action( 'bp_custom_profile_edit_fields_pre_visibility' ); ?>
+
+							<?php if ( bp_current_user_can( 'bp_xprofile_change_field_visibility' ) ) : ?>
+
+								<p class="field-visibility-settings-toggle field-visibility-settings-header" id="field-visibility-settings-toggle-<?php bp_the_profile_field_id(); ?>">
+
+									<?php
+									printf(
+										/* translators: field visibility level, e.g. "...seen by: everyone". */
+										esc_html__( 'This field may be seen by: %s', 'commons-in-box' ),
+										'<span class="current-visibility-level">' . esc_html( bp_get_the_profile_field_visibility_level_label() ) . '</span>'
+									);
+									?>
+									<button class="visibility-toggle-link text-button" type="button"><?php echo esc_html_x( 'Change', 'button', 'commons-in-box' ); ?></button>
+
+								</p>
+
+								<div class="field-visibility-settings" id="field-visibility-settings-<?php bp_the_profile_field_id(); ?>">
+									<fieldset>
+										<legend><?php esc_html_e( 'Who can see this field?', 'commons-in-box' ); ?></legend>
+
+										<?php bp_profile_visibility_radio_buttons(); ?>
+
+									</fieldset>
+									<button class="field-visibility-settings-close button" type="button"><?php echo esc_html_x( 'OK', 'button', 'commons-in-box' ); ?></button>
+								</div>
+
+							<?php else : ?>
+
+								<p class="field-visibility-settings-notoggle field-visibility-settings-header" id="field-visibility-settings-toggle-<?php bp_the_profile_field_id(); ?>">
+									<?php
+									printf(
+										/* translators: field visibility level, e.g. "...seen by: everyone". */
+										esc_html__( 'This field may be seen by: %s', 'commons-in-box' ),
+										'<span class="current-visibility-level">' . esc_html( bp_get_the_profile_field_visibility_level_label() ) . '</span>'
+									);
+									?>
+								</p>
+
+							<?php endif; ?>
+
 						</div>
 					<?php endwhile; ?>
 

@@ -1,9 +1,14 @@
 <?php
 
-define( 'OPENLAB_VERSION', '1.3.3-1661383336280' );
+define( 'OPENLAB_VERSION', '1.4.0-1673634402852' );
 
 if ( ! defined( 'CSS_DEBUG' ) ) {
 	define( 'CSS_DEBUG', false );
+}
+
+// Abort loading if commons-in-a-box is not active.
+if ( ! function_exists( 'cbox_is_main_site' ) ) {
+	return;
 }
 
 // Register sidebars.

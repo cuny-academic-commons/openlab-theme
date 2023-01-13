@@ -4,7 +4,7 @@ Theme URL: https://commonsinabox.org
 Description: Commons In A Box theme, based on the OpenLab at City Tech.
 Author: The Commons In A Box OpenLab team
 Author URI: https://commonsinabox.org
-Version: 1.3.3
+Version: 1.4.0
 Text Domain: commons-in-a-box
 */
 /**import bootstrap**/
@@ -9551,6 +9551,15 @@ body form .checkbox-list-container {
     margin-top: 24px;
   }
 }
+.my-group-archive-sort {
+  display: flex;
+  justify-content: flex-end;
+  margin-right: 7.5px;
+}
+.my-groups-grid .group-list,
+.members-single-home .group-list {
+  margin-top: 28px;
+}
 .group-list {
   margin-top: 50px;
 }
@@ -10646,6 +10655,54 @@ body.single-event #content .eo-event-venue-map {
 body.settings.data #item-body h2 {
   margin-top: -1.5em;
   visibility: hidden;
+}
+body.no-js #profile-edit-form .field-visibility-settings-toggle,
+body.no-js #profile-edit-form .field-visibility-settings-close {
+  display: none;
+}
+#profile-edit-form .current-visibility-level {
+  font-weight: 600;
+}
+#profile-edit-form .field-visibility-settings {
+  display: none;
+}
+#profile-edit-form .field-visibility-settings label {
+  font-weight: 400;
+  margin-right: 0.75em;
+}
+#profile-edit-form .field-visibility-settings legend {
+  font-style: italic;
+  font-weight: 600;
+}
+#profile-edit-form button {
+  margin-left: 4px;
+}
+#profile-edit-form .editfield:after {
+  clear: both;
+  content: '';
+  display: table;
+  margin-top: -2px;
+}
+#profile-edit-form .field-visibility-settings-header {
+  margin: -0.5em 0 2em;
+}
+#profile-edit-form .field-visibility-settings-open fieldset {
+  margin-bottom: 1.5em;
+}
+#profile-edit-form .field-visibility-settings-open fieldset,
+#profile-edit-form button.field-visibility-settings-close {
+  float: left;
+}
+#profile-edit-form button.field-visibility-settings-close {
+  margin: 20px 0 30px;
+}
+@media (max-width: 520px) {
+  #profile-edit-form .field-visibility-settings-open fieldset {
+    margin-bottom: 0;
+  }
+  #profile-edit-form button.field-visibility-settings-close {
+    margin-top: 0;
+  }
 }
 /**help**/
 .col-help {

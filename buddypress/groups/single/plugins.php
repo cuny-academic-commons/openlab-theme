@@ -6,7 +6,7 @@
 global $bp, $wp_query;
 
 $div_class = sprintf(
-	'plugins action-%s component-%',
+	'plugins action-%s component-%s',
 	bp_current_action(),
 	bp_current_component()
 );

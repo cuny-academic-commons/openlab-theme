@@ -10,10 +10,12 @@ if ( is_wp_error( $type_object ) ) {
 get_header();
 
 $can_create = is_user_logged_in() && bp_user_can_create_groups();
-if ( $type_object->get_is_course() ) {
-	$can_create = cboxol_user_can_create_courses( bp_loggedin_user_id() );
-} elseif ( $type_object->get_is_portfolio() ) {
-	$can_create = ! openlab_user_has_portfolio( bp_loggedin_user_id() );
+if ( $can_create ) {
+	if ( $type_object->get_is_course() ) {
+		$can_create = cboxol_user_can_create_courses( bp_loggedin_user_id() );
+	} elseif ( $type_object->get_is_portfolio() ) {
+		$can_create = ! openlab_user_has_portfolio( bp_loggedin_user_id() );
+	}
 }
 
 $create_text = $type_object->get_can_be_cloned() ? __( 'Create / Clone', 'commons-in-a-box' ) : __( 'Create New', 'commons-in-a-box' );

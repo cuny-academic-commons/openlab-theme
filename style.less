@@ -4,7 +4,7 @@ Theme URL: https://commonsinabox.org
 Description: Commons In A Box theme, based on the OpenLab at City Tech.
 Author: The Commons In A Box OpenLab team
 Author URI: https://commonsinabox.org
-Version: 1.3.3
+Version: 1.4.0
 Text Domain: commons-in-a-box
 */
 
@@ -2405,6 +2405,15 @@ body form{
 		}
 	}
 }
+.my-group-archive-sort {
+	display: flex;
+	justify-content: flex-end;
+	margin-right: 7.5px;
+}
+.my-groups-grid .group-list,
+.members-single-home .group-list {
+  margin-top: 28px;
+}
 .group-list{
     margin-top: 50px;
 	@media (max-width: @screen-xs-max) {
@@ -3509,6 +3518,60 @@ body.settings.data {
 	#item-body h2 {
 		margin-top: -1.5em;
 		visibility: hidden;
+	}
+}
+body.no-js {
+	#profile-edit-form {
+		.field-visibility-settings-toggle,
+		.field-visibility-settings-close {
+			display: none;
+		}
+	}
+}
+#profile-edit-form {
+	.current-visibility-level {
+		font-weight: @semibold;
+	}
+	.field-visibility-settings {
+		display: none;
+		label {
+			font-weight: @normal;
+			margin-right: .75em;
+		}
+		legend {
+			font-style: italic;
+			font-weight: @semibold;
+		}
+	}
+	button {
+		margin-left: 4px;
+	}
+	.editfield:after {
+		clear: both;
+		content: '';
+		display: table;
+		margin-top: -2px;
+	}
+	.field-visibility-settings-header {
+		margin: -.5em 0 2em;
+	}
+	.field-visibility-settings-open fieldset {
+		margin-bottom: 1.5em;
+	}
+	.field-visibility-settings-open fieldset,
+	button.field-visibility-settings-close {
+		float: left;
+	}
+	button.field-visibility-settings-close {
+		margin: 20px 0 30px;
+	}
+	@media (max-width: 520px){
+		.field-visibility-settings-open fieldset {
+			margin-bottom: 0;
+		}
+		button.field-visibility-settings-close {
+			margin-top: 0;
+		}
 	}
 }
 /**help**/
