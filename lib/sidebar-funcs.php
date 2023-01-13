@@ -45,6 +45,13 @@ function openlab_bp_sidebar( $type, $mobile_dropdown = false, $extra_classes = '
 }
 
 /**
+ * Wrapper for cboxol_get_current_filter().
+ */
+function openlab_get_current_filter( $param ) {
+	return cboxol_get_current_filter( $param );
+}
+
+/**
  * Mobile sidebar - for when a piece of the sidebar needs to appear above the content in the mobile space
  *
  * @deprecated 1.2.0 Moved to template files. See /parts/sidebar and /parts/source/sidebar.
