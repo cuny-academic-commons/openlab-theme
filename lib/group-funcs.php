@@ -1349,10 +1349,17 @@ function openlab_get_group_activity_content( $title, $content, $link ) {
 	$markup = '';
 
 	if ( '' !== $title ) {
-		$markup = '<p class="semibold h6">
-			<span class="hyphenate truncate-on-the-fly" data-basevalue="80" data-minvalue="55" data-basewidth="376">' . esc_html( $title ) . ' </span>
-			<span class="original-copy hidden">' . esc_html( $title ) . '</span>
-		</p>';
+		$markup = sprintf(
+			'<p class="semibold h6">
+				<a href="%s">
+					<span class="hyphenate truncate-on-the-fly" data-basevalue="80" data-minvalue="55" data-basewidth="376">%s </span>
+					<span class="original-copy hidden">%s</span>
+				</a>
+			</p>',
+			esc_attr( $link ),
+			esc_html( $title ),
+			esc_html( $title )
+		);
 	}
 
 	$markup .= '<p class="activity-content">';
@@ -1882,8 +1889,9 @@ function openlab_show_site_posts_and_comments() {
 								<div class="panel panel-default">
 									<div class="panel-body">
 										<?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-										<?php echo openlab_get_group_activity_content( '', $comment['content'], $comment['permalink'] ); ?>
-									</div></div>
+										<?php echo openlab_get_group_activity_content( $comment['title'], $comment['content'], $comment['permalink'] ); ?>
+									</div>
+								</div>
 							<?php endforeach ?>
 						<?php else : ?>
 							<div class="panel panel-default">
