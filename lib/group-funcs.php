@@ -23,9 +23,11 @@ function openlab_set_group_creation_steps() {
 	);
 	buddypress()->groups->group_creation_steps = $steps;
 
-	if ( bp_is_group_creation_step( 'group-details' ) ) {
+	// Reset when returning to group-details, unless it's via a 'Previous' link.
+	if ( bp_is_group_creation_step( 'group-details' ) && empty( $_GET['is_previous'] ) ) {
 		unset( buddypress()->groups->current_create_step );
 		unset( buddypress()->groups->completed_create_steps );
+		unset( buddypress()->groups->new_group_id );
 
 		setcookie( 'bp_new_group_id', false, time() - 1000, COOKIEPATH, COOKIE_DOMAIN, is_ssl() );
 		setcookie( 'bp_completed_create_steps', false, time() - 1000, COOKIEPATH, COOKIE_DOMAIN, is_ssl() );
@@ -1418,7 +1420,11 @@ function openlab_group_site_settings() {
 add_action( 'bp_screens', 'openlab_group_site_settings' );
 
 /**
- * Add the group type to the Previous Step button during group creation.
+ * Add the URL flags to the Previous Step button during group creation.
+ *
+ * This includes a group_type flag as well as a note that we are navigating via the
+ * Previous button. This helps us to mitigate problems with cleared cookies during
+ * group creation navigation.
  */
 function openlab_previous_step_type( $url ) {
 	// phpcs:disable WordPress.Security.NonceVerification.Recommended
@@ -1430,7 +1436,13 @@ function openlab_previous_step_type( $url ) {
 	}
 	// phpcs:enable WordPress.Security.NonceVerification.Recommended
 
-	$url = add_query_arg( 'group_type', $group_type_slug, $url );
+	$url = add_query_arg(
+		[
+			'group_type' => $group_type_slug,
+			'is_previous' => 1,
+		],
+		$url
+	);
 
 	return $url;
 }
