@@ -9937,6 +9937,72 @@ h3#message-subject {
 .plugins #item-body {
   margin-top: 35px;
 }
+#bp-group-documents.has-folders #bp-group-documents-list {
+  float: left;
+  width: calc(100% - 200px);
+}
+#bp-group-documents.has-folders #bp-group-documents-sorting {
+  width: calc(100% - 200px);
+}
+#bp-group-documents.has-folders .bp-group-documents-folder-links {
+  display: block;
+  width: 180px;
+  float: right;
+}
+#bp-group-documents .upload-new-file {
+  padding-top: 18px;
+  padding-right: 8px;
+}
+@media (max-width: 767px) {
+  #bp-group-documents #bp-group-documents-sorting .sorting-column {
+    display: inline-block;
+    width: auto;
+  }
+  #bp-group-documents .bp-group-documents-list-container {
+    float: none !important;
+    width: 100% !important;
+  }
+  #bp-group-documents #bp-group-documents-sorting {
+    width: 100% !important;
+  }
+  #bp-group-documents .bp-group-documents-folder-links {
+    display: block;
+    margin-top: 2em;
+    width: 100% !important;
+    float: none !important;
+  }
+}
+#bp-group-documents.is-edit-mode #bp-group-documents-sorting,
+#bp-group-documents.is-edit-mode .bp-group-documents-list-container,
+#bp-group-documents.is-edit-mode .bp-group-documents-folder-links,
+#bp-group-documents.is-edit-mode #bp-group-documents-upload-button,
+#bp-group-documents.is-edit-mode .submenu-row .group-count {
+  display: none;
+}
+#bp-group-documents.is-edit-mode #bp-group-documents-upload-new {
+  display: block;
+}
+#bp-group-documents.is-edit-mode #message.info {
+  display: none;
+}
+#bp-group-documents .bp-group-documents-list-folder-header {
+  background-color: #f5f5f5;
+  border: 1px solid #ddd;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+  border-bottom: none;
+  color: #333333;
+  display: block;
+  padding: 15px;
+  font-weight: bold;
+}
+#bp-group-documents.is-folder .bp-group-documents-list.item-list .list-group-item:first-child {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+#bp-group-documents .bp-group-documents-folder-links {
+  display: none;
+}
 #bp-group-documents .bp-template-notice.error,
 #bp-group-documents .bp-template-notice.updated {
   margin-bottom: 17px;
@@ -9944,6 +10010,32 @@ h3#message-subject {
 #bp-group-documents #pag-bottom {
   margin-bottom: 19px;
   margin-top: 3px;
+}
+#bp-group-documents .group-file-folders legend {
+  border-bottom: 0;
+  font-size: 1em;
+  font-weight: 700;
+  margin-bottom: 0;
+}
+#bp-group-documents .group-file-folders .checkbox-list-container ul {
+  list-style-type: none;
+  margin-top: 0;
+  padding-left: 0;
+}
+#bp-group-documents .group-file-folders .checkbox-list-container label {
+  font-weight: normal;
+}
+#bp-group-documents .group-file-folder-nav {
+  height: 120px;
+  border: 1px solid #bbbbbb;
+  border-radius: 4px;
+  overflow: auto;
+  padding: 6px 12px;
+}
+#bp-group-documents .group-file-folder-nav ul {
+  list-style-type: none;
+  margin-top: 0;
+  padding-left: 0;
 }
 .docs-info-header #tags-toggle {
   padding: 6px 16px;

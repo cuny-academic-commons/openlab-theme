@@ -753,6 +753,16 @@
 				);
 			}
 
+			$( '#bp-group-documents-folder-delete' ).on(
+				'click',
+				function( e ){
+					if ( confirm( localVars.strings.deleteFolder ) ) {
+						return true;
+					}
+
+					return false;
+				}
+			);
 		}
 	);//end document.ready
 

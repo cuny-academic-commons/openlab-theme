@@ -175,3 +175,11 @@ function openlab_files_activity_notification_control( $send_it, $activity, $user
 }
 add_action( 'bp_ass_send_activity_notification_for_user', 'openlab_files_activity_notification_control', 100, 4 );
 add_action( 'bp_ges_add_to_digest_queue_for_user', 'openlab_files_activity_notification_control', 100, 4 );
+
+/**
+ * Delete bp-group-documents category cookie, which messes with our navigation.
+ */
+function openlab_delete_bpgd_category_cookie_on_load() {
+	unset( $_COOKIE['bp-group-documents-category'] );
+}
+add_action( 'bp_actions', 'openlab_delete_bpgd_category_cookie_on_load' );

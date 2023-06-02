@@ -207,6 +207,7 @@ function openlab_load_scripts() {
 				'nonce'   => wp_create_nonce( 'request-nonce' ),
 				'strings' => array(
 					'cancelFriendship' => esc_html__( 'Cancel Friendship', 'commons-in-a-box' ),
+					'deleteFolder'     => esc_html__( 'Are you sure you wish to permanently delete this folder? The files associated with this folder will not be deleted.', 'commons-in-a-box' ),
 					'seeMore'          => esc_html__( 'See More', 'commons-in-a-box' ),
 				),
 			)
