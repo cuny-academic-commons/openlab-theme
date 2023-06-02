@@ -24,6 +24,7 @@ function openlab_set_group_creation_steps() {
 	buddypress()->groups->group_creation_steps = $steps;
 
 	// Reset when returning to group-details, unless it's via a 'Previous' link.
+	// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 	if ( bp_is_group_creation_step( 'group-details' ) && empty( $_GET['is_previous'] ) ) {
 		unset( buddypress()->groups->current_create_step );
 		unset( buddypress()->groups->completed_create_steps );
@@ -1438,7 +1439,7 @@ function openlab_previous_step_type( $url ) {
 
 	$url = add_query_arg(
 		[
-			'group_type' => $group_type_slug,
+			'group_type'  => $group_type_slug,
 			'is_previous' => 1,
 		],
 		$url
