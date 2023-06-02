@@ -9843,6 +9843,12 @@ input#group-request-send {
   margin-bottom: 0;
   font-size: 12px;
 }
+.group-activity-overview .group-home-activity-title a {
+  text-decoration: none;
+}
+.group-activity-overview .group-home-activity-title a:hover {
+  text-decoration: underline;
+}
 #members-list .inline-element {
   margin-right: 1.4%;
   width: 9.2%;

@@ -1350,7 +1350,7 @@ function openlab_get_group_activity_content( $title, $content, $link ) {
 
 	if ( '' !== $title ) {
 		$markup = sprintf(
-			'<p class="semibold h6">
+			'<p class="semibold h6 group-home-activity-title">
 				<a href="%s">
 					<span class="hyphenate truncate-on-the-fly" data-basevalue="80" data-minvalue="55" data-basewidth="376">%s </span>
 					<span class="original-copy hidden">%s</span>
