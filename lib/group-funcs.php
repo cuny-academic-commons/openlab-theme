@@ -1839,7 +1839,7 @@ function openlab_show_site_posts_and_comments() {
 					'content'   => wp_strip_all_tags( bp_create_excerpt( $wp_comment->comment_content, 110, array( 'html' => false ) ) ),
 					// Translators: Title of blog post.
 					'title'     => sprintf( __( 'Comment on: %s', 'commons-in-a-box' ), get_the_title( $post_id ) ),
-					'permalink' => get_permalink( $post_id ),
+					'permalink' => get_comment_link( $wp_comment ),
 				);
 			}
 
