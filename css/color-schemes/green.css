@@ -9937,17 +9937,16 @@ h3#message-subject {
 .plugins #item-body {
   margin-top: 35px;
 }
-#bp-group-documents.has-folders #bp-group-documents-list {
-  float: left;
-  width: calc(100% - 200px);
+#bp-group-documents .bp-group-documents-columns {
+  display: flex;
+  gap: 20px;
 }
-#bp-group-documents.has-folders #bp-group-documents-sorting {
-  width: calc(100% - 200px);
+#bp-group-documents .bp-group-documents-main-column {
+  flex: 1;
 }
 #bp-group-documents.has-folders .bp-group-documents-folder-links {
   display: block;
-  width: 180px;
-  float: right;
+  flex: 0 0 180px;
 }
 #bp-group-documents .upload-new-file {
   padding-top: 18px;
@@ -9982,6 +9981,9 @@ h3#message-subject {
 #bp-group-documents.is-edit-mode #bp-group-documents-upload-new {
   display: block;
 }
+#bp-group-documents.is-edit-mode .pagination {
+  display: none;
+}
 #bp-group-documents.is-edit-mode #message.info {
   display: none;
 }
@@ -10002,6 +10004,35 @@ h3#message-subject {
 }
 #bp-group-documents .bp-group-documents-folder-links {
   display: none;
+}
+#bp-group-documents .group-documents-orderby {
+  width: auto;
+}
+#bp-group-documents .admin-links {
+  padding-left: 1em;
+  padding-bottom: 1em;
+}
+#bp-group-documents .group-documents-title {
+  font-weight: 600;
+}
+#bp-group-documents .group-documents-icon {
+  text-decoration: none;
+}
+#bp-group-documents .group-documents-meta,
+#bp-group-documents .group-documents-description {
+  margin: 0;
+}
+#bp-group-documents .show-all-files {
+  margin-top: 0.5em;
+}
+#bp-group-documents #bp-group-documents-upload-new {
+  display: none;
+}
+#bp-group-documents #bp-group-documents-upload-new .form-panel .panel {
+  margin-top: 0;
+}
+#bp-group-documents #bp-group-documents-edit .form-panel .panel {
+  margin-top: 0;
 }
 #bp-group-documents .bp-template-notice.error,
 #bp-group-documents .bp-template-notice.updated {
@@ -10026,7 +10057,7 @@ h3#message-subject {
   font-weight: normal;
 }
 #bp-group-documents .group-file-folder-nav {
-  height: 120px;
+  min-height: 300px;
   border: 1px solid #bbbbbb;
   border-radius: 4px;
   overflow: auto;
@@ -10036,6 +10067,16 @@ h3#message-subject {
   list-style-type: none;
   margin-top: 0;
   padding-left: 0;
+}
+.bp-group-documents-fields-for-file-type {
+  margin-top: 18px;
+  margin-left: 17px;
+}
+.bp-group-documents-fields.show-link #bp-group-documents-fields-for-file-type-upload {
+  display: none;
+}
+.bp-group-documents-fields.show-upload #bp-group-documents-fields-for-file-type-link {
+  display: none;
 }
 .docs-info-header #tags-toggle {
   padding: 6px 16px;
