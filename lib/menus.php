@@ -241,7 +241,6 @@ function openlab_help_categories_menu( $items, $args ) {
 		$help_args = array(
 			'hide_empty' => false,
 			'orderby'    => 'term_order',
-			'hide_empty' => false,
 		);
 		$help_cats = get_terms( 'help_category', $help_args );
 
@@ -299,7 +298,6 @@ function openlab_help_categories_menu( $items, $args ) {
 					$child_args = array(
 						'hide_empty' => false,
 						'orderby'    => 'term_order',
-						'hide_empty' => false,
 						'parent'     => $help_cat->term_id,
 					);
 					$child_cats = get_terms( 'help_category', $child_args );
@@ -433,8 +431,8 @@ function openlab_group_files_submenu() {
 	$current_item = $base_url;
 
 	$menu_list = [
-		$base_url                           => __( 'All Files', 'commons-in-a-box' ),
-		$base_url . '?action=add_new_file'  => __( 'Add New File', 'commons-in-a-box' ),
+		$base_url                          => __( 'All Files', 'commons-in-a-box' ),
+		$base_url . '?action=add_new_file' => __( 'Add New File', 'commons-in-a-box' ),
 	];
 
 	return openlab_submenu_gen( $menu_list, false, $current_item );
@@ -705,7 +703,7 @@ function openlab_submenu_gen( $items, $timestamp = false ) {
 		if ( BP_GROUP_DOCUMENTS_SLUG === $page_identify ) {
 			$is_add_new = false;
 
-			$url_query = parse_url( $item, PHP_URL_QUERY );
+			$url_query = wp_parse_url( $item, PHP_URL_QUERY );
 			if ( $url_query ) {
 				parse_str( $url_query, $query_parts );
 				$is_add_new = isset( $query_parts['action'] ) && 'add_new_file' === $query_parts['action'];
@@ -760,7 +758,7 @@ function openlab_submenu_gen( $items, $timestamp = false ) {
 		$submenu .= '</li><!--';
 
 		// increment counter
-		$i++;
+		++$i;
 	}
 
 	if ( $timestamp ) {
@@ -1322,10 +1320,10 @@ function openlab_calendar_submenu() {
  * @param type $title
  * @param type $url
  * @param type $order
- * @param type $parent
+ * @param type $item_parent
  * @return \stdClass
  */
-function openlab_custom_nav_menu_item( $title, $url, $order, $parent = 0, $classes = array() ) {
+function openlab_custom_nav_menu_item( $title, $url, $order, $item_parent = 0, $classes = array() ) {
 	$item                   = new stdClass();
 	$item->ID               = 1000000 + $order + $parent;
 	$item->db_id            = $item->ID;
