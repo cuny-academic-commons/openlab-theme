@@ -109,18 +109,7 @@ class Openlab_Clone_Course_Site {
 			}
 		);
 
-		$preserve_option = array(
-			'siteurl',
-			'blogname',
-			'admin_email',
-			'new_admin_email',
-			'home',
-			'upload_path',
-			'db_version',
-			'blog_public',
-			$wpdb->get_blog_prefix( $this->site_id ) . 'user_roles',
-			'fileupload_url',
-		);
+		$preserve_option = cboxol_clone_options_to_skip( $this->site_id );
 
 		// now write them all back
 		switch_to_blog( $this->site_id );
