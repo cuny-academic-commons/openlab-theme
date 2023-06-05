@@ -86,7 +86,7 @@
 								$upcoming->the_post();
 								// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 								echo '<li>' . eo_format_event_occurrence() . '</li>';
-							};
+							}
 							?>
 						</ul>
 					</li>
