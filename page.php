@@ -2,7 +2,7 @@
 
 <div id="content" class="hfeed row">
 	<?php
-	$show_about_sidebar = cboxol_is_brand_page( 'about' ) || cboxol_is_brand_page( 'terms-of-use' ) || cboxol_is_brand_page( 'contact-us' );
+	$show_about_sidebar = cboxol_is_brand_page( 'about' ) || cboxol_is_brand_page( 'terms-of-use' ) || cboxol_is_brand_page( 'contact-us' ) || openlab_get_brand_page_ancestor();
 
 	if ( $show_about_sidebar ) {
 		get_template_part( 'parts/sidebar/about-mobile' );

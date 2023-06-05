@@ -518,3 +518,47 @@ function openlab_braille_is_enabled() {
 function openlab_is_search_results_page() {
 	return cboxol_is_brand_page( 'search-results' );
 }
+
+/**
+ * Gets the brand page ancestor of the given post.
+ *
+ * For brand pages themselves, the $post_id is returned.
+ *
+ * @since 1.5.0
+ *
+ * @param int $post_id Optional. Post ID. Defaults to current object.
+ * @return int
+ */
+function openlab_get_brand_page_ancestor( $post_id = null ) {
+	static $map;
+
+	if ( isset( $map[ $post_id ] ) ) {
+		return $map[ $post_id ];
+	}
+
+	if ( ! $post_id ) {
+		$post_id = get_queried_object_id();
+	}
+
+	if ( ! $post_id ) {
+		return 0;
+	}
+
+	$brand_pages = cboxol_get_brand_pages();
+	foreach ( $brand_pages as $brand_page ) {
+		if ( $post_id === $brand_page['id'] ) {
+			$map[ $post_id ] = $post_id;
+			return $map[ $post_id ];
+		}
+	}
+
+	$post = get_post( $post_id );
+	if ( ! $post || ! $post->post_parent ) {
+		$map[ $post_id ] = 0;
+		return $map[ $post_id ];
+	}
+
+	$map[ $post_id ] = openlab_get_brand_page_ancestor( $post->post_parent );
+
+	return $map[ $post_id ];
+}
