@@ -206,35 +206,37 @@ add_action(
 			$operation_type = 'add';
 		}
 
+		check_admin_referer( 'bp_group_document_save_' . $operation_type, 'bp_group_document_save' );
+
 		unset( $_POST['bp_group_documents_operation'] );
 
 		switch ( $operation_type ) {
 			case 'add' :
-				$document 				= new BP_Group_Documents();
-				$document->user_id  	= get_current_user_id();
-				$document->group_id 	= bp_get_current_group_id();
-				$document->name     	= wp_unslash( $_POST['bp_group_documents_link_name'] );
-				$document->description 	= $_POST['bp_group_documents_link_description'];
-				$document->file 		= $_POST['bp_group_documents_link_url'];
+				$document              = new BP_Group_Documents();
+				$document->user_id     = get_current_user_id();
+				$document->group_id    = bp_get_current_group_id();
+				$document->name        = wp_unslash( $_POST['bp_group_documents_link_name'] );
+				$document->description = $_POST['bp_group_documents_link_description'];
+				$document->file        = $_POST['bp_group_documents_link_url'];
 
 				// false means "don't check for a file upload".
 				if ( $document->save( false ) ) {
 					openlab_update_external_link_category( $document );
 					do_action( 'bp_group_documents_add_success', $document );
-					bp_core_add_message( __( 'External link successfully added.','bp-group-documents' ) );
+					bp_core_add_message( __( 'External link successfully added.', 'bp-group-documents' ) );
 				}
-			break;
+				break;
 			case 'edit' :
-				$document 				= new BP_Group_Documents( $_POST['bp_group_documents_id'] );
-				$document->name 		= wp_unslash( $_POST['bp_group_documents_link_name'] );
-				$document->description 	= $_POST['bp_group_documents_link_description'];
+				$document              = new BP_Group_Documents( $_POST['bp_group_documents_id'] );
+				$document->name        = wp_unslash( $_POST['bp_group_documents_link_name'] );
+				$document->description = $_POST['bp_group_documents_link_description'];
 
-				if( $document->save( false ) ) {
+				if ( $document->save( false ) ) {
 					openlab_update_external_link_category( $document );
 					do_action( 'bp_group_documents_edit_success', $document );
-					bp_core_add_message( __('External link successfully edited', 'bp-group-documents') );
+					bp_core_add_message( __( 'External link successfully edited', 'bp-group-documents' ) );
 				}
-			break;
+				break;
 		}
 	}
 );
@@ -248,25 +250,33 @@ add_action(
 add_action(
 	'bp_group_documents_data_after_save',
 	function( $document ) {
+		// Get the operation type, used to build the nonce.
+		$operation_type = ! empty( $_POST['bp_group_documents_operation'] ) && 'edit' === $_POST['bp_group_documents_operation'] ? 'edit' : 'add';
+
+		check_admin_referer( 'bp_group_document_save_' . $operation_type, 'bp_group_document_save' );
+
 		$request_type = ! empty( $_POST['bp_group_documents_file_type'] ) ? wp_unslash( $_POST['bp_group_documents_file_type'] ) : 'upload';
 
 		// If request is not of type 'link', let buddypress-group-documents handle it.
-		if( 'link' !== $request_type ) {
+		if ( 'link' !== $request_type ) {
 			return;
 		}
 
 		$result = null;
-		if( $document->id ) {
+		if ( $document->id ) {
 			global $wpdb, $bp;
 
-			$result = $wpdb->query( $wpdb->prepare(
-				"UPDATE {$bp->group_documents->table_name}
+			$result = $wpdb->query(
+				$wpdb->prepare(
+					// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+					"UPDATE {$bp->group_documents->table_name}
 				SET
 					file = %s
 				WHERE id = %d",
 					$_POST['bp_group_documents_link_url'],
 					$document->id
-				) );
+				)
+			);
 		}
 
 		if ( ! $result ) {
@@ -281,21 +291,29 @@ add_action(
  * Set categories for the external link submitted from the
  * group documents form.
  *
+ * @param BP_Group_Documents $document Document object.
  */
 function openlab_update_external_link_category( $document ) {
-	//update categories from checkbox list
-	if ( isset( $_POST['bp_group_documents_link_categories'] ) )
+	// Get the operation type, used to build the nonce.
+	$operation_type = ! empty( $_POST['bp_group_documents_operation'] ) && 'edit' === $_POST['bp_group_documents_operation'] ? 'edit' : 'add';
+
+	check_admin_referer( 'bp_group_document_save_' . $operation_type, 'bp_group_document_save' );
+
+	// Update categories from checkbox list.
+	if ( isset( $_POST['bp_group_documents_link_categories'] ) ) {
 		$category_ids = apply_filters( 'bp_group_documents_category_ids_in', $_POST['bp_group_documents_link_categories'] );
+	}
 
-	if ( isset( $category_ids ) )
-		wp_set_object_terms( $document->id,$category_ids, 'group-documents-category' );
+	if ( isset( $category_ids ) ) {
+		wp_set_object_terms( $document->id, $category_ids, 'group-documents-category' );
+	}
 
-	//check if new category was added, if so, append to current list
-	if( isset( $_POST['bp_group_documents_link_new_category'] ) && $_POST['bp_group_documents_link_new_category'] ) {
+	// Check if new category was added, if so, append to current list.
+	if ( isset( $_POST['bp_group_documents_link_new_category'] ) && $_POST['bp_group_documents_link_new_category'] ) {
 
 		$parent_id = \BP_Group_Documents_Template::get_parent_category_id();
 
-		if( ! term_exists( $_POST['bp_group_documents_link_new_category'], 'group-documents-category', $parent_id ) ) {
+		if ( ! term_exists( $_POST['bp_group_documents_link_new_category'], 'group-documents-category', $parent_id ) ) {
 			$term_info = wp_insert_term( $_POST['bp_group_documents_link_new_category'], 'group-documents-category', array( 'parent' => $parent_id ) );
 			wp_set_object_terms( $document->id, $term_info['term_id'], 'group-documents-category', true );
 		}
@@ -370,15 +388,15 @@ add_filter(
  * @return void
  */
 function openlab_external_link_icon( $url ) {
-	$url_parts = parse_url( $url );
+	$url_parts = wp_parse_url( $url );
 
-	if( ! isset( $url_parts['host'] ) ) {
+	if ( ! isset( $url_parts['host'] ) ) {
 		return;
 	}
 
 	?>
 	<a role="presentation" class="group-documents-icon" href="<?php echo esc_url( $url ); ?>" target="_blank">
-		<img class="bp-group-documents-icon" src="<?php echo get_template_directory_uri(); ?>/images/doc-icons/<?php echo openlab_get_service_from_url( $url_parts['host'] ); ?>.png" alt="">
+		<img class="bp-group-documents-icon" src="<?php echo esc_url( get_template_directory_uri() . '/images/doc-icons/' . openlab_get_service_from_url( $url_parts['host'] ) ); ?>.png" alt="">
 		<span class="sr-only"><?php esc_html_e( 'View document', 'commons-in-a-box' ); ?></span>
 	</a>
 	<?php
@@ -391,23 +409,23 @@ function openlab_external_link_icon( $url ) {
  * @return string
  */
 function openlab_get_service_from_url( $host ) {
-	switch( $host ) {
+	switch ( $host ) {
 		case 'dropbox.com':
 			return 'dropbox';
-			break;
+
 		case 'docs.google.com':
 		case 'drive.google.com':
 			return 'drive';
-			break;
+
 		case 'zoom.com':
 		case 'zoom.us':
 			return 'zoom';
-			break;
+
 		case '1drv.ms':
 		case 'onedrive.live.com':
 			return 'onedrive';
-			break;
-		default;
+
+		default:
 			return 'external';
 	}
 }
