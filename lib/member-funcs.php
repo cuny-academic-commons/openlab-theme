@@ -442,7 +442,7 @@ function openlab_profile_group_type_activity_block( \CBOX\OL\GroupType $type ) {
 
 				<?php
 				/* Only show 5 items max */
-				$x++;
+				++$x;
 				if ( 5 === $x ) {
 					break;
 				}
@@ -577,7 +577,7 @@ function openlab_get_custom_activity_action( $activity = null ) {
 		if ( ! ctype_space( $action_redraw ) ) {
 			$class          = 0 === $count ? 'activity-user' : 'activity-action';
 			$action_output .= '<a class="' . $class . '"' . $action_redraw;
-			$count++;
+			++$count;
 		}
 	}
 

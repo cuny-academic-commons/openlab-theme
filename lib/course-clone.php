@@ -62,7 +62,7 @@ function openlab_get_groups_owned_by_user( $args = array() ) {
 
 	if ( ! $in_list ) {
 		$user_groups['groups'][] = groups_get_group( $group_id_to_clone );
-		$user_groups['total']++;
+		++$user_groups['total'];
 	}
 
 	return $user_groups;

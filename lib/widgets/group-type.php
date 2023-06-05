@@ -100,7 +100,7 @@ class OpenLab_Group_Type_Widget extends WP_Widget {
 								</p>
 							</div><!-- .item-content-wrapper -->
 						</div>
-						<?php $i++; ?>
+						<?php ++$i; ?>
 
 					<?php endwhile; ?>
 				<?php else : ?>

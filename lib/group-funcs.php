@@ -2646,7 +2646,7 @@ function openlab_get_default_group_term() {
 
 	if ( $month > 9 ) {
 		$term = __( 'Spring', 'commons-in-a-box' );
-		$year++;
+		++$year;
 	} elseif ( $month < 4 ) {
 		$term = __( 'Spring', 'commons-in-a-box' );
 	} else {

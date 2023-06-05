@@ -90,7 +90,7 @@ wp_nav_menu( $args );
 			}
 			echo '</div>';
 			echo '</div>';
-			$i++;
+			++$i;
 		}//end for each
 		echo '</div>';
 	} //end if
