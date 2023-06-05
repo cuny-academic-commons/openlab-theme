@@ -135,11 +135,11 @@ function openlab_modify_options_nav() {
 			if ( preg_match( '/<span>([0-9]+)<\/span>/', $first_files_item['name'], $matches ) ) {
 				$files_name = sprintf(
 					/* translators: 1. count span */
-					__( 'Files %1$s', 'commons-in-a-box' ),
+					__( 'File Library %1$s', 'commons-in-a-box' ),
 					sprintf( '<span class="mol-count pull-right count-%d gray">%d</span>', $matches[1], $matches[1] )
 				);
 			} else {
-				$files_name = __( 'Files', 'commons-in-a-box' );
+				$files_name = __( 'File Library', 'commons-in-a-box' );
 			}
 
 			buddypress()->groups->nav->edit_nav(
@@ -420,7 +420,7 @@ function openlab_submenu_markup( $type = '', $opt_var = null, $row_wrapper = tru
 }
 
 /**
- * Submenu for group Files.
+ * Submenu for group File Library.
  *
  * @since 1.5.0
  *
