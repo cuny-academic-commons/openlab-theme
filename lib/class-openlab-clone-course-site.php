@@ -228,7 +228,7 @@ class Openlab_Clone_Course_Site {
 				} else {
 					$posts_to_delete_ids[] = $sp->ID;
 				}
-			} else {
+			} elseif ( $this->change_content_attribution() ) {
 				// Admin-created content comes along, but may have its authorship changed.
 				if ( $this->change_content_attribution() ) {
 					wp_update_post(
@@ -277,14 +277,12 @@ class Openlab_Clone_Course_Site {
 
 					wp_update_comment_count_now( $sp->ID );
 				}
-			} else {
+			} elseif ( 'attachment' === $sp->post_type ) {
 				// Non-teachers have their stuff deleted.
-				if ( 'attachment' === $sp->post_type ) {
-					// Will delete the file as well.
-					wp_delete_attachment( $sp->ID, true );
-				} else {
-					wp_delete_post( $sp->ID, true );
-				}
+				// Will delete the file as well.
+				wp_delete_attachment( $sp->ID, true );
+			} else {
+				wp_delete_post( $sp->ID, true );
 			}
 		}
 
@@ -347,7 +345,7 @@ class Openlab_Clone_Course_Site {
 
 		// Loop through the folder
 		$dir = dir( $source );
-		// phpcs:ignore WordPress.CodeAnalysis.AssignmentInCondition.FoundInWhileCondition
+		// phpcs:ignore Generic.CodeAnalysis.AssignmentInCondition.FoundInWhileCondition
 		while ( false !== $entry = $dir->read() ) {
 			// Skip pointers
 			if ( '.' === $entry || '..' === $entry ) {
