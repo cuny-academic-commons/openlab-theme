@@ -41,7 +41,7 @@ function openlab_callout_list_shortcode( $atts, $content ) {
                         </div>
                     </div>
 HTML;
-			$index++;
+			++$index;
 		}
 		$final_content .= '</div>';
 	} else {
@@ -50,6 +50,4 @@ HTML;
 
 	return $final_content;
 }
-
 add_shortcode( 'callout', 'openlab_callout_list_shortcode' );
-

@@ -1,9 +1,9 @@
 <?php
-/*
-*	Glossary page
-*
-*/
-/**begin layout**/
+/**
+ *Glossary page
+ *
+ */
+
 get_header(); ?>
 	<div id="content" class="hfeed">
 			<div class="col-sm-18 col-xs-24">
@@ -15,4 +15,3 @@ get_header(); ?>
 	</div>
 <?php
 get_footer();
-/**end layout**/
