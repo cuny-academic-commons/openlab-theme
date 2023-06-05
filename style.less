@@ -2867,20 +2867,19 @@ h3#message-subject {
     }
 }
 #bp-group-documents{
+	.bp-group-documents-columns {
+		display: flex;
+		gap: 20px;
+	}
+
+	.bp-group-documents-main-column {
+		flex: 1;
+	}
+
 	&.has-folders {
-		#bp-group-documents-list {
-			float: left;
-			width: calc(~"100% - 200px");
-		}
-
-		#bp-group-documents-sorting {
-			width: calc(~"100% - 200px");
-		}
-
 		.bp-group-documents-folder-links {
 			display: block;
-			width: 180px;
-			float: right;
+			flex: 0 0 180px;
 		}
 	}
 
@@ -2927,6 +2926,10 @@ h3#message-subject {
 			display: block;
 		}
 
+		.pagination {
+			display: none;
+		}
+
         #message.info {
             display: none;
         }
@@ -2953,6 +2956,46 @@ h3#message-subject {
 
 	.bp-group-documents-folder-links {
 		display: none;
+	}
+
+	.group-documents-orderby {
+		width: auto;
+	}
+
+	.admin-links {
+		padding-left: 1em;
+		padding-bottom: 1em;
+	}
+
+	.group-documents-title {
+		font-weight: 600;
+	}
+
+    .group-documents-icon {
+        text-decoration: none;
+    }
+
+    .group-documents-meta,
+    .group-documents-description {
+        margin: 0;
+    }
+
+	.show-all-files {
+		margin-top: .5em;
+	}
+
+    #bp-group-documents-upload-new {
+		display: none;
+
+		.form-panel .panel {
+			margin-top: 0;
+		}
+	}
+
+    #bp-group-documents-edit {
+		.form-panel .panel {
+			margin-top: 0;
+		}
 	}
 
     .bp-template-notice{
@@ -2988,7 +3031,7 @@ h3#message-subject {
     }
 
     .group-file-folder-nav {
-        height: 120px;
+        min-height: 300px;
         border: 1px solid @30gray;
         border-radius: @border-radius-base;
         overflow: auto;
@@ -3001,6 +3044,25 @@ h3#message-subject {
 		}
     }
 }
+
+.bp-group-documents-fields-for-file-type {
+	margin-top: 18px;
+	margin-left: 17px;
+}
+
+.bp-group-documents-fields {
+    &.show-link {
+        #bp-group-documents-fields-for-file-type-upload {
+            display: none;
+        }
+    }
+    &.show-upload {
+        #bp-group-documents-fields-for-file-type-link {
+            display: none;
+        }
+    }
+}
+
 .docs-info-header{
     #tags-toggle{
         padding: 6px 16px;

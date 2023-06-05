@@ -397,6 +397,12 @@ function openlab_submenu_markup( $type = '', $opt_var = null, $row_wrapper = tru
 			}
 
 			break;
+		case 'group-files':
+			// translators: aria-hidden span containing a colon.
+			$submenu_text = sprintf( __( 'File Library%s', 'commons-in-a-box' ), '<span aria-hidden="true">:</span>' );
+			$menu         = openlab_group_files_submenu();
+			break;
+
 		default:
 			$submenu_text = esc_html__( 'My Settings', 'commons-in-a-box' ) . '<span aria-hidden="true">:</span> ';
 			$menu         = openlab_profile_settings_submenu();
@@ -413,6 +419,25 @@ function openlab_submenu_markup( $type = '', $opt_var = null, $row_wrapper = tru
 	}
 
 	return $submenu;
+}
+
+/**
+ * Submenu for group Files.
+ *
+ * @since 1.5.0
+ *
+ * @return array
+ */
+function openlab_group_files_submenu() {
+	$base_url     = bp_get_group_permalink( groups_get_current_group() ) . BP_GROUP_DOCUMENTS_SLUG;
+	$current_item = $base_url;
+
+	$menu_list = [
+		$base_url                           => __( 'All Files', 'commons-in-a-box' ),
+		$base_url . '?action=add_new_file'  => __( 'Add New File', 'commons-in-a-box' ),
+	];
+
+	return openlab_submenu_gen( $menu_list, false, $current_item );
 }
 
 /**
@@ -674,6 +699,22 @@ function openlab_submenu_gen( $items, $timestamp = false ) {
 		// special case for send invitations page hitting the same time as invitations received
 		if ( 'invites' === $page_identify && __( 'Sent Invitations', 'commons-in-a-box' ) === $title ) {
 			$current_check = false;
+		}
+
+		// Another special case for /documents/ - 'Add New File' doesn't have its own slug.
+		if ( BP_GROUP_DOCUMENTS_SLUG === $page_identify ) {
+			$is_add_new = false;
+
+			$url_query = parse_url( $item, PHP_URL_QUERY );
+			if ( $url_query ) {
+				parse_str( $url_query, $query_parts );
+				$is_add_new = isset( $query_parts['action'] ) && 'add_new_file' === $query_parts['action'];
+			}
+
+			// We always add the class dynamically in JS.
+			if ( $is_add_new ) {
+				$current_check = false;
+			}
 		}
 
 		// adding the current-menu-item class - also includes special cases, parsed out to make them easier to identify
