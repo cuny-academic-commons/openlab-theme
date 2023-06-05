@@ -23,7 +23,7 @@ if ( bp_has_groups() ) :
 				 */
 				// Group is visible
 				$group_status = bp_get_group_status();
-				if ( 'public' === $group_status || 'private' === $group_status || ( 'hidden' === $group_status && ( bp_is_item_admin() || bp_group_is_member() ) ) ) :
+				if ( 'public' === $group_status || 'private' === $group_status || ( 'hidden' === $group_status && ( bp_is_item_admin() || bp_group_is_member() ) ) ) {
 
 					// Looking at home location
 					if ( bp_is_group_home() ) :
@@ -44,65 +44,61 @@ if ( bp_has_groups() ) :
 
 						endif;
 
+					elseif ( bp_is_group_admin_page() ) :
 						// Not looking at home
+						bp_get_template_part( 'groups/single/admin' );
+
+					elseif ( bp_is_group_activity() ) :
+						// Group Activity
+						bp_get_template_part( 'groups/single/activity' );
+
+					elseif ( bp_is_group_members() ) :
+						// Group Members
+						bp_get_template_part( 'groups/single/members' );
+
+					elseif ( bp_is_group_invites() ) :
+						// Group Invitations
+						bp_get_template_part( 'groups/single/send-invites' );
+
+					elseif ( bp_is_group_membership_request() ) :
+						// Membership request
+						bp_get_template_part( 'groups/single/request-membership' );
+
+					elseif ( bp_is_current_action( 'notifications' ) ) :
+						// Email subscription options
+						bp_get_template_part( 'groups/single/notifications' );
+
+					else :
+						// Anything else (plugins mostly)
+						bp_get_template_part( 'groups/single/plugins' );
+
+					endif;
+
+				} elseif ( ! bp_group_is_visible() ) {
+					// Group is not visible
+
+					// Membership request
+					if ( bp_is_group_membership_request() ) :
+						bp_get_template_part( 'groups/single/request-membership' );
+
+						// The group is not visible, show the status message
 					else :
 
-						// Group Admin
-						if ( bp_is_group_admin_page() ) :
-							bp_get_template_part( 'groups/single/admin' );
+						do_action( 'bp_before_group_status_message' );
+						?>
 
-							// Group Activity
-						elseif ( bp_is_group_activity() ) :
-							bp_get_template_part( 'groups/single/activity' );
+					<div id="message" class="info">
+						<p><?php bp_group_status_message(); ?></p>
+					</div>
 
-							// Group Members
-						elseif ( bp_is_group_members() ) :
-							bp_get_template_part( 'groups/single/members' );
+						<?php
+						do_action( 'bp_after_group_status_message' );
 
-							// Group Invitations
-						elseif ( bp_is_group_invites() ) :
-							bp_get_template_part( 'groups/single/send-invites' );
-
-							// Membership request
-						elseif ( bp_is_group_membership_request() ) :
-							bp_get_template_part( 'groups/single/request-membership' );
-
-							// Email subscription options
-						elseif ( bp_is_current_action( 'notifications' ) ) :
-							bp_get_template_part( 'groups/single/notifications' );
-
-							// Anything else (plugins mostly)
-						else :
-							bp_get_template_part( 'groups/single/plugins' );
-
-						endif;
 					endif;
+				}
 
-					// Group is not visible
-					elseif ( ! bp_group_is_visible() ) :
-
-						// Membership request
-						if ( bp_is_group_membership_request() ) :
-							bp_get_template_part( 'groups/single/request-membership' );
-
-							// The group is not visible, show the status message
-						else :
-
-							do_action( 'bp_before_group_status_message' );
-							?>
-
-						<div id="message" class="info">
-							<p><?php bp_group_status_message(); ?></p>
-						</div>
-
-							<?php
-							do_action( 'bp_after_group_status_message' );
-
-						endif;
-					endif;
-
-					do_action( 'bp_after_group_body' );
-					?>
+				do_action( 'bp_after_group_body' );
+				?>
 			</div>
 		</div><!-- #item-body -->
 
