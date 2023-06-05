@@ -289,14 +289,17 @@ add_filter( 'posts_results', 'openlab_bbp_force_forums_to_public', 10, 2 );
  * Force site public to 1 for bbPress.
  *
  * Otherwise activity is not posted.
+ *
+ * @param mixed $is_public Value from bbp_is_site_public filter.
+ * @param int   $site_id   ID of the site.
+ * @return mixed
  */
-function openlab_bbp_force_site_public_to_1( $public, $site_id ) {
+function openlab_bbp_force_site_public_to_1( $is_public, $site_id ) {
 	if ( bp_get_root_blog_id() === (int) $site_id ) {
-		$public = 1;
+		$is_public = 1;
 	}
-	return $public;
+	return $is_public;
 }
-
 add_filter( 'bbp_is_site_public', 'openlab_bbp_force_site_public_to_1', 10, 2 );
 
 /**
