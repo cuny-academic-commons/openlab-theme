@@ -102,7 +102,7 @@ $header_text = 'add' === $template->operation ? __( 'Add a New File', 'commons-i
 								$count_class = $count % 2 ? 'alt' : '';
 
 								$document->doc_type = openlab_get_document_type( $document->file );
-								$document->doc_url  = ( $document->doc_type === 'upload' ) ? $document->get_url() : $document->file;
+								$document->doc_url  = 'upload' === $document->doc_type ? $document->get_url() : $document->file;
 								?>
 
 								<li class="list-group-item <?php echo esc_attr( $count_class ); ?>">
@@ -252,7 +252,7 @@ $header_text = 'add' === $template->operation ? __( 'Add a New File', 'commons-i
 									<input type="hidden" name="bp_group_documents_file_type" value="<?php echo esc_attr( $template->doc_type ); ?>" />
 								<?php endif; ?>
 
-								<div class="bp-group-documents-fields <?php echo ( $template->operation === 'add' ) ? 'show-upload' : 'show-' . $template->doc_type; ?>">
+								<div class="bp-group-documents-fields <?php echo esc_attr( 'add' === $template->operation ? 'show-upload' : 'show-' . $template->doc_type ); ?>">
 									<!-- Link -->
 									<?php if ( 'add' === $template->operation ) { ?>
 									<div class="bp-group-documents-file-type-selector">
@@ -280,12 +280,7 @@ $header_text = 'add' === $template->operation ? __( 'Add a New File', 'commons-i
 												<input type="hidden" name="bp_group_documents_link_categories[]" value="0" />
 												<ul>
 												<?php foreach ( $folders as $category ) { ?>
-													<li><input type="checkbox" name="bp_group_documents_link_categories[]" value="<?php echo esc_attr( $category->term_id ); ?>" id="link-group-folder-<?php echo esc_attr( $category->term_id ); ?>" 
-																																			<?php
-																																			if ( $template->doc_in_category( $category->term_id ) ) {
-																																				echo 'checked="checked"';}
-																																			?>
-													/> <label class="passive" for="link-group-folder-<?php echo esc_attr( $category->term_id ); ?>"><?php echo esc_html( $category->name ); ?></label></li>
+													<li><input type="checkbox" name="bp_group_documents_link_categories[]" value="<?php echo esc_attr( $category->term_id ); ?>" id="link-group-folder-<?php echo esc_attr( $category->term_id ); ?>" <?php checked( $template->doc_in_category( $category->term_id ) ); ?> /> <label class="passive" for="link-group-folder-<?php echo esc_attr( $category->term_id ); ?>"><?php echo esc_html( $category->name ); ?></label></li>
 												<?php } ?>
 												</ul>
 											</div>
@@ -328,12 +323,7 @@ $header_text = 'add' === $template->operation ? __( 'Add a New File', 'commons-i
 													<input type="hidden" name="bp_group_documents_categories[]" value="0" />
 													<ul>
 													<?php foreach ( $folders as $category ) { ?>
-														<li><input type="checkbox" name="bp_group_documents_categories[]" value="<?php echo esc_attr( $category->term_id ); ?>" id="group-folder-<?php echo esc_attr( $category->term_id ); ?>" 
-																																			<?php
-																																			if ( $template->doc_in_category( $category->term_id ) ) {
-																																				echo 'checked="checked"';}
-																																			?>
-														/> <label class="passive" for="group-folder-<?php echo esc_attr( $category->term_id ); ?>"><?php echo $category->name; ?></label></li>
+														<li><input type="checkbox" name="bp_group_documents_categories[]" value="<?php echo esc_attr( $category->term_id ); ?>" id="group-folder-<?php echo esc_attr( $category->term_id ); ?>" <?php checked( $template->doc_in_category( $category->term_id ) ); ?> /> <label class="passive" for="group-folder-<?php echo esc_attr( $category->term_id ); ?>"><?php echo esc_html( $category->name ); ?></label></li>
 													<?php } ?>
 													</ul>
 												</div>
