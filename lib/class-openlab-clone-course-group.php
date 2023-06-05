@@ -136,7 +136,7 @@ class Openlab_Clone_Course_Group {
 			// Copy the file itself
 			$destination_dir = bp_core_avatar_upload_path() . '/group-documents/' . $this->group_id;
 			if ( ! is_dir( $destination_dir ) ) {
-				mkdir( $destination_dir, 0755, true );
+				wp_mkdir_p( $destination_dir );
 			}
 
 			$destination_path = $destination_dir . '/' . $document->file;
