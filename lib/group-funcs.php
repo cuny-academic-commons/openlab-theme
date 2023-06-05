@@ -810,6 +810,8 @@ function openlab_save_braille_status( $group ) {
  * After group creation, move the dummy avatar to the proper location.
  */
 function openlab_move_avatar_after_group_create() {
+	global $wp_filesystem;
+
 	// phpcs:disable WordPress.Security.NonceVerification.Missing
 	if ( ! isset( $_POST['avatar-item-uuid'] ) ) {
 		return;
@@ -832,7 +834,10 @@ function openlab_move_avatar_after_group_create() {
 
 	$new_dir = groups_avatar_upload_dir( $new_group_id );
 
-	rename( $old_dir['path'], $new_dir['path'] );
+	require_once ABSPATH . 'wp-admin/includes/file.php';
+	WP_Filesystem();
+
+	$wp_filesystem->move( $old_dir['path'], $new_dir['path'] );
 }
 
 /**
