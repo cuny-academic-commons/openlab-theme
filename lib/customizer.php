@@ -45,11 +45,11 @@ function openlab_customizer_setup( $wp_customize ) {
 		)
 	);
 
-	// Logo
+	// Logos.
 	$wp_customize->add_section(
 		'openlab_logo',
 		array(
-			'title' => __( 'Logo', 'commons-in-a-box' ),
+			'title' => __( 'Logos', 'commons-in-a-box' ),
 		)
 	);
 
@@ -66,20 +66,21 @@ function openlab_customizer_setup( $wp_customize ) {
 			$wp_customize,
 			'openlab_logo',
 			array(
-				'label'         => __( 'Logo', 'commons-in-a-box' ),
+				'label'         => __( 'Header Logo', 'commons-in-a-box' ),
 				'section'       => 'openlab_logo',
 				'height'        => 63,
 				'width'         => 185,
 				'flex_height'   => false,
 				'flex_width'    => true,
+				'description'   => __( 'The logo used to build your header navigation.', 'commons-in-a-box' ),
 				'button_labels' => array(
-					'select'       => __( 'Select logo' ),
-					'change'       => __( 'Change logo' ),
-					'remove'       => __( 'Remove' ),
-					'default'      => __( 'Default' ),
-					'placeholder'  => __( 'No logo selected' ),
-					'frame_title'  => __( 'Select logo' ),
-					'frame_button' => __( 'Choose logo' ),
+					'select'       => __( 'Select logo', 'commons-in-a-box' ),
+					'change'       => __( 'Change logo', 'commons-in-a-box' ),
+					'remove'       => __( 'Remove', 'commons-in-a-box' ),
+					'default'      => __( 'Default', 'commons-in-a-box' ),
+					'placeholder'  => __( 'No logo selected', 'commons-in-a-box' ),
+					'frame_title'  => __( 'Select logo', 'commons-in-a-box' ),
+					'frame_button' => __( 'Choose logo', 'commons-in-a-box' ),
 				),
 			)
 		)
@@ -92,6 +93,39 @@ function openlab_customizer_setup( $wp_customize ) {
 			'selector'            => '.custom-logo-link',
 			'render_callback'     => 'openlab_get_logo_html',
 			'container_inclusive' => true,
+		)
+	);
+
+	$wp_customize->add_setting(
+		'openlab_default_avatar',
+		array(
+			'type'              => 'theme_mod',
+			'sanitize_callback' => 'openlab_sanitize_customizer_setting_intval',
+		)
+	);
+
+	$wp_customize->add_control(
+		new WP_Customize_Cropped_Image_Control(
+			$wp_customize,
+			'openlab_default_avatar',
+			array(
+				'label'         => __( 'Default Profile Photo', 'commons-in-a-box' ),
+				'section'       => 'openlab_logo',
+				'height'        => 255,
+				'width'         => 255,
+				'flex_height'   => false,
+				'flex_width'    => false,
+				'description'   => __( 'The default profile photo for members.', 'commons-in-a-box' ),
+				'button_labels' => array(
+					'select'       => __( 'Select logo', 'commons-in-a-box' ),
+					'change'       => __( 'Change logo', 'commons-in-a-box' ),
+					'remove'       => __( 'Remove', 'commons-in-a-box' ),
+					'default'      => __( 'Default', 'commons-in-a-box' ),
+					'placeholder'  => __( 'No logo selected', 'commons-in-a-box' ),
+					'frame_title'  => __( 'Select logo', 'commons-in-a-box' ),
+					'frame_button' => __( 'Choose logo', 'commons-in-a-box' ),
+				),
+			)
 		)
 	);
 
