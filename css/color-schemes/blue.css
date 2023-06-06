@@ -10255,6 +10255,9 @@ h3#message-subject {
 #content #bbpress-forums .notify-group-members-ui {
   margin-bottom: 10px;
 }
+#content #bbpress-forums .bbp-topic-tags {
+  padding: 12px 8px 0 0;
+}
 @media (max-width: 767px) {
   #content #bbpress-forums .forum-titles .bbp-topic-title,
   #content #bbpress-forums .bp_group .bbp-topic-title {
@@ -10273,6 +10276,24 @@ h3#message-subject {
   #content #bbpress-forums #subscription-toggle,
   #content #bbpress-forums #favorite-toggle {
     display: none;
+  }
+}
+.forum-nav {
+  display: flex;
+  margin-bottom: 40px;
+}
+@media (max-width: 767px) {
+  .forum-nav {
+    flex-direction: column;
+    gap: 20px;
+  }
+}
+.forum-nav .bbp-search-form {
+  margin-left: auto;
+}
+@media (max-width: 767px) {
+  .forum-nav .bbp-search-form {
+    margin-left: 0;
   }
 }
 /**invite-anyone specific**/
