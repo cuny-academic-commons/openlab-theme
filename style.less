@@ -3276,6 +3276,11 @@ h3#message-subject {
 		.notify-group-members-ui {
 			margin-bottom: 10px;
 		}
+
+		.bbp-topic-tags {
+			padding: 12px 8px 0 0;
+		}
+
         @media (max-width: @screen-xs-max){
             .forum-titles,
             .bp_group{
@@ -3298,6 +3303,24 @@ h3#message-subject {
         }
     }
 }
+
+.forum-nav {
+	display: flex;
+	margin-bottom: 40px;
+
+	@media (max-width:@screen-xs-max){
+		flex-direction: column;
+		gap: 20px;
+	}
+
+	.bbp-search-form {
+		margin-left: auto;
+		@media (max-width:@screen-xs-max){
+			margin-left: 0;
+		}
+	}
+}
+
 /**invite-anyone specific**/
 #invite-anyone-invite-list{
     li{
