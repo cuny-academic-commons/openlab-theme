@@ -8619,11 +8619,14 @@ body form .checkbox-list-container {
   border-bottom: 13px solid #8ccae4;
 }
 .home-page .row-home-top .login .log-box#open-lab-login h2,
-.home-page .row-home-top .login .log-box#open-lab-login h1 {
+.home-page .row-home-top .login .log-box#open-lab-login .title {
   margin: 16px 0 14px;
 }
-.home-page .row-home-top .login .log-box#open-lab-login h1 {
+.home-page .row-home-top .login .log-box#open-lab-login .title {
   padding-right: 5px;
+  font-size: 18px;
+  line-height: 1.25;
+  display: inline-block;
 }
 .home-page .row-home-top .login .log-box#open-lab-login #user-info {
   height: 86px;
