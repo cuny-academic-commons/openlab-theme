@@ -567,6 +567,7 @@ function openlab_filter_bbpress_search_parameters( $r ) {
 		'compare' => 'IN',
 	];
 
+	// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 	$r['paged'] = ! empty( $_GET['search_paged'] ) ? (int) $_GET['search_paged'] : 1;
 
 	return $r;
@@ -584,12 +585,14 @@ function openlab_filter_bbpress_search_pagination_parameters( $r ) {
 		return $r;
 	}
 
+	// phpcs:disable WordPress.Security.NonceVerification.Recommended
 	if ( empty( $_GET['bbp_search'] ) ) {
 		return $r;
 	}
 
 	$search_term  = wp_unslash( $_GET['bbp_search'] );
 	$search_paged = ! empty( $_GET['search_paged'] ) ? (int) $_GET['search_paged'] : 1;
+	// phpcs:enable WordPress.Security.NonceVerification.Recommended
 
 	$r['base']    = add_query_arg( 'bbp_search', $search_term, bp_get_group_permalink( groups_get_current_group() ) . 'forum/' ) . '&search_paged=%#%';
 	$r['current'] = $search_paged;

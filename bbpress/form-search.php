@@ -10,7 +10,9 @@
 // Exit if accessed directly
 defined( 'ABSPATH' ) || exit;
 
-if ( bbp_allow_search() ) : ?>
+?>
+
+<?php if ( bbp_allow_search() ) : ?>
 
 	<div class="bbp-search-form">
 		<form role="search" method="get" id="bbp-search-form" action="<?php echo esc_url( bp_get_group_permalink( groups_get_current_group() ) ); ?>forum/">
@@ -22,4 +24,4 @@ if ( bbp_allow_search() ) : ?>
 		</form>
 	</div>
 
-<?php endif;
+<?php endif; ?>

@@ -29,6 +29,7 @@ defined( 'ABSPATH' ) || exit;
 	<?php endif; ?>
 
 	<?php if ( ! bbp_is_forum_category() && bbp_has_topics() ) : ?>
+		<?php // phpcs:ignore WordPress.Security.NonceVerification.Recommended ?>
 		<?php if ( empty( $_GET['bbp_search'] ) ) : ?>
 			<?php bbp_get_template_part( 'pagination', 'topics' ); ?>
 			<?php bbp_get_template_part( 'loop', 'topics' ); ?>
@@ -40,12 +41,13 @@ defined( 'ABSPATH' ) || exit;
 
 	<?php elseif ( ! bbp_is_forum_category() ) : ?>
 
-		<?php bbp_get_template_part( 'feedback',   'no-topics' ); ?>
+		<?php bbp_get_template_part( 'feedback', 'no-topics' ); ?>
 
-		<?php bbp_get_template_part( 'form',       'topic'     ); ?>
+		<?php bbp_get_template_part( 'form', 'topic' ); ?>
 
 	<?php endif; ?>
 
 <?php endif; ?>
 
-<?php do_action( 'bbp_template_after_single_forum' ); ?>
+<?php
+do_action( 'bbp_template_after_single_forum' );
