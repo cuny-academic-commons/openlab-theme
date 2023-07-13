@@ -140,7 +140,7 @@ $header_text = 'add' === $template->operation ? __( 'Add a New File', 'commons-i
 										?>
 									</a> &nbsp;
 
-									<span class="group-documents-meta">
+									<p class="group-documents-meta">
 										<?php
 										printf(
 											// translators: 1. User link, 2. upload date
@@ -150,7 +150,7 @@ $header_text = 'add' === $template->operation ? __( 'Add a New File', 'commons-i
 											esc_html( gmdate( get_option( 'date_format' ), $document->created_ts ) )
 										);
 										?>
-									</span>
+									</p>
 
 									<?php
 									if ( BP_GROUP_DOCUMENTS_SHOW_DESCRIPTIONS && $document->description ) {
