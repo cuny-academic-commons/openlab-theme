@@ -10066,10 +10066,18 @@ h3#message-subject {
   overflow: auto;
   padding: 6px 12px;
 }
+#bp-group-documents .group-file-folder-nav hr {
+  margin-top: 12px;
+  margin-bottom: 12px;
+}
 #bp-group-documents .group-file-folder-nav ul {
   list-style-type: none;
   margin-top: 0;
   padding-left: 0;
+}
+#bp-group-documents .group-file-folder-nav .current-category a {
+  font-weight: bold;
+  text-decoration: none;
 }
 .bp-group-documents-fields-for-file-type {
   margin-top: 18px;
