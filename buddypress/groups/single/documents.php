@@ -56,8 +56,8 @@ $header_text = 'add' === $template->operation ? __( 'Add a New File', 'commons-i
 						<div class="row">
 							<div class="col-sm-8 sorting-column">
 								<form id="bp-group-documents-sort-form" method="get" action="<?php echo esc_attr( $template->action_link ); ?>">
-									<?php esc_html_e( 'Order by:', 'commons-in-a-box' ); ?>
-									<select name="order" class="form-control">
+									<label for="files-order-by"><?php esc_html_e( 'Order by:', 'commons-in-a-box' ); ?></label>
+									<select id="files-order-by" name="order" class="form-control">
 										<option value="newest" <?php selected( 'newest', $template->order ); ?>><?php esc_html_e( 'Newest', 'commons-in-a-box' ); ?></option>
 										<option value="alpha" <?php selected( 'alpha', $template->order ); ?>><?php esc_html_e( 'Alphabetical', 'commons-in-a-box' ); ?></option>
 										<option value="popular" <?php selected( 'popular', $template->order ); ?>><?php esc_html_e( 'Most Popular', 'commons-in-a-box' ); ?></option>
