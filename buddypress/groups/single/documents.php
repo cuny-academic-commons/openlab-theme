@@ -138,28 +138,28 @@ $header_text = 'add' === $template->operation ? __( 'Add a New File', 'commons-i
 											echo ' <span class="group-documents-filesize">(' . esc_html( get_file_size( $document ) ) . ')</span>';
 										}
 										?>
-										</a> &nbsp;
+									</a> &nbsp;
 
-										<span class="group-documents-meta">
-											<?php
-											printf(
-												// translators: 1. User link, 2. upload date
-												esc_html__( 'Uploaded by %1$s on %2$s', 'commons-in-a-box' ),
-												// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-												bp_core_get_userlink( $document->user_id ),
-												esc_html( gmdate( get_option( 'date_format' ), $document->created_ts ) )
-											);
-											?>
-										</span>
-
+									<span class="group-documents-meta">
 										<?php
-										if ( BP_GROUP_DOCUMENTS_SHOW_DESCRIPTIONS && $document->description ) {
+										printf(
+											// translators: 1. User link, 2. upload date
+											esc_html__( 'Uploaded by %1$s on %2$s', 'commons-in-a-box' ),
 											// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-											echo '<br /><span class="group-documents-description">' . nl2br( stripslashes( $document->description ) ) . '</span>';
-										}
+											bp_core_get_userlink( $document->user_id ),
+											esc_html( gmdate( get_option( 'date_format' ), $document->created_ts ) )
+										);
+										?>
+									</span>
 
-										echo '</li>';
-							}
+									<?php
+									if ( BP_GROUP_DOCUMENTS_SHOW_DESCRIPTIONS && $document->description ) {
+										// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+										echo '<br /><span class="group-documents-description">' . nl2br( stripslashes( $document->description ) ) . '</span>';
+									}
+
+									echo '</li>';
+								}
 							?>
 							</ul>
 						</div><!-- .bp-group-documents-list-container -->
