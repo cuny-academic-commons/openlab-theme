@@ -162,22 +162,22 @@ $header_text = 'add' === $template->operation ? __( 'Add a New File', 'commons-i
 							}
 							?>
 							</ul>
+						</div><!-- .bp-group-documents-list-container -->
 
-						<?php else : ?>
-							<div id="message" class="info">
-								<p class="bold">
-									<?php esc_html_e( 'There are no files to view.', 'commons-in-a-box' ); ?>
-								</p>
+					<?php else : ?>
+						<div id="message" class="info">
+							<p class="bold">
+								<?php esc_html_e( 'There are no files to view.', 'commons-in-a-box' ); ?>
+							</p>
 
-								<div class="upload-new-file">
-									<?php if ( 'add' === $template->operation ) { ?>
-										<a class="btn btn-primary link-btn" id="bp-group-documents-upload-button" href="" style="display:none;"><?php esc_html_e( 'Upload a New Document', 'commons-in-a-box' ); ?></a>
-									<?php } ?>
-								</div>
+							<div class="upload-new-file">
+								<?php if ( 'add' === $template->operation ) { ?>
+									<a class="btn btn-primary link-btn" id="bp-group-documents-upload-button" href="" style="display:none;"><?php esc_html_e( 'Upload a New Document', 'commons-in-a-box' ); ?></a>
+								<?php } ?>
 							</div>
+						</div>
 
-						<?php endif; ?>
-					</div><!-- .bp-group-documents-list-container -->
+					<?php endif; ?>
 				</div><!-- .bp-group-documents-main-column -->
 
 				<div class="bp-group-documents-folder-links">
