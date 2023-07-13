@@ -158,8 +158,9 @@ $header_text = 'add' === $template->operation ? __( 'Add a New File', 'commons-i
 										echo '<br /><span class="group-documents-description">' . nl2br( stripslashes( $document->description ) ) . '</span>';
 									}
 
-									echo '</li>';
-								}
+								// phpcs:ignore Generic.WhiteSpace.ScopeIndent.Incorrect
+								echo '</li>';
+							}
 							?>
 							</ul>
 						</div><!-- .bp-group-documents-list-container -->
