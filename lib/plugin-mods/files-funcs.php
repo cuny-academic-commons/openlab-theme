@@ -326,7 +326,7 @@ function openlab_update_external_link_category( $document ) {
 add_action(
 	'bp_actions',
 	function() {
-		if ( ! bp_is_group() || ! bp_is_current_action( 'files' ) ) {
+		if ( ! bp_is_group() || ! bp_is_current_action( BP_GROUP_DOCUMENTS_SLUG ) ) {
 			return;
 		}
 
@@ -347,7 +347,9 @@ add_action(
 
 		wp_delete_term( $folder_id, 'group-documents-category' );
 
-		bp_core_redirect( bp_get_group_permalink( groups_get_current_group() ) . 'files/' );
+		bp_core_add_message( __( 'Folder successfully deleted.', 'commons-in-a-box' );
+
+		bp_core_redirect( trailingslashit( bp_get_group_permalink( groups_get_current_group() ) . BP_GROUP_DOCUMENTS_SLUG ) );
 		die;
 	}
 );
