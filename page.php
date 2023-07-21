@@ -2,7 +2,16 @@
 
 <div id="content" class="hfeed row">
 	<?php
-	$show_about_sidebar = cboxol_is_brand_page( 'about' ) || cboxol_is_brand_page( 'terms-of-use' ) || cboxol_is_brand_page( 'contact-us' ) || openlab_get_brand_page_ancestor();
+	$show_about_sidebar = cboxol_is_brand_page( 'about' ) || cboxol_is_brand_page( 'terms-of-use' ) || cboxol_is_brand_page( 'contact-us' );
+
+	// Show About sidebar on descendants of all brand pages except for Help.
+	if ( ! $show_about_sidebar ) {
+		$brand_page_ancestor_id = openlab_get_brand_page_ancestor();
+		if ( $brand_page_ancestor_id ) {
+			$help_brand_page    = cboxol_get_brand_page( 'help' );
+			$show_about_sidebar = $help_brand_page && $help_brand_page['id'] !== $brand_page_ancestor_id;
+		}
+	}
 
 	if ( $show_about_sidebar ) {
 		get_template_part( 'parts/sidebar/about-mobile' );
