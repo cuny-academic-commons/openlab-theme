@@ -23,6 +23,15 @@ class Openlab_Clone_Course_Group {
 		$this->migrate_docs();
 		$this->migrate_files();
 		$this->migrate_topics();
+
+		/**
+		 * Fires after CBOX-OL's group cloning is complete.
+		 *
+		 * @since 1.5.0
+		 *
+		 * @param \Openlab_Clone_Course_Group $openlab_clone_course_group Clone object.
+		 */
+		do_action( 'cboxol_after_clone_group', $this );
 	}
 
 	protected function migrate_groupmeta() {

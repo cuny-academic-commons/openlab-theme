@@ -31,6 +31,15 @@ class Openlab_Clone_Course_Site {
 			$this->migrate_site_settings();
 			$this->migrate_posts();
 		}
+
+		/**
+		 * Fires after CBOX-OL's site cloning is complete.
+		 *
+		 * @since 1.5.0
+		 *
+		 * @param \Openlab_Clone_Course_Site $openlab_clone_course_site Clone object.
+		 */
+		do_action( 'cboxol_after_clone_site', $this );
 	}
 
 	protected function create_site() {
