@@ -114,7 +114,7 @@ if ( $category ) {
 		$terms    = get_terms( 'bp_group_categories' );
 		$term_ids = wp_list_pluck( $terms, 'term_id' );
 	} else {
-		$term_obj = get_term_by( 'slug', $categories, 'bp_group_categories' );
+		$term_obj = get_term_by( 'slug', $category, 'bp_group_categories' );
 		$term_ids = $term_obj->term_id;
 	}
 
