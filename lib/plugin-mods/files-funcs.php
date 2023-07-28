@@ -431,13 +431,3 @@ function openlab_get_service_from_url( $host ) {
 			return 'external';
 	}
 }
-
-/**
- * Filters the 'file formats' option to ensure proper syntax.
- *
- * @since 1.5.0
- */
-function cboxol_ensure_bp_group_documents_file_format_option_syntax( $option ) {
-	return str_replace( ', ', ',', $option );
-}
-add_filter( 'option_bp_group_documents_valid_file_formats', 'cboxol_ensure_bp_group_documents_file_format_option_syntax' );
