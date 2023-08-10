@@ -753,6 +753,16 @@
 				);
 			}
 
+			$( '#bp-group-documents-folder-delete' ).on(
+				'click',
+				function( e ){
+					if ( confirm( localVars.strings.deleteFolder ) ) {
+						return true;
+					}
+
+					return false;
+				}
+			);
 		}
 	);//end document.ready
 
@@ -909,8 +919,9 @@
 		);
 	}
 
-	/*this is for the homepage group list, so that cells in each row all have the same height
-	 - there is a possiblity of doing this template-side, but requires extensive restructuring of the group list function*/
+	/*
+	 * this is for the homepage group list, so that cells in each row all have the same height - there is a possiblity of doing this template-side, but requires extensive restructuring of the group list function
+	 */
 	function equal_row_height() {
 		/*first we get the number of rows by finding the column with the greatest number of rows*/
 		var $row_num = 0;

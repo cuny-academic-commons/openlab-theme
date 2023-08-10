@@ -442,7 +442,7 @@ function openlab_profile_group_type_activity_block( \CBOX\OL\GroupType $type ) {
 
 				<?php
 				/* Only show 5 items max */
-				$x++;
+				++$x;
 				if ( 5 === $x ) {
 					break;
 				}
@@ -577,7 +577,7 @@ function openlab_get_custom_activity_action( $activity = null ) {
 		if ( ! ctype_space( $action_redraw ) ) {
 			$class          = 0 === $count ? 'activity-user' : 'activity-action';
 			$action_output .= '<a class="' . $class . '"' . $action_redraw;
-			$count++;
+			++$count;
 		}
 	}
 
@@ -788,3 +788,36 @@ function openlab_hide_single_profile_group_tab( $tabs ) {
 	return $tabs;
 }
 add_filter( 'xprofile_filter_profile_group_tabs', 'openlab_hide_single_profile_group_tab' );
+
+/**
+ * When setting the 'openlab_default_avatar' theme mod, mirror to a site option.
+ *
+ * This site option will then be used to populate the avatar across BP.
+ *
+ * @param int $value Value from set_theme_mod().
+ * @return int
+ */
+function openlab_mirror_default_avatar( $value ) {
+	$src = wp_get_attachment_image_src( $value, 'full' );
+
+	if ( ! $src ) {
+		$avatar_url = '';
+	} else {
+		$avatar_url = $src[0];
+	}
+
+	update_site_option( 'cboxol_default_avatar_full', $avatar_url );
+
+	$thumb_src = wp_get_attachment_image_src( $value, 'thumbnail' );
+
+	if ( ! $thumb_src ) {
+		$thumb_url = '';
+	} else {
+		$thumb_url = $thumb_src[0];
+	}
+
+	update_site_option( 'cboxol_default_avatar_thumb', $thumb_url );
+
+	return $value;
+}
+add_filter( 'pre_set_theme_mod_openlab_default_avatar', 'openlab_mirror_default_avatar' );

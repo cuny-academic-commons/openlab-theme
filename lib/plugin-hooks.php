@@ -125,9 +125,13 @@ add_action(
  */
 function openlab_forum_tabs_output() {
 	?>
-	<ul class="nav nav-inline">
-		<?php openlab_forum_tabs(); ?>
-	</ul>
+	<div class="forum-nav">
+		<ul class="nav nav-inline">
+			<?php openlab_forum_tabs(); ?>
+		</ul>
+
+		<?php bbp_get_template_part( 'form', 'search' ); ?>
+	</div>
 	<?php
 }
 
@@ -289,14 +293,17 @@ add_filter( 'posts_results', 'openlab_bbp_force_forums_to_public', 10, 2 );
  * Force site public to 1 for bbPress.
  *
  * Otherwise activity is not posted.
+ *
+ * @param mixed $is_public Value from bbp_is_site_public filter.
+ * @param int   $site_id   ID of the site.
+ * @return mixed
  */
-function openlab_bbp_force_site_public_to_1( $public, $site_id ) {
+function openlab_bbp_force_site_public_to_1( $is_public, $site_id ) {
 	if ( bp_get_root_blog_id() === (int) $site_id ) {
-		$public = 1;
+		$is_public = 1;
 	}
-	return $public;
+	return $is_public;
 }
-
 add_filter( 'bbp_is_site_public', 'openlab_bbp_force_site_public_to_1', 10, 2 );
 
 /**
@@ -531,6 +538,68 @@ function openlab_remove_bbpress_forum_title( $title ) {
 	return $title;
 }
 add_filter( 'bbp_get_forum_title', 'openlab_remove_bbpress_forum_title' );
+
+/**
+ * Filters bbPress's default search parameters.
+ *
+ * @param array $r
+ * @return array
+ */
+function openlab_filter_bbpress_search_parameters( $r ) {
+	if ( ! bp_is_group() ) {
+		return $r;
+	}
+
+	unset( $r['post_type']['forum'] );
+
+	if ( ! isset( $r['meta_query'] ) ) {
+		$r['meta_query'] = [];
+	}
+
+	$forum_ids = bbp_get_group_forum_ids( bp_get_current_group_id() );
+	if ( ! $forum_ids ) {
+		$forum_ids = [ 0 ];
+	}
+
+	$r['meta_query'][] = [
+		'key'     => '_bbp_forum_id',
+		'value'   => $forum_ids,
+		'compare' => 'IN',
+	];
+
+	// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+	$r['paged'] = ! empty( $_GET['search_paged'] ) ? (int) $_GET['search_paged'] : 1;
+
+	return $r;
+}
+add_filter( 'bbp_after_has_search_results_parse_args', 'openlab_filter_bbpress_search_parameters' );
+
+/**
+ * Filters bbPress's default search pagination parameters.
+ *
+ * @param array $r
+ * @return array
+ */
+function openlab_filter_bbpress_search_pagination_parameters( $r ) {
+	if ( ! bp_is_group() ) {
+		return $r;
+	}
+
+	// phpcs:disable WordPress.Security.NonceVerification.Recommended
+	if ( empty( $_GET['bbp_search'] ) ) {
+		return $r;
+	}
+
+	$search_term  = wp_unslash( $_GET['bbp_search'] );
+	$search_paged = ! empty( $_GET['search_paged'] ) ? (int) $_GET['search_paged'] : 1;
+	// phpcs:enable WordPress.Security.NonceVerification.Recommended
+
+	$r['base']    = add_query_arg( 'bbp_search', $search_term, bp_get_group_permalink( groups_get_current_group() ) . 'forum/' ) . '&search_paged=%#%';
+	$r['current'] = $search_paged;
+
+	return $r;
+}
+add_filter( 'bbp_search_results_pagination', 'openlab_filter_bbpress_search_pagination_parameters' );
 
 /**
  * Enable at-mention autocomplete on BuddyPress group forum textareas.

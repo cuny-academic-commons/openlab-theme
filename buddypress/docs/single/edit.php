@@ -109,7 +109,7 @@ if ( ! function_exists( 'wp_editor' ) ) {
 							</div>
 						</div>
 
-						<?php if ( current_user_can( 'bp_docs_manage', $doc_id ) ) : ?>
+						<?php if ( current_user_can( 'bp_docs_manage', $doc_id ) && apply_filters( 'bp_docs_allow_access_settings', true ) ) : ?>
 							<div id="doc-settings" class="doc-meta-box">
 								<div class="toggleable toggle-closed">
 									<p class="toggle-switch" id="settings-toggle"><?php esc_html_e( 'Settings', 'commons-in-a-box' ); ?></p>

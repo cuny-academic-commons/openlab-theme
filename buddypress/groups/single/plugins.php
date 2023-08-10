@@ -31,14 +31,8 @@ if ( function_exists( 'openlab_eo_is_event_detail_screen' ) && openlab_eo_is_eve
 
 				<?php elseif ( bp_is_current_action( BP_GROUP_DOCUMENTS_SLUG ) ) : ?>
 
-					<div class="row">
-						<div class="submenu col-sm-17">
-							<ul class="nav nav-inline">
-								<li class="current-menu-item"><a href=""><?php esc_html_e( 'Files', 'commons-in-a-box' ); ?></a></li>
-							</ul>
-						</div>
-						<div class="group-count col-sm-7 pull-right"><?php echo esc_html( openlab_get_files_count() ); ?></div>
-					</div>
+					<?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+					<?php echo openlab_submenu_markup( 'group-files' ); ?>
 
 				<?php elseif ( bp_is_current_component( 'events' ) || bp_is_current_action( 'events' ) ) : ?>
 

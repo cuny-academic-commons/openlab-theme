@@ -377,7 +377,7 @@ function openlab_help_cats_loop() {
 			?>
 
 			<?php
-			$count++;
+			++$count;
 			echo '</div>';
 		}//ecnd child_cats for each
 		echo '</div>';

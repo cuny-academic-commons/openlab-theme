@@ -4,7 +4,7 @@ Theme URL: https://commonsinabox.org
 Description: Commons In A Box theme, based on the OpenLab at City Tech.
 Author: The Commons In A Box OpenLab team
 Author URI: https://commonsinabox.org
-Version: 1.4.0
+Version: 1.5.0
 Text Domain: commons-in-a-box
 */
 
@@ -1537,11 +1537,14 @@ body form{
                 }
                 &#open-lab-login{
                     border-bottom: 13px solid @loginBackgroundColor;
-                    h2, h1{
+                    h2, .title {
                         margin: 16px 0 14px;
                     }
-                    h1{
+                    .title {
                         padding-right: 5px;
+						font-size: 18px;
+						line-height: 1.25;
+						display: inline-block;
                     }
                     #user-info{
 						height: 86px;
@@ -2745,6 +2748,15 @@ input#group-request-send {
             }
         }
     }
+	.group-home-activity-title {
+		a {
+			text-decoration: none;
+		}
+
+		a:hover {
+			text-decoration: underline;
+		}
+	}
 }
 #members-list{
     .inline-element{
@@ -2858,6 +2870,137 @@ h3#message-subject {
     }
 }
 #bp-group-documents{
+	.bp-group-documents-columns {
+		display: flex;
+		gap: 20px;
+	}
+
+	.bp-group-documents-main-column {
+		flex: 1;
+	}
+
+	&.has-folders {
+		.bp-group-documents-folder-links {
+			display: block;
+			flex: 0 0 180px;
+		}
+	}
+
+	.upload-new-file {
+		padding-top: 18px;
+		padding-right: 8px;
+	}
+
+    @media (max-width: @screen-xs-max){
+		& #bp-group-documents-sorting {
+			.sorting-column {
+				display: inline-block;
+				width: auto;
+			}
+		}
+		& .bp-group-documents-list-container {
+			float: none !important;
+			width: 100% !important;
+		}
+
+		& #bp-group-documents-sorting {
+			width: 100% !important;
+		}
+
+
+		& .bp-group-documents-folder-links {
+			display: block;
+			margin-top: 2em;
+			width: 100% !important;
+			float: none !important;
+		}
+	}
+
+	&.is-edit-mode {
+		#bp-group-documents-sorting,
+		.bp-group-documents-list-container,
+		.bp-group-documents-folder-links,
+		#bp-group-documents-upload-button,
+		.submenu-row .group-count {
+			display: none;
+		}
+
+		#bp-group-documents-upload-new {
+			display: block;
+		}
+
+		.pagination {
+			display: none;
+		}
+
+        #message.info {
+            display: none;
+        }
+	}
+
+	.bp-group-documents-list-folder-header {
+        background-color: @panel-default-heading-bg;
+        border: 1px solid @panel-default-border;
+		border-top-left-radius: 4px;
+		border-top-right-radius: 4px;
+		border-bottom: none;
+        color: @panel-default-text;
+		display: block;
+		padding: 15px;
+		font-weight: bold;
+	}
+
+	&.is-folder .bp-group-documents-list.item-list {
+		.list-group-item:first-child {
+			border-top-left-radius: 0;
+			border-top-right-radius: 0;
+		}
+	}
+
+	.bp-group-documents-folder-links {
+		display: none;
+	}
+
+	.group-documents-orderby {
+		width: auto;
+	}
+
+	.admin-links {
+		padding-left: 1em;
+		padding-bottom: 1em;
+	}
+
+	.group-documents-title {
+		font-weight: 600;
+	}
+
+    .group-documents-icon {
+        text-decoration: none;
+    }
+
+    .group-documents-meta,
+    .group-documents-description {
+        margin: 0;
+    }
+
+	.show-all-files {
+		margin-top: .5em;
+	}
+
+    #bp-group-documents-upload-new {
+		display: none;
+
+		.form-panel .panel {
+			margin-top: 0;
+		}
+	}
+
+    #bp-group-documents-edit {
+		.form-panel .panel {
+			margin-top: 0;
+		}
+	}
+
     .bp-template-notice{
         &.error,
         &.updated{
@@ -2868,7 +3011,71 @@ h3#message-subject {
         margin-bottom: 19px;
         margin-top: 3px;
     }
+
+	.group-file-folders {
+		legend {
+			border-bottom: 0;
+			font-size: 1em;
+			font-weight: @bold;
+			margin-bottom: 0;
+		}
+
+		.checkbox-list-container {
+			ul {
+				list-style-type: none;
+				margin-top: 0;
+				padding-left: 0;
+			}
+
+			label {
+				font-weight: normal;
+			}
+		}
+    }
+
+    .group-file-folder-nav {
+        min-height: 300px;
+        border: 1px solid @30gray;
+        border-radius: @border-radius-base;
+        overflow: auto;
+        padding: 6px 12px;
+
+		hr {
+			margin-top: 12px;
+			margin-bottom: 12px;
+		}
+
+		ul {
+			list-style-type: none;
+			margin-top: 0;
+			padding-left: 0;
+		}
+
+		.current-category a {
+			font-weight: bold;
+			text-decoration: none;
+		}
+    }
 }
+
+.bp-group-documents-fields-for-file-type {
+	margin-top: 18px;
+	margin-left: 17px;
+}
+
+.bp-group-documents-fields {
+    &.show-link {
+        #bp-group-documents-fields-for-file-type-upload {
+            display: none;
+        }
+    }
+    &.show-upload {
+        #bp-group-documents-fields-for-file-type-link {
+            display: none;
+        }
+    }
+}
+
 .docs-info-header{
     #tags-toggle{
         padding: 6px 16px;
@@ -3082,6 +3289,11 @@ h3#message-subject {
 		.notify-group-members-ui {
 			margin-bottom: 10px;
 		}
+
+		.bbp-topic-tags {
+			padding: 12px 8px 0 0;
+		}
+
         @media (max-width: @screen-xs-max){
             .forum-titles,
             .bp_group{
@@ -3104,6 +3316,24 @@ h3#message-subject {
         }
     }
 }
+
+.forum-nav {
+	display: flex;
+	margin-bottom: 40px;
+
+	@media (max-width:@screen-xs-max){
+		flex-direction: column;
+		gap: 20px;
+	}
+
+	.bbp-search-form {
+		margin-left: auto;
+		@media (max-width:@screen-xs-max){
+			margin-left: 0;
+		}
+	}
+}
+
 /**invite-anyone specific**/
 #invite-anyone-invite-list{
     li{

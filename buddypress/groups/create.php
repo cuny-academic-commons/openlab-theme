@@ -204,6 +204,15 @@
 				<?php openlab_group_site_privacy_settings_markup(); ?>
 				<?php openlab_group_site_member_role_settings_markup(); ?>
 
+				<?php
+				/**
+				 * Fires after the 'Member Role Settings' on the Site step of group creation.
+				 *
+				 * @since 1.5.0
+				 */
+				do_action( 'openlab_group_creation_after_group_site_settings' );
+				?>
+
 				<?php wp_nonce_field( 'groups_create_save_site-details' ); ?>
 
 			<?php endif; ?>

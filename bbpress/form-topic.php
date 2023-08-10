@@ -37,13 +37,11 @@
 					if ( bbp_is_topic_edit() ) {
 						// translators: topic title
 						echo esc_html( sprintf( __( 'Now Editing &ldquo;%s&rdquo;', 'bbpress' ), bbp_get_topic_title() ) );
+					} elseif ( bbp_is_single_forum() ) {
+						// translators: forum title
+						echo esc_html( sprintf( __( 'Create New Topic in &ldquo;%s&rdquo;', 'bbpress' ), bbp_get_forum_title() ) );
 					} else {
-						if ( bbp_is_single_forum() ) {
-							// translators: forum title
-							echo esc_html( sprintf( __( 'Create New Topic in &ldquo;%s&rdquo;', 'bbpress' ), bbp_get_forum_title() ) );
-						} else {
-							esc_html_e( 'Create New Topic', 'bbpress' );
-						}
+						esc_html_e( 'Create New Topic', 'bbpress' );
 					}
 					?>
 				</div>

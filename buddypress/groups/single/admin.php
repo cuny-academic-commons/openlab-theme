@@ -102,7 +102,7 @@ openlab_group_admin_js_data( $group_type );
 					$files_enabled = openlab_is_files_enabled_for_group();
 				?>
 				<div class="panel panel-default">
-					<div class="panel-heading"><?php esc_html_e( 'Discussion, Docs, and Files Settings', 'commons-in-a-box' ); ?></div>
+					<div class="panel-heading"><?php esc_html_e( 'Discussion, Docs, and File Library Settings', 'commons-in-a-box' ); ?></div>
 					<div class="panel-body">
 						<p id="discussion-settings-tag"><?php echo esc_html( $group_type->get_label( 'settings_help_text_discussion' ) ); ?></p>
 						<div class="checkbox checkbox-float">
@@ -112,7 +112,7 @@ openlab_group_admin_js_data( $group_type );
 							<label><input type="checkbox" name="openlab-edit-group-docs" id="group-show-docs" value="1"<?php checked( $docs_enabled ); ?> /> <?php esc_html_e( 'Enable Docs', 'commons-in-a-box' ); ?></label>
 						</div>
 						<div class="checkbox checkbox-float">
-							<label><input type="checkbox" name="openlab-edit-group-files" id="group-show-files" value="1"<?php checked( $files_enabled ); ?> /> <?php esc_html_e( 'Enable Files', 'commons-in-a-box' ); ?></label>
+							<label><input type="checkbox" name="openlab-edit-group-files" id="group-show-files" value="1"<?php checked( $files_enabled ); ?> /> <?php esc_html_e( 'Enable File Library', 'commons-in-a-box' ); ?></label>
 						</div>
 					</div>
 				</div>
@@ -181,7 +181,7 @@ openlab_group_admin_js_data( $group_type );
 									<?php endif ?>
 								</div>
 							</li>
-							<?php $rli++; ?>
+							<?php ++$rli; ?>
 						<?php endforeach; ?>
 						<?php wp_nonce_field( 'group_related_link_settings', 'group-related-link-settings-nonce' ); ?>
 					</ul>

@@ -13,7 +13,7 @@ if ( is_user_logged_in() ) :
 
 	echo '<div id="open-lab-login" class="log-box">';
 	printf(
-		'<h1 class="title inline-element semibold">%s</h1>',
+		'<span class="title inline-element semibold">%s</span>',
 		sprintf(
 			// translators: logged-in user name
 			esc_html__( 'Welcome, %s', 'commons-in-a-box' ),

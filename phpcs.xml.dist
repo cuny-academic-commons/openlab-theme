@@ -37,7 +37,7 @@
 	<config name="testVersion" value="5.6-"/>
 
 	<rule ref="WordPress-Core">
-		<exclude name="Generic.Arrays.DisallowShortArraySyntax"/>
+		<exclude name="Universal.Arrays.DisallowShortArraySyntax"/>
 	</rule>
 
 	<!-- Include the WordPress-Extra standard. -->
@@ -51,6 +51,12 @@
 
 	<!-- Add in some extra rules from other standards. -->
 	<rule ref="Generic.CodeAnalysis.UnusedFunctionParameter"/>
+
+	<rule ref="WordPress.WP.Capabilities">
+		<properties>
+			<property name="custom_capabilities[]" value="assign_topic_tags,bp_docs_associate_with_group,bp_docs_create,bp_docs_edit,bp_docs_manage,bp_moderate,edit_topic,grant_badges,moderate" />
+		</properties>
+	</rule>
 
 	<rule ref="WordPress.WP.DeprecatedClasses">
 		<properties>

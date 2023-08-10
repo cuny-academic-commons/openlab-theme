@@ -23,9 +23,12 @@ function openlab_set_group_creation_steps() {
 	);
 	buddypress()->groups->group_creation_steps = $steps;
 
-	if ( bp_is_group_creation_step( 'group-details' ) ) {
+	// Reset when returning to group-details, unless it's via a 'Previous' link.
+	// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+	if ( bp_is_group_creation_step( 'group-details' ) && empty( $_GET['is_previous'] ) ) {
 		unset( buddypress()->groups->current_create_step );
 		unset( buddypress()->groups->completed_create_steps );
+		unset( buddypress()->groups->new_group_id );
 
 		setcookie( 'bp_new_group_id', false, time() - 1000, COOKIEPATH, COOKIE_DOMAIN, is_ssl() );
 		setcookie( 'bp_completed_create_steps', false, time() - 1000, COOKIEPATH, COOKIE_DOMAIN, is_ssl() );
@@ -807,6 +810,8 @@ function openlab_save_braille_status( $group ) {
  * After group creation, move the dummy avatar to the proper location.
  */
 function openlab_move_avatar_after_group_create() {
+	global $wp_filesystem;
+
 	// phpcs:disable WordPress.Security.NonceVerification.Missing
 	if ( ! isset( $_POST['avatar-item-uuid'] ) ) {
 		return;
@@ -829,7 +834,10 @@ function openlab_move_avatar_after_group_create() {
 
 	$new_dir = groups_avatar_upload_dir( $new_group_id );
 
-	rename( $old_dir['path'], $new_dir['path'] );
+	require_once ABSPATH . 'wp-admin/includes/file.php';
+	WP_Filesystem();
+
+	$wp_filesystem->move( $old_dir['path'], $new_dir['path'] );
 }
 
 /**
@@ -1346,10 +1354,17 @@ function openlab_get_group_activity_content( $title, $content, $link ) {
 	$markup = '';
 
 	if ( '' !== $title ) {
-		$markup = '<p class="semibold h6">
-			<span class="hyphenate truncate-on-the-fly" data-basevalue="80" data-minvalue="55" data-basewidth="376">' . esc_html( $title ) . ' </span>
-			<span class="original-copy hidden">' . esc_html( $title ) . '</span>
-		</p>';
+		$markup = sprintf(
+			'<p class="semibold h6 group-home-activity-title">
+				<a href="%s">
+					<span class="hyphenate truncate-on-the-fly" data-basevalue="80" data-minvalue="55" data-basewidth="376">%s </span>
+					<span class="original-copy hidden">%s</span>
+				</a>
+			</p>',
+			esc_attr( $link ),
+			esc_html( $title ),
+			esc_html( $title )
+		);
 	}
 
 	$markup .= '<p class="activity-content">';
@@ -1418,7 +1433,11 @@ function openlab_group_site_settings() {
 add_action( 'bp_screens', 'openlab_group_site_settings' );
 
 /**
- * Add the group type to the Previous Step button during group creation.
+ * Add the URL flags to the Previous Step button during group creation.
+ *
+ * This includes a group_type flag as well as a note that we are navigating via the
+ * Previous button. This helps us to mitigate problems with cleared cookies during
+ * group creation navigation.
  */
 function openlab_previous_step_type( $url ) {
 	// phpcs:disable WordPress.Security.NonceVerification.Recommended
@@ -1430,14 +1449,19 @@ function openlab_previous_step_type( $url ) {
 	}
 	// phpcs:enable WordPress.Security.NonceVerification.Recommended
 
-	$url = add_query_arg( 'group_type', $group_type_slug, $url );
+	$url = add_query_arg(
+		[
+			'group_type'  => $group_type_slug,
+			'is_previous' => 1,
+		],
+		$url
+	);
 
 	return $url;
 }
 add_filter( 'bp_get_group_creation_previous_link', 'openlab_previous_step_type' );
 
 /**
-	>>>>>>> 1.3.x
  * Remove the 'hidden' class from hidden group leave buttons
  *
  * A crummy conflict with wp-ajax-edit-comments causes these items to be
@@ -1818,7 +1842,9 @@ function openlab_show_site_posts_and_comments() {
 
 				$comments[] = array(
 					'content'   => wp_strip_all_tags( bp_create_excerpt( $wp_comment->comment_content, 110, array( 'html' => false ) ) ),
-					'permalink' => get_permalink( $post_id ),
+					// Translators: Title of blog post.
+					'title'     => sprintf( __( 'Comment on: %s', 'commons-in-a-box' ), get_the_title( $post_id ) ),
+					'permalink' => get_comment_link( $wp_comment ),
 				);
 			}
 
@@ -1870,8 +1896,9 @@ function openlab_show_site_posts_and_comments() {
 								<div class="panel panel-default">
 									<div class="panel-body">
 										<?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-										<?php echo openlab_get_group_activity_content( '', $comment['content'], $comment['permalink'] ); ?>
-									</div></div>
+										<?php echo openlab_get_group_activity_content( $comment['title'], $comment['content'], $comment['permalink'] ); ?>
+									</div>
+								</div>
 							<?php endforeach ?>
 						<?php else : ?>
 							<div class="panel panel-default">
@@ -2624,7 +2651,7 @@ function openlab_get_default_group_term() {
 
 	if ( $month > 9 ) {
 		$term = __( 'Spring', 'commons-in-a-box' );
-		$year++;
+		++$year;
 	} elseif ( $month < 4 ) {
 		$term = __( 'Spring', 'commons-in-a-box' );
 	} else {

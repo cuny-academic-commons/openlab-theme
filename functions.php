@@ -1,6 +1,6 @@
 <?php
 
-define( 'OPENLAB_VERSION', '1.4.0-1673634402852' );
+define( 'OPENLAB_VERSION', '1.5.0-1691676590669' );
 
 if ( ! defined( 'CSS_DEBUG' ) ) {
 	define( 'CSS_DEBUG', false );
@@ -207,12 +207,21 @@ function openlab_load_scripts() {
 				'nonce'   => wp_create_nonce( 'request-nonce' ),
 				'strings' => array(
 					'cancelFriendship' => esc_html__( 'Cancel Friendship', 'commons-in-a-box' ),
+					'deleteFolder'     => esc_html__( 'Are you sure you wish to permanently delete this folder? The files associated with this folder will not be deleted.', 'commons-in-a-box' ),
 					'seeMore'          => esc_html__( 'See More', 'commons-in-a-box' ),
 				),
 			)
 		);
 
 		wp_register_script( 'parsley', $stylesheet_dir_uri . '/js/parsley.min.js', array( 'jquery' ), $ver, true );
+
+		wp_register_script(
+			'openlab-group-documents',
+			$stylesheet_dir_uri . '/js/group-documents.js',
+			[ 'jquery' ],
+			$ver,
+			true
+		);
 
 		if ( bp_is_groups_directory() || openlab_is_search_results_page() || bp_is_members_directory() ) {
 			wp_enqueue_script( 'openlab-directory', $stylesheet_dir_uri . '/js/directory.js', [ 'jquery' ], $ver, true );
@@ -508,4 +517,48 @@ function openlab_braille_is_enabled() {
  */
 function openlab_is_search_results_page() {
 	return cboxol_is_brand_page( 'search-results' );
+}
+
+/**
+ * Gets the brand page ancestor of the given post.
+ *
+ * For brand pages themselves, the $post_id is returned.
+ *
+ * @since 1.5.0
+ *
+ * @param int $post_id Optional. Post ID. Defaults to current object.
+ * @return int
+ */
+function openlab_get_brand_page_ancestor( $post_id = null ) {
+	static $map;
+
+	if ( isset( $map[ $post_id ] ) ) {
+		return $map[ $post_id ];
+	}
+
+	if ( ! $post_id ) {
+		$post_id = get_queried_object_id();
+	}
+
+	if ( ! $post_id ) {
+		return 0;
+	}
+
+	$brand_pages = cboxol_get_brand_pages();
+	foreach ( $brand_pages as $brand_page ) {
+		if ( $post_id === $brand_page['id'] ) {
+			$map[ $post_id ] = $post_id;
+			return $map[ $post_id ];
+		}
+	}
+
+	$post = get_post( $post_id );
+	if ( ! $post || ! $post->post_parent ) {
+		$map[ $post_id ] = 0;
+		return $map[ $post_id ];
+	}
+
+	$map[ $post_id ] = openlab_get_brand_page_ancestor( $post->post_parent );
+
+	return $map[ $post_id ];
 }

@@ -2,7 +2,7 @@
 $group_type  = bp_get_current_group_directory_type();
 $group_terms = bpcgc_get_terms_by_group_type( $group_type );
 
-$option_value_bpcgc = openlab_get_current_filter( 'group_category' );
+$option_value_bpcgc = openlab_get_current_filter( 'cat' );
 ?>
 
 <?php if ( $group_terms ) : ?>

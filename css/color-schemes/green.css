@@ -4,7 +4,7 @@ Theme URL: https://commonsinabox.org
 Description: Commons In A Box theme, based on the OpenLab at City Tech.
 Author: The Commons In A Box OpenLab team
 Author URI: https://commonsinabox.org
-Version: 1.4.0
+Version: 1.5.0
 Text Domain: commons-in-a-box
 */
 /**import bootstrap**/
@@ -8619,11 +8619,14 @@ body form .checkbox-list-container {
   border-bottom: 13px solid #b6d498;
 }
 .home-page .row-home-top .login .log-box#open-lab-login h2,
-.home-page .row-home-top .login .log-box#open-lab-login h1 {
+.home-page .row-home-top .login .log-box#open-lab-login .title {
   margin: 16px 0 14px;
 }
-.home-page .row-home-top .login .log-box#open-lab-login h1 {
+.home-page .row-home-top .login .log-box#open-lab-login .title {
   padding-right: 5px;
+  font-size: 18px;
+  line-height: 1.25;
+  display: inline-block;
 }
 .home-page .row-home-top .login .log-box#open-lab-login #user-info {
   height: 86px;
@@ -9843,6 +9846,12 @@ input#group-request-send {
   margin-bottom: 0;
   font-size: 12px;
 }
+.group-activity-overview .group-home-activity-title a {
+  text-decoration: none;
+}
+.group-activity-overview .group-home-activity-title a:hover {
+  text-decoration: underline;
+}
 #members-list .inline-element {
   margin-right: 1.4%;
   width: 9.2%;
@@ -9931,6 +9940,103 @@ h3#message-subject {
 .plugins #item-body {
   margin-top: 35px;
 }
+#bp-group-documents .bp-group-documents-columns {
+  display: flex;
+  gap: 20px;
+}
+#bp-group-documents .bp-group-documents-main-column {
+  flex: 1;
+}
+#bp-group-documents.has-folders .bp-group-documents-folder-links {
+  display: block;
+  flex: 0 0 180px;
+}
+#bp-group-documents .upload-new-file {
+  padding-top: 18px;
+  padding-right: 8px;
+}
+@media (max-width: 767px) {
+  #bp-group-documents #bp-group-documents-sorting .sorting-column {
+    display: inline-block;
+    width: auto;
+  }
+  #bp-group-documents .bp-group-documents-list-container {
+    float: none !important;
+    width: 100% !important;
+  }
+  #bp-group-documents #bp-group-documents-sorting {
+    width: 100% !important;
+  }
+  #bp-group-documents .bp-group-documents-folder-links {
+    display: block;
+    margin-top: 2em;
+    width: 100% !important;
+    float: none !important;
+  }
+}
+#bp-group-documents.is-edit-mode #bp-group-documents-sorting,
+#bp-group-documents.is-edit-mode .bp-group-documents-list-container,
+#bp-group-documents.is-edit-mode .bp-group-documents-folder-links,
+#bp-group-documents.is-edit-mode #bp-group-documents-upload-button,
+#bp-group-documents.is-edit-mode .submenu-row .group-count {
+  display: none;
+}
+#bp-group-documents.is-edit-mode #bp-group-documents-upload-new {
+  display: block;
+}
+#bp-group-documents.is-edit-mode .pagination {
+  display: none;
+}
+#bp-group-documents.is-edit-mode #message.info {
+  display: none;
+}
+#bp-group-documents .bp-group-documents-list-folder-header {
+  background-color: #f5f5f5;
+  border: 1px solid #ddd;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+  border-bottom: none;
+  color: #333333;
+  display: block;
+  padding: 15px;
+  font-weight: bold;
+}
+#bp-group-documents.is-folder .bp-group-documents-list.item-list .list-group-item:first-child {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+#bp-group-documents .bp-group-documents-folder-links {
+  display: none;
+}
+#bp-group-documents .group-documents-orderby {
+  width: auto;
+}
+#bp-group-documents .admin-links {
+  padding-left: 1em;
+  padding-bottom: 1em;
+}
+#bp-group-documents .group-documents-title {
+  font-weight: 600;
+}
+#bp-group-documents .group-documents-icon {
+  text-decoration: none;
+}
+#bp-group-documents .group-documents-meta,
+#bp-group-documents .group-documents-description {
+  margin: 0;
+}
+#bp-group-documents .show-all-files {
+  margin-top: 0.5em;
+}
+#bp-group-documents #bp-group-documents-upload-new {
+  display: none;
+}
+#bp-group-documents #bp-group-documents-upload-new .form-panel .panel {
+  margin-top: 0;
+}
+#bp-group-documents #bp-group-documents-edit .form-panel .panel {
+  margin-top: 0;
+}
 #bp-group-documents .bp-template-notice.error,
 #bp-group-documents .bp-template-notice.updated {
   margin-bottom: 17px;
@@ -9938,6 +10044,50 @@ h3#message-subject {
 #bp-group-documents #pag-bottom {
   margin-bottom: 19px;
   margin-top: 3px;
+}
+#bp-group-documents .group-file-folders legend {
+  border-bottom: 0;
+  font-size: 1em;
+  font-weight: 700;
+  margin-bottom: 0;
+}
+#bp-group-documents .group-file-folders .checkbox-list-container ul {
+  list-style-type: none;
+  margin-top: 0;
+  padding-left: 0;
+}
+#bp-group-documents .group-file-folders .checkbox-list-container label {
+  font-weight: normal;
+}
+#bp-group-documents .group-file-folder-nav {
+  min-height: 300px;
+  border: 1px solid #bbbbbb;
+  border-radius: 4px;
+  overflow: auto;
+  padding: 6px 12px;
+}
+#bp-group-documents .group-file-folder-nav hr {
+  margin-top: 12px;
+  margin-bottom: 12px;
+}
+#bp-group-documents .group-file-folder-nav ul {
+  list-style-type: none;
+  margin-top: 0;
+  padding-left: 0;
+}
+#bp-group-documents .group-file-folder-nav .current-category a {
+  font-weight: bold;
+  text-decoration: none;
+}
+.bp-group-documents-fields-for-file-type {
+  margin-top: 18px;
+  margin-left: 17px;
+}
+.bp-group-documents-fields.show-link #bp-group-documents-fields-for-file-type-upload {
+  display: none;
+}
+.bp-group-documents-fields.show-upload #bp-group-documents-fields-for-file-type-link {
+  display: none;
 }
 .docs-info-header #tags-toggle {
   padding: 6px 16px;
@@ -10116,6 +10266,9 @@ h3#message-subject {
 #content #bbpress-forums .notify-group-members-ui {
   margin-bottom: 10px;
 }
+#content #bbpress-forums .bbp-topic-tags {
+  padding: 12px 8px 0 0;
+}
 @media (max-width: 767px) {
   #content #bbpress-forums .forum-titles .bbp-topic-title,
   #content #bbpress-forums .bp_group .bbp-topic-title {
@@ -10134,6 +10287,24 @@ h3#message-subject {
   #content #bbpress-forums #subscription-toggle,
   #content #bbpress-forums #favorite-toggle {
     display: none;
+  }
+}
+.forum-nav {
+  display: flex;
+  margin-bottom: 40px;
+}
+@media (max-width: 767px) {
+  .forum-nav {
+    flex-direction: column;
+    gap: 20px;
+  }
+}
+.forum-nav .bbp-search-form {
+  margin-left: auto;
+}
+@media (max-width: 767px) {
+  .forum-nav .bbp-search-form {
+    margin-left: 0;
   }
 }
 /**invite-anyone specific**/

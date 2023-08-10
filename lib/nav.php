@@ -58,6 +58,15 @@ function openlab_custom_nav_classes( $classes, $item ) {
 		}
 	}
 
+	$brand_page_ancestor = openlab_get_brand_page_ancestor();
+	if ( $brand_page_ancestor ) {
+		// We look up the page by URL in case of custom links.
+		$post_id = url_to_postid( $item->url );
+		if ( $post_id === $brand_page_ancestor ) {
+			$classes[] = 'current-menu-item';
+		}
+	}
+
 	return $classes;
 }
 
