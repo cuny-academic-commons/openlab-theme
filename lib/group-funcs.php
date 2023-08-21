@@ -1330,8 +1330,14 @@ function openlab_render_message() {
 		<div id="message" class="bp-template-notice <?php echo esc_attr( $type ); ?> btn btn-default btn-block btn-primary link-btn clearfix">
 
 			<span class="pull-left fa fa-check" aria-hidden="true"></span>
+			<?php
+			// Locate HTML attributes and replace double quotes with single quotes.
+			// This helps to avoid improper escaping by kses.
+			$content = preg_replace( '/(href|src|class|id|name|style)="([^"]*)"/', '$1=\'$2\'', $content );
+			?>
+
 			<?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-			<?php echo wp_filter_kses( $content ); ?>
+			<?php echo wp_kses_post( $content ); ?>
 
 		</div>
 
