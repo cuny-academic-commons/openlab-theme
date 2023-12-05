@@ -1325,12 +1325,12 @@ function openlab_calendar_submenu() {
  */
 function openlab_custom_nav_menu_item( $title, $url, $order, $item_parent = 0, $classes = array() ) {
 	$item                   = new stdClass();
-	$item->ID               = 1000000 + $order + $parent;
+	$item->ID               = 1000000 + $order + $item_parent;
 	$item->db_id            = $item->ID;
 	$item->title            = $title;
 	$item->url              = $url;
 	$item->menu_order       = $order;
-	$item->menu_item_parent = $parent;
+	$item->menu_item_parent = $item_parent;
 	$item->type             = '';
 	$item->object           = '';
 	$item->object_id        = '';
