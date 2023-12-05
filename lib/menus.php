@@ -1324,11 +1324,18 @@ function openlab_calendar_submenu() {
  * @return \stdClass
  */
 function openlab_custom_nav_menu_item( $title, $url, $order, $item_parent = 0, $classes = array() ) {
+	// Detect whether to set 'current' flag based on $url.
+	$current = false;
+	if ( ! empty( $url ) ) {
+		$current = ( $url === $_SERVER['REQUEST_URI'] );
+	}
+
 	$item                   = new stdClass();
 	$item->ID               = 1000000 + $order + $item_parent;
 	$item->db_id            = $item->ID;
 	$item->title            = $title;
 	$item->url              = $url;
+	$item->current          = $current;
 	$item->menu_order       = $order;
 	$item->menu_item_parent = $item_parent;
 	$item->type             = '';
