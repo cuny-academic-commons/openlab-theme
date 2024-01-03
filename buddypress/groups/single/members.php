@@ -35,6 +35,7 @@
 				<div class="group-item-wrapper">
 					<div class="row">
 						<div class="item-avatar col-md-9 col-xs-7">
+							<?php /* translators: %s: member name */ ?>
 							<a href="<?php bp_member_permalink(); ?>"><img class="img-responsive" src="<?php echo esc_attr( $user_avatar ); ?>" alt="<?php echo esc_attr( sprintf( __( 'Avatar for %s', 'openlab-theme' ), bp_get_group_member_name() ) ); ?>"/></a>
 						</div>
 
