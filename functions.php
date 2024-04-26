@@ -233,6 +233,16 @@ function openlab_load_scripts() {
 				]
 			);
 		}
+
+		if ( bp_is_group() ) {
+			wp_enqueue_script(
+				'openlab-group-membership',
+				$stylesheet_dir_uri . '/js/membership-privacy.js',
+				[ 'jquery' ],
+				$ver,
+				true
+			);
+		}
 	}
 }
 add_action( 'wp_enqueue_scripts', 'openlab_load_scripts' );

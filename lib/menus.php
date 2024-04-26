@@ -827,6 +827,17 @@ function openlab_filter_subnav_admin( $subnav_item ) {
 }
 add_filter( 'bp_get_options_nav_admin', 'openlab_filter_subnav_admin' );
 
+/**
+ * Modifies the 'Members' subnav item.
+ *
+ * - Changes the name to 'Membership'.
+ * - Adds a count of total members.
+ * - Adds a 'current-menu-item' class to the 'Membership' subnav item when on the 'Membership' page.
+ * - Swaps URLs based on user role.
+ *
+ * @param string $subnav_item The subnav item.
+ * @return string
+ */
 function openlab_filter_subnav_members( $subnav_item ) {
 	global $bp;
 	global $wp_query;
@@ -854,14 +865,21 @@ function openlab_filter_subnav_members( $subnav_item ) {
 		$new_item = str_replace( 'current selected', 'current-menu-item', $new_item );
 	}
 
-	// get total member count
-	$total_mem = bp_core_number_format( groups_get_groupmeta( bp_get_current_group_id(), 'total_member_count' ) );
+	// Get a member count for formatting.
+	$total_mem = (int) groups_get_groupmeta( bp_get_current_group_id(), 'total_member_count' );
+	if ( ! current_user_can( 'bp_moderate' ) ) {
+		$private_users = openlab_get_private_members_of_group( bp_get_current_group_id() );
+		if ( $private_users ) {
+			$total_mem -= count( $private_users );
+		}
+	}
 
-	// added classes to span
+	// Added classes to member count span.
+	$member_count_formatted = bp_core_number_format( $total_mem );
 	if ( $total_mem > 0 ) {
-		$new_item = str_replace( '<span>' . $total_mem . '</span>', '<span class="mol-count pull-right count-' . $total_mem . ' gray">' . $total_mem . '</span>', $new_item );
+		$new_item = preg_replace( '|<span>[^<]+</span>|', '<span class="mol-count pull-right count-' . $total_mem . ' gray">' . $member_count_formatted . '</span>', $new_item );
 	} else {
-		$new_item = str_replace( '<span>' . $total_mem . '</span>', '', $new_item );
+		$new_item = preg_replace( '|<span>[^<]+</span>|', '', $new_item );
 	}
 
 	return $new_item;

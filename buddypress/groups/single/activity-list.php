@@ -13,6 +13,13 @@
 
 	$group     = groups_get_current_group();
 	$group_url = bp_get_group_permalink( $group );
+
+	if ( current_user_can( 'bp_moderate' ) || groups_is_user_member( bp_loggedin_user_id(), $group->id ) ) {
+		$group_private_members = [];
+	} else {
+		$group_private_members = openlab_get_private_members_of_group( $group->id );
+	}
+
 	?>
 
 	<?php if ( bp_is_group_home() ) { ?>
@@ -39,9 +46,16 @@
 									if ( ! empty( $forum_ids ) ) {
 										$forum_id = (int) is_array( $forum_ids ) ? $forum_ids[0] : $forum_ids;
 									}
+
+									$topic_args = [
+										'posts_per_page' => 3,
+										'post_parent'    => $forum_id,
+										'author__not_in' => $group_private_members,
+									];
+
 									?>
 
-									<?php if ( $forum_id && bbp_has_topics( 'posts_per_page=3&post_parent=' . $forum_id ) ) : ?>
+									<?php if ( $forum_id && bbp_has_topics( $topic_args ) ) : ?>
 										<?php while ( bbp_topics() ) : ?>
 											<?php bbp_the_topic(); ?>
 
@@ -53,19 +67,26 @@
 													$last_reply_id = bbp_get_topic_last_reply_id( $topic_id );
 
 													// Oh, bbPress.
-													$last_reply = get_post( $last_reply_id );
-													if ( ! empty( $last_reply->post_content ) ) {
-														$last_topic_content = bp_create_excerpt(
-															wp_strip_all_tags( $last_reply->post_content ),
-															250,
-															array(
-																'ending' => '',
-															)
-														);
+													$topic_replies = get_posts(
+														[
+															'post_type'      => 'reply',
+															'post_parent'    => $topic_id,
+															'author__not_in' => $group_private_members,
+															'posts_per_page' => 1,
+															'orderby'        => [ 'post_date' => 'DESC' ],
+														]
+													);
+
+													if ( $topic_replies ) {
+														$last_reply_content = $topic_replies[0]->post_content;
+													} else {
+														$topic_post         = get_post( $topic_id );
+														$last_reply_content = $topic_post->post_content;
 													}
+
+													$last_reply_content = wds_content_excerpt( wp_strip_all_tags( $last_reply_content ), 250 );
 													?>
 
-													<?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 													<?php echo openlab_get_group_activity_content( bbp_get_topic_title(), $last_topic_content, bbp_get_topic_permalink() ); ?>
 
 												</div>
@@ -139,8 +160,18 @@
 					?>
 
 					<h2 class="title activity-title"><a class="no-deco" href="<?php echo esc_attr( $href ); ?>"><?php esc_html_e( 'Members', 'commons-in-a-box' ); ?><span class="fa fa-chevron-circle-right" aria-hidden="true"></span></a></h2>
-					<?php $member_arg = array( 'exclude_admins_mods' => false ); ?>
-					<?php if ( bp_group_has_members( $member_arg ) ) : ?>
+
+					<?php
+					$group_member_args = [
+						'exclude_admins_mods' => false,
+					];
+
+					if ( ! current_user_can( 'bp_moderate' ) ) {
+						$group_member_args['exclude'] = openlab_get_private_members_of_group( bp_get_current_group_id() );
+					}
+					?>
+
+					<?php if ( bp_group_has_members( $group_member_args ) ) : ?>
 
 						<ul id="member-list" class="inline-element-list">
 							<?php

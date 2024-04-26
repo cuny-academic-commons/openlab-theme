@@ -2773,9 +2773,21 @@ input#group-request-send {
 .group-members{
     &.group-list{
         .group-item-wrapper{
-            height: 118px;
+            height: 128px;
             p{
                 margin: 10px 0 7px;
+            }
+        }
+        .group-item-membership-privacy {
+            margin-top: 15px;
+
+            label {
+                font-size: 12px;
+                font-weight: 400;
+
+                &:hover {
+                    cursor: pointer;
+                }
             }
         }
     }
@@ -2797,7 +2809,7 @@ input#group-request-send {
                     height: 127px;
                 }
                 &.members{
-                    height: 318px;
+                    height: auto;
                     .link-btn{
                         margin-right: 3px;
                     }
@@ -4049,6 +4061,13 @@ input.help-search {
     @media (max-width: @screen-xs-max){
         margin-top: 10px;
     }
+}
+/* Private membership indicator */
+p.private-membership-indicator {
+    margin-top: 15px;
+    font-size: 12px;
+    font-weight: 400;
+    color: #666 !important;
 }
 /**contact form**/
 .wpcf7{

@@ -9865,10 +9865,20 @@ input#group-request-send {
   }
 }
 .group-members.group-list .group-item-wrapper {
-  height: 118px;
+  height: 128px;
 }
 .group-members.group-list .group-item-wrapper p {
   margin: 10px 0 7px;
+}
+.group-members.group-list .group-item-membership-privacy {
+  margin-top: 15px;
+}
+.group-members.group-list .group-item-membership-privacy label {
+  font-size: 12px;
+  font-weight: 400;
+}
+.group-members.group-list .group-item-membership-privacy label:hover {
+  cursor: pointer;
 }
 .group-manage-members.group-list.group-manage-requests .group-item .group-item-wrapper ul.group-member-actions {
   font-weight: normal;
@@ -9885,7 +9895,7 @@ input#group-request-send {
   height: 127px;
 }
 .group-manage-members.group-list .group-item .group-item-wrapper.members {
-  height: 318px;
+  height: auto;
 }
 .group-manage-members.group-list .group-item .group-item-wrapper.members .link-btn {
   margin-right: 3px;
@@ -11101,6 +11111,13 @@ input.help-search {
   #breadcrumb-container {
     margin-top: 10px;
   }
+}
+/* Private membership indicator */
+p.private-membership-indicator {
+  margin-top: 15px;
+  font-size: 12px;
+  font-weight: 400;
+  color: #666 !important;
 }
 /**contact form**/
 .wpcf7 .wpcf7-response-output {

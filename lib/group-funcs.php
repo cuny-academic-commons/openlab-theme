@@ -1776,13 +1776,20 @@ function openlab_show_site_posts_and_comments() {
 
 	switch ( $site_type ) {
 		case 'local':
+			if ( current_user_can( 'bp_moderate' ) || groups_is_user_member( bp_loggedin_user_id(), $group_id ) ) {
+				$group_private_members = [];
+			} else {
+				$group_private_members = openlab_get_private_members_of_group( $group_id );
+			}
+
 			switch_to_blog( $site_id );
 
 			// Set up posts
 			$wp_posts = get_posts(
-				array(
+				[
 					'posts_per_page' => 3,
-				)
+					'author__not_in' => $group_private_members,
+				]
 			);
 
 			foreach ( $wp_posts as $wp_post ) {
@@ -1801,9 +1808,10 @@ function openlab_show_site_posts_and_comments() {
 
 			// Set up comments
 			$comment_args = [
-				'status'     => 'approve',
-				'number'     => 3,
-				'meta_query' => [
+				'status'         => 'approve',
+				'number'         => 3,
+				'author__not_in' => $group_private_members,
+				'meta_query'     => [
 					'relation' => 'AND',
 					[
 						'relation' => 'OR',
