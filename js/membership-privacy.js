@@ -20,7 +20,8 @@ jQuery( document ).ready(
 						data: {
 							'action': 'openlab_update_member_group_privacy',
 							'group_id': groupId,
-							'is_private': isPrivate
+							'is_private': isPrivate,
+							'nonce': $( '#openlab_hide_membership_nonce_' + groupId ).val()
 						},
 						beforeSend: function() {
 							// Disable checkbox

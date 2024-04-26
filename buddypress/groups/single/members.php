@@ -67,6 +67,7 @@ $members_args['exclude_admins_mods'] = 0;
 								<div class="group-item-membership-privacy">
 									<label>
 										<input type="checkbox" name="membership_privacy" id="membership_privacy" data-group_id="<?php echo esc_attr( bp_get_current_group_id() ); ?>" value="<?php echo esc_attr( bp_loggedin_user_id() ); ?>" <?php checked( openlab_is_my_membership_private( bp_get_current_group_id() ) ); ?> /> <?php esc_html_e( 'Hide my membership', 'commons-in-a-box' ); ?>
+										<?php wp_nonce_field( 'openlab_hide_membership_' . bp_get_current_group_id(), 'openlab_hide_membership_nonce_' . bp_get_current_group_id(), false, true ); ?>
 									</label>
 								</div>
 							<?php endif; ?>

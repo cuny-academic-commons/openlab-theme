@@ -851,8 +851,13 @@ function openlab_ajax_toggle_group_membership_privacy() {
 		wp_send_json( $retval );
 	}
 
-	$user_id    = bp_loggedin_user_id();
-	$group_id   = (int) $_POST['group_id'];
+	$user_id  = bp_loggedin_user_id();
+	$group_id = (int) $_POST['group_id'];
+
+	if ( ! wp_verify_nonce( $_POST['nonce'], 'openlab_hide_membership_' . $group_id ) ) {
+		wp_send_json( $retval );
+	}
+
 	$is_private = isset( $_POST['is_private'] ) ? 'true' === $_POST['is_private'] : false;
 
 	$updated = openlab_update_group_membership_privacy( $user_id, $group_id, $is_private );
