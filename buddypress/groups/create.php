@@ -153,21 +153,10 @@
 
 					<div class="panel-body">
 
-						<?php if ( $group_type->get_is_portfolio() ) : ?>
-							<p class="ol-tooltip"><?php echo esc_html( $group_type->get_label( 'name_help_text' ) ); ?></p>
+						<p class="ol-tooltip"><?php echo esc_html( $group_type->get_label( 'name_help_text' ) ); ?></p>
 
-							<ul class="ol-tooltip">
-								<li><?php esc_html_e( 'FirstName LastName\'s Portfolio', 'commons-in-a-box' ); ?></li>
-								<li><?php esc_html_e( 'Jane Smith\'s Portfolio (Example)', 'commons-in-a-box' ); ?></li>
-							</ul>
+						<input class="form-control" size="80" type="text" name="group-name" id="group-name" value="<?php echo esc_attr( bp_get_new_group_name() ); ?>" required />
 
-							<input class="form-control" size="80" type="text" name="group-name" id="group-name" value="<?php echo esc_attr( bp_get_new_group_name() ); ?>" required />
-
-						<?php else : ?>
-							<p class="ol-tooltip"><?php echo esc_html( $group_type->get_label( 'name_help_text' ) ); ?></p>
-							<input class="form-control" size="80" type="text" name="group-name" id="group-name" value="<?php bp_new_group_name(); ?>" required />
-
-						<?php endif ?>
 					</div><!-- /.panel-body -->
 				</div>
 
