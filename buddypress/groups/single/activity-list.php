@@ -87,6 +87,7 @@
 													$last_reply_content = wds_content_excerpt( wp_strip_all_tags( $last_reply_content ), 250 );
 													?>
 
+													<?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 													<?php echo openlab_get_group_activity_content( bbp_get_topic_title(), $last_topic_content, bbp_get_topic_permalink() ); ?>
 
 												</div>
