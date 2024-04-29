@@ -386,7 +386,7 @@ $private_users = openlab_get_private_members_of_group( bp_get_group_id() );
 				<div class="bp-widget">
 					<h4><?php esc_html_e( 'Moderators', 'commons-in-a-box' ); ?></h4>
 
-						<?php if ( bp_has_members( '&include=' . bp_group_mod_ids() ) ) : ?>
+					<?php if ( bp_has_members( '&include=' . bp_group_mod_ids() ) ) : ?>
 						<div id="group-manage-moderators-members" class="item-list single-line inline-element-list row group-manage-members group-list">
 
 							<?php
@@ -432,25 +432,23 @@ $private_users = openlab_get_private_members_of_group( bp_get_group_id() );
 
 
 			<div class="bp-widget">
-				<h4><?php esc_html_e( 'Members', 'commons-in-a-box' ); ?></h4>
-
 				<?php if ( bp_group_has_members( 'per_page=48&exclude_banned=0' ) ) : ?>
+					<h4><?php esc_html_e( 'Members', 'commons-in-a-box' ); ?></h4>
 
 					<?php if ( bp_group_member_needs_pagination() ) : ?>
+						<div class="group-manage-members-pagination">
+							<div class="pagination no-ajax">
+								<div id="member-admin-pagination-top" class="group-manage-members-pagination-links pagination-links">
+									<?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+									<?php echo openlab_members_pagination_links( 'mlpage' ); ?>
+								</div>
+							</div>
 
-						<div class="pagination no-ajax">
-
-							<div id="member-count" class="pag-count">
+							<div class="pag-count">
 								<?php bp_group_member_pagination_count(); ?>
 							</div>
-
-							<div id="member-admin-pagination" class="pagination-links">
-								<?php bp_group_member_admin_pagination(); ?>
-							</div>
-
 						</div>
-
-						<?php endif; ?>
+					<?php endif; ?>
 
 					<div id="group-manage-members" class="item-list inline-element-list row group-manage-members group-list">
 						<?php
@@ -511,9 +509,23 @@ $private_users = openlab_get_private_members_of_group( bp_get_group_id() );
 									</div>
 								</div>
 							</div>
-
-					<?php endwhile; ?>
+						<?php endwhile; ?>
 					</div>
+
+					<?php if ( bp_group_member_needs_pagination() ) : ?>
+						<div class="group-manage-members-pagination">
+							<div class="pagination no-ajax">
+								<div id="member-admin-pagination-top" class="group-manage-members-pagination-links pagination-links">
+									<?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+									<?php echo openlab_members_pagination_links( 'mlpage' ); ?>
+								</div>
+							</div>
+
+							<div class="pag-count">
+								<?php bp_group_member_pagination_count(); ?>
+							</div>
+						</div>
+					<?php endif; ?>
 
 				<?php else : ?>
 
