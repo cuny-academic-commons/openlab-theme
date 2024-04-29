@@ -77,37 +77,38 @@ function openlab_group_privacy_settings_markup() {
 		<div class="panel-heading semibold"><?php esc_html_e( 'Privacy Settings', 'commons-in-a-box' ); ?></div>
 
 		<div class="radio group-profile panel-body">
+			<fieldset class="group-privacy-radios">
+				<?php if ( bp_is_group_create() ) : ?>
+					<p id="privacy-settings-tag-b"><legend><?php echo esc_html( $group_type->get_label( 'privacy_help_text' ) ); ?> <?php echo esc_html( $group_type->get_label( 'privacy_help_text_new' ) ); ?></legend></p>
+				<?php else : ?>
+					<p class="privacy-settings-tag-c"><legend><?php echo esc_html( $group_type->get_label( 'privacy_help_text' ) ); ?></legend></p>
+				<?php endif; ?>
 
-			<?php if ( bp_is_group_create() ) : ?>
-				<p id="privacy-settings-tag-b"><?php echo esc_html( $group_type->get_label( 'privacy_help_text' ) ); ?> <?php echo esc_html( $group_type->get_label( 'privacy_help_text_new' ) ); ?></p>
-			<?php else : ?>
-				<p class="privacy-settings-tag-c"><?php echo esc_html( $group_type->get_label( 'privacy_help_text' ) ); ?></p>
-			<?php endif; ?>
+				<div class="row">
+					<div class="col-sm-23 col-sm-offset-1">
+						<label><input type="radio" name="group-status" value="public" id="group-status-public" required /><?php esc_html_e( 'Public', 'commons-in-a-box' ); ?></label>
+						<ul>
+							<li><?php echo esc_html( $group_type->get_label( 'privacy_help_text_public_content' ) ); ?></li>
+							<li><?php echo esc_html( $group_type->get_label( 'privacy_help_text_public_directory' ) ); ?></li>
+							<li><?php echo esc_html( $group_type->get_label( 'privacy_help_text_public_membership' ) ); ?></li>
+						</ul>
 
-			<div class="row">
-				<div class="col-sm-23 col-sm-offset-1">
-					<label><input type="radio" name="group-status" value="public" id="group-status-public" <?php checked( 'public', $group_status ); ?> /><?php esc_html_e( 'Public', 'commons-in-a-box' ); ?></label>
-					<ul>
-						<li><?php echo esc_html( $group_type->get_label( 'privacy_help_text_public_content' ) ); ?></li>
-						<li><?php echo esc_html( $group_type->get_label( 'privacy_help_text_public_directory' ) ); ?></li>
-						<li><?php echo esc_html( $group_type->get_label( 'privacy_help_text_public_membership' ) ); ?></li>
-					</ul>
+						<label><input type="radio" name="group-status" value="private" id="group-status-private" required /><?php esc_html_e( 'Private', 'commons-in-a-box' ); ?></label>
+						<ul>
+							<li><?php echo esc_html( $group_type->get_label( 'privacy_help_text_private_content' ) ); ?></li>
+							<li><?php echo esc_html( $group_type->get_label( 'privacy_help_text_public_directory' ) ); ?></li>
+							<li><?php echo esc_html( $group_type->get_label( 'privacy_help_text_byrequest_membership' ) ); ?></li>
+						</ul>
 
-					<label><input type="radio" name="group-status" value="private" id="group-status-private" <?php checked( 'private', $group_status ); ?> /><?php esc_html_e( 'Private', 'commons-in-a-box' ); ?></label>
-					<ul>
-						<li><?php echo esc_html( $group_type->get_label( 'privacy_help_text_private_content' ) ); ?></li>
-						<li><?php echo esc_html( $group_type->get_label( 'privacy_help_text_public_directory' ) ); ?></li>
-						<li><?php echo esc_html( $group_type->get_label( 'privacy_help_text_byrequest_membership' ) ); ?></li>
-					</ul>
-
-					<label><input type="radio" name="group-status" value="hidden" id="group-status-hidden" <?php checked( 'hidden', $group_status ); ?> /><?php esc_html_e( 'Hidden', 'commons-in-a-box' ); ?></label>
-					<ul>
-						<li><?php echo esc_html( $group_type->get_label( 'privacy_help_text_private_content' ) ); ?></li>
-						<li><?php echo esc_html( $group_type->get_label( 'privacy_help_text_private_directory' ) ); ?></li>
-						<li><?php echo esc_html( $group_type->get_label( 'privacy_help_text_invited_membership' ) ); ?></li>
-					</ul>
+						<label><input type="radio" name="group-status" value="hidden" id="group-status-hidden" /><?php esc_html_e( 'Hidden', 'commons-in-a-box' ); ?></label>
+						<ul>
+							<li><?php echo esc_html( $group_type->get_label( 'privacy_help_text_private_content' ) ); ?></li>
+							<li><?php echo esc_html( $group_type->get_label( 'privacy_help_text_private_directory' ) ); ?></li>
+							<li><?php echo esc_html( $group_type->get_label( 'privacy_help_text_invited_membership' ) ); ?></li>
+						</ul>
+					</div>
 				</div>
-			</div>
+			</fieldset>
 
 			<?php wp_nonce_field( 'openlab_group_status', 'openlab-group-status-nonce', false ); ?>
 		</div>
