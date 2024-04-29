@@ -9881,6 +9881,9 @@ input#group-request-send {
 .group-members.group-list .group-item-membership-privacy label:hover {
   cursor: pointer;
 }
+.form-panel .group-privacy-radios legend {
+  font-weight: normal;
+}
 .group-manage-members-pagination {
   align-items: center;
   display: flex;
