@@ -84,7 +84,7 @@
 														$last_reply_content = $topic_post->post_content;
 													}
 
-													$last_reply_content = wds_content_excerpt( wp_strip_all_tags( $last_reply_content ), 250 );
+													$last_reply_content = bp_create_excerpt( wp_strip_all_tags( $last_reply_content ), 250 );
 													?>
 
 													<?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
