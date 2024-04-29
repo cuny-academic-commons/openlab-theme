@@ -2797,11 +2797,16 @@ input#group-request-send {
 .group-manage-members-pagination {
 	align-items: center;
 	display: flex;
+	gap: 10px;
 	justify-content: space-between;
+	margin-bottom: 10px;
 }
 
-.group-manage-members-pagination-links {
-	margin-bottom: 10px;
+@media screen and (max-width: @screen-xs-max) {
+	.group-manage-members-pagination {
+		align-items: flex-start;
+		flex-direction: column;
+	}
 }
 
 .group-manage-members{
