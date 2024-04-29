@@ -1,11 +1,11 @@
 window.wp = window.wp || {};
 
-(function($){
-	var OL_Group_Contacts = function() {
+(function ($) {
+	var OL_Group_Contacts = function () {
 		var $ac, $existing, nonce;
 
 		$( document ).ready(
-			function() {
+			function () {
 				// Toggle hide-if-js and hide-if-no-js.
 				$( '.hide-if-js' ).hide();
 				$( '.hide-if-no-js' ).show();
@@ -18,7 +18,7 @@ window.wp = window.wp || {};
 					{
 						source: ajaxurl + '?action=openlab_group_contact_autocomplete&nonce=' + nonce + '&group_id=' + group_id,
 						minLength: 2,
-						select: function( event, ui ) {
+						select: function ( event, ui ) {
 							// No dupes.
 							if ( 0 == $( '#group-contact-member-' + ui.item.value ).length ) {
 								create_list_item( ui.item.value, ui.item.label );
@@ -34,7 +34,7 @@ window.wp = window.wp || {};
 				$existing = OL_Group_Contact_Existing;
 				$.each(
 					$existing,
-					function( k, v ) {
+					function ( k, v ) {
 						create_list_item( v.value, v.label );
 					}
 				);
@@ -43,7 +43,7 @@ window.wp = window.wp || {};
 				$( '#group-contact-list' ).on(
 					'click',
 					'.group-contact-remove',
-					function( event ) {
+					function ( event ) {
 						event.preventDefault();
 						$( event.target ).closest( '.group-contact-member' ).remove();
 					}

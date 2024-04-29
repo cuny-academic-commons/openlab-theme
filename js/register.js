@@ -1,10 +1,10 @@
-(function($) {
+(function ($) {
 
 	// Parsley validation rules.
 	window.Parsley.addValidator(
 		'lowercase',
 		{
-			validateString: function( value ) {
+			validateString: function ( value ) {
 				return value === value.toLowerCase();
 			},
 			messages: {
@@ -16,7 +16,7 @@
 	window.Parsley.addValidator(
 		'nospecialchars',
 		{
-			validateString: function( value ) {
+			validateString: function ( value ) {
 				return ! value.match( /[^a-zA-Z0-9]/ );
 			},
 			messages: {
@@ -29,7 +29,7 @@
 	window.Parsley.addValidator(
 		'iff',
 		{
-			validateString: function( value, requirement, instance ) {
+			validateString: function ( value, requirement, instance ) {
 				var $partner = $( requirement );
 				var isValid  = $partner.val() == value;
 
@@ -62,7 +62,7 @@
 	}
 
 	jQuery( document ).ready(
-		function() {
+		function () {
 			var $signup_form = $( '#signup_form' );
 
 			$signup_form.parsley(
@@ -71,7 +71,7 @@
 				}
 			).on(
 				'field:error',
-				function( formInstance ) {
+				function ( formInstance ) {
 					this.$element.parent( '.form-group' )
 					.addClass( 'has-error' )
 					.prepend( '<span class="sr-only">Please enter the following: </span>' )
@@ -79,7 +79,7 @@
 				}
 			).on(
 				'field:success',
-				function( formInstance ) {
+				function ( formInstance ) {
 					this.$element.parent( '.form-group' ).removeClass( 'has-error' );
 				}
 			);
@@ -93,7 +93,7 @@
 			$( 'body' ).on(
 				'keyup',
 				'#signup_password',
-				function( e ) {
+				function ( e ) {
 					var blacklistValues = [];
 					var denylistLength  = inputDenylist.length
 					for ( var i = 0; i < denylistLength; i++ ) {
@@ -156,7 +156,7 @@
 							action: 'openlab_validate_email',
 							'email': email
 						},
-						function( response ) {
+						function ( response ) {
 							if ( response.success ) {
 								$emaillabel.fadeOut(
 									function () {
@@ -202,7 +202,7 @@
 
 			$account_type_signup_code_field.on(
 				'blur',
-				function() {
+				function () {
 					$signup_code_message
 					.html( OLReg.strings.dashChecking )
 					.removeClass( 'signup-code-ok signup-code-bad' )
@@ -216,7 +216,7 @@
 								member_type: $account_type_field.val(),
 								code: $account_type_signup_code_field.val()
 							},
-							success: function( response ) {
+							success: function ( response ) {
 								if ( response.success ) {
 									$signup_code_message.html( OLReg.strings.dashOK )
 									.removeClass( 'signup-code-checking signup-code-bad' )
@@ -271,7 +271,7 @@
 				if (document.getElementById( 'signup_submit' )) {
 					$( '#signup_submit' ).on(
 						'click',
-						function(e){
+						function (e) {
 
 							var thisElem = $( this );
 
@@ -323,7 +323,7 @@
 			function refresh_field_ids() {
 				field_ids = [];
 				$( '.panel-body input' ).each(
-					function() {
+					function () {
 						if ( 'field_' === this.id.substr( 0, 6 ) ) {
 							field_ids.push( this.id.substr( 6 ) );
 						}

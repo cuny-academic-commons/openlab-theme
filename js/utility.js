@@ -236,7 +236,7 @@
 
 			return partOfDay + hours + minutes / 60;
 		},
-		buildTime: function( date, time ) {
+		buildTime: function ( date, time ) {
 			var d         = new Date();
 			var dateParts = date.split( '-' );
 			d.setFullYear( dateParts[2] );
@@ -419,8 +419,7 @@
 								action: 'openlab_ajax_return_latest_activity',
 								nonce: localVars.nonce
 							},
-							success: function (data, textStatus, XMLHttpRequest)
-						{
+							success: function (data, textStatus, XMLHttpRequest) {
 								refreshActivity.removeClass( 'fa-spin' );
 								if (data === 'exit') {
 									//for right now, do nothing
@@ -458,22 +457,22 @@
 
 			$( '.academic-unit-type-select' ).on(
 				'select2:select',
-				function() {
+				function () {
 					OpenLab.utility.updateAcademicUnitFilters();
 				}
 			);
 			OpenLab.utility.updateAcademicUnitFilters();
 		},
 
-		updateAcademicUnitFilters: function() {
+		updateAcademicUnitFilters: function () {
 			var selectedSlugs  = [];
 			var $selectedUnits = $( '.academic-unit:selected' );
 			$selectedUnits.each(
-				function( k, v ) {
+				function ( k, v ) {
 					if ( v.value.length > 0 ) {
 						if ( 'all' === v.value ) {
 							$( v ).siblings( '.academic-unit-nonempty' ).each(
-								function( k, v ) {
+								function ( k, v ) {
 									selectedSlugs.push( v.value );
 								}
 							);
@@ -489,7 +488,7 @@
 			$academicUnits.prop( 'disabled', true ).removeClass( 'academic-unit-enabled' );
 
 			$academicUnits.each(
-				function( k, v ) {
+				function ( k, v ) {
 					var $thisFilter = $( v );
 					var thisParent  = $thisFilter.data( 'parent' );
 
@@ -513,7 +512,7 @@
 			var $academicUnitSelectors = $( '.academic-unit-type-select select' );
 			$academicUnitSelectors.prop( 'disabled', false );
 			$academicUnitSelectors.each(
-				function( k, v ) {
+				function ( k, v ) {
 					if ( $( v ).find( '.academic-unit-enabled' ).length === 0 ) {
 						$( v ).prop( 'disabled', true );
 					}
@@ -527,10 +526,10 @@
 			}
 		},
 
-		initMemberRoleDefinitions: function() {
+		initMemberRoleDefinitions: function () {
 			$( '.member-role-definition-label' ).on(
 				'click',
-				function( e ) {
+				function ( e ) {
 					$clicked = $( e.target );
 					$def     = $clicked.closest( '.member-role-definition' );
 
@@ -546,28 +545,36 @@
 		 *
 		 * @since 1.6.0
 		 */
-		adjustGridHeight: function() {
+		adjustGridHeight: function () {
 			const els = [
 				document.querySelector( '#group-manage-members' ),
 			]
 
-			els.forEach( el => {
-				const gridItems = el.querySelectorAll( '.group-item-wrapper' );
+			els.forEach(
+				// phpcs:disable
+				el => {
+					const gridItems = el.querySelectorAll( '.group-item-wrapper' );
 
-				// Find the tallest item.
-				let tallest = 0;
-				gridItems.forEach( item => {
-					const height = item.offsetHeight;
-					if ( height > tallest ) {
-						tallest = height;
-					}
-				} );
+					// Find the tallest item.
+					let tallest  = 0;
+					gridItems.forEach(
+						item => {
+							const height = item.offsetHeight;
+							if ( height > tallest ) {
+								tallest = height;
+							}
+						}
+					);
 
-				// Set the height of all items to the tallest.
-				gridItems.forEach( item => {
-					item.style.height = tallest + 'px';
-				} );
-			} )
+					// Set the height of all items to the tallest.
+					gridItems.forEach(
+						item => {
+							item.style.height = tallest + 'px';
+						}
+					);
+				}
+				// phpcs:enable
+			)
 		},
 
 		filterAjax: function () {
@@ -607,8 +614,7 @@
 								school: school,
 								nonce: nonce
 							},
-							success: function (data, textStatus, XMLHttpRequest)
-						{
+							success: function (data, textStatus, XMLHttpRequest) {
 								console.log( 'school', school );
 								$( '#dept-select' ).removeAttr( 'disabled' );
 								$( '#dept-select' ).removeClass( 'processing' );
@@ -786,7 +792,7 @@
 
 			$( '#bp-group-documents-folder-delete' ).on(
 				'click',
-				function( e ){
+				function ( e ) {
 					if ( confirm( localVars.strings.deleteFolder ) ) {
 						return true;
 					}
@@ -998,7 +1004,7 @@
 
 	$( '#openlab-sort-my-groups' ).on(
 		'change',
-		function( event ) {
+		function ( event ) {
 			var url    = new URL( window.location.href );
 			var params = new window.URLSearchParams( window.location.search );
 

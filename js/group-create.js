@@ -18,7 +18,7 @@ function showHide(id) {
 }
 
 jQuery( document ).ready(
-	function($){
+	function ($) {
 		var form,
 		form_type,
 		form_validated = false,
@@ -57,20 +57,20 @@ jQuery( document ).ready(
 			$( radioid ).prop( 'checked','checked' );
 
 			$( '.noo_radio' ).each(
-				function(i,v) {
+				function (i,v) {
 					var thisval = $( v ).val();
 					var thisid  = '#noo_' + thisval + '_options';
 
 					if ( noo == thisval) {
 						$( thisid ).find( 'input' ).each(
-							function(index,element){
+							function (index,element) {
 								$( element ).removeClass( 'disabled-opt' );
 								$( element ).prop( 'disabled', false ).removeClass( 'disabled' );
 							}
 						);
 
 						$( thisid ).find( 'select' ).each(
-							function(index,element){
+							function (index,element) {
 								if ($( element ).attr( 'type' ) !== 'radio') {
 									$( element ).removeClass( 'disabled-opt' );
 									$( element ).prop( 'disabled', false ).removeClass( 'disabled' );
@@ -86,7 +86,7 @@ jQuery( document ).ready(
 
 					} else {
 						$( thisid ).find( 'input' ).each(
-							function(index,element){
+							function (index,element) {
 								if ($( element ).attr( 'type' ) !== 'radio') {
 									$( element ).addClass( 'disabled-opt' );
 									$( element ).prop( 'disabled','disabled' ).addClass( 'disabled' );
@@ -95,7 +95,7 @@ jQuery( document ).ready(
 						);
 
 						$( thisid ).find( 'select' ).each(
-							function(index,element){
+							function (index,element) {
 								if ($( element ).attr( 'type' ) !== 'radio') {
 									$( element ).addClass( 'disabled-opt' );
 									$( element ).prop( 'disabled','disabled' ).addClass( 'disabled' );
@@ -204,7 +204,7 @@ jQuery( document ).ready(
 					action: 'openlab_detect_feeds',
 					'site_url': eu
 				},
-				function(response) {
+				function (response) {
 					var robj = $.parseJSON( response );
 
 					var efr = $( '#external-feed-results' );
@@ -288,7 +288,7 @@ jQuery( document ).ready(
 						action: 'openlab_group_clone_fetch_details',
 						group_id: group_id
 					},
-					success: function( response ) {
+					success: function ( response ) {
 						var r = JSON.parse( response );
 						var $typeSelector;
 
@@ -298,7 +298,7 @@ jQuery( document ).ready(
 						// Categories
 						$.each(
 							r.categories,
-							function( index, catId ) {
+							function ( index, catId ) {
 								$( 'input#group-category-' + catId ).prop( 'checked', true );
 							}
 						);
@@ -306,7 +306,7 @@ jQuery( document ).ready(
 						// Academic Units
 						$.each(
 							r.academic_unit_types,
-							function( index, unitType ) {
+							function ( index, unitType ) {
 								$typeSelector = $( '.cboxol-academic-unit-selector-for-type-' + unitType );
 
 								if ( r.academic_units.hasOwnProperty( unitType ) ) {
@@ -314,7 +314,7 @@ jQuery( document ).ready(
 
 									$.each(
 										unitsOfType,
-										function( key, unitValue ) {
+										function ( key, unitValue ) {
 											$typeSelector.find( '#academic-unit-' + unitValue ).prop( 'checked', true ).trigger( 'change' );
 										}
 									);
@@ -336,14 +336,14 @@ jQuery( document ).ready(
 		}
 
 		$( '.noo_radio' ).click(
-			function(el){
+			function (el) {
 				var whichid = $( el.target ).prop( 'id' ).split( '_' ).pop();
 				$( '.url-field-error' ).remove();
 				new_old_switch( whichid );
 			}
 		);
 
-		$.urlParam = function(name){
+		$.urlParam = function (name) {
 			var results = new RegExp( '[\\?&]' + name + '=([^&#]*)' ).exec( window.location.href );
 			return results === null ? 0 : results[1];
 		}
@@ -375,7 +375,7 @@ jQuery( document ).ready(
 
 				$create_or_clone.on(
 					'change',
-					function() {
+					function () {
 						new_create_or_clone = 'create' == $( this ).val() ? 'off' : 'on';
 						toggle_clone_options( new_create_or_clone );
 					}
@@ -386,7 +386,7 @@ jQuery( document ).ready(
 		// Switching between groups to clone
 		$( '#group-to-clone' ).on(
 			'change',
-			function() {
+			function () {
 				fetch_clone_source_details( this.value );
 			}
 		);
@@ -394,7 +394,7 @@ jQuery( document ).ready(
 		/* AJAX validation for external RSS feeds */
 		$( '#find-feeds' ).on(
 			'click',
-			function(e) {
+			function (e) {
 				e.preventDefault();
 				do_external_site_query( e );
 			}
@@ -403,7 +403,7 @@ jQuery( document ).ready(
 		/* "Set up a site" toggle */
 		$setuptoggle.on(
 			'click',
-			function(){
+			function () {
 				showHideAll();
 				showHideAssociatedSitePrivacy();
 				showHideMemberRoleSettings();
@@ -451,12 +451,12 @@ jQuery( document ).ready(
 
 		$( '.domain-validate' ).on(
 			'change',
-			function( e ) {
+			function ( e ) {
 				form_validated = false;
 			}
 		).on(
 			'keyup',
-			function( e ) {
+			function ( e ) {
 				$( e.target ).val( e.target.value.toLowerCase() );
 			}
 		);
@@ -465,7 +465,7 @@ jQuery( document ).ready(
 		// @todo this must be made dynamic
 		$gc_submit.on(
 			'mouseover focus',
-			function() {
+			function () {
 				if ( CBOXOL_Group_Create.is_course ) {
 					var school_tech        = document.getElementById( 'school_tech' );
 					var is_school_selected = $( '.school-inputs input:checked' ).length > 0;
@@ -488,7 +488,7 @@ jQuery( document ).ready(
 		 * - Site URL is validated by AJAX.
 		 * - Name and Description use native validation.
 		 */
-		validate_form = function( event ) {
+		validate_form = function ( event ) {
 			event = ( event ? event : window.event );
 
 			if ( form_validated ) {
@@ -504,7 +504,7 @@ jQuery( document ).ready(
 			var $required_fields       = $form.find( ':required' );
 			var hasEmptyRequiredFields = false;
 			$required_fields.each(
-				function( k, v ) {
+				function ( k, v ) {
 					if ( $( v ).val().trim() === '' ) {
 						hasEmptyRequiredFields = true;
 						return false;
@@ -611,7 +611,7 @@ jQuery( document ).ready(
 					action: 'openlab_validate_groupblog_url_handler',
 					'path': domain
 				},
-				function( response ) {
+				function ( response ) {
 					if ( ! response.success ) {
 						$( '.url-field-error' ).remove();
 						$( '#groupblog-url-error' ).remove();

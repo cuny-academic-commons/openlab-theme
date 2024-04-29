@@ -1,10 +1,10 @@
-(function($){
+(function ($) {
 
 	$( document ).ready(
-		function() {
+		function () {
 			// bp-group-documents uses JS to hide, but we use CSS, so we need to roll this back.
 			setTimeout(
-				function() {
+				function () {
 					$( '#bp-group-documents-upload-new' ).css( 'display', '' );
 				},
 				250
@@ -13,7 +13,7 @@
 			$( document ).on(
 				'change',
 				'input.bp-group-documents-file-type',
-				function(e) {
+				function (e) {
 					let wrapper = $( '.bp-group-documents-fields' );
 
 					if ( $( this ).val() === 'upload' ) {
@@ -31,7 +31,7 @@
 			$( document ).on(
 				'submit',
 				'form#bp-group-documents-form',
-				function() {
+				function () {
 
 					//check for pre-filled values, and remove before sumitting
 					if ( $( 'input.bp-group-documents-new-category' ).val() == 'New Category...' ) {
@@ -56,7 +56,7 @@
 			$( document ).on(
 				'click',
 				'#bp-group-documents-upload-button',
-				function(e) {
+				function (e) {
 					e.preventDefault();
 					$( '.submenu-item' ).removeClass( 'current-menu-item' );
 					$( '.submenu-item.item-add-new-file' ).addClass( 'current-menu-item' );
@@ -68,7 +68,7 @@
 			$( document ).on(
 				'click',
 				'.submenu-item.item-add-new-file a',
-				function(e) {
+				function (e) {
 					e.preventDefault();
 					if ( ! $( this ).hasClass( 'current-menu-item' ) ) {
 						$( '.submenu-item' ).removeClass( 'current-menu-item' );
@@ -82,7 +82,7 @@
 			$( document ).on(
 				'click',
 				'#btn-group-documents-cancel',
-				function(e) {
+				function (e) {
 					e.preventDefault();
 					$( '#bp-group-documents' ).removeClass( 'is-edit-mode' );
 					$( '.submenu-item' ).removeClass( 'current-menu-item' );
@@ -94,7 +94,7 @@
 			$( document ).on(
 				'click',
 				'#openlab-cancel-doc-reply',
-				function(e) {
+				function (e) {
 					e.preventDefault();
 					$( '#cancel-comment-reply-link' )[0].click();
 				}

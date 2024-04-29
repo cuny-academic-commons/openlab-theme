@@ -4,11 +4,11 @@
  * @since 1.6.0
  */
 jQuery( document ).ready(
-	function($) {
+	function ($) {
 		$( document ).on(
 			'change',
 			'input#membership_privacy',
-			function(e) {
+			function (e) {
 				let groupId   = $( this ).attr( 'data-group_id' );
 				let isPrivate = $( this ).is( ':checked' );
 
@@ -23,11 +23,11 @@ jQuery( document ).ready(
 							'is_private': isPrivate,
 							'nonce': $( '#openlab_hide_membership_nonce_' + groupId ).val()
 						},
-						beforeSend: function() {
+						beforeSend: function () {
 							// Disable checkbox
 							$( 'input#membership_privacy' ).attr( 'disabled', true );
 						},
-						complete: function() {
+						complete: function () {
 							// Enable checkbox
 							$( 'input#membership_privacy' ).attr( 'disabled', false );
 						}

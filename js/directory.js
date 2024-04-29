@@ -1,12 +1,12 @@
-(function($){
+(function ($) {
 		var $groupTypeCheckboxes,
 			allSidebarFilters = [];
 
 	$( document ).ready(
-		function(){
+		function () {
 			if ( 0 !== $( '.openlab-search-results' ).length ) {
 				$( '.sidebar-filter input[type="checkbox"], .custom-select select' ).each(
-					function() {
+					function () {
 						allSidebarFilters.push( this.id );
 					}
 				);
@@ -18,12 +18,12 @@
 		}
 	);
 
-		calculateSelectedGroupTypes = function() {
+		calculateSelectedGroupTypes = function () {
 			var allGroupTypes      = [];
 			var selectedGroupTypes = [];
 
 			$groupTypeCheckboxes.each(
-				function(){
+				function () {
 					var thisGroupType = this;
 
 					allGroupTypes.push( thisGroupType.value );
@@ -43,7 +43,7 @@
 		/**
 		 * Determines whether filters should be disabled based on select group types.
 		 */
-		calculateFilterStates = function() {
+		calculateFilterStates = function () {
 			var selectedGroupTypes = calculateSelectedGroupTypes();
 			var disabledFilters    = {};
 
@@ -68,7 +68,7 @@
 			}
 
 			allSidebarFilters.forEach(
-				function( sidebarFilterId ) {
+				function ( sidebarFilterId ) {
 					var $el      = $( '#' + sidebarFilterId );
 					var $elLabel = $( 'label[for="' + sidebarFilterId + '"]' );
 
