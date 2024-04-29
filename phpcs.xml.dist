@@ -57,23 +57,4 @@
 			<property name="custom_capabilities[]" value="assign_topic_tags,bp_docs_associate_with_group,bp_docs_create,bp_docs_edit,bp_docs_manage,bp_moderate,edit_topic,grant_badges,moderate" />
 		</properties>
 	</rule>
-
-	<rule ref="WordPress.WP.DeprecatedClasses">
-		<properties>
-			<property name="minimum_supported_version" value="5.1"/>
-		</properties>
-	</rule>
-
-	<rule ref="WordPress.WP.DeprecatedFunctions">
-		<properties>
-			<property name="minimum_supported_version" value="5.1"/>
-		</properties>
-	</rule>
-
-	<rule ref="WordPress.WP.DeprecatedParameters">
-		<properties>
-			<property name="minimum_supported_version" value="5.1"/>
-		</properties>
-	</rule>
-
 </ruleset>
