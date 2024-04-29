@@ -552,7 +552,7 @@
 			]
 
 			els.forEach( el => {
-				const gridItems = document.querySelectorAll( '.group-item-wrapper' );
+				const gridItems = el.querySelectorAll( '.group-item-wrapper' );
 
 				// Find the tallest item.
 				let tallest = 0;
