@@ -430,9 +430,24 @@ $private_users = openlab_get_private_members_of_group( bp_get_group_id() );
 				</div>
 			<?php endif ?>
 
-
 			<div class="bp-widget">
-				<?php if ( bp_group_has_members( 'per_page=48&exclude_banned=0' ) ) : ?>
+				<?php
+				$manage_members_args = [
+					'per_page'       => 96,
+					'exclude_banned' => false,
+				];
+
+				/**
+				 * Filters the arguments used to query members on the Manage Members screen.
+				 *
+				 * @since 1.6.0
+				 *
+				 * @param array $manage_members_args Array of arguments used to query members on the Manage Members screen.
+				 */
+				$manage_members_args = apply_filters( 'cboxol_group_manage_members_args', $manage_members_args );
+				?>
+
+				<?php if ( bp_group_has_members( $manage_members_args ) ) : ?>
 					<h4><?php esc_html_e( 'Members', 'commons-in-a-box' ); ?></h4>
 
 					<?php if ( bp_group_member_needs_pagination() ) : ?>
