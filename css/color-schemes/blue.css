@@ -7367,6 +7367,7 @@ blockquote .h6 {
 .pagination li a .fa,
 .pagination li span .fa {
   font-size: 16px;
+  line-height: 1;
 }
 .pagination li a:hover,
 .pagination li span:hover {
@@ -9879,6 +9880,19 @@ input#group-request-send {
 }
 .group-members.group-list .group-item-membership-privacy label:hover {
   cursor: pointer;
+}
+.group-manage-members-pagination {
+  align-items: center;
+  display: flex;
+  gap: 10px;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+@media screen and (max-width: 767px) {
+  .group-manage-members-pagination {
+    align-items: flex-start;
+    flex-direction: column;
+  }
 }
 .group-manage-members.group-list.group-manage-requests .group-item .group-item-wrapper ul.group-member-actions {
   font-weight: normal;
