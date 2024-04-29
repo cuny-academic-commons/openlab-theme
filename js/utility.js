@@ -23,6 +23,7 @@
 			OpenLab.utility.eventValidation();
 			OpenLab.utility.refreshActivity();
 			OpenLab.utility.initMemberRoleDefinitions();
+			OpenLab.utility.adjustGridHeight();
 
 						// Home page column adjustments.
 						var groupTypeWidgets = $( '#home-right .activity-list' );
@@ -537,6 +538,36 @@
 					$clicked.closest( '.member-role-definition' ).toggleClass( 'show-definition-text' );
 				}
 			);
+		},
+
+		/**
+		 * Until we can refactor the markup to use CSS grid, we need to adjust the height of
+		 * certain elements that appear in a grid.
+		 *
+		 * @since 1.6.0
+		 */
+		adjustGridHeight: function() {
+			const els = [
+				document.querySelector( '#group-manage-members' ),
+			]
+
+			els.forEach( el => {
+				const gridItems = document.querySelectorAll( '.group-item-wrapper' );
+
+				// Find the tallest item.
+				let tallest = 0;
+				gridItems.forEach( item => {
+					const height = item.offsetHeight;
+					if ( height > tallest ) {
+						tallest = height;
+					}
+				} );
+
+				// Set the height of all items to the tallest.
+				gridItems.forEach( item => {
+					item.style.height = tallest + 'px';
+				} );
+			} )
 		},
 
 		filterAjax: function () {
