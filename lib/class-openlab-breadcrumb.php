@@ -419,5 +419,4 @@ class Openlab_Breadcrumb {
 
 		return $link;
 	}
-
 }
