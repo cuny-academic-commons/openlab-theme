@@ -249,9 +249,15 @@ add_action(
  */
 add_action(
 	'bp_group_documents_data_after_save',
-	function( $document ) {
+	function ( $document ) {
 		// Get the operation type, used to build the nonce.
 		$operation_type = ! empty( $_POST['bp_group_documents_operation'] ) && 'edit' === $_POST['bp_group_documents_operation'] ? 'edit' : 'add';
+
+		// Absence of a nonce indicates that this is a clone operation, and there's no need
+		// to check for a link.
+		if ( ! isset( $_POST['bp_group_document_save'] ) ) {
+			return;
+		}
 
 		check_admin_referer( 'bp_group_document_save_' . $operation_type, 'bp_group_document_save' );
 
