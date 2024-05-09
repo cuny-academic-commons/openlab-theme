@@ -109,7 +109,7 @@ class Openlab_Clone_Course_Site {
 		$mods  = get_option( 'mods_' . $theme );
 		$mods  = map_deep(
 			$mods,
-			function( $v ) use ( $source_site_url, $source_site_upload_dir, $dest_site_url, $dest_site_upload_dir ) {
+			function ( $v ) use ( $source_site_url, $source_site_upload_dir, $dest_site_url, $dest_site_upload_dir ) {
 				return str_replace(
 					array( $source_site_url, $source_site_upload_dir ),
 					array( $dest_site_url, $dest_site_upload_dir ),
@@ -126,7 +126,7 @@ class Openlab_Clone_Course_Site {
 			if ( ! in_array( $key, $preserve_option, true ) ) {
 				$value = map_deep(
 					$value,
-					function( $v ) use ( $source_site_url, $source_site_upload_dir, $dest_site_url, $dest_site_upload_dir ) {
+					function ( $v ) use ( $source_site_url, $source_site_upload_dir, $dest_site_url, $dest_site_upload_dir ) {
 						return str_replace(
 							array( $source_site_url, $source_site_upload_dir ),
 							array( $dest_site_url, $dest_site_upload_dir ),

@@ -1551,7 +1551,7 @@ function openlab_default_subscription_settings_form() {
 }
 add_action(
 	'bp_actions',
-	function() {
+	function () {
 		remove_action( 'bp_after_group_settings_admin', 'ass_default_subscription_settings_form' );
 		add_action( 'bp_after_group_settings_admin', 'openlab_default_subscription_settings_form' );
 	}
@@ -1943,7 +1943,7 @@ function openlab_show_site_posts_and_comments() {
  */
 function openlab_output_group_contact_line( $group_id ) {
 	$names = array_map(
-		function( $user_id ) {
+		function ( $user_id ) {
 			return bp_core_get_user_displayname( $user_id );
 		},
 		cboxol_get_all_group_contact_ids( $group_id )
@@ -2956,7 +2956,7 @@ function openlab_group_is_open( $group_id ) {
  */
 add_filter(
 	'bp_before_groups_get_groups_parse_args',
-	function( $args ) {
+	function ( $args ) {
 		$is_open = openlab_get_current_filter( 'is_open' );
 		if ( $is_open ) {
 			$args['status'] = 'public';
@@ -2995,7 +2995,7 @@ function openlab_notify_group_members_of_this_action() {
  */
 add_filter(
 	'openlab_after_group_clone',
-	function( $group_id, $clone_source_group_id ) {
+	function ( $group_id, $clone_source_group_id ) {
 		if ( openlab_is_forum_enabled_for_group( $clone_source_group_id ) ) {
 			groups_delete_groupmeta( $group_id, 'openlab_disable_forum' );
 		} else {

@@ -10,7 +10,7 @@ $folders = bp_sort_by_key( $folders, 'name' );
 
 $non_empty_folders = array_filter(
 	$folders,
-	function( $folder ) {
+	function ( $folder ) {
 		return $folder->count > 0;
 	}
 );

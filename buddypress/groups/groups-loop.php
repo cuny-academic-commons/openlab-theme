@@ -22,7 +22,7 @@ if ( openlab_is_search_results_page() ) {
 	$current_group_type = openlab_get_current_filter( 'group-types' );
 	if ( ! $current_group_type ) {
 		$current_group_type = array_map(
-			function( $type ) {
+			function ( $type ) {
 				return $type->get_slug();
 			},
 			cboxol_get_group_types()

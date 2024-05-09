@@ -386,7 +386,7 @@ add_action( 'bp_group_header_actions', 'openlab_add_clone_button_to_profile', 50
  */
 add_filter(
 	'bp_before_groups_get_groups_parse_args',
-	function( $args ) {
+	function ( $args ) {
 		$group_id = openlab_get_current_filter( 'descendant-of' );
 		if ( ! $group_id ) {
 			return $args;

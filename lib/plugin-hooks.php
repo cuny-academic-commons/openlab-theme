@@ -108,7 +108,7 @@ add_action( 'bp_group_manage_members_admin_item', 'openlab_manage_members_email_
 // remove status from group profile pages
 add_action(
 	'bp_actions',
-	function() {
+	function () {
 		remove_action( 'bp_group_header_meta', 'ass_group_subscribe_button' );
 	}
 );
@@ -747,7 +747,7 @@ add_action( 'init', 'openlab_log_out_social_accounts', 0 );
  */
 add_action(
 	'bp_init',
-	function() {
+	function () {
 		if ( ! class_exists( '\HardG\BpBraille\Plugin' ) ) {
 			return;
 		}

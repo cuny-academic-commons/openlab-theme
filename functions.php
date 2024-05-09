@@ -17,7 +17,7 @@ add_action( 'widgets_init', 'openlab_register_sidebars' );
 // Force Legacy templates.
 add_action(
 	'after_setup_theme',
-	function() {
+	function () {
 		add_theme_support( 'buddypress-use-legacy' );
 	}
 );
@@ -498,7 +498,7 @@ function openlab_site_footer() {
  */
 add_action(
 	'update_option_theme_mods_' . get_option( 'stylesheet' ),
-	function() {
+	function () {
 		delete_site_transient( 'cboxol_network_footer' );
 	}
 );

@@ -46,13 +46,13 @@ function openlab_get_home_slider() {
  */
 add_filter(
 	'bp_core_avatar_full_width',
-	function() {
+	function () {
 		return 225;
 	}
 );
 add_filter(
 	'bp_core_avatar_full_height',
-	function() {
+	function () {
 		return 225;
 	}
 );

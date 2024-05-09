@@ -41,7 +41,7 @@ add_filter( 'bp_docs_template', 'openlab_bp_docs_template' );
 
 add_action(
 	'bp_docs_setup_theme_compat',
-	function( $theme_compat ) {
+	function ( $theme_compat ) {
 		remove_action( 'bp_replace_the_content', array( $theme_compat, 'single_content' ) );
 		remove_action( 'bp_replace_the_content', array( $theme_compat, 'create_content' ) );
 	}
@@ -251,7 +251,7 @@ add_action( 'bp_ges_add_to_digest_queue_for_user', 'openlab_docs_activity_notifi
  */
 add_filter(
 	'comment_form_submit_button',
-	function( $button ) {
+	function ( $button ) {
 		if ( ! bp_docs_is_existing_doc() ) {
 			return $button;
 		}
