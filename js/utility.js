@@ -553,6 +553,10 @@
 			els.forEach(
 				// phpcs:disable
 				el => {
+					if ( ! el ) {
+						return;
+					}
+
 					const gridItems = el.querySelectorAll( '.group-item-wrapper' );
 
 					// Find the tallest item.
