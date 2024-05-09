@@ -143,6 +143,8 @@ function openlab_group_site_markup() {
 		}
 	}
 
+	$is_clone_create = $is_clone && bp_is_group_create();
+
 	?>
 
 	<div class="ct-group-meta">
@@ -288,7 +290,7 @@ function openlab_group_site_markup() {
 								</div><!-- /#wds-website-clone -->
 							<?php endif; ?>
 
-							<?php if ( ! $is_clone ) : ?>
+							<?php if ( ! $is_clone_create ) : ?>
 								<div id="wds-website" class="form-field form-required">
 									<div id="noo_new_options">
 										<div id="noo_new_options-div" class="row">
@@ -319,7 +321,7 @@ function openlab_group_site_markup() {
 								</div><!-- #wds-website -->
 							<?php endif; ?>
 
-							<?php if ( ! $is_clone ) : ?>
+							<?php if ( ! $is_clone_create ) : ?>
 								<?php /* Existing blogs - only display if some are available */ ?>
 								<?php
 								// Exclude blogs already used as groupblogs
