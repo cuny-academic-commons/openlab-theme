@@ -298,11 +298,14 @@ function openlab_help_categories_menu( $items, $args ) {
 					$help_cat_list .= '<ul>';
 
 					$child_args = array(
+						'taxonomy'   => 'help_category',
 						'hide_empty' => false,
 						'orderby'    => 'term_order',
 						'parent'     => $help_cat->term_id,
 					);
-					$child_cats = get_terms( 'help_category', $child_args );
+
+					$child_cats = get_terms( $child_args );
+
 					foreach ( $child_cats as $child_cat ) {
 
 						$child_classes = 'help-cat menu-item';
