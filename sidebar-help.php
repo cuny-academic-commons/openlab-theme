@@ -105,13 +105,14 @@ wp_nav_menu( $args );
 <div id="help-tags">
 	<?php
 	$args = array(
+		'taxonomy'     => 'help_tags',
 		'orderby'      => 'name',
 		'order'        => 'ASC',
 		'hierarchical' => false,
 	);
 
 
-	$terms = get_terms( array( 'help_tags' ), $args );
+	$terms = get_terms( $args );
 
 	$count = count( $terms );
 	if ( $count > 0 ) {
