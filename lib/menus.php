@@ -239,10 +239,12 @@ function openlab_help_categories_menu( $items, $args ) {
 		}
 
 		$help_args = array(
+			'taxonomy'   => 'help_category',
 			'hide_empty' => false,
 			'orderby'    => 'term_order',
 		);
-		$help_cats = get_terms( 'help_category', $help_args );
+
+		$help_cats = get_terms( $help_args );
 
 		// for post level identifying of current menu item
 		$post_cats_array = array();
