@@ -162,7 +162,11 @@ add_action( 'bp_activity_add', 'openlab_invalidate_whats_happening_cache' );
  */
 function openlab_embeds_make_responsive( $retval ) {
 	// If not an iframe, object or embed, bail.
-	if ( empty( $retval ) || false === strpos( $retval, '<iframe ' ) && false === strpos( $retval, '<object ' ) && false === strpos( $retval, '<embed ' ) ) {
+	if ( empty( $retval ) ) {
+		return $retval;
+	}
+
+	if ( false === strpos( $retval, '<iframe ' ) && false === strpos( $retval, '<object ' ) && false === strpos( $retval, '<embed ' ) ) {
 		return $retval;
 	}
 
