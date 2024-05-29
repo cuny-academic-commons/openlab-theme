@@ -220,12 +220,7 @@ function openlab_group_site_markup() {
 					}
 					$user_blogs = array_values( $user_blogs );
 
-					if ( $group_type->get_is_portfolio() ) {
-						$portfolio_user_id = openlab_get_user_id_from_portfolio_group_id( $the_group_id );
-						$suggested_path    = openlab_suggest_portfolio_path( $portfolio_user_id );
-					} else {
-						$suggested_path = groups_get_current_group()->slug;
-					}
+					$suggested_path = groups_get_current_group()->slug;
 
 					?>
 					<style type="text/css">
