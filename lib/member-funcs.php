@@ -872,3 +872,28 @@ function openlab_ajax_toggle_group_membership_privacy() {
 	wp_send_json( $retval );
 }
 add_action( 'wp_ajax_openlab_update_member_group_privacy', 'openlab_ajax_toggle_group_membership_privacy' );
+
+/**
+ * AJAX callback for 'openlab_portfolio_link_visibility'.
+ *
+ * @since 1.6.0
+ *
+ * @return void
+ */
+function openlab_portfolio_link_visibility_ajax_cb() {
+	$verified = wp_verify_nonce( $_GET['nonce'], 'openlab_portfolio_link_visibility' );
+
+	if ( ! $verified ) {
+		wp_send_json_error( 'Invalid nonce' );
+	}
+
+	if ( ! is_user_logged_in() ) {
+		wp_send_json_error( 'Not logged in' );
+	}
+
+	$enabled = 'enabled' === $_GET['state'];
+	openlab_save_show_portfolio_link_on_user_profile( get_current_user_id(), $enabled );
+
+	wp_send_json_success();
+}
+add_action( 'wp_ajax_openlab_portfolio_link_visibility', 'openlab_portfolio_link_visibility_ajax_cb' );

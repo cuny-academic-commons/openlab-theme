@@ -577,6 +577,17 @@ function openlab_group_site_privacy_settings_markup() {
 			</div>
 		</div>
 
+		<?php if ( bp_is_group_create() && cboxol_is_portfolio() ) : ?>
+			<div class="panel panel-default">
+				<div class="panel-heading semibold"><?php esc_html_e( 'Portfolio Link on my OpenLab Profile', 'commons-in-a-box' ); ?></div>
+				<div class="panel-body">
+					<p><?php esc_html_e( 'You can choose to show a link to your Portfolio on your OpenLab Profile page by checking the box below. If your Display Name is different from your real name but you want to use your real name on your Portfolio, you may wish to leave this unchecked.', 'commons-in-a-box' ); ?></p>
+
+					<input name="portfolio-profile-link" id="portfolio-profile-link-toggle" type="checkbox" name="portfolio-profile-link-toggle" value="1" /> <label for="portfolio-profile-link-toggle"><?php esc_html_e( 'Show link to my Portfolio on my public OpenLab Profile', 'commons-in-a-box' ); ?></label>
+				</div>
+			</div>
+		<?php endif; ?>
+
 		<?php wp_nonce_field( 'openlab_site_status', 'openlab-site-status-nonce', false ); ?>
 	<?php
 }
@@ -958,19 +969,22 @@ function openlab_save_group_site_settings() {
 
 	$group = groups_get_current_group();
 
-	if ( ! isset( $_POST['blog_public'] ) ) {
-		return;
+	// blog_public
+	if ( isset( $_POST['blog_public'] ) ) {
+		$blog_public = (float) $_POST['blog_public'];
+
+		$site_id = cboxol_get_group_site_id( $group->id );
+		if ( $site_id ) {
+			update_blog_option( $site_id, 'blog_public', $blog_public );
+			groups_update_groupmeta( $group->id, 'blog_public', $blog_public );
+		}
 	}
 
-	$blog_public = (float) $_POST['blog_public'];
-
-	$site_id = cboxol_get_group_site_id( $group->id );
-	if ( ! $site_id ) {
-		return;
+	// Portfolio profile link
+	if ( ! empty( $_POST['portfolio-profile-link'] ) ) {
+		$portfolio_user_id = openlab_get_user_id_from_portfolio_group_id( $group->id );
+		openlab_save_show_portfolio_link_on_user_profile( $portfolio_user_id, true );
 	}
-
-	update_blog_option( $site_id, 'blog_public', $blog_public );
-	groups_update_groupmeta( $group->id, 'blog_public', $blog_public );
 }
 
 /**
@@ -2756,6 +2770,29 @@ function openlab_get_active_terms() {
 
 	return $options;
 }
+
+/**
+ * Saves 'Portfolio profile link' setting on group edit.
+ *
+ * @since 1.6.0
+ *
+ * @param int $group_id ID of the group.
+ * @return void
+ */
+function openlab_group_save_portfolio_profile_link_setting_on_group_edit( $group_id ) {
+	if ( ! isset( $_POST['portfolio-profile-link-nonce'] ) ) {
+		return;
+	}
+
+	check_admin_referer( 'portfolio_profile_link', 'portfolio-profile-link-nonce' );
+
+	$enabled = ! empty( $_POST['portfolio-profile-link'] );
+
+	$portfolio_user_id = openlab_get_user_id_from_portfolio_group_id( $group_id );
+
+	openlab_save_show_portfolio_link_on_user_profile( $portfolio_user_id, $enabled );
+}
+add_action( 'groups_group_details_edited', 'openlab_group_save_portfolio_profile_link_setting_on_group_edit' );
 
 /**
  * Modify group-related template messages to remove the word 'group'.

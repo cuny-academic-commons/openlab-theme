@@ -24,6 +24,7 @@
 			OpenLab.utility.refreshActivity();
 			OpenLab.utility.initMemberRoleDefinitions();
 			OpenLab.utility.adjustGridHeight();
+			OpenLab.utility.initPortfolioProfileLinkToggle();
 
 						// Home page column adjustments.
 						var groupTypeWidgets = $( '#home-right .activity-list' );
@@ -579,6 +580,47 @@
 				}
 				// phpcs:enable
 			)
+		},
+
+		/**
+		 * Initialize the portfolio profile link toggle.
+		 *
+		 * @since 1.6.0
+		 * @return {void}
+		 */
+		initPortfolioProfileLinkToggle: function() {
+			const toggleNodes = document.querySelectorAll('.portfolio-profile-link-toggle-checkbox');
+
+			if (toggleNodes.length > 0) {
+				const toggles = Array.from(toggleNodes);
+				toggles.forEach(toggle => {
+					toggle.addEventListener('change', (e) => {
+						const isChecked = toggle.checked;
+
+						const toggleNonce = document.getElementById( 'openlab_portfolio_link_visibility_nonce_' + toggle.dataset.counter );
+
+						if ( ! toggleNonce ) {
+							return;
+						}
+
+						const nonce = toggleNonce.value;
+
+						const url = ajaxurl + '?action=openlab_portfolio_link_visibility&nonce=' + nonce + '&state=' + ( isChecked ? 'enabled' : 'disabled' );
+
+						toggle.closest( '.portfolio-profile-link-toggle-wrapper' ).classList.add( 'loading' );
+						toggle.disabled = true;
+
+						fetch(url, {
+							method: 'GET',
+						})
+						.then(response => response.json())
+						.then(data => {
+							toggle.closest( '.portfolio-profile-link-toggle-wrapper' ).classList.remove( 'loading' );
+							toggle.disabled = false;
+						})
+					});
+				})
+			}
 		},
 
 		filterAjax: function () {

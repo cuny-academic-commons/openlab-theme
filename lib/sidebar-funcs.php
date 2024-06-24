@@ -290,6 +290,9 @@ function openlab_member_sidebar_menu( $mobile = false ) {
  * Member pages sidebar blocks (portfolio link) - modularized for easier parsing of mobile menus
  */
 function openlab_members_sidebar_blocks( $mobile_hide = false ) {
+	static $counter = 0;
+
+	++$counter;
 
 	$portfolio_group_type = cboxol_get_portfolio_group_type();
 
@@ -315,7 +318,15 @@ function openlab_members_sidebar_blocks( $mobile_hide = false ) {
 
 	?>
 
-	<?php if ( openlab_user_has_portfolio( bp_displayed_user_id() ) && ( ! cboxol_group_is_hidden( openlab_get_user_portfolio_id() ) || openlab_is_my_profile() || groups_is_user_member( bp_loggedin_user_id(), openlab_get_user_portfolio_id() ) ) ) : ?>
+	<?php
+	if (
+		( ( openlab_user_has_portfolio( bp_displayed_user_id() ) && ! cboxol_group_is_hidden( openlab_get_user_portfolio_id() ) && openlab_show_portfolio_link_on_user_profile() )
+		||
+		( openlab_is_my_profile() && openlab_user_has_portfolio( bp_displayed_user_id() ) )
+		||
+		groups_is_user_member( bp_loggedin_user_id(), openlab_get_user_portfolio_id() ) )
+	) :
+		?>
 
 		<?php if ( ! $mobile_hide ) : ?>
 			<?php if ( is_user_logged_in() && openlab_is_my_profile() ) : ?>
@@ -351,6 +362,14 @@ function openlab_members_sidebar_blocks( $mobile_hide = false ) {
 				</li>
 
 			</ul>
+
+			<?php if ( openlab_is_my_profile() && openlab_user_has_portfolio( bp_displayed_user_id() ) && ! bp_is_group_create() ) : ?>
+				<li class="portfolio-profile-link-toggle-wrapper">
+					<input value="1" data-counter="<?php echo esc_attr( $counter ); ?>" type="checkbox" id="portfolio-profile-link-toggle-<?php echo esc_attr( $counter ); ?>" class="portfolio-profile-link-toggle-checkbox" <?php checked( openlab_show_portfolio_link_on_user_profile() ); ?> /> <label for="portfolio-profile-link-toggle-<?php echo esc_attr( $counter ); ?>"><?php esc_html_e( 'Show link to my Portfolio on my public OpenLab profile', 'commons-in-a-box' ); ?></label>
+
+					<?php wp_nonce_field( 'openlab_portfolio_link_visibility', 'openlab_portfolio_link_visibility_nonce_' . $counter, false ); ?>
+				</li>
+			<?php endif; ?>
 		</div>
 
 	<?php elseif ( openlab_is_my_profile() && ! bp_is_group_create() ) : ?>
