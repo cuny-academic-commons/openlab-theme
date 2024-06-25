@@ -8394,6 +8394,17 @@ body label.passive {
 body label.block {
   display: block;
 }
+.panel-avatar-privacy.loading .radio {
+  opacity: 0.5;
+  pointer-events: none;
+}
+.panel-avatar-privacy .panel-body legend {
+  margin-bottom: 1em;
+}
+.panel-avatar-privacy .panel-body .radio label {
+  font-weight: normal;
+  margin-right: 16px;
+}
 /**shortcodes**/
 .callout-list .row {
   margin-bottom: 34px;
