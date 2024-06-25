@@ -223,6 +223,14 @@ function openlab_load_scripts() {
 			true
 		);
 
+		wp_register_script(
+			'openlab-avatar-privacy',
+			$stylesheet_dir_uri . '/js/avatar-privacy.js',
+			[ 'jquery' ],
+			$ver,
+			true
+		);
+
 		if ( bp_is_groups_directory() || openlab_is_search_results_page() || bp_is_members_directory() ) {
 			wp_enqueue_script( 'openlab-directory', $stylesheet_dir_uri . '/js/directory.js', [ 'jquery' ], $ver, true );
 			wp_localize_script(

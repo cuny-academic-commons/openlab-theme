@@ -50,7 +50,7 @@ do_action( 'bp_before_member_home_content' );
 				$avatar_src = bp_core_fetch_avatar(
 					array(
 						'item_id' => $this_user_id,
-						'object'  => 'member',
+						'object'  => 'user',
 						'type'    => 'full',
 						'html'    => false,
 					)
