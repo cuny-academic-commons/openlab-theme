@@ -237,12 +237,7 @@ if ( ! bp_is_my_profile() && ! current_user_can( 'bp_moderate' ) ) {
 										<?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 										<?php echo openlab_output_course_info_line( $group_id ); ?>
 									</div>
-								<?php elseif ( $group_type->get_is_portfolio() ) : ?>
-									<div class="info-line">
-										<?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-										<?php echo bp_core_get_userlink( openlab_get_user_id_from_portfolio_group_id( bp_get_group_id() ) ); ?>
-									</div>
-								<?php else : ?>
+								<?php elseif ( ! $group_type->get_is_portfolio() ) : ?>
 									<div class="info-line uppercase">
 										<?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 										<?php echo openlab_output_group_contact_line( $group_id ); ?>
