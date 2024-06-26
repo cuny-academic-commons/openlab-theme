@@ -9069,15 +9069,7 @@ body form .checkbox-list-container {
   margin-bottom: 25px;
 }
 .home-page .activity-list .activity-wrapper .activity-item .item-avatar {
-  height: 0;
   position: relative;
-  padding-top: 100%;
-}
-.home-page .activity-list .activity-wrapper .activity-item .item-avatar a {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
 }
 @media (max-width: 767px) {
   .home-page .activity-list .activity-wrapper .activity-item .item-avatar {
@@ -9113,6 +9105,15 @@ body form .checkbox-list-container {
   .home-page .activity-list .activity-wrapper .activity-item .item-content-wrapper {
     width: 100%;
   }
+}
+.clickable-card.card-is-hovered {
+  border-color: #999999 !important;
+}
+.clickable-card .see-more {
+  text-decoration: underline;
+}
+.clickable-card .see-more:hover {
+  text-decoration: none;
 }
 /**sidebar**/
 @media (max-width: 767px) {
@@ -9911,9 +9912,6 @@ input#group-request-send {
 }
 .group-members.group-list .group-item-membership-privacy label:hover {
   cursor: pointer;
-}
-.form-panel .group-privacy-radios legend {
-  font-weight: normal;
 }
 .group-manage-members-pagination {
   align-items: center;
