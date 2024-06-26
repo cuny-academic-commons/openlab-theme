@@ -24,6 +24,7 @@
 			OpenLab.utility.refreshActivity();
 			OpenLab.utility.initMemberRoleDefinitions();
 			OpenLab.utility.adjustGridHeight();
+			OpenLab.utility.initClickableCards();
 			OpenLab.utility.initPortfolioProfileLinkToggle();
 
 						// Home page column adjustments.
@@ -580,6 +581,50 @@
 				}
 				// phpcs:enable
 			)
+		},
+
+		/**
+		 * Initialize clickable cards.
+		 *
+		 * @since 1.6.0
+		 *
+		 * @return {void}
+		 */
+		initClickableCards: function() {
+			const cards = document.querySelectorAll('.clickable-card');
+
+			Array.prototype.forEach.call(cards, card => {
+				let down, up;
+				const link = card.querySelector('.item-title a');
+
+				card.onmouseenter = (event) => card.classList.add('card-is-hovered')
+				card.onmouseleave = (event) => card.classList.remove('card-is-hovered')
+
+				card.onmousedown = () => down = +new Date();
+				card.onmouseup = (e) => {
+					let rightclick = false;
+
+					// Old Netscape.
+					if (e.which && e.which === 3) {
+						rightclick = true;
+
+					// Microsoft or W3C model.
+					} else if (e.button && e.button === 2) {
+						rightclick = true;
+					}
+
+					if (rightclick) {
+						return;
+					}
+
+					up = +new Date();
+					if ((up - down) < 200) {
+						link.click();
+					}
+				}
+
+				card.style.cursor = 'pointer';
+			});
 		},
 
 		/**
