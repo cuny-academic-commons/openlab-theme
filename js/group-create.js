@@ -173,7 +173,7 @@ jQuery( document ).ready(
 			var siteIsExternal  = ( $externalInput.length && $externalInput.is( ':checked' ) ) || ( $siteIsExternal.length && $siteIsExternal.val() > 0 );
 
 			var show = $setuptoggle.is( ':checked' ) || $( '#current-group-site' ).is( ':visible' ) || CBOXOL_Group_Create.group_type_requires_site;
-			console.log( show );
+
 			if ( show && siteIsExternal ) {
 				show = false;
 			}
