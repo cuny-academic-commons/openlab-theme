@@ -1247,7 +1247,7 @@ add_action( 'groups_group_deleted', 'openlab_delete_group', 20 );
  * After portfolio delete, redirect to user profile page
  */
 function openlab_delete_group() {
-	bp_core_redirect( bp_loggedin_user_domain() );
+	bp_core_redirect( bp_loggedin_user_url() );
 }
 
 // a variation on bp_groups_pagination_count() to match design
@@ -2164,7 +2164,7 @@ function openlab_get_faculty_list( $group_id = null ) {
 	foreach ( $faculty_ids as $id ) {
 		$faculty_link = sprintf(
 			'<a href="%s">%s</a>',
-			esc_url( bp_core_get_user_domain( $id ) ),
+			esc_url( bp_members_get_user_url( $id ) ),
 			esc_html( bp_core_get_user_displayname( $id ) )
 		);
 		array_push( $faculty, $faculty_link );

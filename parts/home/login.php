@@ -47,13 +47,13 @@ if ( is_user_logged_in() ) :
 
 	<div id="sidebar-me" class="clearfix">
 		<div id="user-info">
-			<a class="avatar" href="<?php echo esc_attr( bp_loggedin_user_domain() ); ?>">
+			<a class="avatar" href="<?php echo esc_attr( bp_loggedin_user_url() ); ?>">
 				<?php /* translators: user display name */ ?>
 				<img class="img-responsive" src="<?php echo esc_attr( $user_avatar ); ?>" alt="<?php echo esc_attr( sprintf( __( 'Avatar for %s', 'commons-in-a-box' ), bp_core_get_user_displayname( bp_loggedin_user_id() ) ) ); ?>" />
 			</a>
 
 			<div class="welcome-link-my-profile">
-				<a href="<?php echo esc_url( bp_loggedin_user_domain() ); ?>"><?php esc_html_e( 'My Profile', 'commons-in-a-box' ); ?></a>
+				<a href="<?php echo esc_url( bp_loggedin_user_url() ); ?>"><?php esc_html_e( 'My Profile', 'commons-in-a-box' ); ?></a>
 			</div>
 
 			<ul class="content-list">

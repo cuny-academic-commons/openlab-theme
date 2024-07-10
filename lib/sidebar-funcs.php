@@ -142,10 +142,9 @@ endif;
  * @param type $mobile
  */
 function openlab_member_sidebar_menu( $mobile = false ) {
-
-	$dud = bp_displayed_user_domain();
-	if ( ! $dud ) {
-		$dud = bp_loggedin_user_domain(); // will always be the logged in user on my-*
+	$user_id = bp_displayed_user_id();
+	if ( ! $user_id ) {
+		$user_id = bp_loggedin_user_id();
 	}
 
 	if ( $mobile ) {
@@ -177,10 +176,10 @@ function openlab_member_sidebar_menu( $mobile = false ) {
 			<ul class="sidebar-nav clearfix">
 
 				<?php $selected_page = bp_is_user_activity() ? 'selected-page' : ''; ?>
-				<li class="sq-bullet <?php echo esc_attr( $selected_page ); ?> mol-profile my-profile"><a href="<?php echo esc_attr( $dud ); ?>"><?php esc_html_e( 'My Profile', 'commons-in-box' ); ?></a></li>
+				<li class="sq-bullet <?php echo esc_attr( $selected_page ); ?> mol-profile my-profile"><a href="<?php echo esc_attr( bp_members_get_user_url( $user_id ) ); ?>"><?php esc_html_e( 'My Profile', 'commons-in-box' ); ?></a></li>
 
 				<?php $selected_page = bp_is_user_settings() ? 'selected-page' : ''; ?>
-				<li class="sq-bullet <?php echo esc_attr( $selected_page ); ?> mol-settings my-settings"><a href="<?php echo esc_attr( $dud . bp_get_settings_slug() ); ?>/"><?php esc_html_e( 'My Settings', 'commons-in-a-box' ); ?></a></li>
+				<li class="sq-bullet <?php echo esc_attr( $selected_page ); ?> mol-settings my-settings"><a href="<?php echo esc_attr( bp_members_get_user_url( $user_id, bp_members_get_path_chunks( [ bp_get_settings_slug() ] ) ) ); ?>/"><?php esc_html_e( 'My Settings', 'commons-in-a-box' ); ?></a></li>
 
 				<?php if ( $portfolio_group_type ) : ?>
 					<?php if ( openlab_user_has_portfolio( bp_displayed_user_id() ) && ( ! cboxol_group_is_hidden( openlab_get_user_portfolio_id() ) || openlab_is_my_profile() || groups_is_user_member( bp_loggedin_user_id(), openlab_get_user_portfolio_id() ) ) ) : ?>

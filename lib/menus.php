@@ -473,17 +473,22 @@ HTML;
 function openlab_profile_settings_submenu() {
 	global $bp;
 
-	$dud = bp_displayed_user_domain();
-	if ( ! $dud ) {
-		$dud = bp_loggedin_user_domain(); // will always be the logged in user on my-*
+	$user_id = bp_displayed_user_id();
+	if ( ! $user_id ) {
+		$user_id = bp_loggedin_user_id();
 	}
+
+	$profile_edit_url  = bp_members_get_user_url( $user_id, bp_members_get_path_chunks( [ bp_get_profile_slug(), 'edit' ] ) );
+	$change_avatar_url = bp_members_get_user_url( $user_id, bp_members_get_path_chunks( [ bp_get_profile_slug(), 'change-avatar' ] ) );
+	$settings_url      = bp_members_get_user_url( $user_id, bp_members_get_path_chunks( [ bp_get_settings_slug() ] ) );
+	$notifications_url = bp_members_get_user_url( $user_id, bp_members_get_path_chunks( [ bp_get_settings_slug(), 'notifications' ] ) );
 
 	$settings_slug = $dud . bp_get_settings_slug();
 	$menu_list     = array(
-		$dud . 'profile/edit'           => __( 'Edit Profile', 'commons-in-a-box' ),
-		$dud . 'profile/change-avatar'  => __( 'Change Avatar', 'commons-in-a-box' ),
-		$settings_slug                  => __( 'Account Settings', 'commons-in-a-box' ),
-		$dud . 'settings/notifications' => __( 'Email Notifications', 'commons-in-a-box' ),
+		$profile_edit_url  => __( 'Edit Profile', 'commons-in-a-box' ),
+		$change_avatar_url => __( 'Change Avatar', 'commons-in-a-box' ),
+		$settings_url      => __( 'Account Settings', 'commons-in-a-box' ),
+		$notifications_url => __( 'Email Notifications', 'commons-in-a-box' ),
 	);
 
 	/** This filter is documented in /wp-content/plugins/buddypress/bp-settings/classes/class-bp-settings-component.php */
@@ -517,7 +522,7 @@ function openlab_my_groups_submenu( \CBOX\OL\GroupType $group_type ) {
 			'group_type' => $group_type->get_slug(),
 			'new'        => 'true',
 		],
-		bp_get_group_create_url( [ 'group-details' ] )
+		bp_groups_get_create_url( [ 'group-details' ] )
 	);
 
 	$submenu_text = $group_type->get_label( 'my_groups' );
@@ -582,16 +587,16 @@ function openlab_my_friends_submenu( $count = true ) {
 	global $bp;
 	$menu_out = array();
 
-	$dud = bp_displayed_user_domain();
-	if ( ! $dud ) {
-		$dud = bp_loggedin_user_domain(); // will always be the logged in user on my-*
+	$user_id = bp_displayed_user_id();
+	if ( ! $user_id ) {
+		$user_id = bp_loggedin_user_id();
 	}
 
 	$request_ids   = friends_get_friendship_request_user_ids( bp_loggedin_user_id() );
 	$request_count = intval( count( (array) $request_ids ) );
 
-	$my_friends      = $dud . 'friends/';
-	$friend_requests = $dud . 'friends/requests/';
+	$my_friends      = bp_members_get_user_url( $user_id, bp_members_get_path_chunks( [ bp_get_friends_slug() ] ) );
+	$friend_requests = bp_members_get_user_url( $user_id, bp_members_get_path_chunks( [ bp_get_friends_slug(), 'requests' ] ) );
 
 	$action    = $bp->current_action;
 	$item      = $bp->current_item;
@@ -627,31 +632,41 @@ function openlab_my_friends_submenu( $count = true ) {
 
 // sub-menus for my-messages pages
 function openlab_my_messages_submenu() {
-	$dud = bp_displayed_user_domain();
-	if ( ! $dud ) {
-		$dud = bp_loggedin_user_domain(); // will always be the logged in user on my-*
+	$user_id = bp_displayed_user_id();
+	if ( ! $user_id ) {
+		$user_id = bp_loggedin_user_id();
 	}
 
+	$inbox_url   = bp_members_get_user_url( $user_id, bp_members_get_path_chunks( [ bp_get_messages_slug(), 'inbox' ] ) );
+	$sent_url    = bp_members_get_user_url( $user_id, bp_members_get_path_chunks( [ bp_get_messages_slug(), 'sentbox' ] ) );
+	$compose_url = bp_members_get_user_url( $user_id, bp_members_get_path_chunks( [ bp_get_messages_slug(), 'compose' ] ) );
+
 	$menu_list = array(
-		$dud . 'messages/inbox/'   => __( 'Inbox', 'commons-in-a-box' ),
-		$dud . 'messages/sentbox/' => __( 'Sent', 'commons-in-a-box' ),
-		$dud . 'messages/compose'  => __( 'Compose', 'commons-in-a-box' ),
+		$inbox_url   => __( 'Inbox', 'commons-in-a-box' ),
+		$sent_url    => __( 'Sent', 'commons-in-a-box' ),
+		$compose_url => __( 'Compose', 'commons-in-a-box' ),
 	);
+
 	return openlab_submenu_gen( $menu_list );
 }
 
 // sub-menus for my-invites pages
 function openlab_my_invitations_submenu() {
-	$dud = bp_displayed_user_domain();
-	if ( ! $dud ) {
-		$dud = bp_loggedin_user_domain(); // will always be the logged in user on my-*
+	$user_id = bp_displayed_user_id();
+	if ( ! $user_id ) {
+		$user_id = bp_loggedin_user_id();
 	}
 
+	$group_invites_url   = bp_members_get_user_url( $user_id, bp_members_get_path_chunks( [ bp_get_groups_slug(), 'invites' ] ) );
+	$invite_anyone_url   = bp_members_get_user_url( $user_id, bp_members_get_path_chunks( [ 'invite-anyone' ] ) );
+	$ia_sent_invites_url = bp_members_get_user_url( $user_id, bp_members_get_path_chunks( [ 'invite-anyone', 'sent-invites' ] ) );
+
 	$menu_list = array(
-		$dud . 'groups/invites/'             => __( 'Invitations Received', 'commons-in-a-box' ),
-		$dud . 'invite-anyone/'              => __( 'Invite New Members', 'commons-in-a-box' ),
-		$dud . 'invite-anyone/sent-invites/' => __( 'Sent Invitations', 'commons-in-a-box' ),
+		$group_invites_url   => __( 'Invitations Received', 'commons-in-a-box' ),
+		$invite_anyone_url   => __( 'Invite New Members', 'commons-in-a-box' ),
+		$ia_sent_invites_url => __( 'Sent Invitations', 'commons-in-a-box' ),
 	);
+
 	return openlab_submenu_gen( $menu_list );
 }
 

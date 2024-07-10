@@ -33,7 +33,7 @@ echo '<h3>' . esc_html__( 'Subscribe', 'bp-event-organiser' ) . '</h3>';
 
 if ( bp_is_user() ) {
 	echo '<ul>';
-	echo '<li><a class="bpeo-ical-link" href="' . esc_attr( bp_displayed_user_domain() . bpeo_get_events_slug() ) . '/ical/" title="' . esc_html__( 'Only public events are listed in this iCalendar. Suitable for sharing.', 'bp-event-organiser' ) . '"><span class="icon"></span>' . esc_attr__( 'Download iCalendar file (Public)', 'bp-event-organiser' ) . '</a></li>';
+	echo '<li><a class="bpeo-ical-link" href="' . esc_attr( bp_displayed_user_url( bp_members_get_path_chunks( [ bpeo_get_events_slug(), 'ical' ] ) ) ) . '" title="' . esc_html__( 'Only public events are listed in this iCalendar. Suitable for sharing.', 'bp-event-organiser' ) . '"><span class="icon"></span>' . esc_attr__( 'Download iCalendar file (Public)', 'bp-event-organiser' ) . '</a></li>';
 
 	if ( bp_is_my_profile() ) {
 		echo '<li><a class="bpeo-ical-link" href="' . esc_attr( bpeo_get_the_user_private_ical_url() ) . '" title="' . esc_html__( 'Both public and private events are listed in this iCalendar.  Be mindful of who you share this with.', 'bp-event-organiser' ) . '"><span class="icon"></span>' . esc_html__( 'Download iCalendar file (Private)', 'bp-event-organiser' ) . '</a></li>';

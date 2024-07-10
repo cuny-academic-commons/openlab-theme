@@ -20,7 +20,7 @@
 					<?php do_action( 'bp_before_activity_type_tab_all' ); ?>
 
 					<?php /* translators: total member count for site */ ?>
-					<li class="selected" id="activity-all"><a href="<?php echo esc_attr( bp_loggedin_user_domain() . BP_ACTIVITY_SLUG . '/' ); ?>" title="<?php esc_attr_e( 'The public activity for everyone on this site.', 'commons-in-a-box' ); ?>"><?php printf( esc_html__( 'All Members (%s)', 'commons-in-a-box' ), esc_html( bp_get_total_site_member_count() ) ); ?></a></li>
+					<li class="selected" id="activity-all"><a href="<?php echo esc_attr( bp_loggedin_user_url( bp_members_get_path_chunks( [ bp_get_activity_slug() ] ) ) ); ?>" title="<?php esc_attr_e( 'The public activity for everyone on this site.', 'commons-in-a-box' ); ?>"><?php printf( esc_html__( 'All Members (%s)', 'commons-in-a-box' ), esc_html( bp_get_total_site_member_count() ) ); ?></a></li>
 
 					<?php if ( is_user_logged_in() ) : ?>
 
@@ -29,7 +29,7 @@
 						<?php if ( function_exists( 'bp_get_total_friend_count' ) ) : ?>
 							<?php if ( bp_get_total_friend_count( bp_loggedin_user_id() ) ) : ?>
 								<?php /* translators: friend count for user */ ?>
-								<li id="activity-friends"><a href="<?php echo esc_attr( bp_loggedin_user_domain() . BP_ACTIVITY_SLUG . '/' . BP_FRIENDS_SLUG . '/' ); ?>" title="<?php esc_attr_e( 'The activity of my friends only.', 'commons-in-a-box' ); ?>"><?php printf( esc_html__( 'My Friends (%s)', 'commons-in-a-box' ), esc_html( bp_get_total_friend_count( bp_loggedin_user_id() ) ) ); ?></a></li>
+								<li id="activity-friends"><a href="<?php echo esc_attr( bp_loggedin_user_url( bp_members_get_path_chunks( [ bp_get_activity_slug(), bp_get_friends_slug() ] ) ) ); ?>" title="<?php esc_attr_e( 'The activity of my friends only.', 'commons-in-a-box' ); ?>"><?php printf( esc_html__( 'My Friends (%s)', 'commons-in-a-box' ), esc_html( bp_get_total_friend_count( bp_loggedin_user_id() ) ) ); ?></a></li>
 							<?php endif; ?>
 						<?php endif; ?>
 
@@ -38,7 +38,7 @@
 						<?php if ( function_exists( 'bp_get_total_group_count_for_user' ) ) : ?>
 							<?php if ( bp_get_total_group_count_for_user( bp_loggedin_user_id() ) ) : ?>
 								<?php /* translators: group count for user */ ?>
-								<li id="activity-groups"><a href="<?php echo esc_attr( bp_loggedin_user_domain() . BP_ACTIVITY_SLUG . '/' . BP_GROUPS_SLUG . '/' ); ?>" title="<?php esc_attr_e( 'The activity of groups I am a member of.', 'commons-in-a-box' ); ?>"><?php printf( esc_html__( 'My Groups (%s)', 'commons-in-a-box' ), esc_html( bp_get_total_group_count_for_user( bp_loggedin_user_id() ) ) ); ?></a></li>
+								<li id="activity-groups"><a href="<?php echo esc_attr( bp_loggedin_user_url( bp_members_get_path_chunks( [ bp_get_activity_slug(), bp_get_groups_slug() ] ) ) ); ?>" title="<?php esc_attr_e( 'The activity of groups I am a member of.', 'commons-in-a-box' ); ?>"><?php printf( esc_html__( 'My Groups (%s)', 'commons-in-a-box' ), esc_html( bp_get_total_group_count_for_user( bp_loggedin_user_id() ) ) ); ?></a></li>
 							<?php endif; ?>
 						<?php endif; ?>
 
@@ -46,13 +46,13 @@
 
 						<?php if ( bp_get_total_favorite_count_for_user( bp_loggedin_user_id() ) ) : ?>
 							<?php /* translators: favorite activity count */ ?>
-							<li id="activity-favorites"><a href="<?php echo esc_attr( bp_loggedin_user_domain() . BP_ACTIVITY_SLUG . '/favorites/' ); ?>" title="<?php esc_attr_e( "The activity I've marked as a favorite.", 'commons-in-a-box' ); ?>"><?php printf( esc_html_e( 'My Favorites (%s)', 'commons-in-a-box' ), '<span>' . esc_html( bp_get_total_favorite_count_for_user( bp_loggedin_user_id() ) ) . '</span>' ); ?></a></li>
+							<li id="activity-favorites"><a href="<?php echo esc_attr( bp_loggedin_user_url( bp_members_get_path_chunks( [ bp_get_activity_slug(), 'favorites' ] ) ) ); ?>" title="<?php esc_attr_e( "The activity I've marked as a favorite.", 'commons-in-a-box' ); ?>"><?php printf( esc_html_e( 'My Favorites (%s)', 'commons-in-a-box' ), '<span>' . esc_html( bp_get_total_favorite_count_for_user( bp_loggedin_user_id() ) ) . '</span>' ); ?></a></li>
 						<?php endif; ?>
 
 						<?php do_action( 'bp_before_activity_type_tab_mentions' ); ?>
 
 						<li id="activity-mentions">
-							<a href="<?php echo esc_attr( bp_loggedin_user_domain() . BP_ACTIVITY_SLUG . '/mentions/' ); ?>" title="<?php esc_attr_e( 'Activity that I have been mentioned in.', 'commons-in-a-box' ); ?>">
+							<a href="<?php echo esc_attr( bp_loggedin_user_url( bp_members_get_path_chunks( [ bp_get_activity_slug(), 'mentions' ] ) ) ); ?>" title="<?php esc_attr_e( 'Activity that I have been mentioned in.', 'commons-in-a-box' ); ?>">
 								<?php /* translators: username of user whose mentions are being displayed */ ?>
 								<?php printf( esc_html__( '@%s Mentions', 'commons-in-a-box' ), esc_html( bp_get_loggedin_user_username() ) ); ?>
 								<?php if ( bp_get_total_mention_count_for_user( bp_loggedin_user_id() ) ) : ?>

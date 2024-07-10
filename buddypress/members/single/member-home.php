@@ -47,7 +47,7 @@ do_action( 'bp_before_member_home_content' );
 
 		<?php if ( $friend_ids ) : ?>
 			<?php // translators: user display name ?>
-			<h2 class="title activity-title"><a class="no-deco" href="<?php echo esc_attr( bp_displayed_user_domain() . bp_get_friends_slug() ); ?>"><?php bp_word_or_name( __( 'My Friends', 'commons-in-a-box' ), __( "%s's Friends", 'commons-in-a-box' ) ); ?><span class="fa fa-chevron-circle-right font-size font-18" aria-hidden="true"></span></a></h2>
+			<h2 class="title activity-title"><a class="no-deco" href="<?php echo esc_attr( bp_displayed_user_url( bp_members_get_path_chunks( [ bp_get_friends_slug() ] ) ) ); ?>"><?php bp_word_or_name( __( 'My Friends', 'commons-in-a-box' ), __( "%s's Friends", 'commons-in-a-box' ) ); ?><span class="fa fa-chevron-circle-right font-size font-18" aria-hidden="true"></span></a></h2>
 
 			<ul id="member-list" class="inline-element-list">
 				<?php foreach ( $friend_ids as $friend_id ) : ?>
@@ -62,7 +62,7 @@ do_action( 'bp_before_member_home_content' );
 					);
 					?>
 					<li class="inline-element">
-						<a href="<?php echo esc_attr( bp_core_get_user_domain( $friend_id ) ); ?>">
+						<a href="<?php echo esc_attr( bp_members_get_user_url( $friend_id ) ); ?>">
 							<img class="img-responsive" src="<?php echo esc_attr( $user_avatar ); ?>" alt="<?php echo esc_attr( bp_core_get_user_displayname( $friend_id ) ); ?>"/>
 						</a>
 					</li>

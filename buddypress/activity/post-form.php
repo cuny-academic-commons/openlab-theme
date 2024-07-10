@@ -12,7 +12,7 @@
 	<?php // phpcs:enable WordPress.Security.NonceVerification.Recommended ?>
 
 	<div id="whats-new-avatar">
-		<a href="<?php echo esc_attr( bp_loggedin_user_domain() ); ?>">
+		<a href="<?php echo esc_attr( bp_loggedin_user_url() ); ?>">
 			<?php bp_loggedin_user_avatar( 'width=' . BP_AVATAR_THUMB_WIDTH . '&height=' . BP_AVATAR_THUMB_HEIGHT ); ?>
 		</a>
 	</div>

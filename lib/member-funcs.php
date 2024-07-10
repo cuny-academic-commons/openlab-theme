@@ -403,7 +403,7 @@ function openlab_profile_group_type_activity_block( \CBOX\OL\GroupType $type ) {
 		?>
 		<div id="<?php echo esc_attr( $type->get_slug() ); ?>-activity-stream" class="<?php echo esc_attr( $type->get_slug() ); ?>-list activity-list item-list col-sm-8 col-xs-12">
 			<?php
-			$href = add_query_arg( 'group_type', $type->get_slug(), bp_displayed_user_domain() . 'groups/' );
+			$href = add_query_arg( 'group_type', $type->get_slug(), bp_displayed_user_url( bp_members_get_path_chunks( [ bp_get_groups_slug() ] ) ) );
 			$x    = 0;
 			?>
 			<?php /* @todo font awesome is loaded from openlab-toolbar.php */ ?>
