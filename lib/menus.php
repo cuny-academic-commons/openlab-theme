@@ -40,7 +40,7 @@ function openlab_wp_menu_customizations( $items, $args ) {
 		// first iterate through the current menu items and figure out where this new mobile menu item will go
 		foreach ( $items as $key => $item ) {
 
-			if ( false === strpos( $item->url, bp_get_root_domain() ) ) {
+			if ( false === strpos( $item->url, bp_get_root_url() ) ) {
 				$items[ $key ]->classes[] = 'external-link';
 			}
 
@@ -512,14 +512,13 @@ function openlab_my_groups_submenu( \CBOX\OL\GroupType $group_type ) {
 	$menu_out  = array();
 	$menu_list = array();
 
-	$create_link = bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/create/step/group-details/?group_type=' . $group_type->get_slug() . '&new=true';
-	$no_link     = 'no-link';
-
-	$span_start = '<span class="bold">';
-	$span_end   = '</span>';
-
-	// get account type to see if they're faculty
-	$faculty = xprofile_get_field_data( 'Account Type', get_current_user_id() );
+	$create_link = add_query_arg(
+		[
+			'group_type' => $group_type->get_slug(),
+			'new'        => 'true',
+		],
+		bp_get_group_create_url( [ 'group-details' ] )
+	);
 
 	$submenu_text = $group_type->get_label( 'my_groups' );
 
@@ -1104,19 +1103,19 @@ function openlab_group_admin_tabs( $group = false ) {
 	?>
 	<?php if ( cboxol_is_portfolio() ) : ?>
 		<?php if ( bp_is_item_admin() || bp_is_item_mod() ) { ?>
-			<li class="<?php ( 'edit-details' === $current_tab || empty( $current_tab ) ) ? 'current-menu-item' : ''; ?>"><a href="<?php echo esc_attr( bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug ); ?>/admin/edit-details"><?php echo esc_html( $group_type->get_label( 'group_details' ) ); ?></a></li>
+			<li class="<?php ( 'edit-details' === $current_tab || empty( $current_tab ) ) ? 'current-menu-item' : ''; ?>"><a href="<?php echo esc_attr( bp_get_group_manage_url( $group, bp_groups_get_path_chunks( [ 'edit-details' ], 'manage' ) ) ); ?>"><?php echo esc_html( $group_type->get_label( 'group_details' ) ); ?></a></li>
 		<?php } ?>
 
-		<li class="<?php echo 'site-details' === $current_tab ? 'current-menu-item' : ''; ?>"><a href="<?php echo esc_attr( bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug ); ?>/admin/site-details"><?php echo esc_html_x( 'Site', 'Group admin nav item', 'commons-in-a-box' ); ?></a></li>
+		<li class="<?php echo 'site-details' === $current_tab ? 'current-menu-item' : ''; ?>"><a href="<?php echo esc_attr( bp_get_group_manage_url( $group, bp_groups_get_path_chunks( [ 'site-details' ], 'manage' ) ) ); ?>"><?php echo esc_html_x( 'Site', 'Group admin nav item', 'commons-in-a-box' ); ?></a></li>
 
-		<li class="<?php echo 'group-settings' === $current_tab ? 'current-menu-item' : ''; ?>"><a href="<?php echo esc_attr( bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug ); ?>/admin/group-settings"><?php esc_html_e( 'Settings', 'commons-in-a-box' ); ?></a></li>
+		<li class="<?php echo 'group-settings' === $current_tab ? 'current-menu-item' : ''; ?>"><a href="<?php echo esc_attr( bp_get_group_manage_url( $group, bp_groups_get_path_chunks( [ 'group-settings' ], 'manage' ) ) ); ?>"><?php esc_html_e( 'Settings', 'commons-in-a-box' ); ?></a></li>
 
-		<li class="delete-button <?php echo 'delete-group' === $current_tab ? 'current-menu-item' : ''; ?>"><span class="fa fa-minus-circle"></span><a href="<?php echo esc_attr( bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug ); ?>/admin/delete-group"><?php esc_html_e( 'Delete Portfolio', 'commons-in-a-box' ); ?></a></li>
+		<li class="delete-button <?php echo 'delete-group' === $current_tab ? 'current-menu-item' : ''; ?>"><span class="fa fa-minus-circle"></span><a href="<?php echo esc_attr( bp_get_group_manage_url( $group, bp_groups_get_path_chunks( [ 'delete-group' ], 'manage' ) ) ); ?>"><?php esc_html_e( 'Delete Portfolio', 'commons-in-a-box' ); ?></a></li>
 
 	<?php else : ?>
 
 		<?php if ( bp_is_item_admin() || bp_is_item_mod() ) { ?>
-			<li class="<?php ( 'edit-details' === $current_tab || empty( $current_tab ) ) ? 'current-menu-item' : ''; ?>"><a href="<?php echo esc_attr( bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug ); ?>/admin/edit-details"><?php echo esc_html( $group_type->get_label( 'group_details' ) ); ?></a></li>
+			<li class="<?php ( 'edit-details' === $current_tab || empty( $current_tab ) ) ? 'current-menu-item' : ''; ?>"><a href="<?php echo esc_attr( bp_get_group_manage_url( $group, bp_groups_get_path_chunks( [ 'edit-details' ], 'manage' ) ) ); ?>"><?php echo esc_html( $group_type->get_label( 'group_details' ) ); ?></a></li>
 		<?php } ?>
 
 		<?php
@@ -1125,9 +1124,9 @@ function openlab_group_admin_tabs( $group = false ) {
 		}
 		?>
 
-		<li class="<?php echo 'site-details' === $current_tab ? 'current-menu-item' : ''; ?>"><a href="<?php echo esc_attr( bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug ); ?>/admin/site-details"><?php echo esc_html_x( 'Site', 'Group admin nav item', 'commons-in-a-box' ); ?></a></li>
+		<li class="<?php echo 'site-details' === $current_tab ? 'current-menu-item' : ''; ?>"><a href="<?php echo esc_attr( bp_get_group_manage_url( $group, bp_groups_get_path_chunks( [ 'site-details' ], 'manage' ) ) ); ?>"><?php echo esc_html_x( 'Site', 'Group admin nav item', 'commons-in-a-box' ); ?></a></li>
 
-		<li class="<?php echo 'group-settings' === $current_tab ? 'current-menu-item' : ''; ?>"><a href="<?php echo esc_attr( bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug ); ?>/admin/group-settings"><?php esc_attr_e( 'Settings', 'commons-in-a-box' ); ?></a></li>
+		<li class="<?php echo 'group-settings' === $current_tab ? 'current-menu-item' : ''; ?>"><a href="<?php echo esc_attr( bp_get_group_manage_url( $group, bp_groups_get_path_chunks( [ 'group-settings' ], 'manage' ) ) ); ?>"><?php esc_attr_e( 'Settings', 'commons-in-a-box' ); ?></a></li>
 
 		<?php if ( $group_type->get_can_be_cloned() ) : ?>
 			<?php
@@ -1143,7 +1142,7 @@ function openlab_group_admin_tabs( $group = false ) {
 			<li class="clone-button <?php 'clone-group' === $current_tab ? 'current-menu-item' : ''; ?>"><span class="fa fa-plus-circle"></span><a href="<?php echo esc_url( $clone_link ); ?>"><?php esc_html_e( 'Clone', 'commons-in-a-box' ); ?></a></li>
 		<?php endif ?>
 
-		<li class="delete-button last-item <?php echo 'delete-group' === $current_tab ? 'current-menu-item' : ''; ?>"><span class="fa fa-minus-circle"></span><a href="<?php echo esc_attr( bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug ); ?>/admin/delete-group"><?php esc_html_e( 'Delete', 'commons-in-a-box' ); ?></a></li>
+		<li class="delete-button last-item <?php echo 'delete-group' === $current_tab ? 'current-menu-item' : ''; ?>"><span class="fa fa-minus-circle"></span><a href="<?php echo esc_attr( bp_get_group_manage_url( $group, bp_groups_get_path_chunks( [ 'delete-group' ], 'manage' ) ) ); ?>"><?php esc_html_e( 'Delete', 'commons-in-a-box' ); ?></a></li>
 
 		<?php if ( $group_type->get_is_portfolio() ) : ?>
 			<?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
