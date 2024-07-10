@@ -251,7 +251,7 @@ $academic_unit_data = cboxol_get_object_academic_unit_data_for_display(
 						$group_contact_label = $group_type->get_label( 'group_contact' );
 						?>
 
-						<?php if ( $group_contacts ) : ?>
+						<?php if ( ! cboxol_is_portfolio() && ! empty( $group_contacts ) ) : ?>
 							<div class="table-row row">
 								<div class="bold col-sm-7"><?php echo esc_html( $group_contact_label ); ?></div>
 								<?php // phpcs:ignore WordPress.Security.EscapeOutput ?>
