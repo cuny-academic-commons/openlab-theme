@@ -145,9 +145,11 @@ if ( $descendant_of ) {
 }
 
 // Exclude private groups if not current user's profile or don't have moderate access.
-$private_groups = openlab_get_user_private_memberships( $user_id );
-if ( ! bp_is_my_profile() && ! current_user_can( 'bp_moderate' ) ) {
-	$group_args['exclude'] = $private_groups;
+if ( bp_is_user() ) {
+	$private_groups = openlab_get_user_private_memberships( bp_displayed_user_id() );
+	if ( ! bp_is_my_profile() && ! current_user_can( 'bp_moderate' ) ) {
+		$group_args['exclude'] = $private_groups;
+	}
 }
 
 ?>

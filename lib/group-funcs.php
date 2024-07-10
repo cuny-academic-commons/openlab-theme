@@ -622,7 +622,7 @@ function openlab_group_url_markup() {
 
 			<div class="group-url-fields">
 				<span class="group-url-domain">
-					<?php bp_root_domain(); ?>/<?php echo esc_html( bp_get_groups_root_slug() ); ?>/
+					<?php echo esc_html( trailingslashit( bp_get_groups_directory_url() ) ); ?>
 				</span>
 
 				<div class="group-url-path">

@@ -4,7 +4,7 @@ $type_object  = cboxol_get_group_type( $current_type );
 
 // Redirect to the home page if we're not on a valid group directory page.
 if ( is_wp_error( $type_object ) ) {
-	bp_core_redirect( bp_get_root_domain() );
+	bp_core_redirect( bp_get_root_url() );
 }
 
 get_header();
@@ -19,7 +19,13 @@ if ( $can_create ) {
 }
 
 $create_text = $type_object->get_can_be_cloned() ? __( 'Create / Clone', 'commons-in-a-box' ) : __( 'Create New', 'commons-in-a-box' );
-$create_link = bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/create/step/group-details/?group_type=' . $type_object->get_slug() . '&new=true';
+$create_link = add_query_arg(
+	[
+		'group_type' => $type_object->get_slug(),
+		'new'        => 'true',
+	],
+	bp_groups_get_create_url( [ 'group-details' ] )
+);
 ?>
 
 <div id="content" class="hfeed row">

@@ -1169,28 +1169,28 @@ function openlab_group_membership_tabs( $group = false ) {
 
 	$current_tab = bp_action_variable( 0 );
 
-	$group_type = groups_get_groupmeta( $bp->groups->current_group->id, 'wds_group_type' );
 	?>
+
 	<?php if ( bp_is_item_admin() ) : ?>
-		<li class="<?php echo 'manage-members' === $current_tab ? 'current-menu-item' : ''; ?>"><a href="<?php echo esc_attr( bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug ); ?>/admin/manage-members"><?php esc_html_e( 'Membership', 'commons-in-a-box' ); ?></a></li>
+		<li class="<?php echo 'manage-members' === $current_tab ? 'current-menu-item' : ''; ?>"><a href="<?php echo esc_attr( bp_get_group_manage_url( $group, bp_groups_get_path_chunks( [ 'manage-members' ], 'manage' ) ) ); ?>"><?php esc_html_e( 'Membership', 'commons-in-a-box' ); ?></a></li>
 
 		<?php if ( 'private' === $group->status ) : ?>
-			<li class="<?php echo 'membership-requests' === $current_tab ? 'current-menu-item' : ''; ?>"><a href="<?php echo esc_attr( bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug ); ?>/admin/membership-requests"><?php esc_html_e( 'Member Requests', 'commons-in-a-box' ); ?></a></li>
+			<li class="<?php echo 'membership-requests' === $current_tab ? 'current-menu-item' : ''; ?>"><a href="<?php echo esc_attr( bp_get_group_manage_url( $group, bp_groups_get_path_chunks( [ 'membership-requests' ], 'manage' ) ) ); ?>"><?php esc_html_e( 'Member Requests', 'commons-in-a-box' ); ?></a></li>
 		<?php endif; ?>
 	<?php else : ?>
-		<li class="<?php echo bp_is_current_action( 'members' ) ? 'current-menu-item' : ''; ?>"><a href="<?php echo esc_attr( bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug ); ?>/members"><?php esc_html_e( 'Membership', 'commons-in-a-box' ); ?></a></li>
+		<li class="<?php echo bp_is_current_action( 'members' ) ? 'current-menu-item' : ''; ?>"><a href="<?php echo esc_attr( bp_get_group_url( $group, bp_groups_get_path_chunks( [ 'members' ] ) ) ); ?>"><?php esc_html_e( 'Membership', 'commons-in-a-box' ); ?></a></li>
 	<?php endif; ?>
 
 	<?php if ( bp_group_is_member() && invite_anyone_access_test() && openlab_is_admin_truly_member() ) : ?>
-		<li class="<?php echo bp_is_current_action( 'invite-anyone' ) ? 'current-menu-item' : ''; ?>"><a href="<?php echo esc_attr( bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug ); ?>/invite-anyone"><?php esc_html_e( 'Invite New Members', 'commons-in-a-box' ); ?></a></li>
+		<li class="<?php echo bp_is_current_action( 'invite-anyone' ) ? 'current-menu-item' : ''; ?>"><a href="<?php echo esc_attr( bp_get_group_url( $group, bp_groups_get_path_chunks( [ 'invite-anyone' ] ) ) ); ?>"><?php esc_html_e( 'Invite New Members', 'commons-in-a-box' ); ?></a></li>
 	<?php endif; ?>
 
 	<?php if ( bp_is_item_admin() ) : ?>
-		<li class="<?php echo 'notifications' === $current_tab ? 'current-menu-item' : ''; ?>"><a href="<?php echo esc_attr( bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug ); ?>/admin/notifications"><?php esc_html_e( 'Email Members', 'commons-in-a-box' ); ?></a></li>
+		<li class="<?php echo 'notifications' === $current_tab ? 'current-menu-item' : ''; ?>"><a href="<?php echo esc_attr( bp_get_group_manage_url( $group, bp_groups_get_path_chunks( [ 'notifications' ], 'manage' ) ) ); ?>"><?php esc_html_e( 'Email Members', 'commons-in-a-box' ); ?></a></li>
 	<?php endif; ?>
 
 	<?php if ( bp_group_is_member() && openlab_is_admin_truly_member() ) : ?>
-		<li class="<?php echo bp_is_current_action( 'notifications' ) ? 'current-menu-item' : ''; ?>"><a href="<?php echo esc_attr( bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug ); ?>/notifications"><?php esc_html_e( 'Your Email Options', 'commons-in-a-box' ); ?></a></li>
+		<li class="<?php echo bp_is_current_action( 'notifications' ) ? 'current-menu-item' : ''; ?>"><a href="<?php echo esc_attr( bp_get_group_url( $group, bp_groups_get_path_chunks( [ 'notifications' ] ) ) ); ?>"><?php esc_html_e( 'Your Email Options', 'commons-in-a-box' ); ?></a></li>
 	<?php endif; ?>
 
 	<?php
@@ -1253,9 +1253,11 @@ function openlab_forum_tabs() {
 	while ( bbp_topics() ) {
 		bbp_the_topic();
 	}
+
+	$group_forum_permalink = bp_get_group_url( $group->id, bp_groups_get_path_chunks( [ 'forum' ] ) );
 	?>
 
-	<li <?php echo ( ! bp_action_variable() ? 'class="current-menu-item"' : '' ); ?> ><a href="<?php echo esc_attr( bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug ); ?>/forum/"><?php esc_html_e( 'Discussion', 'commons-in-a-box' ); ?></a></li><!--
+	<li <?php echo ( ! bp_action_variable() ? 'class="current-menu-item"' : '' ); ?> ><a href="<?php echo esc_attr( $group_forum_permalink ); ?>"><?php esc_html_e( 'Discussion', 'commons-in-a-box' ); ?></a></li><!--
 	<?php if ( bp_is_action_variable( 'topic' ) ) : ?>
 		--><li class="current-menu-item hyphenate"><span><?php bbp_topic_title(); ?></span></li><!--
 			<?php endif; ?>
