@@ -576,6 +576,8 @@ function openlab_group_site_privacy_settings_markup() {
 			</div>
 		</div>
 
+		<?php wp_nonce_field( 'openlab_site_status', 'openlab-site-status-nonce', false ); ?>
+
 		<?php if ( bp_is_group_create() && cboxol_is_portfolio() ) : ?>
 			<div class="panel panel-default">
 				<div class="panel-heading semibold"><?php esc_html_e( 'Portfolio Link on my OpenLab Profile', 'commons-in-a-box' ); ?></div>
@@ -584,10 +586,10 @@ function openlab_group_site_privacy_settings_markup() {
 
 					<input name="portfolio-profile-link" id="portfolio-profile-link-toggle" type="checkbox" name="portfolio-profile-link-toggle" value="1" /> <label for="portfolio-profile-link-toggle"><?php esc_html_e( 'Show link to my Portfolio on my public OpenLab Profile', 'commons-in-a-box' ); ?></label>
 				</div>
+
+				<?php wp_nonce_field( 'openlab_portfolio_profile_link', 'openlab-portfolio-profile-link-nonce', false ); ?>
 			</div>
 		<?php endif; ?>
-
-		<?php wp_nonce_field( 'openlab_site_status', 'openlab-site-status-nonce', false ); ?>
 	<?php
 }
 
@@ -960,29 +962,32 @@ function openlab_save_group_site() {
  * Catches and processes group site privacy settings.
  */
 function openlab_save_group_site_settings() {
-	if ( ! isset( $_POST['openlab-site-status-nonce'] ) ) {
-		return;
-	}
-
-	check_admin_referer( 'openlab_site_status', 'openlab-site-status-nonce' );
-
 	$group = groups_get_current_group();
 
-	// blog_public
-	if ( isset( $_POST['blog_public'] ) ) {
-		$blog_public = (float) $_POST['blog_public'];
+	if ( isset( $_POST['openlab-site-status-nonce'] ) ) {
+		check_admin_referer( 'openlab_site_status', 'openlab-site-status-nonce' );
 
-		$site_id = cboxol_get_group_site_id( $group->id );
-		if ( $site_id ) {
-			update_blog_option( $site_id, 'blog_public', $blog_public );
-			groups_update_groupmeta( $group->id, 'blog_public', $blog_public );
+		// blog_public
+		if ( isset( $_POST['blog_public'] ) ) {
+			$blog_public = (float) $_POST['blog_public'];
+
+			$site_id = cboxol_get_group_site_id( $group->id );
+			if ( $site_id ) {
+				update_blog_option( $site_id, 'blog_public', $blog_public );
+				groups_update_groupmeta( $group->id, 'blog_public', $blog_public );
+			}
 		}
 	}
 
 	// Portfolio profile link
-	if ( ! empty( $_POST['portfolio-profile-link'] ) ) {
+	if ( isset( $_POST['openlab-portfolio-profile-link-nonce'] ) ) {
+		check_admin_referer( 'openlab_portfolio_profile_link', 'openlab-portfolio-profile-link-nonce' );
+
 		$portfolio_user_id = openlab_get_user_id_from_portfolio_group_id( $group->id );
-		openlab_save_show_portfolio_link_on_user_profile( $portfolio_user_id, true );
+
+		$show_portfolio_link = ! empty( $_POST['portfolio-profile-link'] );
+
+		openlab_save_show_portfolio_link_on_user_profile( $portfolio_user_id, $show_portfolio_link );
 	}
 }
 
