@@ -62,7 +62,7 @@ $private_users = openlab_get_private_members_of_group( bp_get_group_id() );
 
 							<p><?php esc_html_e( 'You can choose to show a link to your Portfolio on your OpenLab Profile page by checking the box below. If your Display Name is different from your real name, but you want to use your real name on your Portfolio, you may wish to leave this unchecked.', 'commons-in-a-box' ); ?></p>
 
-							<input name="portfolio-profile-link" id="portfolio-profile-link-toggle" <?php checked( openlab_show_portfolio_link_on_user_profile( openlab_get_user_id_from_portfolio_group_id( bp_get_current_group_id() ) ) ); ?> type="checkbox" name="portfolio-profile-link-toggle" value="1" /> <label for="portfolio-profile-link-toggle"><?php esc_html_e( 'Show link to my Portfolio on my public OpenLab Profile', 'commons-in-a-box' ); ?></label>
+							<input name="portfolio-profile-link" id="portfolio-profile-link-toggle" <?php checked( openlab_show_portfolio_link_on_user_profile( openlab_get_user_id_from_portfolio_group_id( bp_get_current_group_id() ) ) ); ?> type="checkbox" name="portfolio-profile-link-toggle" value="1" /> <label for="portfolio-profile-link-toggle"><?php esc_html_e( 'Show link to my Portfolio on my public Profile', 'commons-in-a-box' ); ?></label>
 
 							<?php wp_nonce_field( 'portfolio_profile_link', 'portfolio-profile-link-nonce', false ); ?>
 						</fieldset>

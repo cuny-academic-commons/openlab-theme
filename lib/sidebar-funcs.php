@@ -364,7 +364,7 @@ function openlab_members_sidebar_blocks( $mobile_hide = false ) {
 
 			<?php if ( openlab_is_my_profile() && openlab_user_has_portfolio( bp_displayed_user_id() ) && ! bp_is_group_create() ) : ?>
 				<li class="portfolio-profile-link-toggle-wrapper">
-					<input value="1" data-counter="<?php echo esc_attr( $counter ); ?>" type="checkbox" id="portfolio-profile-link-toggle-<?php echo esc_attr( $counter ); ?>" class="portfolio-profile-link-toggle-checkbox" <?php checked( openlab_show_portfolio_link_on_user_profile() ); ?> /> <label for="portfolio-profile-link-toggle-<?php echo esc_attr( $counter ); ?>"><?php esc_html_e( 'Show link to my Portfolio on my public OpenLab profile', 'commons-in-a-box' ); ?></label>
+					<input value="1" data-counter="<?php echo esc_attr( $counter ); ?>" type="checkbox" id="portfolio-profile-link-toggle-<?php echo esc_attr( $counter ); ?>" class="portfolio-profile-link-toggle-checkbox" <?php checked( openlab_show_portfolio_link_on_user_profile() ); ?> /> <label for="portfolio-profile-link-toggle-<?php echo esc_attr( $counter ); ?>"><?php esc_html_e( 'Show link to my Portfolio on my public Profile', 'commons-in-a-box' ); ?></label>
 
 					<?php wp_nonce_field( 'openlab_portfolio_link_visibility', 'openlab_portfolio_link_visibility_nonce_' . $counter, false ); ?>
 				</li>
