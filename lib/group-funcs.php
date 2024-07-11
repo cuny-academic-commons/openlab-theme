@@ -584,7 +584,7 @@ function openlab_group_site_privacy_settings_markup() {
 				<div class="panel-body">
 					<p><?php esc_html_e( 'You can choose to show a link to your Portfolio on your Profile page by checking the box below.', 'commons-in-a-box' ); ?></p>
 
-					<input name="portfolio-profile-link" id="portfolio-profile-link-toggle" type="checkbox" name="portfolio-profile-link-toggle" value="1" /> <label for="portfolio-profile-link-toggle"><?php esc_html_e( 'Show link to my Portfolio on my public profile', 'commons-in-a-box' ); ?></label>
+					<input name="portfolio-profile-link" id="portfolio-profile-link-toggle" type="checkbox" name="portfolio-profile-link-toggle" value="1" /> <label for="portfolio-profile-link-toggle"><?php esc_html_e( 'Show link to my Portfolio on my public Profile', 'commons-in-a-box' ); ?></label>
 				</div>
 
 				<?php wp_nonce_field( 'openlab_portfolio_profile_link', 'openlab-portfolio-profile-link-nonce', false ); ?>
