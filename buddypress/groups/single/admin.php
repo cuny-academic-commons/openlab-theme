@@ -25,7 +25,7 @@ $private_users = openlab_get_private_members_of_group( bp_get_group_id() );
 
 			<div class="submenu-text pull-left bold"><?php esc_html_e( 'Settings:', 'commons-in-a-box' ); ?></div>
 			<ul class="nav nav-inline">
-				<?php openlab_group_admin_tabs(); ?>
+				<?php bp_get_template_part( 'groups/single/nav/admin' ); ?>
 			</ul>
 		<?php endif; ?>
 	</div><!-- .submenu -->
