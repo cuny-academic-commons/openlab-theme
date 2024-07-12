@@ -360,7 +360,7 @@ $private_users = openlab_get_private_members_of_group( bp_get_group_id() );
 							$user_avatar = bp_core_fetch_avatar(
 								array(
 									'item_id' => bp_get_member_user_id(),
-									'object'  => 'member',
+									'object'  => 'user',
 									'type'    => 'full',
 									'html'    => false,
 								)
@@ -408,7 +408,7 @@ $private_users = openlab_get_private_members_of_group( bp_get_group_id() );
 								$user_avatar = bp_core_fetch_avatar(
 									array(
 										'item_id' => bp_get_member_user_id(),
-										'object'  => 'member',
+										'object'  => 'user',
 										'type'    => 'full',
 										'html'    => false,
 									)
@@ -485,7 +485,7 @@ $private_users = openlab_get_private_members_of_group( bp_get_group_id() );
 							$user_avatar = bp_core_fetch_avatar(
 								array(
 									'item_id' => bp_get_member_user_id(),
-									'object'  => 'member',
+									'object'  => 'user',
 									'type'    => 'full',
 									'html'    => false,
 								)
@@ -585,7 +585,7 @@ $private_users = openlab_get_private_members_of_group( bp_get_group_id() );
 						$user_avatar = bp_core_fetch_avatar(
 							array(
 								'item_id' => $GLOBALS['requests_template']->request->user_id,
-								'object'  => 'member',
+								'object'  => 'user',
 								'type'    => 'full',
 								'html'    => false,
 							)

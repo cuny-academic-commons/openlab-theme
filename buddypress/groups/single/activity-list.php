@@ -184,7 +184,7 @@
 								$user_avatar = bp_core_fetch_avatar(
 									array(
 										'item_id' => $member->ID,
-										'object'  => 'member',
+										'object'  => 'user',
 										'type'    => 'full',
 										'html'    => false,
 									)

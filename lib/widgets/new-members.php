@@ -72,7 +72,7 @@ class OpenLab_NewMembers_Widget extends WP_Widget {
 				$user_avatar = bp_core_fetch_avatar(
 					array(
 						'item_id' => $user_id,
-						'object'  => 'member',
+						'object'  => 'user',
 						'type'    => 'full',
 						'html'    => false,
 					)

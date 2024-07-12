@@ -119,7 +119,7 @@ function openlab_list_members() {
 			$user_avatar = bp_core_fetch_avatar(
 				array(
 					'item_id' => bp_get_member_user_id(),
-					'object'  => 'member',
+					'object'  => 'user',
 					'type'    => 'full',
 					'html'    => false,
 				)

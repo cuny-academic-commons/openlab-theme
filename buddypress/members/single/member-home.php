@@ -55,7 +55,7 @@ do_action( 'bp_before_member_home_content' );
 					$user_avatar = bp_core_fetch_avatar(
 						array(
 							'item_id' => $friend_id,
-							'object'  => 'member',
+							'object'  => 'user',
 							'type'    => 'full',
 							'html'    => false,
 						)

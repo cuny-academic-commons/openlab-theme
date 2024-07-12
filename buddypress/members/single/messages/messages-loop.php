@@ -25,7 +25,7 @@
 			$user_avatar = bp_core_fetch_avatar(
 				array(
 					'item_id' => $messages_template->thread->last_sender_id,
-					'object'  => 'member',
+					'object'  => 'user',
 					'type'    => 'full',
 					'html'    => false,
 				)
