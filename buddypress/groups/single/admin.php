@@ -58,7 +58,7 @@ $private_users = openlab_get_private_members_of_group( bp_get_group_id() );
 
 					<?php if ( cboxol_is_portfolio() ) : ?>
 						<fieldset class="portfolio-profile-link-wrapper">
-							<legend><?php esc_html_e( 'Portfolio Link on my OpenLab Profile', 'ocommons-in-a-box' ); ?></legend>
+							<legend><?php esc_html_e( 'Portfolio Link on my Profile', 'ocommons-in-a-box' ); ?></legend>
 
 							<p><?php esc_html_e( 'You can choose to show a link to your Portfolio on your Profile page by checking the box below.', 'commons-in-a-box' ); ?></p>
 
