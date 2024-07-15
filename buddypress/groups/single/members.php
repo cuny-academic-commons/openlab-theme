@@ -6,7 +6,7 @@ $members_args = [];
 $private_users = openlab_get_private_members_of_group( bp_get_current_group_id() );
 
 // If user is not mod and there are private users, exclude them from the list
-if ( ! current_user_can( 'bp_moderate' ) && ! empty( $private_users ) ) {
+if ( ! current_user_can( 'view_private_members_of_group' ) && ! empty( $private_users ) ) {
 	$members_args['exclude'] = $private_users;
 }
 

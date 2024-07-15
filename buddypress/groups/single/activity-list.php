@@ -14,7 +14,7 @@
 	$group     = groups_get_current_group();
 	$group_url = bp_get_group_permalink( $group );
 
-	if ( current_user_can( 'bp_moderate' ) || groups_is_user_member( bp_loggedin_user_id(), $group->id ) ) {
+	if ( current_user_can( 'view_private_members_of_group', $group->id ) ) {
 		$group_private_members = [];
 	} else {
 		$group_private_members = openlab_get_private_members_of_group( $group->id );
