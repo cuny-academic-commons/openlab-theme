@@ -197,7 +197,9 @@
 								</li>
 							<?php endwhile; ?>
 						</ul>
-						<?php bp_group_member_pagination(); ?>
+
+						<?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+						<?php echo openlab_members_pagination_links( 'mlpage' ); ?>
 					<?php else : ?>
 
 						<div id="message" class="info">
