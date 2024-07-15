@@ -60,7 +60,7 @@ $members_args['exclude_admins_mods'] = 0;
 								<a class="no-deco truncate-on-the-fly hyphenate" href="<?php bp_member_permalink(); ?>" data-basevalue="28" data-minvalue="20" data-basewidth="152"><?php bp_member_name(); ?></a><span class="original-copy hidden"><?php bp_member_name(); ?></span>
 							</p>
 
-							<span class="activity"><?php bp_group_member_joined_since(); ?></span>
+							<span class="activity"><?php openlab_group_member_joined_since(); ?></span>
 
 							<?php // Only logged-in non-moderators see "Hide my membership". ?>
 							<?php if ( ( bp_get_member_user_id() === bp_loggedin_user_id() ) && ! current_user_can( 'bp_moderate' ) ) : ?>

@@ -3058,3 +3058,22 @@ add_filter(
 	20,
 	2
 );
+
+/**
+ * Custom 'joined since' text for group members.
+ *
+ * @since 1.6.0
+ *
+ * @return string
+ */
+function openlab_group_member_joined_since() {
+	global $members_template;
+
+	echo esc_html(
+		sprintf(
+			// translators: %s is the date the member joined the group.
+			__( 'joined %s', 'commons-in-a-box' ),
+			gmdate( 'F j, Y', strtotime( $members_template->member->date_modified ) )
+		)
+	);
+}
