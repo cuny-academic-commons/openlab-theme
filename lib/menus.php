@@ -885,7 +885,7 @@ function openlab_filter_subnav_members( $subnav_item ) {
 	}
 
 	// Get a member count for formatting.
-	$total_mem = (int) groups_get_groupmeta( bp_get_current_group_id(), 'total_member_count' );
+	$total_mem = groups_get_total_member_count( bp_get_current_group_id() );
 	if ( ! current_user_can( 'view_private_members_of_group' ) ) {
 		$private_users = openlab_get_private_members_of_group( bp_get_current_group_id(), false );
 		if ( $private_users ) {
