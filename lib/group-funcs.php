@@ -1857,6 +1857,11 @@ function openlab_show_site_posts_and_comments() {
 				],
 			];
 
+			$private_posts_for_current_user = openlab_get_invisible_post_ids( $site_id );
+			if ( $private_posts_for_current_user ) {
+				$comment_args['post__not_in'] = $private_posts_for_current_user;
+			}
+
 			// This isn't official argument just a custom flag.
 			// Used by `openlab_private_comments_fallback()`.
 			$comment_args['main_site'] = true;
