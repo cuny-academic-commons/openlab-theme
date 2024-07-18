@@ -8479,6 +8479,7 @@ body form .checkbox-list-container {
 .ct-group-meta .site-path {
   display: table;
   padding-left: 25px;
+  white-space: nowrap;
   width: 90%;
 }
 .ct-group-meta .site-path span {
