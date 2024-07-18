@@ -143,7 +143,7 @@ function openlab_whats_happening_activity_items() {
 		// Post-query filter to ensure that no "invisible" post items are included.
 		$cached = array_filter(
 			$cached,
-			function( $activity ) {
+			function ( $activity ) {
 				if ( 'groups' !== $activity->component ) {
 					return true;
 				}
