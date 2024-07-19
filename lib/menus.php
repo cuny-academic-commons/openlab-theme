@@ -483,7 +483,6 @@ function openlab_profile_settings_submenu() {
 	$settings_url      = bp_members_get_user_url( $user_id, bp_members_get_path_chunks( [ bp_get_settings_slug() ] ) );
 	$notifications_url = bp_members_get_user_url( $user_id, bp_members_get_path_chunks( [ bp_get_settings_slug(), 'notifications' ] ) );
 
-	$settings_slug = $dud . bp_get_settings_slug();
 	$menu_list     = array(
 		$profile_edit_url  => __( 'Edit Profile', 'commons-in-a-box' ),
 		$change_avatar_url => __( 'Change Avatar', 'commons-in-a-box' ),
@@ -496,13 +495,17 @@ function openlab_profile_settings_submenu() {
 
 	// Export Data - only available for BuddyPress 4.0.0.
 	if ( true === $show_data_page && function_exists( 'bp_signup_requires_privacy_policy_acceptance' ) ) {
-		$menu_list[ $dud . 'settings/data' ] = __( 'Export Data', 'commons-in-a-box' );
+		$export_data_url = bp_members_get_user_url( $user_id, bp_members_get_path_chunks( [ bp_get_settings_slug(), 'data' ] ) );
+
+		$menu_list[ $export_data_url ] = __( 'Export Data', 'commons-in-a-box' );
 	}
 
 	if ( ! is_super_admin( bp_displayed_user_id() ) && ( ( ! bp_disable_account_deletion() && bp_is_my_profile() ) || bp_current_user_can( 'delete_users' ) ) ) {
+		$delete_account_url = bp_members_get_user_url( $user_id, bp_members_get_path_chunks( [ bp_get_settings_slug(), 'delete-account' ] ) );
 
-		$menu_list[ $dud . 'settings/delete-account' ] = __( 'Delete Account', 'commons-in-a-box' );
+		$menu_list[ $delete_account_url ] = __( 'Delete Account', 'commons-in-a-box' );
 	}
+
 	return openlab_submenu_gen( $menu_list, true );
 }
 
