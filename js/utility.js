@@ -731,6 +731,9 @@
 	$( document ).ready(
 		function () {
 
+			// Add js class to body.
+			$( 'body' ).addClass( 'js' );
+
 			OpenLab.utility.init();
 
 			// Workshop fields on Contact Us
