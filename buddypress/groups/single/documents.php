@@ -171,11 +171,13 @@ $header_text = 'add' === $template->operation ? __( 'Add a New File', 'commons-i
 								<?php esc_html_e( 'No files have been added yet. Add a new file below.', 'commons-in-a-box' ); ?>
 							</p>
 
-							<div class="upload-new-file">
-								<?php if ( 'add' === $template->operation ) { ?>
-									<a class="btn btn-primary link-btn" id="bp-group-documents-upload-button" href="" style="display:none;"><?php esc_html_e( 'Add new file', 'commons-in-a-box' ); ?></a>
-								<?php } ?>
-							</div>
+							<?php if ( $user_can_upload ) : ?>
+								<div class="upload-new-file">
+									<?php if ( 'add' === $template->operation ) { ?>
+										<a class="btn btn-primary link-btn" id="bp-group-documents-upload-button" href="" style="display:none;"><?php esc_html_e( 'Add new file', 'commons-in-a-box' ); ?></a>
+									<?php } ?>
+								</div>
+							<?php endif; ?>
 						</div>
 
 					<?php endif; ?>

@@ -436,9 +436,12 @@ function openlab_group_files_submenu() {
 	$current_item = $base_url;
 
 	$menu_list = [
-		$base_url                          => __( 'All Files', 'commons-in-a-box' ),
-		$base_url . '?action=add_new_file' => __( 'Add New File', 'commons-in-a-box' ),
+		$base_url => __( 'All Files', 'commons-in-a-box' ),
 	];
+
+	if ( current_user_can( 'bp_moderate' ) || groups_is_user_member( bp_loggedin_user_id(), groups_get_current_group()->id ) ) {
+		$menu_list[ $base_url . '?action=add_new_file' ] = __( 'Add New File', 'commons-in-a-box' );
+	}
 
 	return openlab_submenu_gen( $menu_list, false, $current_item );
 }
