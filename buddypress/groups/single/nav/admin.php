@@ -16,7 +16,7 @@ $group_type = cboxol_get_group_group_type( $group->id );
 ?>
 <?php if ( cboxol_is_portfolio() ) : ?>
 	<?php if ( bp_is_item_admin() || bp_is_item_mod() ) { ?>
-		<li class="<?php ( 'edit-details' === $current_tab || empty( $current_tab ) ) ? 'current-menu-item' : ''; ?>"><a href="<?php echo esc_attr( bp_get_group_manage_url( $group, bp_groups_get_path_chunks( [ 'edit-details' ], 'manage' ) ) ); ?>"><?php echo esc_html( $group_type->get_label( 'group_details' ) ); ?></a></li>
+		<li class="<?php echo ( 'edit-details' === $current_tab || empty( $current_tab ) ) ? 'current-menu-item' : ''; ?>"><a href="<?php echo esc_attr( bp_get_group_manage_url( $group, bp_groups_get_path_chunks( [ 'edit-details' ], 'manage' ) ) ); ?>"><?php echo esc_html( $group_type->get_label( 'group_details' ) ); ?></a></li>
 	<?php } ?>
 
 	<li class="<?php echo 'site-details' === $current_tab ? 'current-menu-item' : ''; ?>"><a href="<?php echo esc_attr( bp_get_group_manage_url( $group, bp_groups_get_path_chunks( [ 'site-details' ], 'manage' ) ) ); ?>"><?php echo esc_html_x( 'Site', 'Group admin nav item', 'commons-in-a-box' ); ?></a></li>
@@ -28,7 +28,7 @@ $group_type = cboxol_get_group_group_type( $group->id );
 <?php else : ?>
 
 	<?php if ( bp_is_item_admin() || bp_is_item_mod() ) { ?>
-		<li class="<?php ( 'edit-details' === $current_tab || empty( $current_tab ) ) ? 'current-menu-item' : ''; ?>"><a href="<?php echo esc_attr( bp_get_group_manage_url( $group, bp_groups_get_path_chunks( [ 'edit-details' ], 'manage' ) ) ); ?>"><?php echo esc_html( $group_type->get_label( 'group_details' ) ); ?></a></li>
+		<li class="<?php echo ( 'edit-details' === $current_tab || empty( $current_tab ) ) ? 'current-menu-item' : ''; ?>"><a href="<?php echo esc_attr( bp_get_group_manage_url( $group, bp_groups_get_path_chunks( [ 'edit-details' ], 'manage' ) ) ); ?>"><?php echo esc_html( $group_type->get_label( 'group_details' ) ); ?></a></li>
 	<?php } ?>
 
 	<?php
