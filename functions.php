@@ -1,6 +1,6 @@
 <?php
 
-define( 'OPENLAB_VERSION', '1.6.0-1723126444908' );
+define( 'OPENLAB_VERSION', '1.7.0-alpha-1723126642136' );
 
 if ( ! defined( 'CSS_DEBUG' ) ) {
 	define( 'CSS_DEBUG', false );
