@@ -27,16 +27,6 @@ $academic_unit_data = cboxol_get_object_academic_unit_data_for_display(
 );
 ?>
 
-<?php
-// Get the displayed user's base domain
-// This is required because the my-* pages aren't really displayed user pages from BP's
-// point of view
-$dud = bp_displayed_user_domain();
-if ( ! $dud ) {
-	$dud = bp_loggedin_user_domain(); // will always be the logged in user on my-*
-}
-?>
-
 <div id="member-header" class="member-header row">
 <?php
 do_action( 'bp_before_member_header' );
@@ -50,7 +40,7 @@ do_action( 'bp_before_member_home_content' );
 				$avatar_src = bp_core_fetch_avatar(
 					array(
 						'item_id' => $this_user_id,
-						'object'  => 'member',
+						'object'  => 'user',
 						'type'    => 'full',
 						'html'    => false,
 					)
@@ -63,8 +53,8 @@ do_action( 'bp_before_member_home_content' );
 		<div id="profile-action-wrapper">
 			<?php if ( is_user_logged_in() && openlab_is_my_profile() ) : ?>
 				<div id="group-action-wrapper">
-					<a class="btn btn-default btn-block btn-primary link-btn" href="<?php echo esc_attr( $dud . 'profile/edit/' ); ?>"><i class="fa fa-pencil" aria-hidden="true"></i> <?php esc_html_e( 'Edit Profile', 'commons-in-a-box' ); ?></a>
-					<a class="btn btn-default btn-block btn-primary link-btn" href="<?php echo esc_attr( $dud . 'profile/change-avatar/' ); ?>"><i class="fa fa-camera" aria-hidden="true"></i> <?php esc_html_e( 'Change Avatar', 'commons-in-a-box' ); ?></a>
+					<a class="btn btn-default btn-block btn-primary link-btn" href="<?php echo esc_attr( bp_displayed_user_url( bp_members_get_path_chunks( [ bp_get_profile_slug(), 'edit' ] ) ) ); ?>"><i class="fa fa-pencil" aria-hidden="true"></i> <?php esc_html_e( 'Edit Profile', 'commons-in-a-box' ); ?></a>
+					<a class="btn btn-default btn-block btn-primary link-btn" href="<?php echo esc_attr( bp_displayed_user_url( bp_members_get_path_chunks( [ bp_get_profile_slug(), 'change-avatar' ] ) ) ); ?>"><i class="fa fa-camera" aria-hidden="true"></i> <?php esc_html_e( 'Change Avatar', 'commons-in-a-box' ); ?></a>
 				</div>
 			<?php elseif ( is_user_logged_in() && ! openlab_is_my_profile() ) : ?>
 				<?php bp_add_friend_button( openlab_fallback_user(), bp_loggedin_user_id() ); ?>

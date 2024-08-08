@@ -18,7 +18,7 @@ $badges = \OpenLab\Badges\Badge::get( $badge_query_args );
 // Exclude 'Open' and 'Cloneable', which have their own UI.
 $badges = array_filter(
 	$badges,
-	function( $badge ) {
+	function ( $badge ) {
 		$is_open_badge      = get_term_meta( $badge->get_id(), 'cboxol_is_open_badge' );
 		$is_cloneable_badge = get_term_meta( $badge->get_id(), 'cboxol_is_cloneable_badge' );
 

@@ -1,6 +1,6 @@
-(function( $ ) {
+(function ( $ ) {
 	$( document ).ready(
-		function() {
+		function () {
 			var fieldMap = {
 				openlab_footer_left_heading: 'footer-left-heading',
 				openlab_footer_left_content: 'footer-left-content',
@@ -12,10 +12,10 @@
 				var elementId = fieldMap[ settingId ];
 				wp.customize(
 					settingId,
-					function( value ) {
+					function ( value ) {
 						var thisElId = elementId;
 						value.bind(
-							function( newval ) {
+							function ( newval ) {
 								document.getElementById( thisElId ).innerHTML = newval;
 							}
 						);

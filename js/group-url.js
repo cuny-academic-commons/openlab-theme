@@ -1,9 +1,9 @@
-(function($){
+(function ($) {
 	var $errorFormat, $errorTaken, $nameField, $urlField, $urlFieldParent;
 	var isValid, isTaken;
 
 	$( document ).ready(
-		function(){
+		function () {
 			isValid         = isAvailable = false;
 			$ajaxStatus     = $( '#group-url-status' );
 			$errorFormat    = $( '#url-error-format' );
@@ -15,7 +15,7 @@
 			// Suggest based on name.
 			$nameField.on(
 				'blur',
-				function() {
+				function () {
 					// Don't bother with AJAX request, which is likely to be too slow for next field.
 					if ( 0 === $urlField.val().length ) {
 						var suggestedUrl = $nameField.val()
@@ -33,7 +33,7 @@
 			// Format validation on keyup.
 			$urlField.on(
 				'keyup',
-				function() {
+				function () {
 					var url = $urlField.val();
 
 					// Force URL to lowercase.
@@ -59,7 +59,7 @@
 			// Only run the AJAX request on blur.
 			$urlField.on(
 				'blur',
-				function() {
+				function () {
 					// No value? Nothing to check.
 					if ( 0 === $urlField.val().length ) {
 						return;
@@ -81,7 +81,7 @@
 								name: $( 'group-name' ).val(),
 								url: $urlField.val()
 							},
-							success: function( response ) {
+							success: function ( response ) {
 								$urlFieldParent.removeClass( 'ajax-in-progress' );
 								$ajaxStatus.removeClass( 'fa-spinner fa-pulse' );
 								if ( response.success ) {
@@ -98,7 +98,7 @@
 				}
 			);
 
-			var toggleError = function() {
+			var toggleError = function () {
 				if ( isAvailable && isValid ) {
 					$urlFieldParent.removeClass( 'has-error' ).removeClass( 'ajax-error' );
 					$ajaxStatus.addClass( 'fa-check' ).removeClass( 'fa-exclamation-circle' );

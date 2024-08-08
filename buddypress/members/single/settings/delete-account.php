@@ -13,7 +13,7 @@ echo openlab_submenu_markup();
 
 		<?php do_action( 'bp_template_content' ); ?>
 
-		<form action="<?php echo esc_attr( bp_displayed_user_domain() . bp_get_settings_slug() . '/delete-account' ); ?>" name="account-delete-form" id="account-delete-form" class="standard-form" method="post">
+		<form action="<?php echo esc_attr( bp_displayed_user_url( bp_members_get_path_chunks( [ bp_get_settings_slug(), 'delete-account' ] ) ) ); ?>" name="account-delete-form" id="account-delete-form" class="standard-form" method="post">
 			<div class="bp-template-notice error margin-bottom">
 				<p><?php esc_html_e( 'WARNING: Deleting your account will completely remove ALL content associated with it. There is no way back, please be careful with this option.', 'commons-in-a-box' ); ?></p>
 			</div>

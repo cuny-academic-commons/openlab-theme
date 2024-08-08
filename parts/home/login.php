@@ -47,19 +47,19 @@ if ( is_user_logged_in() ) :
 
 	<div id="sidebar-me" class="clearfix">
 		<div id="user-info">
-			<a class="avatar" href="<?php echo esc_attr( bp_loggedin_user_domain() ); ?>">
+			<a class="avatar" href="<?php echo esc_attr( bp_loggedin_user_url() ); ?>">
 				<?php /* translators: user display name */ ?>
 				<img class="img-responsive" src="<?php echo esc_attr( $user_avatar ); ?>" alt="<?php echo esc_attr( sprintf( __( 'Avatar for %s', 'commons-in-a-box' ), bp_core_get_user_displayname( bp_loggedin_user_id() ) ) ); ?>" />
 			</a>
 
 			<div class="welcome-link-my-profile">
-				<a href="<?php echo esc_url( bp_loggedin_user_domain() ); ?>"><?php esc_html_e( 'My Profile', 'commons-in-a-box' ); ?></a>
+				<a href="<?php echo esc_url( bp_loggedin_user_url() ); ?>"><?php esc_html_e( 'My Profile', 'commons-in-a-box' ); ?></a>
 			</div>
 
 			<ul class="content-list">
 				<?php /* translators: logged-in user display name */ ?>
-				<li class="no-margin no-margin-bottom"><a class="button logout font-size font-12 roll-over-loss" href="<?php echo esc_attr( wp_logout_url( bp_get_root_domain() ) ); ?>"><?php printf( esc_html__( 'Not %s?', 'commons-in-a-box' ), esc_html( bp_core_get_username( bp_loggedin_user_id() ) ) ); ?></a></li>
-				<li class="no-margin no-margin-bottom"><a class="button logout font-size font-12 roll-over-loss" href="<?php echo esc_attr( wp_logout_url( bp_get_root_domain() ) ); ?>"><?php esc_html_e( 'Log Out', 'commons-in-a-box' ); ?></a></li>
+				<li class="no-margin no-margin-bottom"><a class="button logout font-size font-12 roll-over-loss" href="<?php echo esc_attr( wp_logout_url( bp_get_root_url() ) ); ?>"><?php printf( esc_html__( 'Not %s?', 'commons-in-a-box' ), esc_html( bp_core_get_username( bp_loggedin_user_id() ) ) ); ?></a></li>
+				<li class="no-margin no-margin-bottom"><a class="button logout font-size font-12 roll-over-loss" href="<?php echo esc_attr( wp_logout_url( bp_get_root_url() ) ); ?>"><?php esc_html_e( 'Log Out', 'commons-in-a-box' ); ?></a></li>
 			</ul>
 			</span><!--user-info-->
 		</div>

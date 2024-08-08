@@ -142,6 +142,8 @@ function openlab_group_site_markup() {
 		}
 	}
 
+	$is_clone_create = $is_clone && bp_is_group_create();
+
 	?>
 
 	<div class="ct-group-meta">
@@ -217,12 +219,7 @@ function openlab_group_site_markup() {
 					}
 					$user_blogs = array_values( $user_blogs );
 
-					if ( $group_type->get_is_portfolio() ) {
-						$portfolio_user_id = openlab_get_user_id_from_portfolio_group_id( $the_group_id );
-						$suggested_path    = openlab_suggest_portfolio_path( $portfolio_user_id );
-					} else {
-						$suggested_path = groups_get_current_group()->slug;
-					}
+					$suggested_path = groups_get_current_group()->slug;
 
 					?>
 					<style type="text/css">
@@ -287,7 +284,7 @@ function openlab_group_site_markup() {
 								</div><!-- /#wds-website-clone -->
 							<?php endif; ?>
 
-							<?php if ( ! $is_clone ) : ?>
+							<?php if ( ! $is_clone_create ) : ?>
 								<div id="wds-website" class="form-field form-required">
 									<div id="noo_new_options">
 										<div id="noo_new_options-div" class="row">
@@ -318,7 +315,7 @@ function openlab_group_site_markup() {
 								</div><!-- #wds-website -->
 							<?php endif; ?>
 
-							<?php if ( ! $is_clone ) : ?>
+							<?php if ( ! $is_clone_create ) : ?>
 								<?php /* Existing blogs - only display if some are available */ ?>
 								<?php
 								// Exclude blogs already used as groupblogs
@@ -580,6 +577,19 @@ function openlab_group_site_privacy_settings_markup() {
 		</div>
 
 		<?php wp_nonce_field( 'openlab_site_status', 'openlab-site-status-nonce', false ); ?>
+
+		<?php if ( bp_is_group_create() && cboxol_is_portfolio() ) : ?>
+			<div class="panel panel-default">
+				<div class="panel-heading semibold"><?php esc_html_e( 'Portfolio Link on my Profile', 'commons-in-a-box' ); ?></div>
+				<div class="panel-body">
+					<p><?php esc_html_e( 'You can choose to show a link to your Portfolio on your Profile page by checking the box below.', 'commons-in-a-box' ); ?></p>
+
+					<input name="portfolio-profile-link" id="portfolio-profile-link-toggle" type="checkbox" name="portfolio-profile-link-toggle" value="1" /> <label for="portfolio-profile-link-toggle"><?php esc_html_e( 'Show link to my Portfolio on my public Profile', 'commons-in-a-box' ); ?></label>
+				</div>
+
+				<?php wp_nonce_field( 'openlab_portfolio_profile_link', 'openlab-portfolio-profile-link-nonce', false ); ?>
+			</div>
+		<?php endif; ?>
 	<?php
 }
 
@@ -612,7 +622,7 @@ function openlab_group_url_markup() {
 
 			<div class="group-url-fields">
 				<span class="group-url-domain">
-					<?php bp_root_domain(); ?>/<?php echo esc_html( bp_get_groups_root_slug() ); ?>/
+					<?php echo esc_html( trailingslashit( bp_get_groups_directory_url() ) ); ?>
 				</span>
 
 				<div class="group-url-path">
@@ -952,27 +962,33 @@ function openlab_save_group_site() {
  * Catches and processes group site privacy settings.
  */
 function openlab_save_group_site_settings() {
-	if ( ! isset( $_POST['openlab-site-status-nonce'] ) ) {
-		return;
-	}
-
-	check_admin_referer( 'openlab_site_status', 'openlab-site-status-nonce' );
-
 	$group = groups_get_current_group();
 
-	if ( ! isset( $_POST['blog_public'] ) ) {
-		return;
+	if ( isset( $_POST['openlab-site-status-nonce'] ) ) {
+		check_admin_referer( 'openlab_site_status', 'openlab-site-status-nonce' );
+
+		// blog_public
+		if ( isset( $_POST['blog_public'] ) ) {
+			$blog_public = (float) $_POST['blog_public'];
+
+			$site_id = cboxol_get_group_site_id( $group->id );
+			if ( $site_id ) {
+				update_blog_option( $site_id, 'blog_public', $blog_public );
+				groups_update_groupmeta( $group->id, 'blog_public', $blog_public );
+			}
+		}
 	}
 
-	$blog_public = (float) $_POST['blog_public'];
+	// Portfolio profile link
+	if ( isset( $_POST['openlab-portfolio-profile-link-nonce'] ) ) {
+		check_admin_referer( 'openlab_portfolio_profile_link', 'openlab-portfolio-profile-link-nonce' );
 
-	$site_id = cboxol_get_group_site_id( $group->id );
-	if ( ! $site_id ) {
-		return;
+		$portfolio_user_id = openlab_get_user_id_from_portfolio_group_id( $group->id );
+
+		$show_portfolio_link = ! empty( $_POST['portfolio-profile-link'] );
+
+		openlab_save_show_portfolio_link_on_user_profile( $portfolio_user_id, $show_portfolio_link );
 	}
-
-	update_blog_option( $site_id, 'blog_public', $blog_public );
-	groups_update_groupmeta( $group->id, 'blog_public', $blog_public );
 }
 
 /**
@@ -1231,7 +1247,7 @@ add_action( 'groups_group_deleted', 'openlab_delete_group', 20 );
  * After portfolio delete, redirect to user profile page
  */
 function openlab_delete_group() {
-	bp_core_redirect( bp_loggedin_user_domain() );
+	bp_core_redirect( bp_loggedin_user_url() );
 }
 
 // a variation on bp_groups_pagination_count() to match design
@@ -1550,7 +1566,7 @@ function openlab_default_subscription_settings_form() {
 }
 add_action(
 	'bp_actions',
-	function() {
+	function () {
 		remove_action( 'bp_after_group_settings_admin', 'ass_default_subscription_settings_form' );
 		add_action( 'bp_after_group_settings_admin', 'openlab_default_subscription_settings_form' );
 	}
@@ -1776,13 +1792,23 @@ function openlab_show_site_posts_and_comments() {
 
 	switch ( $site_type ) {
 		case 'local':
+			if ( current_user_can( 'view_private_members_of_group', $group_id ) ) {
+				$group_private_members = [];
+				$post__not_in          = [];
+			} else {
+				$group_private_members = openlab_get_private_members_of_group( $group_id );
+				$post__not_in          = openlab_get_invisible_post_ids( $site_id );
+			}
+
 			switch_to_blog( $site_id );
 
 			// Set up posts
 			$wp_posts = get_posts(
-				array(
+				[
 					'posts_per_page' => 3,
-				)
+					'author__not_in' => $group_private_members,
+					'post__not_in'   => $post__not_in,
+				]
 			);
 
 			foreach ( $wp_posts as $wp_post ) {
@@ -1801,9 +1827,10 @@ function openlab_show_site_posts_and_comments() {
 
 			// Set up comments
 			$comment_args = [
-				'status'     => 'approve',
-				'number'     => 3,
-				'meta_query' => [
+				'status'         => 'approve',
+				'number'         => 3,
+				'author__not_in' => $group_private_members,
+				'meta_query'     => [
 					'relation' => 'AND',
 					[
 						'relation' => 'OR',
@@ -1829,6 +1856,11 @@ function openlab_show_site_posts_and_comments() {
 					],
 				],
 			];
+
+			$private_posts_for_current_user = openlab_get_invisible_post_ids( $site_id );
+			if ( $private_posts_for_current_user ) {
+				$comment_args['post__not_in'] = $private_posts_for_current_user;
+			}
 
 			// This isn't official argument just a custom flag.
 			// Used by `openlab_private_comments_fallback()`.
@@ -1931,7 +1963,7 @@ function openlab_show_site_posts_and_comments() {
  */
 function openlab_output_group_contact_line( $group_id ) {
 	$names = array_map(
-		function( $user_id ) {
+		function ( $user_id ) {
 			return bp_core_get_user_displayname( $user_id );
 		},
 		cboxol_get_all_group_contact_ids( $group_id )
@@ -2137,7 +2169,7 @@ function openlab_get_faculty_list( $group_id = null ) {
 	foreach ( $faculty_ids as $id ) {
 		$faculty_link = sprintf(
 			'<a href="%s">%s</a>',
-			esc_url( bp_core_get_user_domain( $id ) ),
+			esc_url( bp_members_get_user_url( $id ) ),
 			esc_html( bp_core_get_user_displayname( $id ) )
 		);
 		array_push( $faculty, $faculty_link );
@@ -2749,6 +2781,29 @@ function openlab_get_active_terms() {
 }
 
 /**
+ * Saves 'Portfolio profile link' setting on group edit.
+ *
+ * @since 1.6.0
+ *
+ * @param int $group_id ID of the group.
+ * @return void
+ */
+function openlab_group_save_portfolio_profile_link_setting_on_group_edit( $group_id ) {
+	if ( ! isset( $_POST['portfolio-profile-link-nonce'] ) ) {
+		return;
+	}
+
+	check_admin_referer( 'portfolio_profile_link', 'portfolio-profile-link-nonce' );
+
+	$enabled = ! empty( $_POST['portfolio-profile-link'] );
+
+	$portfolio_user_id = openlab_get_user_id_from_portfolio_group_id( $group_id );
+
+	openlab_save_show_portfolio_link_on_user_profile( $portfolio_user_id, $enabled );
+}
+add_action( 'groups_group_details_edited', 'openlab_group_save_portfolio_profile_link_setting_on_group_edit' );
+
+/**
  * Modify group-related template messages to remove the word 'group'.
  *
  * bp_core_setup_message() fires at bp_actions:5.
@@ -2944,7 +2999,7 @@ function openlab_group_is_open( $group_id ) {
  */
 add_filter(
 	'bp_before_groups_get_groups_parse_args',
-	function( $args ) {
+	function ( $args ) {
 		$is_open = openlab_get_current_filter( 'is_open' );
 		if ( $is_open ) {
 			$args['status'] = 'public';
@@ -2983,7 +3038,7 @@ function openlab_notify_group_members_of_this_action() {
  */
 add_filter(
 	'openlab_after_group_clone',
-	function( $group_id, $clone_source_group_id ) {
+	function ( $group_id, $clone_source_group_id ) {
 		if ( openlab_is_forum_enabled_for_group( $clone_source_group_id ) ) {
 			groups_delete_groupmeta( $group_id, 'openlab_disable_forum' );
 		} else {
@@ -3008,3 +3063,22 @@ add_filter(
 	20,
 	2
 );
+
+/**
+ * Custom 'joined since' text for group members.
+ *
+ * @since 1.6.0
+ *
+ * @return string
+ */
+function openlab_group_member_joined_since() {
+	global $members_template;
+
+	echo esc_html(
+		sprintf(
+			// translators: %s is the date the member joined the group.
+			__( 'joined %s', 'commons-in-a-box' ),
+			gmdate( 'F j, Y', strtotime( $members_template->member->date_modified ) )
+		)
+	);
+}

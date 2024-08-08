@@ -70,13 +70,13 @@ class OpenLab_Group_Type_Widget extends WP_Widget {
 
 						?>
 
-						<div class="box-1 row-<?php echo esc_attr( $i ); ?> activity-item type-<?php echo esc_attr( $type->get_slug() ); ?>">
+						<div class="clickable-card box-1 row-<?php echo esc_attr( $i ); ?> activity-item type-<?php echo esc_attr( $type->get_slug() ); ?>">
 							<div class="item-avatar">
-								<a href="<?php bp_group_permalink(); ?>"><img class="img-responsive" src="<?php echo esc_attr( $group_avatar ); ?>" alt="<?php echo esc_attr( $group->name ); ?>"/></a>
+								<img class="img-responsive" src="<?php echo esc_attr( $group_avatar ); ?>" alt="<?php echo esc_attr( $group->name ); ?>"/>
 							</div>
 
 							<div class="item-content-wrapper">
-								<h3 class="group-title overflow-hidden">
+								<h3 class="item-title group-title overflow-hidden">
 									<a class="no-deco truncate-on-the-fly hyphenate" href="<?php echo esc_attr( bp_get_group_permalink() ); ?>" data-basevalue="40" data-minvalue="15" data-basewidth="145"><?php echo esc_html( bp_get_group_name() ); ?></a>
 									<span class="original-copy hidden"><?php echo esc_html( bp_get_group_name() ); ?></span>
 								</h3>
@@ -96,7 +96,7 @@ class OpenLab_Group_Type_Widget extends WP_Widget {
 									?>
 								</p>
 								<p class="see-more">
-									<a class="semibold" href="<?php echo esc_attr( bp_get_group_permalink() ); ?>"><?php esc_html_e( 'See More', 'commons-in-a-box' ); ?><span class="sr-only"> <?php echo esc_html( bp_get_group_name() ); ?></span></a>
+									<span class="semibold"><?php esc_html_e( 'See More', 'commons-in-a-box' ); ?><span class="sr-only"> <?php echo esc_html( bp_get_group_name() ); ?></span></span>
 								</p>
 							</div><!-- .item-content-wrapper -->
 						</div>

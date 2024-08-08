@@ -22,7 +22,7 @@ if ( openlab_is_search_results_page() ) {
 	$current_group_type = openlab_get_current_filter( 'group-types' );
 	if ( ! $current_group_type ) {
 		$current_group_type = array_map(
-			function( $type ) {
+			function ( $type ) {
 				return $type->get_slug();
 			},
 			cboxol_get_group_types()
@@ -144,6 +144,15 @@ if ( $descendant_of ) {
 	);
 }
 
+// Exclude private groups if not current user's profile or don't have moderate access.
+$private_groups = [];
+if ( bp_is_user() ) {
+	$private_groups = openlab_get_user_private_memberships( bp_displayed_user_id() );
+	if ( ! bp_is_my_profile() && ! current_user_can( 'bp_moderate' ) ) {
+		$group_args['exclude'] = $private_groups;
+	}
+}
+
 ?>
 
 <?php if ( bp_has_groups( $group_args ) ) : ?>
@@ -231,12 +240,7 @@ if ( $descendant_of ) {
 										<?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 										<?php echo openlab_output_course_info_line( $group_id ); ?>
 									</div>
-								<?php elseif ( $group_type->get_is_portfolio() ) : ?>
-									<div class="info-line">
-										<?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-										<?php echo bp_core_get_userlink( openlab_get_user_id_from_portfolio_group_id( bp_get_group_id() ) ); ?>
-									</div>
-								<?php else : ?>
+								<?php elseif ( ! $group_type->get_is_portfolio() ) : ?>
 									<div class="info-line uppercase">
 										<?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 										<?php echo openlab_output_group_contact_line( $group_id ); ?>
@@ -247,6 +251,10 @@ if ( $descendant_of ) {
 									<?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 									<p class="hyphenate truncate-on-the-fly" data-basevalue="105" data-basewidth="250"><?php echo bp_get_group_description_excerpt(); ?></p>
 								</div>
+
+								<?php if ( current_user_can( 'bp_moderate' ) && in_array( $group_id, $private_groups, true ) ) : ?>
+								<p class="private-membership-indicator"><span class="fa fa-eye-slash"></span> <?php esc_html_e( 'Membership hidden', 'commons-in-a-box' ); ?></p>
+								<?php endif; ?>
 							</div><!-- .item-content-wrapper -->
 						</div>
 					</div><!-- .row -->

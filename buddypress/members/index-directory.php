@@ -3,16 +3,12 @@
 get_header();
 ?>
 
-<?php
-global $wp_query;
-$post_obj = $wp_query->get_queried_object();
-?>
 <div id="content" class="hfeed row">
 	<?php get_template_part( 'parts/sidebar/groups' ); ?>
 	<div <?php post_class( 'col-sm-18 col-xs-24' ); ?> role="main">
 		<div id="openlab-main-content" class="content-wrapper">
 			<div class="entry-title">
-				<h1><?php echo esc_attr( $post_obj->post_title ); ?></h1>
+				<h1><?php echo esc_html( bp_get_directory_title( 'members' ) ); ?></h1>
 
 				<div class="directory-title-meta">
 					<button data-target="#sidebar" class="mobile-toggle direct-toggle pull-right visible-xs" type="button"><span class="fa fa-binoculars"></span><span class="sr-only"><?php esc_html_e( 'Search', 'commons-in-a-box' ); ?></span></button>

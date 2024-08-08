@@ -34,7 +34,7 @@ function openlab_is_calendar_enabled_for_group( $group_id = null ) {
  */
 add_action(
 	'bp_screens',
-	function() {
+	function () {
 		if ( ! bp_is_group() ) {
 			return;
 		}
@@ -306,7 +306,7 @@ function openlab_bpeo_list_author() {
 	// translators: author name
 	$base = __( '<strong>Author:</strong> %s', 'bp-event-organiser' );
 
-	echo sprintf(
+	printf(
 		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		'<li>' . wp_filter_kses( $base ) . '</li>',
 		esc_html( bp_core_get_user_displayname( $author_id ) )

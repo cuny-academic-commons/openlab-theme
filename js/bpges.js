@@ -1,12 +1,12 @@
-(function($){
+(function ($) {
 	var $clicked, $statuses;
 
 	$( document ).ready(
-		function() {
+		function () {
 			$statuses = $( '.group-manage-members-bpges-status input[type="radio"]' );
 			$statuses.on(
 				'change',
-				function() {
+				function () {
 					$clicked = $( this );
 
 							go_status( 'User email status updating...', 'error' );
@@ -17,11 +17,11 @@
 						{
 							method: 'GET',
 							url: $( this ).data( 'url' ),
-							success: function() {
+							success: function () {
 								enable_radio_buttons();
 											go_status( 'User email status changed successfully', 'updated' );
 							},
-							error: function(){
+							error: function () {
 								enable_radio_buttons();
 								go_status( 'Error updating the status. Please try again or contact us for help', 'error' );
 							}
@@ -32,14 +32,14 @@
 		}
 	);
 
-	disable_radio_buttons = function() {
+	disable_radio_buttons = function () {
 		$statuses.attr( 'disabled', 'disabled' );
 	};
 
-	enable_radio_buttons = function() {
+	enable_radio_buttons = function () {
 		$statuses.removeAttr( 'disabled' );
 	};
-		go_status        = function(status, type){
+		go_status        = function (status, type) {
 
 			//clean up first
 			$( '#group-create-body .bp-template-notice' ).remove();

@@ -154,7 +154,7 @@ function openlab_filter_group_badges( $badges, OpenLab\Badges\Group $group ) {
 
 	usort(
 		$badges,
-		function( $a, $b ) {
+		function ( $a, $b ) {
 			return $a->get_position() > $b->get_position();
 		}
 	);

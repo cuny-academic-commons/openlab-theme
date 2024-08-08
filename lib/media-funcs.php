@@ -46,13 +46,13 @@ function openlab_get_home_slider() {
  */
 add_filter(
 	'bp_core_avatar_full_width',
-	function() {
+	function () {
 		return 225;
 	}
 );
 add_filter(
 	'bp_core_avatar_full_height',
-	function() {
+	function () {
 		return 225;
 	}
 );
@@ -139,6 +139,36 @@ function openlab_whats_happening_activity_items() {
 
 		$a      = bp_activity_get( $activity_args );
 		$cached = $a['activities'];
+
+		// Post-query filter to ensure that no "invisible" post items are included.
+		$cached = array_filter(
+			$cached,
+			function ( $activity ) {
+				if ( 'groups' !== $activity->component ) {
+					return true;
+				}
+
+				if ( 'new_blog_post' !== $activity->type && 'new_blog_comment' !== $activity->type ) {
+					return true;
+				}
+
+				$site_id = openlab_get_site_id_by_group_id( $activity->item_id );
+
+				$invisible_post_ids = openlab_get_invisible_post_ids( $site_id );
+
+				if ( 'new_blog_post' === $activity->type ) {
+					$post_id = $activity->secondary_item_id;
+				} else {
+					switch_to_blog( $site_id );
+					$comment = get_comment( $activity->secondary_item_id );
+					$post_id = (int) $comment->comment_post_ID;
+					restore_current_blog();
+				}
+
+				return ! in_array( $post_id, $invisible_post_ids, true );
+			}
+		);
+
 		wp_cache_set( 'whats_happening_items', $cached, 'openlab' );
 	}
 
@@ -162,7 +192,11 @@ add_action( 'bp_activity_add', 'openlab_invalidate_whats_happening_cache' );
  */
 function openlab_embeds_make_responsive( $retval ) {
 	// If not an iframe, object or embed, bail.
-	if ( empty( $retval ) || false === strpos( $retval, '<iframe ' ) && false === strpos( $retval, '<object ' ) && false === strpos( $retval, '<embed ' ) ) {
+	if ( empty( $retval ) ) {
+		return $retval;
+	}
+
+	if ( false === strpos( $retval, '<iframe ' ) && false === strpos( $retval, '<object ' ) && false === strpos( $retval, '<embed ' ) ) {
 		return $retval;
 	}
 

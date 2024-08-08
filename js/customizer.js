@@ -3,12 +3,12 @@
 
 	wp.customize.bind(
 		'ready',
-		function() {
+		function () {
 			wp.customize(
 				'openlab_color_scheme',
-				function( setting ) {
+				function ( setting ) {
 					$( '#customize-control-openlab_color_scheme label' ).each(
-						function( index, el ) {
+						function ( index, el ) {
 							var $el         = $( el );
 							var colorScheme = $el.find( 'input' ).val();
 							$el.addClass( 'color-scheme-' + colorScheme );
@@ -21,7 +21,7 @@
 	);
 
 	$( window ).load(
-		function(){
+		function () {
 			var editorIds = [ 'openlab_footer_left_content', 'openlab_footer_middle_content' ];
 			var setChange, textarea;
 			for ( var i in editorIds ) {
@@ -41,10 +41,10 @@
 
 	$( document ).on(
 		'tinymce-editor-init',
-		function( event, editor ) {
+		function ( event, editor ) {
 			editor.on(
 				'change',
-				function(e){
+				function (e) {
 					tinyMCE.triggerSave();
 					$( '#' + editor.id ).trigger( 'change' );
 				}

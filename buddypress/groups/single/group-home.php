@@ -251,7 +251,7 @@ $academic_unit_data = cboxol_get_object_academic_unit_data_for_display(
 						$group_contact_label = $group_type->get_label( 'group_contact' );
 						?>
 
-						<?php if ( $group_contacts ) : ?>
+						<?php if ( ! cboxol_is_portfolio() && ! empty( $group_contacts ) ) : ?>
 							<div class="table-row row">
 								<div class="bold col-sm-7"><?php echo esc_html( $group_contact_label ); ?></div>
 								<?php // phpcs:ignore WordPress.Security.EscapeOutput ?>
@@ -280,16 +280,6 @@ $academic_unit_data = cboxol_get_object_academic_unit_data_for_display(
 								<?php // phpcs:ignore WordPress.Security.EscapeOutput ?>
 								<div class="col-sm-17 row-content"><?php echo $group_history; ?></div>
 							</div>
-						<?php endif; ?>
-
-						<?php if ( $group_type->get_is_portfolio() ) : ?>
-
-							<div class="table-row row">
-								<div class="bold col-sm-7"><?php esc_html_e( 'Member Profile', 'commons-in-a-box' ); ?></div>
-								<?php // phpcs:ignore WordPress.Security.EscapeOutput ?>
-								<div class="col-sm-17 row-content"><?php echo bp_core_get_userlink( openlab_get_user_id_from_portfolio_group_id( bp_get_group_id() ) ); ?></div>
-							</div>
-
 						<?php endif; ?>
 
 						<?php if ( openlab_group_can_be_cloned( bp_get_current_group_id() ) ) : ?>

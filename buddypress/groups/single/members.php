@@ -1,4 +1,20 @@
-<?php if ( bp_group_has_members( 'exclude_admins_mods=0' ) ) : ?>
+<?php
+
+$members_args = [];
+
+// Get private users of the group
+$private_users = openlab_get_private_members_of_group( bp_get_current_group_id() );
+
+// If user is not mod and there are private users, exclude them from the list
+if ( ! current_user_can( 'view_private_members_of_group' ) && ! empty( $private_users ) ) {
+	$members_args['exclude'] = $private_users;
+}
+
+// Don't exclude admins from the list.
+$members_args['exclude_admins_mods'] = 0;
+?>
+
+<?php if ( bp_group_has_members( $members_args ) ) : ?>
 
 	<?php do_action( 'bp_before_group_members_content' ); ?>
 	<div class="row">
@@ -24,7 +40,7 @@
 			$user_avatar = bp_core_fetch_avatar(
 				array(
 					'item_id' => bp_get_member_user_id(),
-					'object'  => 'member',
+					'object'  => 'user',
 					'type'    => 'full',
 					'html'    => false,
 				)
@@ -44,7 +60,22 @@
 								<a class="no-deco truncate-on-the-fly hyphenate" href="<?php bp_member_permalink(); ?>" data-basevalue="28" data-minvalue="20" data-basewidth="152"><?php bp_member_name(); ?></a><span class="original-copy hidden"><?php bp_member_name(); ?></span>
 							</p>
 
-							<span class="activity"><?php bp_group_member_joined_since(); ?></span>
+							<span class="activity"><?php openlab_group_member_joined_since(); ?></span>
+
+							<?php // Only logged-in non-moderators see "Hide my membership". ?>
+							<?php if ( ( bp_get_member_user_id() === bp_loggedin_user_id() ) && ! current_user_can( 'bp_moderate' ) ) : ?>
+								<div class="group-item-membership-privacy">
+									<label>
+										<input type="checkbox" name="membership_privacy" id="membership_privacy" data-group_id="<?php echo esc_attr( bp_get_current_group_id() ); ?>" value="<?php echo esc_attr( bp_loggedin_user_id() ); ?>" <?php checked( openlab_is_my_membership_private( bp_get_current_group_id() ) ); ?> /> <?php esc_html_e( 'Hide my membership', 'commons-in-a-box' ); ?>
+										<?php wp_nonce_field( 'openlab_hide_membership_' . bp_get_current_group_id(), 'openlab_hide_membership_nonce_' . bp_get_current_group_id(), false, true ); ?>
+									</label>
+								</div>
+							<?php endif; ?>
+
+							<?php // Moderators see hidden membership label. ?>
+							<?php if ( current_user_can( 'bp_moderate' ) && in_array( bp_get_member_user_id(), $private_users, true ) ) : ?>
+								<p class="private-membership-indicator"><span class="fa fa-eye-slash"></span> <?php esc_html_e( 'Membership hidden', 'commons-in-a-box' ); ?></p>
+							<?php endif ?>
 
 							<?php do_action( 'bp_group_members_list_item' ); ?>
 

@@ -1,6 +1,6 @@
 <?php
 
-define( 'OPENLAB_VERSION', '1.5.1-1704914890861' );
+define( 'OPENLAB_VERSION', '1.6.0-1723126444908' );
 
 if ( ! defined( 'CSS_DEBUG' ) ) {
 	define( 'CSS_DEBUG', false );
@@ -17,7 +17,7 @@ add_action( 'widgets_init', 'openlab_register_sidebars' );
 // Force Legacy templates.
 add_action(
 	'after_setup_theme',
-	function() {
+	function () {
 		add_theme_support( 'buddypress-use-legacy' );
 	}
 );
@@ -223,6 +223,14 @@ function openlab_load_scripts() {
 			true
 		);
 
+		wp_register_script(
+			'openlab-avatar-privacy',
+			$stylesheet_dir_uri . '/js/avatar-privacy.js',
+			[ 'jquery' ],
+			$ver,
+			true
+		);
+
 		if ( bp_is_groups_directory() || openlab_is_search_results_page() || bp_is_members_directory() ) {
 			wp_enqueue_script( 'openlab-directory', $stylesheet_dir_uri . '/js/directory.js', [ 'jquery' ], $ver, true );
 			wp_localize_script(
@@ -231,6 +239,16 @@ function openlab_load_scripts() {
 				[
 					'groupTypeDisabledFilters' => openlab_group_type_disabled_filters(),
 				]
+			);
+		}
+
+		if ( bp_is_group() ) {
+			wp_enqueue_script(
+				'openlab-group-membership',
+				$stylesheet_dir_uri . '/js/membership-privacy.js',
+				[ 'jquery' ],
+				$ver,
+				true
 			);
 		}
 	}
@@ -488,7 +506,7 @@ function openlab_site_footer() {
  */
 add_action(
 	'update_option_theme_mods_' . get_option( 'stylesheet' ),
-	function() {
+	function () {
 		delete_site_transient( 'cboxol_network_footer' );
 	}
 );

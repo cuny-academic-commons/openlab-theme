@@ -4,6 +4,10 @@ global $bp;
 $group_type = cboxol_get_group_group_type( bp_get_current_group_id() );
 
 openlab_group_admin_js_data( $group_type );
+
+// Get private users of the group.
+$private_users = openlab_get_private_members_of_group( bp_get_group_id() );
+
 ?>
 
 <?php //the following switches out the membership menu for the regular admin menu on membership-based admin pages ?>
@@ -21,7 +25,7 @@ openlab_group_admin_js_data( $group_type );
 
 			<div class="submenu-text pull-left bold"><?php esc_html_e( 'Settings:', 'commons-in-a-box' ); ?></div>
 			<ul class="nav nav-inline">
-				<?php openlab_group_admin_tabs(); ?>
+				<?php bp_get_template_part( 'groups/single/nav/admin' ); ?>
 			</ul>
 		<?php endif; ?>
 	</div><!-- .submenu -->
@@ -51,6 +55,18 @@ openlab_group_admin_js_data( $group_type );
 					<textarea class="form-control" name="group-desc" id="group-desc" required><?php bp_group_description_editable(); ?></textarea>
 
 					<?php do_action( 'groups_custom_group_fields_editable' ); ?>
+
+					<?php if ( cboxol_is_portfolio() ) : ?>
+						<fieldset class="portfolio-profile-link-wrapper">
+							<legend><?php esc_html_e( 'Portfolio Link on my Profile', 'ocommons-in-a-box' ); ?></legend>
+
+							<p><?php esc_html_e( 'You can choose to show a link to your Portfolio on your Profile page by checking the box below.', 'commons-in-a-box' ); ?></p>
+
+							<input name="portfolio-profile-link" id="portfolio-profile-link-toggle" <?php checked( openlab_show_portfolio_link_on_user_profile( openlab_get_user_id_from_portfolio_group_id( bp_get_current_group_id() ) ) ); ?> type="checkbox" name="portfolio-profile-link-toggle" value="1" /> <label for="portfolio-profile-link-toggle"><?php esc_html_e( 'Show link to my Portfolio on my public Profile', 'commons-in-a-box' ); ?></label>
+
+							<?php wp_nonce_field( 'portfolio_profile_link', 'portfolio-profile-link-nonce', false ); ?>
+						</fieldset>
+					<?php endif; ?>
 
 					<?php if ( ! cboxol_is_portfolio() ) : ?>
 						<div class="notify-settings">
@@ -344,7 +360,7 @@ openlab_group_admin_js_data( $group_type );
 							$user_avatar = bp_core_fetch_avatar(
 								array(
 									'item_id' => bp_get_member_user_id(),
-									'object'  => 'member',
+									'object'  => 'user',
 									'type'    => 'full',
 									'html'    => false,
 								)
@@ -382,7 +398,7 @@ openlab_group_admin_js_data( $group_type );
 				<div class="bp-widget">
 					<h4><?php esc_html_e( 'Moderators', 'commons-in-a-box' ); ?></h4>
 
-						<?php if ( bp_has_members( '&include=' . bp_group_mod_ids() ) ) : ?>
+					<?php if ( bp_has_members( '&include=' . bp_group_mod_ids() ) ) : ?>
 						<div id="group-manage-moderators-members" class="item-list single-line inline-element-list row group-manage-members group-list">
 
 							<?php
@@ -392,7 +408,7 @@ openlab_group_admin_js_data( $group_type );
 								$user_avatar = bp_core_fetch_avatar(
 									array(
 										'item_id' => bp_get_member_user_id(),
-										'object'  => 'member',
+										'object'  => 'user',
 										'type'    => 'full',
 										'html'    => false,
 									)
@@ -426,27 +442,40 @@ openlab_group_admin_js_data( $group_type );
 				</div>
 			<?php endif ?>
 
-
 			<div class="bp-widget">
-				<h4><?php esc_html_e( 'Members', 'commons-in-a-box' ); ?></h4>
+				<?php
+				$manage_members_args = [
+					'per_page'       => 96,
+					'exclude_banned' => false,
+				];
 
-				<?php if ( bp_group_has_members( 'per_page=48&exclude_banned=0' ) ) : ?>
+				/**
+				 * Filters the arguments used to query members on the Manage Members screen.
+				 *
+				 * @since 1.6.0
+				 *
+				 * @param array $manage_members_args Array of arguments used to query members on the Manage Members screen.
+				 */
+				$manage_members_args = apply_filters( 'cboxol_group_manage_members_args', $manage_members_args );
+				?>
+
+				<?php if ( bp_group_has_members( $manage_members_args ) ) : ?>
+					<h4><?php esc_html_e( 'Members', 'commons-in-a-box' ); ?></h4>
 
 					<?php if ( bp_group_member_needs_pagination() ) : ?>
+						<div class="group-manage-members-pagination">
+							<div class="pagination no-ajax">
+								<div id="member-admin-pagination-top" class="group-manage-members-pagination-links pagination-links">
+									<?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+									<?php echo openlab_members_pagination_links( 'mlpage' ); ?>
+								</div>
+							</div>
 
-						<div class="pagination no-ajax">
-
-							<div id="member-count" class="pag-count">
+							<div class="pag-count">
 								<?php bp_group_member_pagination_count(); ?>
 							</div>
-
-							<div id="member-admin-pagination" class="pagination-links">
-								<?php bp_group_member_admin_pagination(); ?>
-							</div>
-
 						</div>
-
-						<?php endif; ?>
+					<?php endif; ?>
 
 					<div id="group-manage-members" class="item-list inline-element-list row group-manage-members group-list">
 						<?php
@@ -456,7 +485,7 @@ openlab_group_admin_js_data( $group_type );
 							$user_avatar = bp_core_fetch_avatar(
 								array(
 									'item_id' => bp_get_member_user_id(),
-									'object'  => 'member',
+									'object'  => 'user',
 									'type'    => 'full',
 									'html'    => false,
 								)
@@ -499,13 +528,31 @@ openlab_group_admin_js_data( $group_type );
 											</ul>
 
 											<?php do_action( 'bp_group_manage_members_admin_item' ); ?>
+
+											<?php if ( in_array( bp_get_member_user_id(), $private_users, true ) ) : ?>
+												<p class="private-membership-indicator"><span class="fa fa-eye-slash"></span> <?php esc_html_e( 'Membership hidden', 'commons-in-a-box' ); ?></p>
+											<?php endif; ?>
 										</div>
 									</div>
 								</div>
 							</div>
-
-					<?php endwhile; ?>
+						<?php endwhile; ?>
 					</div>
+
+					<?php if ( bp_group_member_needs_pagination() ) : ?>
+						<div class="group-manage-members-pagination">
+							<div class="pagination no-ajax">
+								<div id="member-admin-pagination-top" class="group-manage-members-pagination-links pagination-links">
+									<?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+									<?php echo openlab_members_pagination_links( 'mlpage' ); ?>
+								</div>
+							</div>
+
+							<div class="pag-count">
+								<?php bp_group_member_pagination_count(); ?>
+							</div>
+						</div>
+					<?php endif; ?>
 
 				<?php else : ?>
 
@@ -538,7 +585,7 @@ openlab_group_admin_js_data( $group_type );
 						$user_avatar = bp_core_fetch_avatar(
 							array(
 								'item_id' => $GLOBALS['requests_template']->request->user_id,
-								'object'  => 'member',
+								'object'  => 'user',
 								'type'    => 'full',
 								'html'    => false,
 							)

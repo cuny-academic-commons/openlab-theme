@@ -4,7 +4,7 @@ Theme URL: https://commonsinabox.org
 Description: Commons In A Box theme, based on the OpenLab at City Tech.
 Author: The Commons In A Box OpenLab team
 Author URI: https://commonsinabox.org
-Version: 1.5.1
+Version: 1.6.0
 Text Domain: commons-in-a-box
 */
 /**import bootstrap**/
@@ -7367,6 +7367,7 @@ blockquote .h6 {
 .pagination li a .fa,
 .pagination li span .fa {
   font-size: 16px;
+  line-height: 1;
 }
 .pagination li a:hover,
 .pagination li span:hover {
@@ -7871,6 +7872,12 @@ body .font-size.font-18 {
 }
 body.js .group-creator-empty-row {
   display: none;
+}
+body .portfolio-profile-link-wrapper {
+  margin-top: 32px;
+}
+body .portfolio-profile-link-wrapper label {
+  font-weight: 600;
 }
 body .group-creators-section {
   margin-bottom: 20px;
@@ -8387,6 +8394,17 @@ body label.passive {
 body label.block {
   display: block;
 }
+.panel-avatar-privacy.loading .radio {
+  opacity: 0.5;
+  pointer-events: none;
+}
+.panel-avatar-privacy .panel-body legend {
+  margin-bottom: 1em;
+}
+.panel-avatar-privacy .panel-body .radio label {
+  font-weight: normal;
+  margin-right: 16px;
+}
 /**shortcodes**/
 .callout-list .row {
   margin-bottom: 34px;
@@ -8461,6 +8479,7 @@ body form .checkbox-list-container {
 .ct-group-meta .site-path {
   display: table;
   padding-left: 25px;
+  white-space: nowrap;
   width: 90%;
 }
 .ct-group-meta .site-path span {
@@ -9051,15 +9070,7 @@ body form .checkbox-list-container {
   margin-bottom: 25px;
 }
 .home-page .activity-list .activity-wrapper .activity-item .item-avatar {
-  height: 0;
   position: relative;
-  padding-top: 100%;
-}
-.home-page .activity-list .activity-wrapper .activity-item .item-avatar a {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
 }
 @media (max-width: 767px) {
   .home-page .activity-list .activity-wrapper .activity-item .item-avatar {
@@ -9095,6 +9106,15 @@ body form .checkbox-list-container {
   .home-page .activity-list .activity-wrapper .activity-item .item-content-wrapper {
     width: 100%;
   }
+}
+.clickable-card.card-is-hovered {
+  border-color: #999999 !important;
+}
+.clickable-card .see-more {
+  text-decoration: underline;
+}
+.clickable-card .see-more:hover {
+  text-decoration: none;
 }
 /**sidebar**/
 @media (max-width: 767px) {
@@ -9181,6 +9201,20 @@ body form .checkbox-list-container {
 .portfolio-dashboard-link a:focus {
   color: #333333;
   text-decoration: none;
+}
+.portfolio-profile-link-toggle-wrapper {
+  align-items: flex-start;
+  display: flex;
+  gap: 8px;
+  margin-left: 5%;
+  padding-bottom: 10px;
+}
+.portfolio-profile-link-toggle-wrapper label {
+  display: block;
+  font-weight: normal;
+  font-size: 12px;
+  padding-top: 3px;
+  margin-bottom: 0;
 }
 .mobile-group-site-links {
   margin-top: 30px;
@@ -9865,10 +9899,33 @@ input#group-request-send {
   }
 }
 .group-members.group-list .group-item-wrapper {
-  height: 118px;
+  height: 128px;
 }
 .group-members.group-list .group-item-wrapper p {
   margin: 10px 0 7px;
+}
+.group-members.group-list .group-item-membership-privacy {
+  margin-top: 15px;
+}
+.group-members.group-list .group-item-membership-privacy label {
+  font-size: 12px;
+  font-weight: 400;
+}
+.group-members.group-list .group-item-membership-privacy label:hover {
+  cursor: pointer;
+}
+.group-manage-members-pagination {
+  align-items: center;
+  display: flex;
+  gap: 10px;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+@media screen and (max-width: 767px) {
+  .group-manage-members-pagination {
+    align-items: flex-start;
+    flex-direction: column;
+  }
 }
 .group-manage-members.group-list.group-manage-requests .group-item .group-item-wrapper ul.group-member-actions {
   font-weight: normal;
@@ -9885,7 +9942,7 @@ input#group-request-send {
   height: 127px;
 }
 .group-manage-members.group-list .group-item .group-item-wrapper.members {
-  height: 318px;
+  height: auto;
 }
 .group-manage-members.group-list .group-item .group-item-wrapper.members .link-btn {
   margin-right: 3px;
@@ -11101,6 +11158,13 @@ input.help-search {
   #breadcrumb-container {
     margin-top: 10px;
   }
+}
+/* Private membership indicator */
+p.private-membership-indicator {
+  margin-top: 15px;
+  font-size: 12px;
+  font-weight: 400;
+  color: #666 !important;
 }
 /**contact form**/
 .wpcf7 .wpcf7-response-output {

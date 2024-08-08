@@ -119,7 +119,7 @@ function openlab_list_members() {
 			$user_avatar = bp_core_fetch_avatar(
 				array(
 					'item_id' => bp_get_member_user_id(),
-					'object'  => 'member',
+					'object'  => 'user',
 					'type'    => 'full',
 					'html'    => false,
 				)
@@ -387,13 +387,23 @@ function openlab_profile_group_type_activity_block( \CBOX\OL\GroupType $type ) {
 		'per_page'    => 20,
 	);
 
+	$exclude_groups = [];
+	$private_groups = openlab_get_user_private_memberships( bp_displayed_user_id() );
+
+	// Exclude private groups if not current user's profile or don't have moderate access.
+	if ( ! bp_is_my_profile() && ! current_user_can( 'bp_moderate' ) ) {
+		$exclude_groups += $private_groups;
+	}
+
+	$group_args['exclude'] = $exclude_groups;
+
 	$title = $type->get_label( 'plural' );
 
 	if ( bp_has_groups( $group_args ) ) {
 		?>
 		<div id="<?php echo esc_attr( $type->get_slug() ); ?>-activity-stream" class="<?php echo esc_attr( $type->get_slug() ); ?>-list activity-list item-list col-sm-8 col-xs-12">
 			<?php
-			$href = add_query_arg( 'group_type', $type->get_slug(), bp_displayed_user_domain() . 'groups/' );
+			$href = add_query_arg( 'group_type', $type->get_slug(), bp_displayed_user_url( bp_members_get_path_chunks( [ bp_get_groups_slug() ] ) ) );
 			$x    = 0;
 			?>
 			<?php /* @todo font awesome is loaded from openlab-toolbar.php */ ?>
@@ -821,3 +831,69 @@ function openlab_mirror_default_avatar( $value ) {
 	return $value;
 }
 add_filter( 'pre_set_theme_mod_openlab_default_avatar', 'openlab_mirror_default_avatar' );
+
+/**
+ * AJAX callback for toggling group membership privacy.
+ *
+ * @since 1.6.0
+ *
+ * @return void
+ */
+function openlab_ajax_toggle_group_membership_privacy() {
+	$retval = [
+		'success' => false,
+		'message' => '',
+	];
+
+	// Use the group ID from the POST data.
+	if ( ! isset( $_POST['group_id'] ) ) {
+		$retval['message'] = __( 'Group ID is missing.', 'commons-in-a-box' );
+		wp_send_json( $retval );
+	}
+
+	$user_id  = bp_loggedin_user_id();
+	$group_id = (int) $_POST['group_id'];
+
+	if ( ! wp_verify_nonce( $_POST['nonce'], 'openlab_hide_membership_' . $group_id ) ) {
+		wp_send_json( $retval );
+	}
+
+	$is_private = isset( $_POST['is_private'] ) ? 'true' === $_POST['is_private'] : false;
+
+	$updated = openlab_update_group_membership_privacy( $user_id, $group_id, $is_private );
+
+	if ( $updated ) {
+		$retval['success'] = true;
+		$retval['message'] = $is_private ? __( 'User membership set to private', 'commons-in-a-box' ) : __( 'User membership set to public', 'commons-in-a-box' );
+	} else {
+		$retval['message'] = __( 'There was an error updating membership privacy.', 'commons-in-a-box' );
+	}
+
+	wp_send_json( $retval );
+}
+add_action( 'wp_ajax_openlab_update_member_group_privacy', 'openlab_ajax_toggle_group_membership_privacy' );
+
+/**
+ * AJAX callback for 'openlab_portfolio_link_visibility'.
+ *
+ * @since 1.6.0
+ *
+ * @return void
+ */
+function openlab_portfolio_link_visibility_ajax_cb() {
+	$verified = wp_verify_nonce( $_GET['nonce'], 'openlab_portfolio_link_visibility' );
+
+	if ( ! $verified ) {
+		wp_send_json_error( 'Invalid nonce' );
+	}
+
+	if ( ! is_user_logged_in() ) {
+		wp_send_json_error( 'Not logged in' );
+	}
+
+	$enabled = 'enabled' === $_GET['state'];
+	openlab_save_show_portfolio_link_on_user_profile( get_current_user_id(), $enabled );
+
+	wp_send_json_success();
+}
+add_action( 'wp_ajax_openlab_portfolio_link_visibility', 'openlab_portfolio_link_visibility_ajax_cb' );

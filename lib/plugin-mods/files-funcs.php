@@ -103,7 +103,7 @@ add_filter( 'option_bp_group_documents_use_categories', '__return_false' );
  */
 add_filter(
 	'bp_core_render_message_content',
-	function( $message ) {
+	function ( $message ) {
 		$old = __( 'Document successfully uploaded', 'commons-in-a-box' );
 		$new = __( 'File successfully uploaded', 'commons-in-a-box' );
 		return str_replace( $old, $new, $message );
@@ -189,7 +189,7 @@ add_action( 'bp_actions', 'openlab_delete_bpgd_category_cookie_on_load' );
  */
 add_action(
 	'bp_group_documents_template_do_post_action',
-	function() {
+	function () {
 		$request_type = ! empty( $_POST['bp_group_documents_file_type'] ) ? wp_unslash( $_POST['bp_group_documents_file_type'] ) : 'upload';
 
 		// If request is not of type 'link', let buddypress-group-documents handle it.
@@ -249,9 +249,15 @@ add_action(
  */
 add_action(
 	'bp_group_documents_data_after_save',
-	function( $document ) {
+	function ( $document ) {
 		// Get the operation type, used to build the nonce.
 		$operation_type = ! empty( $_POST['bp_group_documents_operation'] ) && 'edit' === $_POST['bp_group_documents_operation'] ? 'edit' : 'add';
+
+		// Absence of a nonce indicates that this is a clone operation, and there's no need
+		// to check for a link.
+		if ( ! isset( $_POST['bp_group_document_save'] ) ) {
+			return;
+		}
 
 		check_admin_referer( 'bp_group_document_save_' . $operation_type, 'bp_group_document_save' );
 
@@ -325,7 +331,7 @@ function openlab_update_external_link_category( $document ) {
  */
 add_action(
 	'bp_actions',
-	function() {
+	function () {
 		if ( ! bp_is_group() || ! bp_is_current_action( BP_GROUP_DOCUMENTS_SLUG ) ) {
 			return;
 		}
@@ -370,7 +376,7 @@ function openlab_get_document_type( $file_name ) {
  */
 add_filter(
 	'bp_group_documents_file_url',
-	function( $document_url, $group_id, $file ) {
+	function ( $document_url, $group_id, $file ) {
 		if ( 'upload' === openlab_get_document_type( $file ) ) {
 			return $document_url;
 		}

@@ -26,7 +26,7 @@ if ( function_exists( 'openlab_eo_is_event_detail_screen' ) && openlab_eo_is_eve
 				<?php elseif ( bp_is_current_action( 'docs' ) ) : ?>
 
 					<ul class="nav nav-inline">
-						<?php openlab_docs_tabs(); ?>
+						<?php bp_get_template_part( 'groups/single/nav/docs' ); ?>
 					</ul>
 
 				<?php elseif ( bp_is_current_action( BP_GROUP_DOCUMENTS_SLUG ) ) : ?>

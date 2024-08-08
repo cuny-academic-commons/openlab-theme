@@ -4,7 +4,7 @@ Theme URL: https://commonsinabox.org
 Description: Commons In A Box theme, based on the OpenLab at City Tech.
 Author: The Commons In A Box OpenLab team
 Author URI: https://commonsinabox.org
-Version: 1.5.1
+Version: 1.6.0
 Text Domain: commons-in-a-box
 */
 
@@ -213,6 +213,7 @@ blockquote {
             }
             .fa{
                 font-size: 16px;
+				line-height: 1;
             }
             &:hover{
                 background-color: inherit;
@@ -740,6 +741,14 @@ body{
 		.group-creator-form-entry {
 		}
 	}
+
+	.portfolio-profile-link-wrapper {
+		margin-top: 32px;
+		label {
+			font-weight: 600;
+		}
+	}
+
 	.group-creators-section {
 		margin-bottom: 20px;
 		margin-top: 20px;
@@ -1291,6 +1300,27 @@ body{
         }
     }
 }
+.panel-avatar-privacy {
+	&.loading {
+		.radio {
+			opacity: .5;
+			pointer-events: none;
+		}
+	}
+
+	.panel-body {
+		legend {
+			margin-bottom: 1em;
+		}
+
+		.radio {
+			label {
+				font-weight: normal;
+				margin-right: 16px;
+			}
+		}
+	}
+}
 /**shortcodes**/
 .callout-list{
     .row{
@@ -1376,6 +1406,7 @@ body form{
 	.site-path {
 		display: table;
 		padding-left: 25px;
+		white-space: nowrap;
 		width: 90%;
 		span {
 			display: table-cell;
@@ -1968,15 +1999,7 @@ body form{
                     }
                 }
                 .item-avatar{
-                    height: 0;
                     position: relative;
-                    padding-top: 100%;
-                    a{
-                        position: absolute;
-                        top: 0;
-                        left: 0;
-                        width: 100%;
-                    }
                     @media (max-width: @screen-xs-max){
                         height: 100%;
                         width: 100%;
@@ -2012,6 +2035,20 @@ body form{
             }
         }
     }
+}
+
+.clickable-card {
+	&.card-is-hovered {
+		border-color: @40gray !important;
+	}
+
+	.see-more {
+		text-decoration: underline;
+
+		&:hover {
+			text-decoration: none;
+		}
+	}
 }
 
 /**sidebar**/
@@ -2113,6 +2150,23 @@ body form{
 		text-decoration: none;
 	}
 }
+
+.portfolio-profile-link-toggle-wrapper {
+	align-items: flex-start;
+	display: flex;
+	gap: 8px;
+	margin-left: 5%;
+	padding-bottom: 10px;
+
+	label {
+		display: block;
+		font-weight: normal;
+		font-size: 12px;
+		padding-top: 3px;
+		margin-bottom: 0;
+	}
+}
+
 .mobile-group-site-links {
 	margin-top: 30px;
 	.portfolio-site-link {
@@ -2773,13 +2827,41 @@ input#group-request-send {
 .group-members{
     &.group-list{
         .group-item-wrapper{
-            height: 118px;
+            height: 128px;
             p{
                 margin: 10px 0 7px;
             }
         }
+        .group-item-membership-privacy {
+            margin-top: 15px;
+
+            label {
+                font-size: 12px;
+                font-weight: 400;
+
+                &:hover {
+                    cursor: pointer;
+                }
+            }
+        }
     }
 }
+
+.group-manage-members-pagination {
+	align-items: center;
+	display: flex;
+	gap: 10px;
+	justify-content: space-between;
+	margin-bottom: 10px;
+}
+
+@media screen and (max-width: @screen-xs-max) {
+	.group-manage-members-pagination {
+		align-items: flex-start;
+		flex-direction: column;
+	}
+}
+
 .group-manage-members{
     &.group-list{
         &.group-manage-requests {
@@ -2797,7 +2879,7 @@ input#group-request-send {
                     height: 127px;
                 }
                 &.members{
-                    height: 318px;
+                    height: auto;
                     .link-btn{
                         margin-right: 3px;
                     }
@@ -4049,6 +4131,13 @@ input.help-search {
     @media (max-width: @screen-xs-max){
         margin-top: 10px;
     }
+}
+/* Private membership indicator */
+p.private-membership-indicator {
+    margin-top: 15px;
+    font-size: 12px;
+    font-weight: 400;
+    color: #666 !important;
 }
 /**contact form**/
 .wpcf7{

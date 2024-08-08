@@ -13,7 +13,7 @@ echo openlab_submenu_markup();
 
 	<?php do_action( 'bp_template_content' ); ?>
 
-	<form action="<?php echo esc_attr( bp_displayed_user_domain() . bp_get_settings_slug() . '/notifications' ); ?>" method="post" class="standard-form form-panel" id="settings-form">
+	<form action="<?php echo esc_attr( bp_displayed_user_url( bp_members_get_path_chunks( [ bp_get_settings_slug(), 'notifications' ] ) ) ); ?>" method="post" class="standard-form form-panel" id="settings-form">
 
 		<div class="panel panel-default">
 			<div class="panel-heading"><?php esc_html_e( 'Email Notifications', 'commons-in-a-box' ); ?></div>

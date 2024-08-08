@@ -142,10 +142,9 @@ endif;
  * @param type $mobile
  */
 function openlab_member_sidebar_menu( $mobile = false ) {
-
-	$dud = bp_displayed_user_domain();
-	if ( ! $dud ) {
-		$dud = bp_loggedin_user_domain(); // will always be the logged in user on my-*
+	$user_id = bp_displayed_user_id();
+	if ( ! $user_id ) {
+		$user_id = bp_loggedin_user_id();
 	}
 
 	if ( $mobile ) {
@@ -177,10 +176,10 @@ function openlab_member_sidebar_menu( $mobile = false ) {
 			<ul class="sidebar-nav clearfix">
 
 				<?php $selected_page = bp_is_user_activity() ? 'selected-page' : ''; ?>
-				<li class="sq-bullet <?php echo esc_attr( $selected_page ); ?> mol-profile my-profile"><a href="<?php echo esc_attr( $dud ); ?>"><?php esc_html_e( 'My Profile', 'commons-in-box' ); ?></a></li>
+				<li class="sq-bullet <?php echo esc_attr( $selected_page ); ?> mol-profile my-profile"><a href="<?php echo esc_attr( bp_members_get_user_url( $user_id ) ); ?>"><?php esc_html_e( 'My Profile', 'commons-in-box' ); ?></a></li>
 
 				<?php $selected_page = bp_is_user_settings() ? 'selected-page' : ''; ?>
-				<li class="sq-bullet <?php echo esc_attr( $selected_page ); ?> mol-settings my-settings"><a href="<?php echo esc_attr( $dud . bp_get_settings_slug() ); ?>/"><?php esc_html_e( 'My Settings', 'commons-in-a-box' ); ?></a></li>
+				<li class="sq-bullet <?php echo esc_attr( $selected_page ); ?> mol-settings my-settings"><a href="<?php echo esc_attr( bp_members_get_user_url( $user_id, bp_members_get_path_chunks( [ bp_get_settings_slug() ] ) ) ); ?>/"><?php esc_html_e( 'My Settings', 'commons-in-a-box' ); ?></a></li>
 
 				<?php if ( $portfolio_group_type ) : ?>
 					<?php if ( openlab_user_has_portfolio( bp_displayed_user_id() ) && ( ! cboxol_group_is_hidden( openlab_get_user_portfolio_id() ) || openlab_is_my_profile() || groups_is_user_member( bp_loggedin_user_id(), openlab_get_user_portfolio_id() ) ) ) : ?>
@@ -218,7 +217,7 @@ function openlab_member_sidebar_menu( $mobile = false ) {
 
 					<li class="sq-bullet <?php echo esc_attr( $selected_page ); ?> mol-friends my-friends">
 						<?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-						<a href="<?php echo esc_attr( $dud . bp_get_friends_slug() ); ?>/"><?php esc_html_e( 'My Friends', 'commons-in-a-box' ); ?> <?php echo openlab_get_menu_count_mup( $request_count ); ?></a>
+						<a href="<?php echo esc_attr( bp_members_get_user_url( $user_id, bp_members_get_path_chunks( [ bp_get_friends_slug() ] ) ) ); ?>"><?php esc_html_e( 'My Friends', 'commons-in-a-box' ); ?> <?php echo openlab_get_menu_count_mup( $request_count ); ?></a>
 					</li>
 				<?php endif; ?>
 
@@ -231,7 +230,7 @@ function openlab_member_sidebar_menu( $mobile = false ) {
 
 					<li class="sq-bullet <?php echo esc_attr( $selected_page ); ?> mol-messages my-messages">
 						<?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-						<a href="<?php echo esc_attr( $dud . bp_get_messages_slug() ); ?>/inbox/"><?php esc_html_e( 'My Messages', 'commons-in-a-box' ); ?> <?php echo openlab_get_menu_count_mup( $message_count ); ?></a>
+						<a href="<?php echo esc_attr( bp_members_get_user_url( $user_id, bp_members_get_path_chunks( [ bp_get_messages_slug() ] ) ) ); ?>"><?php esc_html_e( 'My Messages', 'commons-in-a-box' ); ?> <?php echo openlab_get_menu_count_mup( $message_count ); ?></a>
 					</li>
 				<?php endif; ?>
 
@@ -246,7 +245,7 @@ function openlab_member_sidebar_menu( $mobile = false ) {
 
 					<li class="sq-bullet <?php echo esc_attr( $selected_page ); ?> mol-invites my-invites">
 						<?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-						<a href="<?php echo esc_attr( $dud . bp_get_groups_slug() ); ?>/invites/"><?php esc_html_e( 'My Invitations', 'commons-in-a-box' ); ?> <?php echo openlab_get_menu_count_mup( $invite_count ); ?></a>
+						<a href="<?php echo esc_attr( bp_members_get_user_url( $user_id, bp_members_get_path_chunks( [ bp_get_groups_slug(), 'invites' ] ) ) ); ?>"><?php esc_html_e( 'My Invitations', 'commons-in-a-box' ); ?> <?php echo openlab_get_menu_count_mup( $invite_count ); ?></a>
 					</li>
 				<?php endif ?>
 			</ul>
@@ -260,7 +259,7 @@ function openlab_member_sidebar_menu( $mobile = false ) {
 			<ul class="sidebar-nav clearfix">
 
 				<?php $selected_page = bp_is_user_activity() ? 'selected-page' : ''; ?>
-				<li class="sq-bullet <?php echo esc_attr( $selected_page ); ?> mol-profile"><a href="<?php echo esc_attr( $dud ); ?>/"><?php esc_html_e( 'Profile', 'commons-in-a-box' ); ?></a></li>
+				<li class="sq-bullet <?php echo esc_attr( $selected_page ); ?> mol-profile"><a href="<?php echo esc_attr( bp_members_get_user_url( $user_id ) ); ?>"><?php esc_html_e( 'Profile', 'commons-in-a-box' ); ?></a></li>
 
 				<?php if ( $portfolio_group_type ) : ?>
 					<?php if ( openlab_user_has_portfolio( bp_displayed_user_id() ) && ( ! cboxol_group_is_hidden( openlab_get_user_portfolio_id() ) || openlab_is_my_profile() || groups_is_user_member( bp_loggedin_user_id(), openlab_get_user_portfolio_id() ) ) ) : ?>
@@ -276,7 +275,7 @@ function openlab_member_sidebar_menu( $mobile = false ) {
 				<?php endforeach; ?>
 
 				<?php $selected_page = bp_is_user_friends() ? 'selected-page' : ''; ?>
-				<li class="sq-bullet <?php echo esc_attr( $selected_page ); ?> mol-friends"><a href="<?php echo esc_attr( $dud . bp_get_friends_slug() ); ?>/"><?php esc_html_e( 'Friends', 'commons-in-a-box' ); ?></a></li>
+				<li class="sq-bullet <?php echo esc_attr( $selected_page ); ?> mol-friends"><a href="<?php echo esc_attr( bp_members_get_user_url( $user_id, bp_members_get_path_chunks( [ bp_get_friends_slug() ] ) ) ); ?>"><?php esc_html_e( 'Friends', 'commons-in-a-box' ); ?></a></li>
 
 			</ul>
 
@@ -290,6 +289,9 @@ function openlab_member_sidebar_menu( $mobile = false ) {
  * Member pages sidebar blocks (portfolio link) - modularized for easier parsing of mobile menus
  */
 function openlab_members_sidebar_blocks( $mobile_hide = false ) {
+	static $counter = 0;
+
+	++$counter;
 
 	$portfolio_group_type = cboxol_get_portfolio_group_type();
 
@@ -315,7 +317,15 @@ function openlab_members_sidebar_blocks( $mobile_hide = false ) {
 
 	?>
 
-	<?php if ( openlab_user_has_portfolio( bp_displayed_user_id() ) && ( ! cboxol_group_is_hidden( openlab_get_user_portfolio_id() ) || openlab_is_my_profile() || groups_is_user_member( bp_loggedin_user_id(), openlab_get_user_portfolio_id() ) ) ) : ?>
+	<?php
+	if (
+		( ( openlab_user_has_portfolio( bp_displayed_user_id() ) && ! cboxol_group_is_hidden( openlab_get_user_portfolio_id() ) && openlab_show_portfolio_link_on_user_profile() )
+		||
+		( openlab_is_my_profile() && openlab_user_has_portfolio( bp_displayed_user_id() ) )
+		||
+		groups_is_user_member( bp_loggedin_user_id(), openlab_get_user_portfolio_id() ) )
+	) :
+		?>
 
 		<?php if ( ! $mobile_hide ) : ?>
 			<?php if ( is_user_logged_in() && openlab_is_my_profile() ) : ?>
@@ -351,6 +361,14 @@ function openlab_members_sidebar_blocks( $mobile_hide = false ) {
 				</li>
 
 			</ul>
+
+			<?php if ( openlab_is_my_profile() && openlab_user_has_portfolio( bp_displayed_user_id() ) && ! bp_is_group_create() ) : ?>
+				<li class="portfolio-profile-link-toggle-wrapper">
+					<input value="1" data-counter="<?php echo esc_attr( $counter ); ?>" type="checkbox" id="portfolio-profile-link-toggle-<?php echo esc_attr( $counter ); ?>" class="portfolio-profile-link-toggle-checkbox" <?php checked( openlab_show_portfolio_link_on_user_profile() ); ?> /> <label for="portfolio-profile-link-toggle-<?php echo esc_attr( $counter ); ?>"><?php esc_html_e( 'Show link to my Portfolio on my public Profile', 'commons-in-a-box' ); ?></label>
+
+					<?php wp_nonce_field( 'openlab_portfolio_link_visibility', 'openlab_portfolio_link_visibility_nonce_' . $counter, false ); ?>
+				</li>
+			<?php endif; ?>
 		</div>
 
 	<?php elseif ( openlab_is_my_profile() && ! bp_is_group_create() ) : ?>

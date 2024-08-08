@@ -95,7 +95,7 @@
 
 				<p class="invite-copy"><?php esc_html_e( 'This link will take you to My Invitations, where you may invite people to join the community and this group.', 'commons-in-a-box' ); ?></p>
 
-				<p><a class="btn btn-primary no-deco" href="<?php echo esc_attr( bp_loggedin_user_domain() . BP_INVITE_ANYONE_SLUG . '/invite-new-members/group-invites/' . bp_get_group_id() ); ?>"><?php esc_html_e( 'Invite New Members to This Community', 'commons-in-a-box' ); ?></a></p>
+				<p><a class="btn btn-primary no-deco" href="<?php echo esc_attr( bp_loggedin_user_url( bp_members_get_path_chunks( [ BP_INVITE_ANYONE_SLUG, 'invite-new-members', 'group-invites', bp_get_group_id() ] ) ) ); ?>"><?php esc_html_e( 'Invite New Members to This Community', 'commons-in-a-box' ); ?></a></p>
 
 			</div>
 		</div>

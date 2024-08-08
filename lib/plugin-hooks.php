@@ -108,7 +108,7 @@ add_action( 'bp_group_manage_members_admin_item', 'openlab_manage_members_email_
 // remove status from group profile pages
 add_action(
 	'bp_actions',
-	function() {
+	function () {
 		remove_action( 'bp_group_header_meta', 'ass_group_subscribe_button' );
 	}
 );
@@ -127,7 +127,7 @@ function openlab_forum_tabs_output() {
 	?>
 	<div class="forum-nav">
 		<ul class="nav nav-inline">
-			<?php openlab_forum_tabs(); ?>
+			<?php bp_get_template_part( 'groups/single/nav/forum' ); ?>
 		</ul>
 
 		<?php bbp_get_template_part( 'form', 'search' ); ?>
@@ -747,7 +747,7 @@ add_action( 'init', 'openlab_log_out_social_accounts', 0 );
  */
 add_action(
 	'bp_init',
-	function() {
+	function () {
 		if ( ! class_exists( '\HardG\BpBraille\Plugin' ) ) {
 			return;
 		}
