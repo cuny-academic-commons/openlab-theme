@@ -430,19 +430,19 @@ function openlab_profile_group_type_activity_block( \CBOX\OL\GroupType $type ) {
 					<div class="panel-body">
 						<div class="row">
 							<div class="activity-avatar col-sm-10 col-xs-8">
-								<a href="<?php bp_group_permalink(); ?>"><img class="img-responsive" src="<?php echo esc_attr( $group_avatar ); ?>" alt="<?php echo esc_attr( bp_get_group_name() ); ?>"/></a>
+								<a href="<?php echo esc_url( bp_get_group_url( groups_get_current_group() ) ); ?>"><img class="img-responsive" src="<?php echo esc_attr( $group_avatar ); ?>" alt="<?php echo esc_attr( bp_get_group_name() ); ?>"/></a>
 							</div>
 
 							<div class="activity-content truncate-combo col-sm-14 col-xs-16">
 
 								<p class="overflow-hidden h6">
-									<a class="font-size font-14 no-deco truncate-name truncate-on-the-fly hyphenate" href="<?php bp_group_permalink(); ?>" data-basevalue="34" data-minvalue="20" data-basewidth="143" data-srprovider="true"><?php echo esc_html( bp_get_group_name() ); ?></a>
+									<a class="font-size font-14 no-deco truncate-name truncate-on-the-fly hyphenate" href="<?php echo esc_url( bp_get_group_url( groups_get_current_group() ) ); ?>" data-basevalue="34" data-minvalue="20" data-basewidth="143" data-srprovider="true"><?php echo esc_html( bp_get_group_name() ); ?></a>
 									<span class="original-copy hidden"><?php echo esc_html( bp_get_group_name() ); ?></span>
 								</p>
 
 								<?php $activity = wp_strip_all_tags( bp_get_group_description() ); ?>
 								<div class="truncate-wrapper overflow-hidden">
-									<p class="truncate-on-the-fly hyphenate" data-link="<?php echo esc_attr( bp_get_group_permalink() ); ?>" data-includename="<?php echo esc_attr( bp_get_group_name() ); ?>" data-basevalue="65" data-basewidth="143"><?php echo esc_html( $activity ); ?></p>
+									<p class="truncate-on-the-fly hyphenate" data-link="<?php echo esc_attr( bp_get_group_url( groups_get_current_group() ) ); ?>" data-includename="<?php echo esc_attr( bp_get_group_name() ); ?>" data-basevalue="65" data-basewidth="143"><?php echo esc_html( $activity ); ?></p>
 									<p class="original-copy hidden"><?php echo esc_html( $activity ); ?></p>
 								</div>
 

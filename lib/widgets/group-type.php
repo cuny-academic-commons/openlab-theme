@@ -77,7 +77,7 @@ class OpenLab_Group_Type_Widget extends WP_Widget {
 
 							<div class="item-content-wrapper">
 								<h3 class="item-title group-title overflow-hidden">
-									<a class="no-deco truncate-on-the-fly hyphenate" href="<?php echo esc_attr( bp_get_group_permalink() ); ?>" data-basevalue="40" data-minvalue="15" data-basewidth="145"><?php echo esc_html( bp_get_group_name() ); ?></a>
+									<a class="no-deco truncate-on-the-fly hyphenate" href="<?php echo esc_attr( bp_get_group_url( groups_get_current_group() ) ); ?>" data-basevalue="40" data-minvalue="15" data-basewidth="145"><?php echo esc_html( bp_get_group_name() ); ?></a>
 									<span class="original-copy hidden"><?php echo esc_html( bp_get_group_name() ); ?></span>
 								</h3>
 

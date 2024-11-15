@@ -259,7 +259,7 @@ class Openlab_Clone_Course_Site {
 				// Update "Group Profile" nav item url.
 				if ( ! empty( $classes ) && in_array( 'group-profile-link', $classes, true ) ) {
 					$group = groups_get_group( $this->group_id );
-					update_post_meta( $sp->ID, '_menu_item_url', bp_get_group_permalink( $group ) );
+					update_post_meta( $sp->ID, '_menu_item_url', bp_get_group_url( $group ) );
 				}
 
 				continue;
