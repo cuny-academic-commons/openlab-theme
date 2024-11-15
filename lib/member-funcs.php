@@ -202,7 +202,10 @@ function openlab_members_pagination_links( $page_args = 'upage' ) {
 		)
 	);
 
-	$pagination = str_replace( 'page-numbers', 'page-numbers pagination', $pagination );
+	if ( $pagination ) {
+		$pagination = str_replace( 'page-numbers', 'page-numbers pagination', $pagination );
+	}
+
 	return $pagination;
 }
 
