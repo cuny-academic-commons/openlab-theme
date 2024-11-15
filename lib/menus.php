@@ -185,7 +185,7 @@ function openlab_modify_options_nav() {
 					'name'            => $nav_item->name,
 					'slug'            => $nav_item->slug . '-mobile',
 					'parent_slug'     => $nav_item->parent_slug,
-					'parent_url'      => trailingslashit( bp_get_group_permalink( $current_group ) ),
+					'parent_url'      => bp_get_group_url( $current_group ),
 					'link'            => trailingslashit( $nav_item->link ) . 'upcoming/',
 					'position'        => intval( $nav_item->position ) + 1,
 					'item_css_id'     => $nav_item->css_id . '-mobile',
@@ -432,7 +432,11 @@ function openlab_submenu_markup( $type = '', $opt_var = null, $row_wrapper = tru
  * @return array
  */
 function openlab_group_files_submenu() {
-	$base_url     = bp_get_group_permalink( groups_get_current_group() ) . BP_GROUP_DOCUMENTS_SLUG;
+	$base_url = bp_get_group_url(
+		groups_get_current_group(),
+		bp_groups_get_path_chunks( [ BP_GROUP_DOCUMENTS_SLUG ] )
+	);
+
 	$current_item = $base_url;
 
 	$menu_list = [
