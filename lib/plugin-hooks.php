@@ -179,6 +179,9 @@ add_filter( 'bbp_topic_pagination', 'openlab_bbp_pagination' );
  * @return type
  */
 function openlab_bbp_paginatin_custom_markup( $pagination ) {
+	if ( ! $pagination ) {
+		return $pagination;
+	}
 
 	$pagination = str_replace( 'page-numbers', 'page-numbers pagination', $pagination );
 
