@@ -1797,7 +1797,7 @@ function openlab_show_site_posts_and_comments() {
 
 	switch ( $site_type ) {
 		case 'local':
-			if ( current_user_can( 'view_private_members_of_group', $group_id ) ) {
+			if ( current_user_can( 'view_private_members_of_group', [ 'group_id' => $group_id ] ) ) {
 				$group_private_members = [];
 				$post__not_in          = [];
 			} else {

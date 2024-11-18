@@ -13,7 +13,7 @@
 
 	$group = groups_get_current_group();
 
-	if ( current_user_can( 'view_private_members_of_group', $group->id ) ) {
+	if ( current_user_can( 'view_private_members_of_group', [ 'group_id' => $group->id ] ) ) {
 		$group_private_members = [];
 	} else {
 		$group_private_members = openlab_get_private_members_of_group( $group->id );
