@@ -32,6 +32,8 @@ function openlab_ass_group_subscribe_settings() {
 						<input type="hidden" name="ass_group_id" value="<?php echo esc_attr( $group->id ); ?>"/>
 						<?php wp_nonce_field( 'ass_subscribe' ); ?>
 
+						<?php wp_nonce_field( 'bpges_subscribe', 'bpges-subscribe-nonce' ); ?>
+
 						<p>
 							<?php // translators: group name ?>
 							<b><?php printf( esc_html__( 'How do you want to be notified about activity in "%s"?', 'commons-in-a-box' ), esc_html( bp_get_group_name() ) ); ?></b>
