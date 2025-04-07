@@ -490,7 +490,7 @@ function openlab_profile_settings_submenu() {
 	$settings_url      = bp_members_get_user_url( $user_id, bp_members_get_path_chunks( [ bp_get_settings_slug() ] ) );
 	$notifications_url = bp_members_get_user_url( $user_id, bp_members_get_path_chunks( [ bp_get_settings_slug(), 'notifications' ] ) );
 
-	$menu_list     = array(
+	$menu_list = array(
 		$profile_edit_url  => __( 'Edit Profile', 'commons-in-a-box' ),
 		$change_avatar_url => __( 'Change Avatar', 'commons-in-a-box' ),
 		$settings_url      => __( 'Account Settings', 'commons-in-a-box' ),
