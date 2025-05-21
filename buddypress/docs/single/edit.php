@@ -45,7 +45,7 @@ if ( ! function_exists( 'wp_editor' ) ) {
 					<?php if ( bp_docs_is_existing_doc() ) : ?>
 						<div id="doc-content-permalink">
 							<label for="doc[permalink]"><?php esc_html_e( 'Permalink', 'commons-in-a-box' ); ?></label>
-							<code><?php echo esc_url( trailingslashit( bp_get_group_permalink() ) . BP_DOCS_SLUG . '/' ); ?></code><input type="text" id="doc-permalink" name="doc[permalink]" class="long" value="<?php bp_docs_edit_doc_slug(); ?>" />
+							<code><?php echo esc_url( bp_docs_get_group_docs_url( groups_get_current_group() ) ); ?></code><input type="text" id="doc-permalink" name="doc[permalink]" class="long" value="<?php bp_docs_edit_doc_slug(); ?>" />
 						</div>
 					<?php endif ?>
 

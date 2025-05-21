@@ -185,7 +185,7 @@ function openlab_modify_options_nav() {
 					'name'            => $nav_item->name,
 					'slug'            => $nav_item->slug . '-mobile',
 					'parent_slug'     => $nav_item->parent_slug,
-					'parent_url'      => trailingslashit( bp_get_group_permalink( $current_group ) ),
+					'parent_url'      => bp_get_group_url( $current_group ),
 					'link'            => trailingslashit( $nav_item->link ) . 'upcoming/',
 					'position'        => intval( $nav_item->position ) + 1,
 					'item_css_id'     => $nav_item->css_id . '-mobile',
@@ -432,7 +432,11 @@ function openlab_submenu_markup( $type = '', $opt_var = null, $row_wrapper = tru
  * @return array
  */
 function openlab_group_files_submenu() {
-	$base_url     = bp_get_group_permalink( groups_get_current_group() ) . BP_GROUP_DOCUMENTS_SLUG;
+	$base_url = bp_get_group_url(
+		groups_get_current_group(),
+		bp_groups_get_path_chunks( [ BP_GROUP_DOCUMENTS_SLUG ] )
+	);
+
 	$current_item = $base_url;
 
 	$menu_list = [
@@ -486,7 +490,7 @@ function openlab_profile_settings_submenu() {
 	$settings_url      = bp_members_get_user_url( $user_id, bp_members_get_path_chunks( [ bp_get_settings_slug() ] ) );
 	$notifications_url = bp_members_get_user_url( $user_id, bp_members_get_path_chunks( [ bp_get_settings_slug(), 'notifications' ] ) );
 
-	$menu_list     = array(
+	$menu_list = array(
 		$profile_edit_url  => __( 'Edit Profile', 'commons-in-a-box' ),
 		$change_avatar_url => __( 'Change Avatar', 'commons-in-a-box' ),
 		$settings_url      => __( 'Account Settings', 'commons-in-a-box' ),
@@ -883,7 +887,21 @@ function openlab_filter_subnav_members( $subnav_item ) {
 	}
 
 	// filtering for current status on membership menu item when in membership submenu
-	if ( bp_is_action_variable( 'manage-members', 0 ) || bp_is_action_variable( 'notifications', 0 ) || bp_is_current_action( 'notifications' ) || bp_is_action_variable( 'membership-requests', 0 ) || 'invite-anyone' === $wp_query->query_vars['pagename'] || $notification_status ) {
+	if (
+		bp_is_action_variable( 'manage-members', 0 )
+		||
+		bp_is_action_variable( 'notifications', 0 )
+		||
+		bp_is_current_action( 'notifications' )
+		||
+		bp_is_action_variable( 'membership-requests', 0 )
+		||
+		'invite-anyone' === $wp_query->query_vars['pagename']
+		||
+		( bp_is_group() && bp_is_current_action( 'invite-anyone' ) )
+		||
+		$notification_status
+	) {
 		$new_item = str_replace( 'id="members-groups-li"', 'id="members-groups-li" class="current-menu-item"', $new_item );
 	} else {
 		// update "current" class to "current-menu-item" to unify site identification of current menu page

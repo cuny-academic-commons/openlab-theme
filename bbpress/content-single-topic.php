@@ -78,7 +78,7 @@ if ( $group_type && ! is_wp_error( $group_type ) ) {
 		<?php endif; ?>
 
 		<div class="bbp-back-to-course-discussion">
-			<p><a class="btn btn-primary link-btn" href="<?php bp_group_permalink(); ?>forum/"><span class="fa fa-chevron-circle-left"></span> <?php esc_html_e( 'Forum', 'commons-in-a-box' ); ?></a></p>
+			<p><a class="btn btn-primary link-btn" href="<?php echo esc_url( bp_get_group_url( groups_get_current_group(), bp_groups_get_path_chunks( [ 'forum' ] ) ) ); ?>"><span class="fa fa-chevron-circle-left"></span> <?php esc_html_e( 'Forum', 'commons-in-a-box' ); ?></a></p>
 		</div>
 
 		<?php bbp_get_template_part( 'form', 'reply' ); ?>

@@ -355,7 +355,12 @@ add_action(
 
 		bp_core_add_message( __( 'Folder successfully deleted.', 'commons-in-a-box' ) );
 
-		bp_core_redirect( trailingslashit( bp_get_group_permalink( groups_get_current_group() ) . BP_GROUP_DOCUMENTS_SLUG ) );
+		$redirect_url = bp_get_group_url(
+			groups_get_current_group(),
+			bp_groups_get_path_chunks( [ BP_GROUP_DOCUMENTS_SLUG ] )
+		);
+
+		bp_core_redirect( $redirect_url );
 		die;
 	}
 );

@@ -58,7 +58,7 @@ if ( is_user_logged_in() ) :
 
 			<ul class="content-list">
 				<?php /* translators: logged-in user display name */ ?>
-				<li class="no-margin no-margin-bottom"><a class="button logout font-size font-12 roll-over-loss" href="<?php echo esc_attr( wp_logout_url( bp_get_root_url() ) ); ?>"><?php printf( esc_html__( 'Not %s?', 'commons-in-a-box' ), esc_html( bp_core_get_username( bp_loggedin_user_id() ) ) ); ?></a></li>
+				<li class="no-margin no-margin-bottom"><a class="button logout font-size font-12 roll-over-loss" href="<?php echo esc_attr( wp_logout_url( bp_get_root_url() ) ); ?>"><?php printf( esc_html__( 'Not %s?', 'commons-in-a-box' ), esc_html( bp_members_get_user_slug( bp_loggedin_user_id() ) ) ); ?></a></li>
 				<li class="no-margin no-margin-bottom"><a class="button logout font-size font-12 roll-over-loss" href="<?php echo esc_attr( wp_logout_url( bp_get_root_url() ) ); ?>"><?php esc_html_e( 'Log Out', 'commons-in-a-box' ); ?></a></li>
 			</ul>
 			</span><!--user-info-->

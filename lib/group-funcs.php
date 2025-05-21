@@ -187,7 +187,7 @@ function openlab_group_site_markup() {
 						</p>
 
 						<?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-						<ul id="change-group-site"><li><?php echo $group_site_url_out; ?> <a class="button underline confirm" href="<?php echo esc_attr( wp_nonce_url( bp_get_group_permalink( groups_get_current_group() ) . 'admin/site-details/unlink-site/', 'unlink-site' ) ); ?>" id="change-group-site-toggle"><?php esc_html_e( 'Unlink', 'commons-in-a-box' ); ?></a></li></ul>
+						<ul id="change-group-site"><li><?php echo $group_site_url_out; ?> <a class="button underline confirm" href="<?php echo esc_attr( wp_nonce_url( bp_get_group_manage_url( groups_get_current_group(), bp_groups_get_path_chunks( [ 'site-details', 'unlink-site' ], 'manage' ) ), 'unlink-site' ) ); ?>" id="change-group-site-toggle"><?php esc_html_e( 'Unlink', 'commons-in-a-box' ); ?></a></li></ul>
 						<input type="hidden" id="site-is-external" value="<?php echo intval( $site_is_external ); ?>" />
 
 						<?php if ( ! $site_is_external ) : ?>
@@ -1408,7 +1408,7 @@ function openlab_add_site_subnav_to_group_admin() {
 			'name'              => _x( 'Site', 'Group admin nav item', 'commons-in-a-box' ),
 			'slug'              => 'site-details',
 			'position'          => 15,
-			'parent_url'        => bp_get_group_permalink( groups_get_current_group() ) . 'admin/',
+			'parent_url'        => bp_get_group_manage_url( groups_get_current_group() ),
 			'parent_slug'       => bp_get_current_group_slug() . '_manage',
 			'screen_function'   => 'openlab_group_site_settings',
 			'user_has_access'   => bp_is_item_admin(),
@@ -1438,7 +1438,12 @@ function openlab_group_site_settings() {
 
 		bp_core_add_message( __( 'Site settings successfully saved.', 'commons-in-a-box' ) );
 
-		bp_core_redirect( bp_get_group_permalink( groups_get_current_group() ) . 'admin/site-details/' );
+		$redirect_url = bp_get_group_manage_url(
+			groups_get_current_group(),
+			bp_groups_get_path_chunks( [ 'site-details' ], 'manage' )
+		);
+
+		bp_core_redirect( $redirect_url );
 	}
 
 	/**
@@ -1792,7 +1797,7 @@ function openlab_show_site_posts_and_comments() {
 
 	switch ( $site_type ) {
 		case 'local':
-			if ( current_user_can( 'view_private_members_of_group', $group_id ) ) {
+			if ( current_user_can( 'view_private_members_of_group', [ 'group_id' => $group_id ] ) ) {
 				$group_private_members = [];
 				$post__not_in          = [];
 			} else {
@@ -1919,7 +1924,7 @@ function openlab_show_site_posts_and_comments() {
 						<?php endforeach ?>
 
 						<?php if ( 'external' === $site_type && groups_is_user_admin( bp_loggedin_user_id(), bp_get_current_group_id() ) ) : ?>
-							<p class="description"><?php esc_html_e( 'Feed updates automatically every 10 minutes', 'commons-in-a-box' ); ?> <a class="refresh-feed" id="refresh-posts-feed" href="<?php echo esc_attr( wp_nonce_url( add_query_arg( 'refresh_feed', 'posts', bp_get_group_permalink( groups_get_current_group() ) ), 'refresh-posts-feed' ) ); ?>"><?php esc_html_e( 'Refresh now', 'commons-in-a-box' ); ?></a></p>
+							<p class="description"><?php esc_html_e( 'Feed updates automatically every 10 minutes', 'commons-in-a-box' ); ?> <a class="refresh-feed" id="refresh-posts-feed" href="<?php echo esc_attr( wp_nonce_url( add_query_arg( 'refresh_feed', 'posts', bp_get_group_url( groups_get_current_group() ) ), 'refresh-posts-feed' ) ); ?>"><?php esc_html_e( 'Refresh now', 'commons-in-a-box' ); ?></a></p>
 						<?php endif ?>
 					</div><!-- .recent-posts -->
 				</div><!-- #recent-course -->
@@ -1944,7 +1949,7 @@ function openlab_show_site_posts_and_comments() {
 						<?php endif ?>
 
 						<?php if ( 'external' === $site_type && groups_is_user_admin( bp_loggedin_user_id(), bp_get_current_group_id() ) ) : ?>
-							<p class="refresh-message description"><?php esc_html_e( 'Feed updates automatically every 10 minutes', 'commons-in-a-box' ); ?> <a class="refresh-feed" id="refresh-posts-feed" href="<?php echo esc_attr( wp_nonce_url( add_query_arg( 'refresh_feed', 'comments', bp_get_group_permalink( groups_get_current_group() ) ), 'refresh-comments-feed' ) ); ?>"><?php esc_html_e( 'Refresh now', 'commons-in-a-box' ); ?></a></p>
+							<p class="refresh-message description"><?php esc_html_e( 'Feed updates automatically every 10 minutes', 'commons-in-a-box' ); ?> <a class="refresh-feed" id="refresh-posts-feed" href="<?php echo esc_attr( wp_nonce_url( add_query_arg( 'refresh_feed', 'comments', bp_get_group_url( groups_get_current_group() ) ), 'refresh-comments-feed' ) ); ?>"><?php esc_html_e( 'Refresh now', 'commons-in-a-box' ); ?></a></p>
 						<?php endif ?>
 
 					</div><!-- .recent-posts -->

@@ -137,7 +137,7 @@ if ( $descendant_of ) {
 		esc_html__( 'Displaying clones of %1$s by %2$s.', 'commons-in-a-box' ),
 		sprintf(
 			'<a href="%s">%s</a>',
-			esc_attr( bp_get_group_permalink( $descendant_of_group ) ),
+			esc_attr( bp_get_group_url( $descendant_of_group ) ),
 			esc_html( $descendant_of_group->name )
 		),
 		implode( ', ', $descendant_of_admin_links )
@@ -217,7 +217,7 @@ if ( bp_is_user() ) {
 								<div class="group-type-flag"><?php echo esc_html( $group_type->get_label( 'singular' ) ); ?></div>
 							<?php endif; ?>
 
-							<a href="<?php bp_group_permalink(); ?>"><img class="img-responsive" src="<?php echo esc_attr( $group_avatar ); ?>" alt="<?php echo esc_attr( bp_get_group_name() ); ?>"/></a>
+							<a href="<?php echo esc_url( bp_get_group_url( groups_get_current_group() ) ); ?>"><img class="img-responsive" src="<?php echo esc_attr( $group_avatar ); ?>" alt="<?php echo esc_attr( bp_get_group_name() ); ?>"/></a>
 
 							<?php if ( $group_site_url && cboxol_site_can_be_viewed( $group_id ) ) : ?>
 								<a class="group-site-link" href="<?php echo esc_url( $group_site_url ); ?>"><?php esc_html_e( 'Visit Site', 'commons-in-a-box' ); ?><span class="fa fa-chevron-circle-right" aria-hidden="true"></span></a>
@@ -227,7 +227,7 @@ if ( bp_is_user() ) {
 						<div class="item col-xs-18">
 							<div class="item-content-wrapper">
 								<p class="item-title h2">
-									<a class="no-deco he-fly hyphenate truncate-on-the-fly" href="<?php bp_group_permalink(); ?>" data-basevalue="50" data-minvalue="20" data-basewidth="290"><?php bp_group_name(); ?></a>
+									<a class="no-deco he-fly hyphenate truncate-on-the-fly" href="<?php echo esc_url( bp_get_group_url( groups_get_current_group() ) ); ?>" data-basevalue="50" data-minvalue="20" data-basewidth="290"><?php bp_group_name(); ?></a>
 									<span class="original-copy hidden"><?php bp_group_name(); ?></span>
 								</p>
 

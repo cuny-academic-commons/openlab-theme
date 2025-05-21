@@ -10,10 +10,17 @@
 
 <?php do_action( 'bp_before_group_send_invites_content' ); ?>
 
-<?php $group_type = cboxol_get_group_group_type( bp_get_current_group_id() ); ?>
+<?php
+$group_type = cboxol_get_group_group_type( bp_get_current_group_id() );
+
+$form_action = bp_get_group_url(
+	groups_get_current_group(),
+	bp_groups_get_path_chunks( [ 'invite-anyone', 'send' ] )
+);
+?>
 
 <?php if ( ! bp_get_new_group_id() ) : ?>
-	<form action="<?php bp_group_permalink( groups_get_current_group() ); ?>/invite-anyone/send/" method="post" class="form-panel" id="send-invite-form">
+	<form action="<?php echo esc_url( $form_action ); ?>" method="post" class="form-panel" id="send-invite-form">
 	<?php endif; ?>
 
 	<div id="topgroupinvite" class="panel panel-default">
