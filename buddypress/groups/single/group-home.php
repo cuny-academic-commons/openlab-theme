@@ -166,7 +166,7 @@ $academic_unit_data = cboxol_get_object_academic_unit_data_for_display(
 						<?php endif; ?>
 
 						<div class="table-row row">
-							<div class="bold col-sm-7"><?php esc_html_e( 'Course Description', 'commons-in-a-box' ); ?></div>
+							<div class="bold col-sm-7"><?php esc_html_e( 'Description', 'commons-in-a-box' ); ?></div>
 							<?php // phpcs:ignore WordPress.Security.EscapeOutput ?>
 							<div class="col-sm-17 row-content"><?php echo apply_filters( 'the_content', $group_description ); ?></div>
 						</div>
