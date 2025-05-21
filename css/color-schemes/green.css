@@ -9914,6 +9914,35 @@ input#group-request-send {
 .group-members.group-list .group-item-membership-privacy label:hover {
   cursor: pointer;
 }
+.actions-flex-row {
+  align-items: center;
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+}
+.actions-flex-row > div {
+  flex: 1;
+}
+@media (max-width: 767px) {
+  .actions-flex-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+.group-member-right-actions {
+  align-items: center;
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  /* Shown with JS */
+}
+.group-member-right-actions .group-member-sort {
+  display: none;
+  visibility: hidden;
+}
+.group-member-right-actions select.form-control {
+  margin-bottom: 0;
+}
 .group-manage-members-pagination {
   align-items: center;
   display: flex;
