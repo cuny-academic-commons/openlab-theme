@@ -44,8 +44,8 @@ $members_args['type'] = $current_sort_order;
 				<?php bp_group_member_pagination_count(); ?>
 			</div>
 
-			<div class="group-member-sort">
-				<form method="get" action="">
+			<form method="get" action="">
+				<div class="group-member-sort">
 					<label class="screen-reader-text" for="gmsort"><?php esc_html_e( 'Sort by', 'commons-in-a-box' ); ?></label>
 					<select name="gmsort" id="gmsort" class="form-control">
 						<?php
@@ -57,8 +57,8 @@ $members_args['type'] = $current_sort_order;
 						}
 						?>
 					</select>
-				</form>
-			</div>
+				</div>
+			</form>
 		</div>
 	</div>
 

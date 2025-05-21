@@ -449,6 +449,20 @@ $private_users = openlab_get_private_members_of_group( bp_get_group_id() );
 					'exclude_banned' => false,
 				];
 
+				$sort_options = array(
+					'active'       => __( 'Last Active', 'commons-in-a-box' ),
+					'newest'       => __( 'Newest', 'commons-in-a-box' ),
+					'alphabetical' => __( 'Alphabetical', 'commons-in-a-box' ),
+				);
+
+				// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+				$current_sort_order = isset( $_GET['gmsort'] ) ? sanitize_text_field( wp_unslash( $_GET['gmsort'] ) ) : 'active';
+				if ( ! isset( $sort_options[ $current_sort_order ] ) ) {
+					$current_sort_order = 'active';
+				}
+
+				$manage_members_args['type'] = $current_sort_order;
+
 				/**
 				 * Filters the arguments used to query members on the Manage Members screen.
 				 *
@@ -462,20 +476,38 @@ $private_users = openlab_get_private_members_of_group( bp_get_group_id() );
 				<?php if ( bp_group_has_members( $manage_members_args ) ) : ?>
 					<h4><?php esc_html_e( 'Members', 'commons-in-a-box' ); ?></h4>
 
-					<?php if ( bp_group_member_needs_pagination() ) : ?>
-						<div class="group-manage-members-pagination">
+					<div class="row actions-flex-row group-member-actions-row group-manage-members-pagination">
+						<?php if ( bp_group_member_needs_pagination() ) : ?>
 							<div class="pagination no-ajax">
 								<div id="member-admin-pagination-top" class="group-manage-members-pagination-links pagination-links">
 									<?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 									<?php echo openlab_members_pagination_links( 'mlpage' ); ?>
 								</div>
 							</div>
+						<?php endif; ?>
 
-							<div class="pag-count">
-								<?php bp_group_member_pagination_count(); ?>
+						<div class="group-member-right-actions">
+							<?php if ( bp_group_member_needs_pagination() ) : ?>
+								<div class="pag-count">
+									<?php bp_group_member_pagination_count(); ?>
+								</div>
+							<?php endif; ?>
+
+							<div class="group-member-sort">
+								<label class="screen-reader-text" for="gmsort"><?php esc_html_e( 'Sort by', 'commons-in-a-box' ); ?></label>
+								<select name="gmsort" id="gmsort" class="form-control">
+									<?php
+
+									foreach ( $sort_options as $key => $value ) {
+										?>
+										<option value="<?php echo esc_attr( $key ); ?>" <?php selected( $key, $current_sort_order ); ?>><?php echo esc_html( $value ); ?></option>
+										<?php
+									}
+									?>
+								</select>
 							</div>
 						</div>
-					<?php endif; ?>
+					</div>
 
 					<div id="group-manage-members" class="item-list inline-element-list row group-manage-members group-list">
 						<?php

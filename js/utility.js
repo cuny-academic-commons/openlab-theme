@@ -675,8 +675,17 @@
 				$groupMemberSort
 					.show()
 					.css( 'visibility', 'visible' )
-					.on( 'change', function() {
-						$( this ).find( 'form' ).submit();
+					.find( 'select' ).on( 'change', function() {
+						var selectedValue = $( this ).val();
+						var url = new URL( window.location.href );
+
+						// Update the gmsort param.
+						url.searchParams.set( 'gmsort', selectedValue );
+
+						// Remove paging param.
+						url.searchParams.delete( 'mlpage' );
+
+						window.location.href = url.toString();
 					} );
 			}
 		},
