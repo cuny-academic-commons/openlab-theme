@@ -12,22 +12,54 @@ if ( ! current_user_can( 'view_private_members_of_group' ) && ! empty( $private_
 
 // Don't exclude admins from the list.
 $members_args['exclude_admins_mods'] = 0;
+
+$sort_options = array(
+	'active'       => __( 'Last Active', 'commons-in-a-box' ),
+	'newest'       => __( 'Newest', 'commons-in-a-box' ),
+	'alphabetical' => __( 'Alphabetical', 'commons-in-a-box' ),
+);
+
+// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+$current_sort_order = isset( $_GET['gmsort'] ) ? sanitize_text_field( wp_unslash( $_GET['gmsort'] ) ) : 'active';
+if ( ! isset( $sort_options[ $current_sort_order ] ) ) {
+	$current_sort_order = 'active';
+}
+
+$members_args['type'] = $current_sort_order;
+
 ?>
 
 <?php if ( bp_group_has_members( $members_args ) ) : ?>
 
 	<?php do_action( 'bp_before_group_members_content' ); ?>
-	<div class="row">
-		<div class="submenu col-sm-16">
+	<div class="row actions-flex-row group-member-actions-row">
+		<div class="submenu">
 			<ul class="nav nav-inline">
 				<?php openlab_group_membership_tabs(); ?>
 			</ul>
 		</div><!-- .submenu -->
 
-		<div id="member-count" class="pag-count col-sm-8 align-right">
-			<?php bp_group_member_pagination_count(); ?>
-		</div>
+		<div class="group-member-right-actions">
+			<div id="member-count" class="pag-count">
+				<?php bp_group_member_pagination_count(); ?>
+			</div>
 
+			<div class="group-member-sort">
+				<form method="get" action="">
+					<label class="screen-reader-text" for="gmsort"><?php esc_html_e( 'Sort by', 'commons-in-a-box' ); ?></label>
+					<select name="gmsort" id="gmsort" class="form-control">
+						<?php
+
+						foreach ( $sort_options as $key => $value ) {
+							?>
+							<option value="<?php echo esc_attr( $key ); ?>" <?php selected( $key, $current_sort_order ); ?>><?php echo esc_html( $value ); ?></option>
+							<?php
+						}
+						?>
+					</select>
+				</form>
+			</div>
+		</div>
 	</div>
 
 	<?php do_action( 'bp_before_group_members_list' ); ?>

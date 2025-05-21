@@ -26,6 +26,7 @@
 			OpenLab.utility.adjustGridHeight();
 			OpenLab.utility.initClickableCards();
 			OpenLab.utility.initPortfolioProfileLinkToggle();
+			OpenLab.utility.initGroupMemberSort();
 
 						// Home page column adjustments.
 						var groupTypeWidgets = $( '#home-right .activity-list' );
@@ -665,6 +666,18 @@
 						})
 					});
 				})
+			}
+		},
+
+		initGroupMemberSort: function() {
+			var $groupMemberSort = $( '.group-member-sort' );
+			if ( $groupMemberSort.length > 0 ) {
+				$groupMemberSort
+					.show()
+					.css( 'visibility', 'visible' )
+					.on( 'change', function() {
+						$( this ).find( 'form' ).submit();
+					} );
 			}
 		},
 
