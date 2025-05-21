@@ -425,7 +425,7 @@ function openlab_group_site_member_role_settings_markup() {
 		$settings = [
 			'admin'  => 'administrator',
 			'mod'    => 'editor',
-			'member' => 'author',
+			'member' => cboxol_is_portfolio( bp_get_new_group_id() ) ? 'subscriber' : 'author',
 		];
 	} else {
 		$settings = openlab_get_group_member_role_settings( $the_group_id );
