@@ -65,10 +65,13 @@ function openlab_group_privacy_settings_markup() {
 		return;
 	}
 
-	$the_group    = groups_get_current_group();
-	$group_status = 'public';
+	$available_privacy_options = $group_type->get_available_privacy_options();
+
+	$the_group = groups_get_current_group();
 	if ( $the_group ) {
 		$group_status = $the_group->status;
+	} else {
+		$group_status = $available_privacy_options[0];
 	}
 
 	?>
@@ -86,26 +89,32 @@ function openlab_group_privacy_settings_markup() {
 
 			<div class="row">
 				<div class="col-sm-23 col-sm-offset-1">
-					<label><input type="radio" name="group-status" value="public" id="group-status-public" <?php checked( 'public', $group_status ); ?> /><?php esc_html_e( 'Public', 'commons-in-a-box' ); ?></label>
-					<ul>
-						<li><?php echo esc_html( $group_type->get_label( 'privacy_help_text_public_content' ) ); ?></li>
-						<li><?php echo esc_html( $group_type->get_label( 'privacy_help_text_public_directory' ) ); ?></li>
-						<li><?php echo esc_html( $group_type->get_label( 'privacy_help_text_public_membership' ) ); ?></li>
-					</ul>
+					<?php if ( in_array( 'public', $available_privacy_options, true ) ) : ?>
+						<label><input type="radio" name="group-status" value="public" id="group-status-public" <?php checked( 'public', $group_status ); ?> /><?php esc_html_e( 'Public', 'commons-in-a-box' ); ?></label>
+						<ul>
+							<li><?php echo esc_html( $group_type->get_label( 'privacy_help_text_public_content' ) ); ?></li>
+							<li><?php echo esc_html( $group_type->get_label( 'privacy_help_text_public_directory' ) ); ?></li>
+							<li><?php echo esc_html( $group_type->get_label( 'privacy_help_text_public_membership' ) ); ?></li>
+						</ul>
+					<?php endif; ?>
 
-					<label><input type="radio" name="group-status" value="private" id="group-status-private" <?php checked( 'private', $group_status ); ?> /><?php esc_html_e( 'Private', 'commons-in-a-box' ); ?></label>
-					<ul>
-						<li><?php echo esc_html( $group_type->get_label( 'privacy_help_text_private_content' ) ); ?></li>
-						<li><?php echo esc_html( $group_type->get_label( 'privacy_help_text_public_directory' ) ); ?></li>
-						<li><?php echo esc_html( $group_type->get_label( 'privacy_help_text_byrequest_membership' ) ); ?></li>
-					</ul>
+					<?php if ( in_array( 'private', $available_privacy_options, true ) ) : ?>
+						<label><input type="radio" name="group-status" value="private" id="group-status-private" <?php checked( 'private', $group_status ); ?> /><?php esc_html_e( 'Private', 'commons-in-a-box' ); ?></label>
+						<ul>
+							<li><?php echo esc_html( $group_type->get_label( 'privacy_help_text_private_content' ) ); ?></li>
+							<li><?php echo esc_html( $group_type->get_label( 'privacy_help_text_public_directory' ) ); ?></li>
+							<li><?php echo esc_html( $group_type->get_label( 'privacy_help_text_byrequest_membership' ) ); ?></li>
+						</ul>
+					<?php endif; ?>
 
-					<label><input type="radio" name="group-status" value="hidden" id="group-status-hidden" <?php checked( 'hidden', $group_status ); ?> /><?php esc_html_e( 'Hidden', 'commons-in-a-box' ); ?></label>
-					<ul>
-						<li><?php echo esc_html( $group_type->get_label( 'privacy_help_text_private_content' ) ); ?></li>
-						<li><?php echo esc_html( $group_type->get_label( 'privacy_help_text_private_directory' ) ); ?></li>
-						<li><?php echo esc_html( $group_type->get_label( 'privacy_help_text_invited_membership' ) ); ?></li>
-					</ul>
+					<?php if ( in_array( 'hidden', $available_privacy_options, true ) ) : ?>
+						<label><input type="radio" name="group-status" value="hidden" id="group-status-hidden" <?php checked( 'hidden', $group_status ); ?> /><?php esc_html_e( 'Hidden', 'commons-in-a-box' ); ?></label>
+						<ul>
+							<li><?php echo esc_html( $group_type->get_label( 'privacy_help_text_private_content' ) ); ?></li>
+							<li><?php echo esc_html( $group_type->get_label( 'privacy_help_text_private_directory' ) ); ?></li>
+							<li><?php echo esc_html( $group_type->get_label( 'privacy_help_text_invited_membership' ) ); ?></li>
+						</ul>
+					<?php endif; ?>
 				</div>
 			</div>
 
