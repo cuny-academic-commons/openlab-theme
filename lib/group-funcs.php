@@ -71,7 +71,13 @@ function openlab_group_privacy_settings_markup() {
 	if ( $the_group ) {
 		$group_status = $the_group->status;
 	} else {
-		$group_status = $available_privacy_options[0];
+		$default_privacy_option = $group_type->get_default_privacy_option();
+
+		if ( in_array( $default_privacy_option, $available_privacy_options, true ) ) {
+			$group_status = $default_privacy_option;
+		} else {
+			$group_status = $available_privacy_options[0];
+		}
 	}
 
 	?>
