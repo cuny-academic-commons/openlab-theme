@@ -553,6 +553,16 @@ function openlab_group_site_privacy_settings_markup() {
 		}
 	}
 
+	$allowed_site_privacy_options = [ '1', '0', '-1', '-2', '-3' ];
+
+	$group_type = cboxol_get_group_group_type( $group_id );
+	if ( ! is_wp_error( $group_type ) ) {
+		$available_site_privacy_options = $group_type->get_available_site_privacy_options();
+
+		// Overriding the above blog_public default with the default set by the admin.
+		$blog_public = $group_type->get_default_site_privacy_option();
+	}
+
 	?>
 
 		<div class="panel panel-default" id="associated-site-privacy-panel">
@@ -562,31 +572,45 @@ function openlab_group_site_privacy_settings_markup() {
 
 				<div class="radio group-site">
 
-					<h5><?php esc_html_e( 'Public', 'commons-in-a-box' ); ?></h5>
-					<div class="row">
-						<div class="col-sm-23">
-							<p><label for="blog-private1"><input id="blog-private1" type="radio" name="blog_public" value="1" <?php checked( '1', $blog_public ); ?> /><?php esc_html_e( 'Allow search engines to index this site. The site will show up in web search results.', 'commons-in-a-box' ); ?></label></p>
+					<?php if ( array_intersect( [ '1', '0' ], $available_site_privacy_options ) ) : ?>
+						<h5><?php esc_html_e( 'Public', 'commons-in-a-box' ); ?></h5>
+						<div class="row">
+							<div class="col-sm-23">
+								<?php if ( in_array( '1', $available_site_privacy_options, true ) ) : ?>
+									<p><label for="blog-private1"><input id="blog-private1" type="radio" name="blog_public" value="1" <?php checked( '1', $blog_public ); ?> /><?php esc_html_e( 'Allow search engines to index this site. The site will show up in web search results.', 'commons-in-a-box' ); ?></label></p>
+								<?php endif; ?>
 
-							<p><label for="blog-private0"><input id="blog-private0" type="radio" name="blog_public" value="0" <?php checked( '0', $blog_public ); ?> /><?php esc_html_e( 'Ask search engines not to index this site. The site should not show up in web search results.', 'commons-in-a-box' ); ?></label></p>
-							<p id="search-setting-note" class="group-setting-note italics note"><?php esc_html_e( 'Note: This option will NOT block access to the site. It is up to search engines to honor your request.', 'commons-in-a-box' ); ?></p>
+								<?php if ( in_array( '0', $available_site_privacy_options, true ) ) : ?>
+									<p><label for="blog-private0"><input id="blog-private0" type="radio" name="blog_public" value="0" <?php checked( '0', $blog_public ); ?> /><?php esc_html_e( 'Ask search engines not to index this site. The site should not show up in web search results.', 'commons-in-a-box' ); ?></label></p>
+									<p id="search-setting-note" class="group-setting-note italics note"><?php esc_html_e( 'Note: This option will NOT block access to the site. It is up to search engines to honor your request.', 'commons-in-a-box' ); ?></p>
+								<?php endif; ?>
+							</div>
 						</div>
-					</div>
+					<?php endif; ?>
 
-					<h5><?php esc_html_e( 'Private', 'commons-in-a-box' ); ?></h5>
-					<div class="row">
-						<div class="col-sm-23">
-							<p><label for="blog-private-1"><input id="blog-private-1" type="radio" name="blog_public" value="-1" <?php checked( '-1', $blog_public ); ?>><?php esc_html_e( 'I would like the site to be visible only to members of this community.', 'commons-in-a-box' ); ?></label></p>
+					<?php if ( array_intersect( [ '-1', '-2' ], $available_site_privacy_options ) ) : ?>
+						<h5><?php esc_html_e( 'Private', 'commons-in-a-box' ); ?></h5>
+						<div class="row">
+							<div class="col-sm-23">
+								<?php if ( in_array( '-1', $available_site_privacy_options, true ) ) : ?>
+									<p><label for="blog-private-1"><input id="blog-private-1" type="radio" name="blog_public" value="-1" <?php checked( '-1', $blog_public ); ?>><?php esc_html_e( 'I would like the site to be visible only to members of this community.', 'commons-in-a-box' ); ?></label></p>
+								<?php endif; ?>
 
-							<p><label for="blog-private-2"><input id="blog-private-2" type="radio" name="blog_public" value="-2" <?php checked( '-2', $blog_public ); ?>><?php esc_html_e( 'I would like the site to be visible to community members with a role on the associated site.', 'commons-in-a-box' ); ?></label></p>
+								<?php if ( in_array( '-2', $available_site_privacy_options, true ) ) : ?>
+									<p><label for="blog-private-2"><input id="blog-private-2" type="radio" name="blog_public" value="-2" <?php checked( '-2', $blog_public ); ?>><?php esc_html_e( 'I would like the site to be visible to community members with a role on the associated site.', 'commons-in-a-box' ); ?></label></p>
+								<?php endif; ?>
+							</div>
 						</div>
-					</div>
+					<?php endif; ?>
 
-					<h5><?php esc_html_e( 'Hidden', 'commons-in-a-box' ); ?></h5>
-					<div class="row">
-						<div class="col-sm-23">
-							<p><label for="blog-private-3"><input id="blog-private-3" type="radio" name="blog_public" value="-3" <?php checked( '-3', $blog_public ); ?>><?php esc_html_e( 'I would like my site to be visible only to those members with an administrator role on the associated site.' ); ?></label></p>
+					<?php if ( in_array( '-3', $available_site_privacy_options, true ) ) : ?>
+						<h5><?php esc_html_e( 'Hidden', 'commons-in-a-box' ); ?></h5>
+						<div class="row">
+							<div class="col-sm-23">
+								<p><label for="blog-private-3"><input id="blog-private-3" type="radio" name="blog_public" value="-3" <?php checked( '-3', $blog_public ); ?>><?php esc_html_e( 'I would like my site to be visible only to those members with an administrator role on the associated site.' ); ?></label></p>
+							</div>
 						</div>
-					</div>
+					<?php endif; ?>
 				</div>
 			</div>
 		</div>
