@@ -1347,7 +1347,7 @@ function openlab_modify_nav_for_joinable_settings() {
 	}
 
 	$group_id = bp_get_current_group_id();
-	$group	  = groups_get_group( $group_id );
+	$group    = groups_get_group( $group_id );
 
 	if ( groups_is_user_member( bp_loggedin_user_id(), $group_id ) ) {
 		return;
