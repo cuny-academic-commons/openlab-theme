@@ -53,6 +53,7 @@ add_action( 'bp_after_group_details_admin', 'openlab_group_term_edit_markup', 4 
 add_action( 'bp_after_group_details_admin', 'openlab_group_contact_field', 5 );
 add_action( 'bp_after_group_details_admin', 'openlab_course_information_edit_panel', 8 );
 add_action( 'bp_after_group_details_admin', 'openlab_group_privacy_settings_markup', 12 );
+add_action( 'bp_after_group_details_admin', 'openlab_group_privacy_membership_settings_markup', 13 );
 add_action( 'bp_after_group_details_admin', 'openlab_group_badges_edit_panel', 14 );
 
 
@@ -1188,6 +1189,98 @@ function openlab_group_privacy_settings( $group_type ) {
 		<?php wp_nonce_field( 'groups_create_save_group-settings' ); ?>
 		<?php
 	endif;
+}
+
+/**
+ * Markup for the 'Privacy Settings: Membership' section on group settings.
+ *
+ * @since 1.7.0
+ *
+ * @return void
+ */
+function openlab_group_privacy_membership_settings_markup() {
+	$group_id   = bp_get_current_group_id();
+	$group_type = cboxol_get_group_group_type( $group_id );
+
+	if ( ! $group_type || is_wp_error( $group_type ) ) {
+		return;
+	}
+
+	// We use this group for dynamic hiding/showing of the panel. This is the noscript fallback.
+	$status = groups_get_current_group()->status;
+	$class  = '';
+	if ( 'public' === $status ) {
+		$class = 'public-group';
+	} elseif ( 'private' === $status ) {
+		$class = 'private-group';
+	} elseif ( 'hidden' === $status ) {
+		$class = 'hidden-group';
+	}
+
+	$allow_joining_public  = ! openlab_public_group_has_disabled_joining( $group_id );
+	$allow_joining_private = ! openlab_private_group_has_disabled_membership_requests( $group_id );
+
+	?>
+
+	<div class="panel panel-default panel-privacy-membership-settings <?php echo esc_attr( $class ); ?>">
+		<div class="panel-heading semibold"><?php esc_html_e( 'Privacy Settings: Membership', 'commons-in-a-box' ); ?></div>
+		<div class="panel-body">
+			<div class="privacy-membership-settings-public">
+				<p><?php echo esc_html( $group_type->get_label( 'privacy_membership_settings_public' ) ); ?></p>
+
+				<p><input type="checkbox" id="allow-joining-public" name="allow-joining-public" value="1" <?php checked( $allow_joining_public ); ?> /> <label for="allow-joining-public"><?php echo esc_html( $group_type->get_label( 'allow_joining_public_label' ) ); ?></label></p>
+			</div>
+
+			<div class="privacy-membership-settings-private">
+				<p><?php echo esc_html( $group_type->get_label( 'privacy_membership_settings_private' ) ); ?></p>
+
+				<p><input type="checkbox" id="allow-joining-private" name="allow-joining-private" value="1" <?php checked( $allow_joining_private ); ?> <?php disabled( $group_is_inactive ); ?> /> <label for="allow-joining-private"><?php echo esc_html( $group_type->get_label( 'allow_joining_private_label' ) ); ?></label></p>
+			</div>
+		</div>
+	</div>
+
+	<?php
+
+	wp_nonce_field( 'openlab_privacy_membership_' . $group_id, 'openlab-privacy-membership-nonce' );
+}
+
+/**
+ * Determines whether public joining is disabled for a public group.
+ *
+ * To avoid bloat in the database, we're only recording when the default behavior is
+ * changed. For this reason, it will return false for non-public groups as well.
+ *
+ * @since 1.7.0
+ *
+ * @param int $group_id
+ * @return bool
+ */
+function openlab_public_group_has_disabled_joining( $group_id ) {
+	// Portfolios default to 'disabled', so we store an 'enable' flag.
+	if ( cboxol_is_portfolio( $group_id ) ) {
+		$disabled = empty( groups_get_groupmeta( $group_id, 'enable_public_group_joining', true ) );
+	} else {
+		$disabled = ! empty( groups_get_groupmeta( $group_id, 'disable_public_group_joining', true ) );
+	}
+
+	return $disabled;
+}
+
+/**
+ * Determines whether membership requesting is disabled for a private group.
+ *
+ * To avoid bloat in the database, we're only recording when the default behavior is
+ * changed. For this reason, it will return false for non-private groups as well.
+ *
+ * @since 1.7.0
+ *
+ * @param int $group_id
+ * @return bool
+ */
+function openlab_private_group_has_disabled_membership_requests( $group_id ) {
+	$disabled = ! empty( groups_get_groupmeta( $group_id, 'disable_private_group_membership_requests', true ) );
+
+	return $disabled;
 }
 
 /**
