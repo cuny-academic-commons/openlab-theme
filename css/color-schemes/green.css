@@ -8405,6 +8405,18 @@ body label.block {
   font-weight: normal;
   margin-right: 16px;
 }
+.panel-privacy-membership-settings.hidden-group {
+  display: none;
+}
+.panel-privacy-membership-settings.public-group .privacy-membership-settings-private {
+  display: none;
+}
+.panel-privacy-membership-settings.private-group .privacy-membership-settings-public {
+  display: none;
+}
+.panel-privacy-membership-settings .panel-body label {
+  font-weight: normal;
+}
 /**shortcodes**/
 .callout-list .row {
   margin-bottom: 34px;
