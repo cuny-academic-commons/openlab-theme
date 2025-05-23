@@ -788,6 +788,7 @@ function openlab_group_avatar_markup() {
  * Post group-save actions.
  */
 add_action( 'groups_group_after_save', 'openlab_save_group_status' );
+add_action( 'groups_group_after_save', 'openlab_group_privacy_membership_save', 30 );
 add_action( 'groups_group_after_save', 'openlab_save_braille_status', 40 );
 add_action( 'groups_create_group_step_save_group-details', 'openlab_move_avatar_after_group_create' );
 add_action( 'groups_create_group_step_save_group-details', 'openlab_save_new_group_url' );
@@ -1097,6 +1098,52 @@ function openlab_save_group_site_member_role_settings() {
 }
 
 /**
+ * Save the group privacy membership settings after save.
+ *
+ * @param BP_Groups_Group $group
+ */
+function openlab_group_privacy_membership_save( $group ) {
+	if ( empty( $_POST['openlab-privacy-membership-nonce'] ) ) {
+		return;
+	}
+
+	check_admin_referer( 'openlab_privacy_membership_' . $group->id, 'openlab-privacy-membership-nonce' );
+
+	switch ( $group->status ) {
+		case 'public' :
+			$group_type = openlab_get_group_type( $group->id );
+
+			$allow_raw = ! empty( $_POST['allow-joining-public'] );
+
+			if ( cboxol_is_portfolio( $group->id ) ) {
+				if ( $allow_raw ) {
+					groups_update_groupmeta( $group->id, 'enable_public_group_joining', 1 );
+				} else {
+					groups_delete_groupmeta( $group->id, 'enable_public_group_joining' );
+				}
+			// phpcs:ignore Universal.ControlStructures.DisallowLonelyIf.Found
+			} else {
+				if ( $allow_raw ) {
+					groups_delete_groupmeta( $group->id, 'disable_public_group_joining' );
+				} else {
+					groups_update_groupmeta( $group->id, 'disable_public_group_joining', 1 );
+				}
+			}
+
+			break;
+
+		case 'private' :
+			if ( empty( $_POST['allow-joining-private'] ) ) {
+				groups_update_groupmeta( $group->id, 'disable_private_group_membership_requests', 1 );
+			} else {
+				groups_delete_groupmeta( $group->id, 'disable_private_group_membership_requests' );
+			}
+
+			break;
+	}
+}
+
+/**
  * This function consolidates the group privacy settings in one spot for easier updating
  */
 function openlab_group_privacy_settings( $group_type ) {
@@ -1282,6 +1329,50 @@ function openlab_private_group_has_disabled_membership_requests( $group_id ) {
 
 	return $disabled;
 }
+
+/**
+ * Modify group nav according to 'joinable' settings.
+ *
+ * @since 1.7.0
+ *
+ * @return void
+ */
+function openlab_modify_nav_for_joinable_settings() {
+	if ( ! bp_is_group() ) {
+		return;
+	}
+
+	if ( ! is_user_logged_in() ) {
+		return;
+	}
+
+	$group_id = bp_get_current_group_id();
+	$group	  = groups_get_group( $group_id );
+
+	if ( groups_is_user_member( bp_loggedin_user_id(), $group_id ) ) {
+		return;
+	}
+
+	switch ( $group->status ) {
+		case 'public' :
+			if ( openlab_public_group_has_disabled_joining( $group_id ) ) {
+				remove_action( 'bp_group_header_actions', 'bp_group_join_button', 5 );
+			}
+			break;
+
+		case 'private' :
+			if ( openlab_private_group_has_disabled_membership_requests( $group_id ) ) {
+				remove_action( 'bp_group_header_actions', 'bp_group_join_button', 5 );
+
+				if ( bp_is_current_action( 'request-membership' ) ) {
+					bp_core_redirect( bp_get_group_url( $group_id ) );
+					die;
+				}
+			}
+			break;
+	}
+}
+add_action( 'bp_screens', 'openlab_modify_nav_for_joinable_settings' );
 
 /**
  * AJAX handler for group slugs.

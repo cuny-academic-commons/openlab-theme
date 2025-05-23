@@ -1321,6 +1321,27 @@ body{
 		}
 	}
 }
+.panel-privacy-membership-settings {
+	&.hidden-group {
+		display: none;
+	}
+
+	&.public-group {
+		.privacy-membership-settings-private {
+			display: none;
+		}
+	}
+
+	&.private-group {
+		.privacy-membership-settings-public {
+			display: none;
+		}
+	}
+
+	.panel-body label {
+		font-weight: normal;
+	}
+}
 /**shortcodes**/
 .callout-list{
     .row{

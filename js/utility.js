@@ -27,6 +27,7 @@
 			OpenLab.utility.initClickableCards();
 			OpenLab.utility.initPortfolioProfileLinkToggle();
 			OpenLab.utility.initGroupMemberSort();
+			OpenLab.utility.initGroupStatusMembershipSettings();
 
 						// Home page column adjustments.
 						var groupTypeWidgets = $( '#home-right .activity-list' );
@@ -688,6 +689,35 @@
 						window.location.href = url.toString();
 					} );
 			}
+		},
+
+		initGroupStatusMembershipSettings: function() {
+			this.hideShowMembershipSettings();
+
+			$( 'input[name="group-status"]' ).on(
+				'change',
+				function( e ) {
+					OpenLab.utility.hideShowMembershipSettings();
+				}
+			);
+		},
+
+		hideShowMembershipSettings: function() {
+			var membershipSettings = $( '.panel-privacy-membership-settings' );
+			if ( membershipSettings.length === 0 ) {
+				return;
+			}
+
+			var groupStatus = $( 'input[name="group-status"]:checked' ).val();
+			var statusClasses = [ 'public-group', 'private-group', 'hidden-group' ];
+
+			var newStatusClass = groupStatus + '-group';
+
+			if ( statusClasses.indexOf( newStatusClass ) === -1 ) {
+				return;
+			}
+
+			membershipSettings.removeClass( statusClasses.join( ' ' ) ).addClass( newStatusClass );
 		},
 
 		filterAjax: function () {
