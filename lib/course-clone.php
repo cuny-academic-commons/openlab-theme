@@ -366,7 +366,7 @@ function openlab_add_clone_button_to_profile() {
 			'group_type' => $group_type->get_slug(),
 			'clone'      => bp_get_current_group_id(),
 		),
-		bp_get_groups_directory_url( bp_groups_get_path_chunks( [ 'create', 'step', 'group-details' ] ) )
+		bp_get_groups_directory_url( bp_groups_get_path_chunks( [ 'step', 'group-details' ], 'create' ) )
 	);
 
 	?>
