@@ -1758,6 +1758,26 @@ function openlab_custom_group_buttons( $button ) {
 add_filter( 'bp_get_group_join_button', 'openlab_custom_group_buttons' );
 
 /**
+ * Ensures that all groups have a default value for 'invite_status'.
+ *
+ * The groupmeta was added in BP 14.0.0, and without it it's impossible to join
+ * a group.
+ *
+ * @param mixed  $value    The default value for the group metadata.
+ * @param int    $group_id The ID of the group.
+ * @param string $meta_key The metadata key.
+ * @return mixed The default value.
+ */
+function openlab_provide_default_group_invite_status( $value, $group_id, $meta_key ) {
+	if ( 'invite_status' === $meta_key && empty( $value ) ) {
+		return 'members';
+	}
+
+	return $value;
+}
+add_filter( 'default_group_metadata', 'openlab_provide_default_group_invite_status', 10, 3 );
+
+/**
  * Output the group subscription default settings
  *
  * This is a lazy way of fixing the fact that the BP Group Email Subscription
