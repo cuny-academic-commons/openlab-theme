@@ -90,8 +90,8 @@ class Openlab_Clone_Course_Site {
 
 		$source_site_upload_dir = $upload_dir['basedir'];
 		$dest_site_upload_dir   = str_replace( $this->source_site_id, $this->site_id, $source_site_upload_dir );
-		$source_site_url        = get_blog_option( $this->source_site_id, 'home' );
-		$dest_site_url          = get_blog_option( $this->site_id, 'home' );
+		$source_site_url        = trailingslashit( get_blog_option( $this->source_site_id, 'home' ) );
+		$dest_site_url          = trailingslashit( get_blog_option( $this->site_id, 'home' ) );
 
 		switch_to_blog( $this->source_site_id );
 
@@ -155,6 +155,27 @@ class Openlab_Clone_Course_Site {
 		$enable_sharing = groups_get_groupmeta( $group->id, 'enable_sharing', true );
 		if ( $enable_sharing ) {
 			openlab_add_widget_to_main_sidebar( 'openlab_shareable_content_widget' );
+		}
+
+		// Replace old URLs with new ones header-related theme mods.
+		$header_image_theme_mod = get_theme_mod( 'header_image' );
+		if ( $header_image_theme_mod ) {
+			$header_image_theme_mod = str_replace( $source_site_url, $dest_site_url, $header_image_theme_mod );
+			$header_image_theme_mod = str_replace( $source_site_upload_dir, $dest_site_upload_dir, $header_image_theme_mod );
+			set_theme_mod( 'header_image', $header_image_theme_mod );
+		}
+
+		$header_image_data_theme_mod = get_theme_mod( 'header_image_data' );
+		if ( $header_image_data_theme_mod ) {
+			if ( isset( $header_image_data_theme_mod->url ) ) {
+				$header_image_data_theme_mod->url = str_replace( $source_site_url, $dest_site_url, $header_image_data_theme_mod->url );
+			}
+
+			if ( isset( $header_image_data_theme_mod->thumbnail_url ) ) {
+				$header_image_data_theme_mod->thumbnail_url = str_replace( $source_site_url, $dest_site_url, $header_image_data_theme_mod->thumbnail_url );
+			}
+
+			set_theme_mod( 'header_image_data', $header_image_data_theme_mod );
 		}
 
 		restore_current_blog();
