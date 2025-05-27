@@ -3330,3 +3330,207 @@ function openlab_group_member_joined_since() {
 		)
 	);
 }
+
+/**
+ * Can a user bulk-import members to a given group?
+ *
+ * @param int $group_id Group ID.
+ * @param int $user_id  User ID.
+ * @return bool
+ */
+function openlab_user_can_bulk_import_group_members( $group_id, $user_id ) {
+	// Only group admins can bulk-import members.
+	if ( ! groups_is_user_admin( $user_id, $group_id ) ) {
+		return false;
+	}
+
+	// No portfolios.
+	if ( cboxol_is_portfolio( $group_id ) ) {
+		return false;
+	}
+
+	return true;
+}
+
+/**
+ * Form processor for group bulk import.
+ */
+function openlab_group_bulk_import_members() {
+	if ( ! bp_is_group() || ! bp_is_current_action( 'invite-anyone' ) ) {
+		return;
+	}
+
+	if ( ! isset( $_POST['group-import-members-nonce'] ) ) {
+		return;
+	}
+
+	check_admin_referer( 'group_import_members', 'group-import-members-nonce' );
+
+	if ( ! openlab_user_can_bulk_import_group_members( bp_get_current_group_id(), bp_loggedin_user_id() ) ) {
+		return;
+	}
+
+	$emails_raw = wp_unslash( $_POST['email-addresses-to-import'] );
+
+	$lines  = preg_split( '/\R/', $emails_raw );
+	$emails = [];
+	foreach ( $lines as $line ) {
+		$line_emails = preg_split( '/[,\s]+/', $line );
+
+		$emails = array_merge( $emails, $line_emails );
+	}
+
+	$status = [
+		'success'         => [],
+		'invalid_address' => [],
+		'illegal_address' => [],
+		'not_found'       => [],
+	];
+
+	$group_type      = cboxol_get_group_group_type( bp_get_current_group_id() );
+	$group_type_slug = $group_type && ! is_wp_error( $group_type ) ? $group_type->get_slug() : '';
+
+	openlab_maybe_install_added_to_group_email();
+
+	foreach ( $emails as $email ) {
+		if ( ! is_email( $email ) ) {
+			$status['invalid_address'][] = $email;
+			continue;
+		}
+
+		$email_domains = get_site_option( 'limited_email_domains' );
+		if ( ! is_array( $email_domains ) ) {
+			// Split on commas and line breaks
+			$email_domains = preg_split( '/[\s,]+/', $email_domains );
+			$email_domains = array_filter( $email_domains );
+		}
+
+		if ( ! empty( $email_domains ) ) {
+			$emaildomain = strtolower( substr( $email, 1 + strpos( $email, '@' ) ) );
+			if ( ! in_array( $emaildomain, $email_domains, true ) ) {
+				$status['illegal_address'][] = $email;
+				continue;
+			}
+		}
+
+		if ( is_email_address_unsafe( $email ) ) {
+			$status['illegal_address'][] = $email;
+			continue;
+		}
+
+		$user = get_user_by( 'email', $email );
+		if ( ! $user ) {
+			$status['not_found'][] = $email;
+			continue;
+		}
+
+		// Already sent.
+		if ( in_array( $email, $status['success'], true ) ) {
+			continue;
+		}
+
+		// User is already a member of the group.
+		if ( groups_is_user_member( $user->ID, bp_get_current_group_id() ) ) {
+			$status['success'][] = $email;
+			continue;
+		}
+
+		groups_join_group( bp_get_current_group_id(), $user->ID );
+
+		$group = groups_get_current_group();
+
+		$group_name = stripslashes( $group->name );
+
+		$email_subject = sprintf(
+			// translators: %s is the group name.
+			__( 'You are now a member of %s', 'commons-in-a-box' ),
+			$group_name
+		);
+
+		$email_message = sprintf(
+			// translators: %1$s is the group name, %2$s is a link to the group.
+			__( '<p>You are now a member of %1$s.</p><p>Visit %2$s to make changes to your membership settings or to leave this course.</p>', 'commons-in-a-box' ),
+			$group_name,
+			sprintf( '<a href="%s">%s</a>', bp_get_group_url( $group ), $group_name )
+		);
+
+		$email_args = array(
+			'tokens' => array(
+				'usermessage'   => $email_message,
+				'usersubject'   => $email_subject,
+				'ol.group-name' => stripslashes( $group->name ),
+				'ol.group-url'  => bp_get_group_url( $group ),
+				'ol.group-type' => $group_type_slug,
+			),
+		);
+
+		bp_send_email(
+			'openlab-added-to-group',
+			$email,
+			$email_args
+		);
+
+		$status['success'][] = $email;
+	}
+
+	foreach ( $status as &$emails ) {
+		$emails = array_unique( $emails );
+	}
+
+	$timestamp = time();
+	groups_update_groupmeta( bp_get_current_group_id(), 'import_' . $timestamp, $status );
+
+	bp_core_redirect( bp_get_group_permalink( groups_get_current_group() ) . 'invite-anyone?import_id=' . $timestamp );
+}
+add_action( 'bp_actions', 'openlab_group_bulk_import_members' );
+
+/**
+ * Ensure the 'openlab-added-to-group' email is installed.
+ *
+ * @return void
+ */
+function openlab_maybe_install_added_to_group_email() {
+	$email_type = 'openlab-added-to-group';
+	$tax        = bp_get_email_tax_type();
+	$post_type  = bp_get_email_post_type();
+
+	// Bail if already exists.
+	if ( term_exists( $email_type, $tax ) ) {
+		return;
+	}
+
+	$post_title    = __( '[{{{site.name}}}] You are now a member of {{{ol.group-name}}}', 'commons-in-a-box' );
+	$html_content  = __( 'You are now a member of {{{ol.group-name}}}. Visit <a href="{{{ol.group-url}}}">{{{ol.group-name}}}</a> to make changes to your membership settings or to leave this {{{ol.group-type}}}.', 'commons-in-a-box' );
+	$plain_content = __( 'You are now a member of {{{ol.group-name}}}. Visit {{{ol.group-url}}} to make changes to your membership settings or to leave this {{{ol.group-type}}}.', 'commons-in-a-box' );
+
+	$situation_desc = __( 'A user has been added to a group via the Import tool.', 'commons-in-a-box' );
+
+	$post_id = wp_insert_post(
+		[
+			'post_title'   => $post_title,
+			'post_content' => $html_content,
+			'post_excerpt' => $plain_content,
+			'post_status'  => 'publish',
+			'post_type'    => $post_type,
+		]
+	);
+
+	if ( is_wp_error( $post_id ) ) {
+		return;
+	}
+
+	// Assign term and description.
+	$tt_ids = wp_set_object_terms( $post_id, $email_type, $tax );
+	if ( ! is_wp_error( $tt_ids ) && ! empty( $tt_ids[0] ) ) {
+		$term = get_term_by( 'term_taxonomy_id', (int) $tt_ids[0], $tax );
+		if ( $term && ! is_wp_error( $term ) ) {
+			wp_update_term(
+				$term->term_id,
+				$tax,
+				array(
+					'description' => $situation_desc,
+				)
+			);
+		}
+	}
+}
