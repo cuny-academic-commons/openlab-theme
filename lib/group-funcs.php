@@ -554,10 +554,11 @@ function openlab_group_site_privacy_settings_markup() {
 		}
 	}
 
-	$allowed_site_privacy_options = [ '1', '0', '-1', '-2', '-3' ];
+	$allowed_site_privacy_options   = [ '1', '0', '-1', '-2', '-3' ];
+	$available_site_privacy_options = $allowed_site_privacy_options;
 
 	$group_type = cboxol_get_group_group_type( $group_id );
-	if ( ! is_wp_error( $group_type ) ) {
+	if ( bp_is_group_create() && ! is_wp_error( $group_type ) ) {
 		$available_site_privacy_options = $group_type->get_available_site_privacy_options();
 
 		// Overriding the above blog_public default with the default set by the admin.
