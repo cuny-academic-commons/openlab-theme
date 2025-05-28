@@ -266,31 +266,55 @@ function openlab_group_status_message( $group = null ) {
 
 	$site_status = (float) $site_status;
 
+	$public_group_has_disabled_joining   = openlab_public_group_has_disabled_joining( $group->id );
+	$private_group_has_disabled_requests = openlab_private_group_has_disabled_membership_requests( $group->id );
+
 	$message = '';
 
+	// phpcs:disable Universal.ControlStructures.DisallowLonelyIf.Found
 	switch ( $site_status ) {
 		// Public
 		case 1:
 		case 0:
 			if ( 'public' === $group->status ) {
-				$message = $group_type->get_label( 'status_open' );
+				if ( $public_group_has_disabled_joining ) {
+					$message = $group_type->get_label( 'status_open_no_join' );
+				} else {
+					$message = $group_type->get_label( 'status_open' );
+				}
 			} elseif ( ! $site_url ) {
 				// Special case: $site_status will be 0 when the
 				// group does not have an associated site. When
 				// this is the case, and the group is not
 				// public, don't mention anything about the Site.
-				$message = $group_type->get_label( 'status_private' );
+				if ( $private_group_has_disabled_requests ) {
+					$message = $group_type->get_label( 'status_private_no_requests' );
+				} else {
+					$message = $group_type->get_label( 'status_private' );
+				}
 			} else {
-				$message = $group_type->get_label( 'status_private_open_site' );
+				if ( $private_group_has_disabled_requests ) {
+					$message = $group_type->get_label( 'status_private_no_requests_open_site' );
+				} else {
+					$message = $group_type->get_label( 'status_private_open_site' );
+				}
 			}
 
 			break;
 
 		case -1:
 			if ( 'public' === $group->status ) {
-				$message = $group_type->get_label( 'status_open_community_site' );
+				if ( $public_group_has_disabled_joining ) {
+					$message = $group_type->get_label( 'status_open_no_join_community_site' );
+				} else {
+					$message = $group_type->get_label( 'status_open_community_site' );
+				}
 			} else {
-				$message = $group_type->get_label( 'status_private_community_site' );
+				if ( $private_group_has_disabled_requests ) {
+					$message = $group_type->get_label( 'status_private_no_requests_community_site' );
+				} else {
+					$message = $group_type->get_label( 'status_private_community_site' );
+				}
 			}
 
 			break;
@@ -298,13 +322,22 @@ function openlab_group_status_message( $group = null ) {
 		case -2:
 		case -3:
 			if ( 'public' === $group->status ) {
-				$message = $group_type->get_label( 'status_open_private_site' );
+				if ( $public_group_has_disabled_joining ) {
+					$message = $group_type->get_label( 'status_open_no_join_private_site' );
+				} else {
+					$message = $group_type->get_label( 'status_open_private_site' );
+				}
 			} else {
-				$message = $group_type->get_label( 'status_private_private_site' );
+				if ( $private_group_has_disabled_requests ) {
+					$message = $group_type->get_label( 'status_private_no_requests_private_site' );
+				} else {
+					$message = $group_type->get_label( 'status_private_private_site' );
+				}
 			}
 
 			break;
 	}
+	// phpcs:enable Universal.ControlStructures.DisallowLonelyIf.Found
 
 	return $message;
 }
