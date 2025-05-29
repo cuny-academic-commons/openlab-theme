@@ -7,13 +7,18 @@
  */
 
 // custom menu locations for OpenLab
-register_nav_menus(
-	array(
-		'main'        => __( 'Main Menu', 'commons-in-a-box' ),
-		'aboutmenu'   => __( 'About Menu', 'commons-in-a-box' ),
-		'helpmenu'    => __( 'Help Menu', 'commons-in-a-box' ),
-		'helpmenusec' => __( 'Help Menu Secondary', 'commons-in-a-box' ),
-	)
+add_action(
+	'after_setup_theme',
+	function () {
+		register_nav_menus(
+			array(
+				'main'        => __( 'Main Menu', 'commons-in-a-box' ),
+				'aboutmenu'   => __( 'About Menu', 'commons-in-a-box' ),
+				'helpmenu'    => __( 'Help Menu', 'commons-in-a-box' ),
+				'helpmenusec' => __( 'Help Menu Secondary', 'commons-in-a-box' ),
+			)
+		);
+	}
 );
 
 /**
