@@ -11258,6 +11258,39 @@ body .oplb-bs #wpadminbar #wp-toolbar {
 body .oplb-bs #wpadminbar #wp-toolbar .ab-sub-wrapper {
   margin-top: 0;
 }
+.openlab-sitewide-notice {
+  align-items: center;
+  display: flex;
+  height: 40px;
+  padding: 10px 20px;
+  justify-content: center;
+  width: 100%;
+}
+@media (max-width: 600px) {
+  .openlab-sitewide-notice {
+    height: auto;
+    padding-right: 60px;
+  }
+}
+.openlab-sitewide-notice a {
+  text-decoration: underline;
+}
+.openlab-sitewide-notice a:hover {
+  text-decoration: none;
+}
+.openlab-sitewide-notice button.notice-dismiss {
+  background: transparent;
+  border: none;
+  position: absolute;
+  right: 30px;
+  font: normal normal normal 14px/1 FontAwesome;
+}
+.openlab-sitewide-notice.is-dismissable {
+  padding-right: 70px;
+}
+body.has-sitewide-notice .navbar-default {
+  padding-bottom: 40px;
+}
 /**Custom media query items**/
 @media (max-width: 767px) {
   .group-subscription-div {
