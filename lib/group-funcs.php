@@ -68,6 +68,11 @@ function openlab_group_privacy_settings_markup() {
 
 	$available_privacy_options = $group_type->get_available_privacy_options();
 
+	// Super admins can see all options.
+	if ( current_user_can( 'bp_moderate' ) ) {
+		$available_privacy_options = [ 'public', 'private', 'hidden' ];
+	}
+
 	$the_group = groups_get_current_group();
 	if ( $the_group ) {
 		$group_status = $the_group->status;
