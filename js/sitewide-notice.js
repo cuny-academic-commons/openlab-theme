@@ -46,6 +46,8 @@
 
 			dismissButton.appendChild( dismissButtonText );
 			noticeEl.appendChild( dismissButton );
+
+			noticeEl.classList.add( 'is-dismissable' );
 		}
 
 		// insert after #wpadminbar
