@@ -4253,6 +4253,41 @@ body .oplb-bs #wpadminbar #wp-toolbar {
 	}
 }
 
+.openlab-sitewide-notice {
+	align-items: center;
+	display: flex;
+	height: 40px;
+	padding: 10px 20px;
+	justify-content: center;
+	width: 100%;
+
+	@media (max-width: 600px) {
+		height: auto;
+		padding-right: 60px;
+	}
+
+	a {
+		text-decoration: underline;
+
+		&:hover {
+			text-decoration: none;
+		}
+	}
+
+	button.notice-dismiss {
+		background: transparent;
+		border: none;
+		position: absolute;
+		right: 30px;
+		font: normal normal normal 14px/1 FontAwesome;
+	}
+}
+
+body.has-sitewide-notice {
+	.navbar-default {
+		padding-bottom: 40px;
+	}
+}
 
 /**Custom media query items**/
 @media(max-width:@screen-xs-max){

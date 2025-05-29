@@ -10,6 +10,69 @@
 function openlab_customizer_setup( $wp_customize ) {
 	require __DIR__ . '/class-customize-footer-section.php';
 
+	// Sitewide Notice.
+	$wp_customize->add_setting(
+		'sitewide_notice_toggle',
+		[
+			'default'           => 0,
+			'transport'         => 'postMessage',
+			'sanitize_callback' => 'openlab_sanitize_customizer_setting_intval',
+		]
+	);
+
+	$wp_customize->add_setting(
+		'sitewide_notice_text',
+		array(
+			'default'           => '',
+			'transport'         => 'postMessage',
+			'sanitize_callback' => 'wp_kses_post',
+		)
+	);
+
+	$wp_customize->add_setting(
+		'sitewide_notice_dismissable_toggle',
+		[
+			'default'           => 0,
+			'transport'         => 'postMessage',
+			'sanitize_callback' => 'openlab_sanitize_customizer_setting_intval',
+		]
+	);
+
+	$wp_customize->add_section(
+		'openlab_section_sitewide_notice',
+		array(
+			'title'       => __( 'Main Site Banner Notice', 'commons-in-a-box' ),
+			'description' => __( 'Below you can customize a notice that will appear for logged-in site members across the top of all pages of the main site (homepage, group directories, and a group’s home). It will not appear on group secondary sites.', 'commons-in-a-box' ),
+		)
+	);
+
+	$wp_customize->add_control(
+		'sitewide_notice_toggle',
+		array(
+			'label'   => __( 'Enable Main Site banner notice', 'commons-in-a-box' ),
+			'section' => 'openlab_section_sitewide_notice',
+			'type'    => 'checkbox',
+		)
+	);
+
+	$wp_customize->add_control(
+		'sitewide_notice_dismissable_toggle',
+		array(
+			'label'   => __( 'Allow members to dismiss this notice', 'commons-in-a-box' ),
+			'section' => 'openlab_section_sitewide_notice',
+			'type'    => 'checkbox',
+		)
+	);
+
+	$wp_customize->add_control(
+		'sitewide_notice_text',
+		array(
+			'label'   => __( 'Sitewide Notice Text', 'commons-in-a-box' ),
+			'section' => 'openlab_section_sitewide_notice',
+			'type'    => 'textarea',
+		)
+	);
+
 	// Color Scheme
 	$wp_customize->remove_section( 'colors' );
 	$wp_customize->add_section(

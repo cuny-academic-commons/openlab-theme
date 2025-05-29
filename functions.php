@@ -154,6 +154,7 @@ require_once get_template_directory() . '/lib/sidebar-funcs.php';
 require_once get_template_directory() . '/lib/plugin-hooks.php';
 require_once get_template_directory() . '/lib/theme-hooks.php';
 require_once get_template_directory() . '/lib/widgets.php';
+require_once get_template_directory() . '/lib/sitewide-notice.php';
 
 require_once get_template_directory() . '/lib/customizer.php';
 require_once get_template_directory() . '/lib/buddypress.php';
