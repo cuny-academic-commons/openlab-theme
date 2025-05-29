@@ -241,7 +241,7 @@ $form_action = bp_get_group_url(
 					<?php endif; ?>
 
 					<?php
-					$submit_border_class = $show_submit_border ? ' import-results-section-submit-show-border' : '';
+					$submit_border_class    = $show_submit_border ? ' import-results-section-submit-show-border' : '';
 					$group_invite_permalink = bp_get_group_url(
 						groups_get_current_group(),
 						bp_groups_get_path_chunks( [ BP_INVITE_ANYONE_SLUG ] )
