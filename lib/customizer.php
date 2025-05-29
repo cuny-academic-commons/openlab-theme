@@ -70,7 +70,7 @@ function openlab_customizer_setup( $wp_customize ) {
 			$wp_customize,
 			'sitewide_notice_text',
 			[
-				'label'       => __( 'Sitewide Notice Text', 'your-textdomain' ),
+				'label'       => __( 'Notice Text', 'your-textdomain' ),
 				'section'     => 'openlab_section_sitewide_notice',
 				'settings'    => 'sitewide_notice_text',
 				'description' => __( 'Enter the banner notice text of 120 characters or less, including spaces.', 'commons-in-a-box' ),
