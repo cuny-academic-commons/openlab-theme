@@ -1304,12 +1304,7 @@ function openlab_group_privacy_membership_settings_markup() {
  * @return bool
  */
 function openlab_public_group_has_disabled_joining( $group_id ) {
-	// Portfolios default to 'disabled', so we store an 'enable' flag.
-	if ( cboxol_is_portfolio( $group_id ) ) {
-		$disabled = empty( groups_get_groupmeta( $group_id, 'enable_public_group_joining', true ) );
-	} else {
-		$disabled = ! empty( groups_get_groupmeta( $group_id, 'disable_public_group_joining', true ) );
-	}
+	$disabled = ! empty( groups_get_groupmeta( $group_id, 'disable_public_group_joining', true ) );
 
 	return $disabled;
 }
