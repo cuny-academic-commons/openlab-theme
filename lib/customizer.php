@@ -78,17 +78,6 @@ function openlab_customizer_setup( $wp_customize ) {
 		)
 	);
 
-	/*
-	$wp_customize->add_control(
-		'sitewide_notice_text',
-		array(
-			'label'   => __( 'Sitewide Notice Text', 'commons-in-a-box' ),
-			'section' => 'openlab_section_sitewide_notice',
-			'type'    => 'textarea',
-		)
-	);
-	*/
-
 	// Color Scheme
 	$wp_customize->remove_section( 'colors' );
 	$wp_customize->add_section(
