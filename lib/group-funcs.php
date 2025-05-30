@@ -3350,7 +3350,12 @@ function openlab_user_can_bulk_import_group_members( $group_id, $user_id ) {
 		return false;
 	}
 
-	return true;
+	$member_type = cboxol_get_user_member_type( $user_id );
+	if ( ! $member_type || is_wp_error( $member_type ) ) {
+		return false;
+	}
+
+	return $member_type->get_can_import_group_users();
 }
 
 /**
