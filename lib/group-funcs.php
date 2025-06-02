@@ -803,6 +803,7 @@ add_action( 'groups_create_group_step_save_group-details', 'openlab_save_new_gro
 add_action( 'groups_create_group_step_save_site-details', 'openlab_save_group_site' );
 add_action( 'groups_create_group_step_save_site-details', 'openlab_save_group_site_settings', 20 );
 add_action( 'groups_create_group_step_save_site-details', 'openlab_save_group_site_member_role_settings', 20 );
+add_action( 'groups_create_group_step_save_site-details', 'openlab_save_group_default_collaboration_tools', 30 );
 
 /**
  * Catches and processes group status setting.
@@ -1037,6 +1038,31 @@ function openlab_save_group_site_settings() {
 		$show_portfolio_link = ! empty( $_POST['portfolio-profile-link'] );
 
 		openlab_save_show_portfolio_link_on_user_profile( $portfolio_user_id, $show_portfolio_link );
+	}
+}
+
+/**
+ * At group creation, save the default Collaboration Tools settings for this group type.
+ *
+ * @return void
+ */
+function openlab_save_group_default_collaboration_tools() {
+	$group_id   = bp_get_current_group_id();
+	$group_type = cboxol_get_group_group_type( $group_id );
+
+	$default_collaboration_tools = $group_type->get_default_collaboration_tools();
+
+	if ( ! in_array( 'discussion', $default_collaboration_tools, true ) ) {
+		groups_update_groupmeta( $group_id, 'openlab_disable_forum', 1 );
+	}
+
+	$enable_docs                   = in_array( 'docs', $default_collaboration_tools, true );
+	$docs_settings                 = bp_docs_get_group_settings( $group_id );
+	$docs_settings['group-enable'] = (int) $enable_docs;
+	groups_update_groupmeta( $group_id, 'bp-docs', $docs_settings );
+
+	if ( ! in_array( 'files', $default_collaboration_tools, true ) ) {
+		groups_update_groupmeta( $group_id, 'group_documens_documents_disabled', 1 );
 	}
 }
 
