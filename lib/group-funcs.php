@@ -1121,31 +1121,14 @@ function openlab_group_privacy_membership_save( $group ) {
 		case 'public' :
 			$group_type = openlab_get_group_type( $group->id );
 
-			$allow_raw = ! empty( $_POST['allow-joining-public'] );
-
-			if ( cboxol_is_portfolio( $group->id ) ) {
-				if ( $allow_raw ) {
-					groups_update_groupmeta( $group->id, 'enable_public_group_joining', 1 );
-				} else {
-					groups_delete_groupmeta( $group->id, 'enable_public_group_joining' );
-				}
-			// phpcs:ignore Universal.ControlStructures.DisallowLonelyIf.Found
-			} else {
-				if ( $allow_raw ) {
-					groups_delete_groupmeta( $group->id, 'disable_public_group_joining' );
-				} else {
-					groups_update_groupmeta( $group->id, 'disable_public_group_joining', 1 );
-				}
-			}
+			$disable = ! empty( $_POST['allow-joining-public'] ) ? '0' : '1';
+			groups_update_groupmeta( $group->id, 'disable_public_group_joining', $disable );
 
 			break;
 
 		case 'private' :
-			if ( empty( $_POST['allow-joining-private'] ) ) {
-				groups_update_groupmeta( $group->id, 'disable_private_group_membership_requests', 1 );
-			} else {
-				groups_delete_groupmeta( $group->id, 'disable_private_group_membership_requests' );
-			}
+			$disable = ! empty( $_POST['allow-joining-private'] ) ? '0' : '1';
+			groups_update_groupmeta( $group->id, 'disable_private_group_membership_requests', $disable );
 
 			break;
 	}
@@ -1302,16 +1285,24 @@ function openlab_group_privacy_membership_settings_markup() {
 /**
  * Determines whether public joining is disabled for a public group.
  *
- * To avoid bloat in the database, we're only recording when the default behavior is
- * changed. For this reason, it will return false for non-public groups as well.
- *
  * @since 1.7.0
  *
  * @param int $group_id
  * @return bool
  */
 function openlab_public_group_has_disabled_joining( $group_id ) {
-	$disabled = ! empty( groups_get_groupmeta( $group_id, 'disable_public_group_joining', true ) );
+	$raw = groups_get_groupmeta( $group_id, 'disable_public_group_joining', true );
+
+	if ( '' === $raw ) {
+		$group_type = cboxol_get_group_group_type( $group_id );
+		if ( ! $group_type || is_wp_error( $group_type ) ) {
+			return false;
+		}
+
+		$disabled = ! $group_type->get_default_joining_setting();
+	} else {
+		$disabled = '1' === $raw;
+	}
 
 	return $disabled;
 }
@@ -1319,16 +1310,24 @@ function openlab_public_group_has_disabled_joining( $group_id ) {
 /**
  * Determines whether membership requesting is disabled for a private group.
  *
- * To avoid bloat in the database, we're only recording when the default behavior is
- * changed. For this reason, it will return false for non-private groups as well.
- *
  * @since 1.7.0
  *
  * @param int $group_id
  * @return bool
  */
 function openlab_private_group_has_disabled_membership_requests( $group_id ) {
-	$disabled = ! empty( groups_get_groupmeta( $group_id, 'disable_private_group_membership_requests', true ) );
+	$raw = groups_get_groupmeta( $group_id, 'disable_private_group_membership_requests', true );
+
+	if ( '' === $raw ) {
+		$group_type = cboxol_get_group_group_type( $group_id );
+		if ( is_wp_error( $group_type ) ) {
+			return false;
+		}
+
+		$disabled = ! $group_type->get_default_joining_setting();
+	} else {
+		$disabled = '1' === $raw;
+	}
 
 	return $disabled;
 }
