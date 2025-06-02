@@ -143,9 +143,8 @@ $form_action = bp_get_group_url(
 
 	?>
 
-	<?php if ( ! bp_get_new_group_id() ) : ?>
+	<?php if ( ! bp_is_group_create() ) : ?>
 		<form method="post" id="import-members-form" class="form-panel" action="<?php echo esc_url( $form_action ); ?>">
-	<?php endif; ?>
 
 		<div class="panel panel-default">
 			<div class="panel-heading semibold"><?php esc_html_e( 'Import Members', 'commons-in-a-box' ); ?></div>
@@ -268,7 +267,6 @@ $form_action = bp_get_group_url(
 
 		<?php wp_nonce_field( 'group_import_members', 'group-import-members-nonce' ); ?>
 
-	<?php if ( ! bp_get_new_group_id() ) : ?>
 		</form>
 	<?php endif; ?>
 <?php endif; ?>
