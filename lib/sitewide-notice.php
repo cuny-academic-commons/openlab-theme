@@ -4,10 +4,6 @@
  * Enqueues the JS for generating the expiration warning notice.
  */
 function openlab_enqueue_sitewide_notice_js() {
-	if ( ! is_user_logged_in() ) {
-		return;
-	}
-
 	if ( ! bp_is_root_blog() ) {
 		return;
 	}
