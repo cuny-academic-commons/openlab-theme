@@ -43,7 +43,7 @@ function openlab_customizer_setup( $wp_customize ) {
 		'openlab_section_sitewide_notice',
 		array(
 			'title'       => __( 'Main Site Banner Notice', 'commons-in-a-box' ),
-			'description' => __( 'Below you can customize a notice that will appear for logged-in site members across the top of all pages of the main site (homepage, group directories, and a group’s home). It will not appear on group secondary sites.', 'commons-in-a-box' ),
+			'description' => __( 'Add a notice that will appear for logged-in site members across the top of all areas of the main site (homepage, group directories, and group home).', 'commons-in-a-box' ),
 		)
 	);
 
