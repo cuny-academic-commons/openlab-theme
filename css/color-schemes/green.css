@@ -11288,9 +11288,9 @@ body .oplb-bs #wpadminbar #wp-toolbar .ab-sub-wrapper {
 .openlab-sitewide-notice.is-dismissable {
   padding-right: 70px;
 }
-.openlab-sitewide-notice .notice-text p {
+.openlab-sitewide-notice p {
   padding: 0;
-  margin: none;
+  margin: 0;
 }
 body.has-sitewide-notice .navbar-default {
   padding-bottom: 40px;
