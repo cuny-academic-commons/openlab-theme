@@ -8,8 +8,9 @@ function openlab_enqueue_sitewide_notice_js() {
 		return;
 	}
 
-	$notice_enabled = get_theme_mod( 'sitewide_notice_toggle', false );
-	if ( ! $notice_enabled ) {
+	$notice_enabled        = get_theme_mod( 'sitewide_notice_toggle', false );
+	$is_customizer_preview = is_customize_preview();
+	if ( ! $notice_enabled && ! $is_customizer_preview ) {
 		return;
 	}
 
