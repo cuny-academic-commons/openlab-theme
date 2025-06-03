@@ -33,6 +33,7 @@
 		noticeEl.style.color = text || '';
 
 		const noticeElContent = document.createElement( 'span' );
+		noticeElContent.classList.add( 'notice-text' );
 		noticeElContent.innerHTML = noticeText;
 		noticeEl.appendChild( noticeElContent );
 
