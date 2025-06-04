@@ -6,8 +6,8 @@
 		}
 
 		// Bail if this is the customizer.
-		const { customize } = window.wp;
-		if ( customize ) {
+		const { wp } = window;
+		if ( wp && wp.customize ) {
 			return;
 		}
 
