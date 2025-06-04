@@ -1062,7 +1062,7 @@ function openlab_save_group_default_collaboration_tools() {
 	groups_update_groupmeta( $group_id, 'bp-docs', $docs_settings );
 
 	if ( ! in_array( 'files', $default_collaboration_tools, true ) ) {
-		groups_update_groupmeta( $group_id, 'group_documens_documents_disabled', 1 );
+		groups_update_groupmeta( $group_id, 'group_documents_documents_disabled', 1 );
 	}
 }
 
