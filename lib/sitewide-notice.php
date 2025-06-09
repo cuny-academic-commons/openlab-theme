@@ -22,7 +22,7 @@ function openlab_enqueue_sitewide_notice_js() {
 
 	switch ( $color_scheme ) {
 		case 'red' :
-			$background_color = '#ff7a7a';
+			$background_color = '#fbd8d1';
 			$text_color       = '#000';
 			break;
 
