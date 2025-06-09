@@ -8120,7 +8120,7 @@ body .skip-link {
 }
 body .skip-link:focus {
   background: #1d5f7b none repeat scroll 0 0;
-  color: #333333;
+  color: #fff;
   display: block;
   font-size: 14px;
   font-weight: bold;
