@@ -55,51 +55,51 @@
 			const adminBarTop = wpAdminBar.offsetTop;
 			noticeEl.style.top = ( adminBarTop + adminBarHeight ) + 'px';
 			noticeEl.style.position = 'absolute';
+
+			api( 'sitewide_notice_text', function( value ) {
+				$( '.openlab-sitewide-notice .notice-text' ).html( value.get() );
+
+				value.bind( function( newVal ) {
+					$( '.openlab-sitewide-notice .notice-text' ).html( newVal );
+				} );
+			} );
+
+			api( 'sitewide_notice_toggle', function( value ) {
+				// Initial visibility
+				if ( parseInt( value.get(), 10 ) === 1 ) {
+					$( '.openlab-sitewide-notice' ).show();
+					document.body.classList.add( 'has-sitewide-notice' );
+				} else {
+					$( '.openlab-sitewide-notice' ).hide();
+					document.body.classList.remove( 'has-sitewide-notice' );
+				}
+
+				value.bind( function( newVal ) {
+					if ( !! newVal ) {
+						$( '.openlab-sitewide-notice' ).show();
+						document.body.classList.add( 'has-sitewide-notice' );
+					} else {
+						$( '.openlab-sitewide-notice' ).hide();
+						document.body.classList.remove( 'has-sitewide-notice' );
+					}
+				} );
+			} );
+
+			api( 'sitewide_notice_dismissable_toggle', function( value ) {
+				if ( parseInt( value.get(), 10 ) === 1 ) {
+					$( '.openlab-sitewide-notice .notice-dismiss' ).show();
+				} else {
+					$( '.openlab-sitewide-notice .notice-dismiss' ).hide();
+				}
+
+				value.bind( function( newVal ) {
+					if ( !! newVal ) {
+						$( '.openlab-sitewide-notice .notice-dismiss' ).show();
+					} else {
+						$( '.openlab-sitewide-notice .notice-dismiss' ).hide();
+					}
+				} );
+			} );
 		} );
 	}
-
-	api( 'sitewide_notice_text', function( value ) {
-		$( '.openlab-sitewide-notice .notice-text' ).html( value.get() );
-
-		value.bind( function( newVal ) {
-			$( '.openlab-sitewide-notice .notice-text' ).html( newVal );
-		} );
-	} );
-
-	api( 'sitewide_notice_toggle', function( value ) {
-		// Initial visibility
-		if ( parseInt( value.get(), 10 ) === 1 ) {
-			$( '.openlab-sitewide-notice' ).show();
-			document.body.classList.add( 'has-sitewide-notice' );
-		} else {
-			$( '.openlab-sitewide-notice' ).hide();
-			document.body.classList.remove( 'has-sitewide-notice' );
-		}
-
-		value.bind( function( newVal ) {
-			if ( !! newVal ) {
-				$( '.openlab-sitewide-notice' ).show();
-				document.body.classList.add( 'has-sitewide-notice' );
-			} else {
-				$( '.openlab-sitewide-notice' ).hide();
-				document.body.classList.remove( 'has-sitewide-notice' );
-			}
-		} );
-	} );
-
-	api( 'sitewide_notice_dismissable_toggle', function( value ) {
-		if ( parseInt( value.get(), 10 ) === 1 ) {
-			$( '.openlab-sitewide-notice .notice-dismiss' ).show();
-		} else {
-			$( '.openlab-sitewide-notice .notice-dismiss' ).hide();
-		}
-
-		value.bind( function( newVal ) {
-			if ( !! newVal ) {
-				$( '.openlab-sitewide-notice .notice-dismiss' ).show();
-			} else {
-				$( '.openlab-sitewide-notice .notice-dismiss' ).hide();
-			}
-		} );
-	} );
 })( jQuery, wp.customize );
