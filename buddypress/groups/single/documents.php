@@ -345,6 +345,8 @@ $header_text = 'add' === $template->operation ? __( 'Add a New File', 'commons-i
 							<?php openlab_notify_group_members_ui( 'add' === $template->operation ); ?>
 						</div>
 
+						<?php wp_nonce_field( 'bp_group_document_save_' . $template->operation, 'bp_group_document_save_nonce' ); ?>
+
 						<input type="submit" class="btn btn-primary btn-margin btn-margin-top" value="<?php esc_attr_e( 'Submit', 'commons-in-a-box' ); ?>" />
 
 						<?php wp_nonce_field( 'bp_group_document_save_' . $template->operation, 'bp_group_document_save' ); ?>
