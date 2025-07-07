@@ -108,12 +108,16 @@ $header_text = 'add' === $template->operation ? __( 'Add a New File', 'commons-i
 								<li class="list-group-item <?php echo esc_attr( $count_class ); ?>">
 									<?php
 									// Show edit and delete options if user is privileged.
+									// An upstream bug in bp-group-documents means we cannot
+									// fully rely on current_user_can().
+									$is_my_document = is_user_logged_in() && (int) $document->user_id === (int) bp_loggedin_user_id();
+
 									echo '<div class="admin-links pull-right">';
-									if ( $document->current_user_can( 'edit' ) ) {
+									if ( $document->current_user_can( 'edit' ) || $is_my_document ) {
 										$edit_link = wp_nonce_url( $template->action_link . 'edit/' . $document->id, 'group-documents-edit-link' );
 										echo '<a class="btn btn-primary btn-xs link-btn no-margin no-margin-top" href="' . esc_attr( $edit_link ) . '">' . esc_html__( 'Edit', 'commons-in-a-box' ) . '</a> ';
 									}
-									if ( $document->current_user_can( 'delete' ) ) {
+									if ( $document->current_user_can( 'delete' ) || $is_my_document ) {
 										$delete_link = wp_nonce_url( $template->action_link . 'delete/' . $document->id, 'group-documents-delete-link' );
 										echo '<a class="btn btn-primary btn-xs link-btn no-margin no-margin-top" href="' . esc_attr( $delete_link ) . '" id="bp-group-documents-delete">' . esc_html__( 'Delete', 'commons-in-a-box' ) . '</a>';
 									}
