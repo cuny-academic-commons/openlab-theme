@@ -110,7 +110,7 @@ $header_text = 'add' === $template->operation ? __( 'Add a New File', 'commons-i
 									// Show edit and delete options if user is privileged.
 									// An upstream bug in bp-group-documents means we cannot
 									// fully rely on current_user_can().
-									$is_my_document = is_user_logged_in() && (int) $document->user_id === (int) bp_loggedin_user_id();
+									$is_my_document = is_user_logged_in() && bp_loggedin_user_id() === (int) $document->user_id;
 
 									echo '<div class="admin-links pull-right">';
 									if ( $document->current_user_can( 'edit' ) || $is_my_document ) {
