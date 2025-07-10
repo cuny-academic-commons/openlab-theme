@@ -1047,7 +1047,14 @@ function openlab_save_group_site_settings() {
  * @return void
  */
 function openlab_save_group_default_collaboration_tools() {
-	$group_id   = bp_get_current_group_id();
+	$group_id     = bp_get_current_group_id();
+	$clone_source = cboxol_get_clone_source_group_id( $group_id );
+
+	// Do nothing for clones. These values are inherited.
+	if ( $clone_source ) {
+		return;
+	}
+
 	$group_type = cboxol_get_group_group_type( $group_id );
 
 	$default_collaboration_tools = $group_type->get_default_collaboration_tools();
