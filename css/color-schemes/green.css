@@ -10053,6 +10053,10 @@ h3#message-subject {
   padding-top: 18px;
   padding-right: 8px;
 }
+#bp-group-documents input,
+#bp-group-documents textarea {
+  width: auto;
+}
 @media (max-width: 767px) {
   #bp-group-documents #bp-group-documents-sorting .sorting-column {
     display: inline-block;
