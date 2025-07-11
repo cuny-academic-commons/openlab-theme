@@ -191,12 +191,12 @@ $header_text = 'add' === $template->operation ? __( 'Add a New File', 'commons-i
 					<label><?php esc_html_e( 'Folders:', 'commons-in-a-box' ); ?></label>
 					<div class="group-file-folder-nav">
 						<ul>
-							<li class="show-all-files <?php echo ! $current_category ? 'current-category' : ''; ?>"><i class="fa <?php echo $current_category ? 'fa-folder-o' : 'fa-folder-open-o'; ?>"></i> <a href="<?php echo esc_url( remove_query_arg( 'category', $template->action_link ) ); ?>"><?php esc_html_e( 'All Files', 'commons-in-a-box' ); ?></a></li>
+							<li class="show-all-files <?php echo ! $current_category ? 'current-category' : ''; ?>"><i class="fa <?php echo $current_category ? 'fa-folder-o' : 'fa-folder-open-o'; ?>"></i> <a href="<?php echo esc_url( remove_query_arg( 'bpgrd-category', $template->action_link ) ); ?>"><?php esc_html_e( 'All Files', 'commons-in-a-box' ); ?></a></li>
 							<hr>
 
 							<?php foreach ( $non_empty_folders as $category ) { ?>
 								<?php $is_current_category = ( $category->name === $current_category ); ?>
-								<li class="folder <?php echo $is_current_category ? 'current-category' : ''; ?>"><i class="fa <?php echo $is_current_category ? 'fa-folder-open-o' : 'fa-folder-o'; ?>"></i> <a href="<?php echo esc_attr( add_query_arg( 'category', $category->term_id, $template->action_link ) ); ?>"><?php echo esc_html( $category->name ); ?></a></li>
+								<li class="folder <?php echo $is_current_category ? 'current-category' : ''; ?>"><i class="fa <?php echo $is_current_category ? 'fa-folder-open-o' : 'fa-folder-o'; ?>"></i> <a href="<?php echo esc_attr( add_query_arg( 'bpgrd-category', $category->term_id, $template->action_link ) ); ?>"><?php echo esc_html( $category->name ); ?></a></li>
 							<?php } ?>
 						</ul>
 					</div>
