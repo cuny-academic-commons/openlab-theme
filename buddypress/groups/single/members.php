@@ -15,7 +15,7 @@ $members_args['exclude_admins_mods'] = 0;
 
 $sort_options = array(
 	'active'       => __( 'Last Active', 'commons-in-a-box' ),
-	'newest'       => __( 'Newest', 'commons-in-a-box' ),
+	'last_joined'  => __( 'Newest', 'commons-in-a-box' ),
 	'alphabetical' => __( 'Alphabetical', 'commons-in-a-box' ),
 );
 

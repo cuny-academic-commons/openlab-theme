@@ -451,7 +451,7 @@ $private_users = openlab_get_private_members_of_group( bp_get_group_id() );
 
 				$sort_options = array(
 					'active'       => __( 'Last Active', 'commons-in-a-box' ),
-					'newest'       => __( 'Newest', 'commons-in-a-box' ),
+					'last_joined'  => __( 'Newest', 'commons-in-a-box' ),
 					'alphabetical' => __( 'Alphabetical', 'commons-in-a-box' ),
 				);
 
