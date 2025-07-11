@@ -10057,7 +10057,8 @@ h3#message-subject {
 #bp-group-documents textarea {
   width: 100%;
 }
-#bp-group-documents input[type="radio"] {
+#bp-group-documents input[type="radio"],
+#bp-group-documents input[type="submit"] {
   width: auto;
 }
 @media (max-width: 767px) {
