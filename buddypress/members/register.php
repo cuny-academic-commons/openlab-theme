@@ -1,6 +1,6 @@
-<?php /**
- *  sign up form template
- *
+<?php
+/**
+ * Member registration template.
  */
 ?>
 
