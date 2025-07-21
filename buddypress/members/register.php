@@ -1,6 +1,6 @@
-<?php /**
- *  sign up form template
- *
+<?php
+/**
+ * Member registration template.
  */
 ?>
 
@@ -10,22 +10,7 @@
 
 	$registration_form_settings = cboxol_get_registration_form_settings();
 
-	$ajaxurl   = bp_core_ajax_url();
 	$site_name = bp_get_option( 'blogname' );
-
-	$limited_email_domains_message = '';
-	$limited_email_domains         = get_site_option( 'limited_email_domains' );
-	if ( $limited_email_domains ) {
-		$led = array();
-		foreach ( $limited_email_domains as $d ) {
-			$led[] = sprintf( '<span class="limited-email-domain">' . esc_html( $d ) . '</span>' );
-		}
-		$limited_email_domains_message = sprintf(
-			// translators: list of allowed email domains
-			esc_html__( 'Allowed email domains: %s', 'commons-in-a-box' ),
-			implode( ', ', $led )
-		);
-	}
 
 	$member_types = cboxol_get_member_types();
 
@@ -56,105 +41,9 @@
 
 						<div class="register-section" id="basic-details-section">
 
-							<div class="form-group">
-								<label class="control-label" for="signup_username"><?php esc_html_e( 'Username', 'commons-in-a-box' ); ?> <?php esc_html_e( '(required)', 'commons-in-a-box' ); ?> <?php esc_html_e( '(lowercase & no special characters)', 'commons-in-a-box' ); ?></label>
-								<?php do_action( 'bp_signup_username_errors' ); ?>
-								<?php
-								$login_check_url = add_query_arg(
-									array(
-										'action' => 'openlab_unique_login_check',
-										'login'  => '{value}',
-									),
-									$ajaxurl
-								);
-								?>
-								<input
-									class="form-control"
-									type="text"
-									name="signup_username"
-									id="signup_username"
-									value="<?php esc_attr( bp_signup_username_value() ); ?>"
-									data-parsley-lowercase
-									data-parsley-nospecialchars
-									data-parsley-required
-									data-parsley-minlength="4"
-									data-parsley-remote="<?php echo esc_attr( $login_check_url ); ?>"
-									data-parsley-remote-message="<?php esc_attr_e( 'That username is already taken.', 'commons-in-a-box' ); ?>"
-								/>
-							</div>
-
-							<div class="form-group">
-								<label class="control-label" for="signup_email"><?php esc_html_e( 'Email Address (required)', 'commons-in-a-box' ); ?> <?php
-								if ( $limited_email_domains_message ) :
-									?>
-									<?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-									<div class="email-requirements"><?php echo $limited_email_domains_message; ?></div><?php endif; ?></label>
-								<?php do_action( 'bp_signup_email_errors' ); ?>
-								<input
-									class="form-control"
-									type="text"
-									name="signup_email"
-									id="signup_email"
-									value="<?php echo esc_attr( openlab_post_value( 'signup_email' ) ); ?>"
-									data-parsley-trigger="blur"
-									data-parsley-required
-									data-parsley-type="email"
-									data-parsley-group="email"
-									data-parsley-iff="#signup_email_confirm"
-									data-parsley-iff-message=""
-								/>
-
-								<label class="control-label" for="signup_email_confirm"><?php esc_html_e( 'Confirm Email Address (required)', 'commons-in-a-box' ); ?></label>
-								<input
-								class="form-control"
-								type="text"
-								name="signup_email_confirm"
-								id="signup_email_confirm"
-								value="<?php echo esc_attr( openlab_post_value( 'signup_email_confirm' ) ); ?>"
-								data-parsley-trigger="blur"
-								data-parsley-required
-								data-parsley-type="email"
-								data-parsley-iff="#signup_email"
-								data-parsley-iff-message="<?php esc_attr_e( 'Email addresses must match.', 'commons-in-a-box' ); ?>"
-								data-parsley-group="email"
-								/>
-							</div>
-
-							<div data-parsley-children-should-match class="form-group">
-								<label class="control-label" for="signup_password"><?php esc_html_e( 'Choose a Password', 'commons-in-a-box' ); ?> <?php esc_html_e( '(required)', 'commons-in-a-box' ); ?></label>
-								<?php do_action( 'bp_signup_password_errors' ); ?>
-								<div class="password-field">
-									<input
-										class="form-control"
-										type="password"
-										name="signup_password"
-										id="signup_password"
-										value=""
-										data-parsley-trigger="blur"
-										data-parsley-required
-										data-parsley-group="password"
-										data-parsley-iff="#signup_password_confirm"
-										data-parsley-iff-message=""
-									/>
-
-									<div id="password-strength-notice" class="password-strength-notice"></div>
-								</div>
-
-								<label class="control-label" for="signup_password_confirm"><?php esc_html_e( 'Confirm Password', 'commons-in-a-box' ); ?> <?php esc_html_e( '(required)', 'commons-in-a-box' ); ?></label>
-								<?php do_action( 'bp_signup_password_confirm_errors' ); ?>
-								<input
-									class="form-control password-field"
-									type="password"
-									name="signup_password_confirm"
-									id="signup_password_confirm"
-									value=""
-									data-parsley-trigger="blur"
-									data-parsley-required
-									data-parsley-group="password"
-									data-parsley-iff="#signup_password"
-									data-parsley-iff-message="<?php esc_attr_e( 'Passwords must match.', 'commons-in-a-box' ); ?>"
-								/>
-							</div>
+							<?php bp_get_template_part( 'members/register-parts/username' ); ?>
+							<?php bp_get_template_part( 'members/register-parts/email' ); ?>
+							<?php bp_get_template_part( 'members/register-parts/password' ); ?>
 
 						</div><!-- #basic-details-section -->
 					</div>
