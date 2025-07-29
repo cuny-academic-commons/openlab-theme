@@ -42,7 +42,7 @@ $private_users = openlab_get_private_members_of_group( bp_get_group_id() );
 
 			<?php do_action( 'template_notices' ); ?>
 
-			<div class="panel panel-default">
+			<div id="panel-details" class="panel panel-default">
 				<div class="panel-heading"><?php esc_html_e( 'Details', 'commons-in-a-box' ); ?></div>
 				<div class="panel-body">
 
@@ -117,7 +117,7 @@ $private_users = openlab_get_private_members_of_group( bp_get_group_id() );
 					$docs_enabled  = openlab_is_docs_enabled_for_group();
 					$files_enabled = openlab_is_files_enabled_for_group();
 				?>
-				<div class="panel panel-default">
+				<div id="panel-communication-tools" class="panel panel-default">
 					<div class="panel-heading"><?php esc_html_e( 'Discussion, Docs, and File Library Settings', 'commons-in-a-box' ); ?></div>
 					<div class="panel-body">
 						<p id="discussion-settings-tag"><?php echo esc_html( $group_type->get_label( 'settings_help_text_discussion' ) ); ?></p>
@@ -140,7 +140,7 @@ $private_users = openlab_get_private_members_of_group( bp_get_group_id() );
 				$calendar_enabled    = openlab_is_calendar_enabled_for_group();
 				$event_create_access = openlab_get_group_event_create_access_setting( bp_get_current_group_id() );
 				?>
-				<div class="panel panel-default">
+				<div id="panel-calendar" class="panel panel-default">
 					<div class="panel-heading"><?php esc_html_e( 'Calendar Settings', 'commons-in-a-box' ); ?></div>
 					<div class="panel-body">
 						<p id="discussion-settings-tag"><?php echo esc_html( $group_type->get_label( 'settings_help_text_calendar' ) ); ?></p>
@@ -169,7 +169,7 @@ $private_users = openlab_get_private_members_of_group( bp_get_group_id() );
 			<?php endif; ?>
 
 			<?php /* "Related Links List Settings" */ ?>
-			<div class="panel panel-default">
+			<div id="panel-related-links" class="panel panel-default">
 				<div class="panel-heading"><?php esc_html_e( 'Related Links List Settings', 'commons-in-a-box' ); ?></div>
 				<div class="panel-body">
 					<p><?php echo esc_html( $group_type->get_label( 'settings_help_text_relatedlinks' ) ); ?></p>
@@ -205,7 +205,7 @@ $private_users = openlab_get_private_members_of_group( bp_get_group_id() );
 			</div>
 
 			<?php if ( ! cboxol_is_portfolio() && cboxol_get_portfolio_group_type() ) : ?>
-				<div class="panel panel-default">
+				<div id="panel-portfolio-list" class="panel panel-default">
 					<div class="panel-heading"><?php esc_html_e( 'Portfolio List Settings', 'commons-in-a-box' ); ?></div>
 					<div class="panel-body">
 						<p id="portfolio-list-settings-tag"><?php echo esc_html( $group_type->get_label( 'settings_help_text_portfoliolist' ) ); ?></p>
@@ -252,7 +252,7 @@ $private_users = openlab_get_private_members_of_group( bp_get_group_id() );
 
 			<?php if ( 'upload-image' === bp_get_avatar_admin_step() ) : ?>
 
-				<div class="panel panel-default">
+				<div id="panel-avatar" class="panel panel-default">
 					<div class="panel-heading"><?php esc_html_e( 'Upload Avatar', 'commons-in-a-box' ); ?></div>
 					<div class="panel-body">
 
@@ -313,7 +313,7 @@ $private_users = openlab_get_private_members_of_group( bp_get_group_id() );
 
 			<?php if ( 'crop-image' === bp_get_avatar_admin_step() ) : ?>
 
-				<div class="panel panel-default">
+				<div id="panel-avatar" class="panel panel-default">
 					<div class="panel-heading"><?php esc_html_e( 'Crop Avatar', 'commons-in-a-box' ); ?></div>
 					<div class="panel-body">
 

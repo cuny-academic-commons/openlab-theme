@@ -88,7 +88,7 @@ function openlab_group_privacy_settings_markup() {
 
 	?>
 
-	<div class="panel panel-default">
+	<div id="panel-privacy" class="panel panel-default">
 		<div class="panel-heading semibold"><?php esc_html_e( 'Privacy Settings', 'commons-in-a-box' ); ?></div>
 
 		<div class="radio group-profile panel-body">
@@ -173,7 +173,7 @@ function openlab_group_site_markup() {
 
 		<?php $group_site_url = openlab_get_group_site_url( $the_group_id ); ?>
 
-		<div class="panel panel-default">
+		<div id="panel-group-site" class="panel panel-default">
 			<div class="panel-heading"><?php esc_html_e( 'Associated Site Details', 'commons-in-a-box' ); ?></div>
 
 			<div class="panel-body">
@@ -453,7 +453,7 @@ function openlab_group_site_member_role_settings_markup() {
 	}
 
 	?>
-	<div class="panel panel-default member-roles">
+	<div id="panel-member-roles" class="panel panel-default member-roles">
 		<div class="panel-heading semibold"><?php esc_html_e( 'Member Role Settings', 'commons-in-a-box' ); ?></div>
 
 		<div class="group-profile panel-body">
@@ -574,7 +574,7 @@ function openlab_group_site_privacy_settings_markup() {
 
 	?>
 
-		<div class="panel panel-default" id="associated-site-privacy-panel">
+		<div id="panel-site-privacy" class="panel panel-default" id="associated-site-privacy-panel">
 			<div class="panel-heading semibold"><?php esc_html_e( 'Associated Site Privacy Settings', 'commons-in-a-box' ); ?></div>
 			<div class="panel-body">
 				<p class="privacy-settings-tag-c"><?php esc_html_e( 'These settings affect how others view your associated site.', 'commons-in-a-box' ); ?></p>
@@ -627,7 +627,7 @@ function openlab_group_site_privacy_settings_markup() {
 		<?php wp_nonce_field( 'openlab_site_status', 'openlab-site-status-nonce', false ); ?>
 
 		<?php if ( bp_is_group_create() && cboxol_is_portfolio() ) : ?>
-			<div class="panel panel-default">
+			<div id="panel-portfolio-link" class="panel panel-default">
 				<div class="panel-heading semibold"><?php esc_html_e( 'Portfolio Link on my Profile', 'commons-in-a-box' ); ?></div>
 				<div class="panel-body">
 					<p><?php esc_html_e( 'You can choose to show a link to your Portfolio on your Profile page by checking the box below.', 'commons-in-a-box' ); ?></p>
@@ -662,7 +662,7 @@ function openlab_group_url_markup() {
 
 	?>
 
-	<div class="panel panel-default" id="url-panel">
+	<div id="panel-group-url" class="panel panel-default" id="url-panel">
 		<div class="panel-heading semibold"><label for="group-url"><?php esc_html_e( 'URL (required)', 'commons-in-a-box' ); ?></label></div>
 
 		<div class="panel-body">
@@ -1192,7 +1192,7 @@ function openlab_group_privacy_settings( $group_type ) {
 
 	?>
 
-	<div class="panel panel-default">
+	<div id="panel-privacy" class="panel panel-default">
 		<div class="panel-heading semibold"><?php esc_html_e( 'Privacy Settings', 'commons-in-a-box' ); ?></div>
 
 		<div class="radio group-profile panel-body">
@@ -1243,7 +1243,7 @@ function openlab_group_privacy_settings( $group_type ) {
 
 	<?php $site_id = openlab_get_site_id_by_group_id(); ?>
 	<?php if ( $site_id ) : ?>
-		<div class="panel panel-default">
+		<div id="panel-site-privacy" class="panel panel-default">
 			<div class="panel-heading semibold"><?php esc_html_e( 'Associated Site', 'commons-in-a-box' ); ?></div>
 			<div class="panel-body">
 				<p class="privacy-settings-tag-c"><?php esc_html_e( 'These settings affect how others view your associated site.', 'commons-in-a-box' ); ?></p>
@@ -1293,7 +1293,7 @@ function openlab_group_privacy_membership_settings_markup() {
 
 	?>
 
-	<div class="panel panel-default panel-privacy-membership-settings <?php echo esc_attr( $class ); ?>">
+	<div id="panel-privacy-membership" class="panel panel-default panel-privacy-membership-settings <?php echo esc_attr( $class ); ?>">
 		<div class="panel-heading semibold"><?php esc_html_e( 'Privacy Settings: Membership', 'commons-in-a-box' ); ?></div>
 		<div class="panel-body">
 			<div class="privacy-membership-settings-public">
