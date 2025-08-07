@@ -42,7 +42,7 @@ $private_users = openlab_get_private_members_of_group( bp_get_group_id() );
 
 			<?php do_action( 'template_notices' ); ?>
 
-			<div class="panel panel-default">
+			<div id="panel-details" class="panel panel-default">
 				<div class="panel-heading"><?php esc_html_e( 'Details', 'commons-in-a-box' ); ?></div>
 				<div class="panel-body">
 
@@ -117,7 +117,7 @@ $private_users = openlab_get_private_members_of_group( bp_get_group_id() );
 					$docs_enabled  = openlab_is_docs_enabled_for_group();
 					$files_enabled = openlab_is_files_enabled_for_group();
 				?>
-				<div class="panel panel-default">
+				<div id="panel-communication-tools" class="panel panel-default">
 					<div class="panel-heading"><?php esc_html_e( 'Discussion, Docs, and File Library Settings', 'commons-in-a-box' ); ?></div>
 					<div class="panel-body">
 						<p id="discussion-settings-tag"><?php echo esc_html( $group_type->get_label( 'settings_help_text_discussion' ) ); ?></p>
@@ -140,7 +140,7 @@ $private_users = openlab_get_private_members_of_group( bp_get_group_id() );
 				$calendar_enabled    = openlab_is_calendar_enabled_for_group();
 				$event_create_access = openlab_get_group_event_create_access_setting( bp_get_current_group_id() );
 				?>
-				<div class="panel panel-default">
+				<div id="panel-calendar" class="panel panel-default">
 					<div class="panel-heading"><?php esc_html_e( 'Calendar Settings', 'commons-in-a-box' ); ?></div>
 					<div class="panel-body">
 						<p id="discussion-settings-tag"><?php echo esc_html( $group_type->get_label( 'settings_help_text_calendar' ) ); ?></p>
@@ -169,7 +169,7 @@ $private_users = openlab_get_private_members_of_group( bp_get_group_id() );
 			<?php endif; ?>
 
 			<?php /* "Related Links List Settings" */ ?>
-			<div class="panel panel-default">
+			<div id="panel-related-links" class="panel panel-default">
 				<div class="panel-heading"><?php esc_html_e( 'Related Links List Settings', 'commons-in-a-box' ); ?></div>
 				<div class="panel-body">
 					<p><?php echo esc_html( $group_type->get_label( 'settings_help_text_relatedlinks' ) ); ?></p>
@@ -205,7 +205,7 @@ $private_users = openlab_get_private_members_of_group( bp_get_group_id() );
 			</div>
 
 			<?php if ( ! cboxol_is_portfolio() && cboxol_get_portfolio_group_type() ) : ?>
-				<div class="panel panel-default">
+				<div id="panel-portfolio-list" class="panel panel-default">
 					<div class="panel-heading"><?php esc_html_e( 'Portfolio List Settings', 'commons-in-a-box' ); ?></div>
 					<div class="panel-body">
 						<p id="portfolio-list-settings-tag"><?php echo esc_html( $group_type->get_label( 'settings_help_text_portfoliolist' ) ); ?></p>
@@ -252,7 +252,7 @@ $private_users = openlab_get_private_members_of_group( bp_get_group_id() );
 
 			<?php if ( 'upload-image' === bp_get_avatar_admin_step() ) : ?>
 
-				<div class="panel panel-default">
+				<div id="panel-avatar" class="panel panel-default">
 					<div class="panel-heading"><?php esc_html_e( 'Upload Avatar', 'commons-in-a-box' ); ?></div>
 					<div class="panel-body">
 
@@ -313,7 +313,7 @@ $private_users = openlab_get_private_members_of_group( bp_get_group_id() );
 
 			<?php if ( 'crop-image' === bp_get_avatar_admin_step() ) : ?>
 
-				<div class="panel panel-default">
+				<div id="panel-avatar" class="panel panel-default">
 					<div class="panel-heading"><?php esc_html_e( 'Crop Avatar', 'commons-in-a-box' ); ?></div>
 					<div class="panel-body">
 
@@ -449,6 +449,20 @@ $private_users = openlab_get_private_members_of_group( bp_get_group_id() );
 					'exclude_banned' => false,
 				];
 
+				$sort_options = array(
+					'active'       => __( 'Last Active', 'commons-in-a-box' ),
+					'last_joined'  => __( 'Newest', 'commons-in-a-box' ),
+					'alphabetical' => __( 'Alphabetical', 'commons-in-a-box' ),
+				);
+
+				// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+				$current_sort_order = isset( $_GET['gmsort'] ) ? sanitize_text_field( wp_unslash( $_GET['gmsort'] ) ) : 'active';
+				if ( ! isset( $sort_options[ $current_sort_order ] ) ) {
+					$current_sort_order = 'active';
+				}
+
+				$manage_members_args['type'] = $current_sort_order;
+
 				/**
 				 * Filters the arguments used to query members on the Manage Members screen.
 				 *
@@ -462,20 +476,38 @@ $private_users = openlab_get_private_members_of_group( bp_get_group_id() );
 				<?php if ( bp_group_has_members( $manage_members_args ) ) : ?>
 					<h4><?php esc_html_e( 'Members', 'commons-in-a-box' ); ?></h4>
 
-					<?php if ( bp_group_member_needs_pagination() ) : ?>
-						<div class="group-manage-members-pagination">
+					<div class="row actions-flex-row group-member-actions-row group-manage-members-pagination">
+						<?php if ( bp_group_member_needs_pagination() ) : ?>
 							<div class="pagination no-ajax">
 								<div id="member-admin-pagination-top" class="group-manage-members-pagination-links pagination-links">
 									<?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 									<?php echo openlab_members_pagination_links( 'mlpage' ); ?>
 								</div>
 							</div>
+						<?php endif; ?>
 
-							<div class="pag-count">
-								<?php bp_group_member_pagination_count(); ?>
+						<div class="group-member-right-actions">
+							<?php if ( bp_group_member_needs_pagination() ) : ?>
+								<div class="pag-count">
+									<?php bp_group_member_pagination_count(); ?>
+								</div>
+							<?php endif; ?>
+
+							<div class="group-member-sort">
+								<label class="screen-reader-text" for="gmsort"><?php esc_html_e( 'Sort by', 'commons-in-a-box' ); ?></label>
+								<select name="gmsort" id="gmsort" class="form-control">
+									<?php
+
+									foreach ( $sort_options as $key => $value ) {
+										?>
+										<option value="<?php echo esc_attr( $key ); ?>" <?php selected( $key, $current_sort_order ); ?>><?php echo esc_html( $value ); ?></option>
+										<?php
+									}
+									?>
+								</select>
 							</div>
 						</div>
-					<?php endif; ?>
+					</div>
 
 					<div id="group-manage-members" class="item-list inline-element-list row group-manage-members group-list">
 						<?php

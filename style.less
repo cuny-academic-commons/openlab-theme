@@ -4,7 +4,7 @@ Theme URL: https://commonsinabox.org
 Description: Commons In A Box theme, based on the OpenLab at City Tech.
 Author: The Commons In A Box OpenLab team
 Author URI: https://commonsinabox.org
-Version: 1.6.0
+Version: 1.7.0
 Text Domain: commons-in-a-box
 */
 
@@ -1033,7 +1033,7 @@ body{
         top: -1000em;
         &:focus{
             background: @primaryColor none repeat scroll 0 0;
-            color: @80gray;
+            color: @loginTextColor;
             display: block;
             font-size: 14px;
             font-weight: bold;
@@ -1319,6 +1319,27 @@ body{
 				margin-right: 16px;
 			}
 		}
+	}
+}
+.panel-privacy-membership-settings {
+	&.hidden-group {
+		display: none;
+	}
+
+	&.public-group {
+		.privacy-membership-settings-private {
+			display: none;
+		}
+	}
+
+	&.private-group {
+		.privacy-membership-settings-public {
+			display: none;
+		}
+	}
+
+	.panel-body label {
+		font-weight: normal;
 	}
 }
 /**shortcodes**/
@@ -2847,6 +2868,39 @@ input#group-request-send {
     }
 }
 
+.actions-flex-row {
+	align-items: center;
+	display: flex;
+	gap: 12px;
+	justify-content: space-between;
+
+	& > div {
+		flex: 1;
+	}
+
+	@media ( max-width: @screen-xs-max ) {
+		flex-direction: column;
+		align-items: flex-start;
+	}
+}
+
+.group-member-right-actions {
+	align-items: center;
+	display: flex;
+	gap: 12px;
+	justify-content: flex-end;
+
+	/* Shown with JS */
+	.group-member-sort {
+		display: none;
+		visibility: hidden;
+	}
+
+	select.form-control {
+		margin-bottom: 0;
+	}
+}
+
 .group-manage-members-pagination {
 	align-items: center;
 	display: flex;
@@ -2971,6 +3025,15 @@ h3#message-subject {
 	.upload-new-file {
 		padding-top: 18px;
 		padding-right: 8px;
+	}
+
+	input, textarea {
+		width: 100%;
+	}
+
+	input[type="radio"],
+	input[type="submit"] {
+		width: auto;
 	}
 
     @media (max-width: @screen-xs-max){
@@ -4199,6 +4262,53 @@ body .oplb-bs #wpadminbar #wp-toolbar {
 	}
 }
 
+.openlab-sitewide-notice {
+	align-items: center;
+	display: flex;
+	height: 40px;
+	padding: 10px 20px;
+	justify-content: center;
+	width: 100%;
+
+	@media (max-width: 600px) {
+		height: auto;
+		padding-right: 60px;
+	}
+
+	a {
+		text-decoration: underline;
+
+		&:hover {
+			text-decoration: none;
+		}
+	}
+
+	button.notice-dismiss {
+		background: transparent;
+		border: none;
+		position: absolute;
+		right: 30px;
+		font: normal normal normal 14px/1 FontAwesome;
+	}
+
+	&.is-dismissable {
+		padding-right: 70px;
+	}
+
+	.notice-text {
+		p {
+			font-size: 14px;
+			padding: 0;
+			margin: 0;
+		}
+	}
+}
+
+body.has-sitewide-notice {
+	.navbar-default {
+		padding-bottom: 40px;
+	}
+}
 
 /**Custom media query items**/
 @media(max-width:@screen-xs-max){

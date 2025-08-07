@@ -4,7 +4,7 @@ Theme URL: https://commonsinabox.org
 Description: Commons In A Box theme, based on the OpenLab at City Tech.
 Author: The Commons In A Box OpenLab team
 Author URI: https://commonsinabox.org
-Version: 1.6.0
+Version: 1.7.0
 Text Domain: commons-in-a-box
 */
 /**import bootstrap**/
@@ -8120,7 +8120,7 @@ body .skip-link {
 }
 body .skip-link:focus {
   background: #a9280e none repeat scroll 0 0;
-  color: #333333;
+  color: #fff;
   display: block;
   font-size: 14px;
   font-weight: bold;
@@ -8404,6 +8404,18 @@ body label.block {
 .panel-avatar-privacy .panel-body .radio label {
   font-weight: normal;
   margin-right: 16px;
+}
+.panel-privacy-membership-settings.hidden-group {
+  display: none;
+}
+.panel-privacy-membership-settings.public-group .privacy-membership-settings-private {
+  display: none;
+}
+.panel-privacy-membership-settings.private-group .privacy-membership-settings-public {
+  display: none;
+}
+.panel-privacy-membership-settings .panel-body label {
+  font-weight: normal;
 }
 /**shortcodes**/
 .callout-list .row {
@@ -9914,6 +9926,35 @@ input#group-request-send {
 .group-members.group-list .group-item-membership-privacy label:hover {
   cursor: pointer;
 }
+.actions-flex-row {
+  align-items: center;
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+}
+.actions-flex-row > div {
+  flex: 1;
+}
+@media (max-width: 767px) {
+  .actions-flex-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+.group-member-right-actions {
+  align-items: center;
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  /* Shown with JS */
+}
+.group-member-right-actions .group-member-sort {
+  display: none;
+  visibility: hidden;
+}
+.group-member-right-actions select.form-control {
+  margin-bottom: 0;
+}
 .group-manage-members-pagination {
   align-items: center;
   display: flex;
@@ -10011,6 +10052,14 @@ h3#message-subject {
 #bp-group-documents .upload-new-file {
   padding-top: 18px;
   padding-right: 8px;
+}
+#bp-group-documents input,
+#bp-group-documents textarea {
+  width: 100%;
+}
+#bp-group-documents input[type="radio"],
+#bp-group-documents input[type="submit"] {
+  width: auto;
 }
 @media (max-width: 767px) {
   #bp-group-documents #bp-group-documents-sorting .sorting-column {
@@ -11216,6 +11265,44 @@ body .oplb-bs #wpadminbar #wp-toolbar {
 }
 body .oplb-bs #wpadminbar #wp-toolbar .ab-sub-wrapper {
   margin-top: 0;
+}
+.openlab-sitewide-notice {
+  align-items: center;
+  display: flex;
+  height: 40px;
+  padding: 10px 20px;
+  justify-content: center;
+  width: 100%;
+}
+@media (max-width: 600px) {
+  .openlab-sitewide-notice {
+    height: auto;
+    padding-right: 60px;
+  }
+}
+.openlab-sitewide-notice a {
+  text-decoration: underline;
+}
+.openlab-sitewide-notice a:hover {
+  text-decoration: none;
+}
+.openlab-sitewide-notice button.notice-dismiss {
+  background: transparent;
+  border: none;
+  position: absolute;
+  right: 30px;
+  font: normal normal normal 14px/1 FontAwesome;
+}
+.openlab-sitewide-notice.is-dismissable {
+  padding-right: 70px;
+}
+.openlab-sitewide-notice .notice-text p {
+  font-size: 14px;
+  padding: 0;
+  margin: 0;
+}
+body.has-sitewide-notice .navbar-default {
+  padding-bottom: 40px;
 }
 /**Custom media query items**/
 @media (max-width: 767px) {

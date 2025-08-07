@@ -37,12 +37,15 @@ class Openlab_Clone_Course_Group {
 	protected function migrate_groupmeta() {
 		$keys = array(
 			'ass_default_subscription',
+			'bp-docs',
 			'bpdocs',
 			'external_site_comments_feed',
 			'external_site_posts_feed',
 			'external_site_type',
 			'external_site_url',
+			'group_documents_documents_disabled',
 			'invite_status',
+			'openlab_disable_forum',
 		);
 
 		foreach ( $keys as $k ) {

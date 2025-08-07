@@ -20,6 +20,17 @@
 		}
 	);
 
+	// 'Dismissable' toggle should be turned on whenever user checks 'Enable Main Site...'
+	wp.customize( 'sitewide_notice_toggle', function( toggleSetting ) {
+		toggleSetting.bind( function( isChecked ) {
+			if ( isChecked ) {
+				wp.customize( 'sitewide_notice_dismissable_toggle', function( dismissableSetting ) {
+					dismissableSetting.set( true );
+				});
+			}
+		});
+	});
+
 	$( window ).load(
 		function () {
 			var editorIds = [ 'openlab_footer_left_content', 'openlab_footer_middle_content' ];

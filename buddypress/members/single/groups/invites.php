@@ -21,20 +21,23 @@
 					'html'    => false,
 				)
 			);
+
+			$group_permalink = bp_get_group_url( groups_get_current_group() );
+
 			?>
 
 			<div class="group-item col-xs-12">
 				<div class="group-item-wrapper">
 					<div class="row info-row">
 						<div class="item-avatar alignleft col-xs-7">
-							<a href="<?php bp_group_permalink(); ?>"><img class="img-responsive" src="<?php echo esc_attr( $group_avatar ); ?>" alt="<?php echo esc_html( bp_get_group_name() ); ?>"/></a>
+							<a href="<?php echo esc_url( $group_permalink ); ?>"><img class="img-responsive" src="<?php echo esc_attr( $group_avatar ); ?>" alt="<?php echo esc_html( bp_get_group_name() ); ?>"/></a>
 						</div>
 						<div class="item col-xs-17">
-							<p class="item-title h2"><a class="no-deco truncate-on-the-fly" href="<?php bp_group_permalink(); ?>" data-basevalue="65" data-minvalue="20" data-basewidth="280"><?php bp_group_name(); ?></a></p>
+							<p class="item-title h2"><a class="no-deco truncate-on-the-fly" href="<?php echo esc_url( $group_permalink ); ?>" data-basevalue="65" data-minvalue="20" data-basewidth="280"><?php bp_group_name(); ?></a></p>
 
 							<div class="description-line">
 								<?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-								<p class="truncate-on-the-fly" data-link="<?php echo bp_get_group_permalink(); ?>" data-basevalue="100" data-basewidth="280"><?php echo bp_get_group_description_excerpt(); ?></p>
+								<p class="truncate-on-the-fly" data-link="<?php echo esc_url( $group_permalink ); ?>" data-basevalue="100" data-basewidth="280"><?php echo bp_get_group_description_excerpt(); ?></p>
 								<?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 								<p class="original-copy hidden"><?php echo bp_get_group_description_excerpt(); ?></p>
 							</div>

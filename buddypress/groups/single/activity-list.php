@@ -11,10 +11,9 @@
 	$group_slug = bp_get_group_slug();
 	$group_type = cboxol_get_group_group_type( bp_get_current_group_id() );
 
-	$group     = groups_get_current_group();
-	$group_url = bp_get_group_permalink( $group );
+	$group = groups_get_current_group();
 
-	if ( current_user_can( 'view_private_members_of_group', $group->id ) ) {
+	if ( current_user_can( 'view_private_members_of_group', [ 'group_id' => $group->id ] ) ) {
 		$group_private_members = [];
 	} else {
 		$group_private_members = openlab_get_private_members_of_group( $group->id );
@@ -37,7 +36,7 @@
 						<div class="col-sm-12">
 							<div class="recent-discussions">
 								<div class="recent-posts">
-									<h2 class="title activity-title"><a class="no-deco" href="<?php echo esc_attr( $group_url ); ?>/forum/"><?php esc_html_e( 'Recent Discussions', 'commons-in-a-box' ); ?><span class="fa fa-chevron-circle-right" aria-hidden="true"></span></a></h2>
+									<h2 class="title activity-title"><a class="no-deco" href="<?php echo esc_attr( bp_get_group_url( $group, bp_groups_get_path_chunks( [ 'forum' ] ) ) ); ?>"><?php esc_html_e( 'Recent Discussions', 'commons-in-a-box' ); ?><span class="fa fa-chevron-circle-right" aria-hidden="true"></span></a></h2>
 									<?php
 									$forum_id  = null;
 									$forum_ids = bbp_get_group_forum_ids( bp_get_current_group_id() );
@@ -88,7 +87,7 @@
 													?>
 
 													<?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-													<?php echo openlab_get_group_activity_content( bbp_get_topic_title(), $last_topic_content, bbp_get_topic_permalink() ); ?>
+													<?php echo openlab_get_group_activity_content( bbp_get_topic_title(), $last_reply_content, bbp_get_topic_permalink() ); ?>
 
 												</div>
 											</div>
@@ -109,7 +108,7 @@
 						<div class="col-sm-12">
 							<div id="recent-docs">
 								<div class="recent-posts">
-									<h2 class="title activity-title"><a class="no-deco" href="<?php echo esc_attr( $group_url ); ?><?php echo esc_attr( bp_docs_get_slug() ); ?>/"><?php esc_html_e( 'Recent Docs', 'commons-in-a-box' ); ?><span class="fa fa-chevron-circle-right" aria-hidden="true"></span></a></h2>
+									<h2 class="title activity-title"><a class="no-deco" href="<?php echo esc_url( bp_get_group_url( $group, bp_groups_get_path_chunks( [ bp_docs_get_slug() ] ) ) ); ?>"><?php esc_html_e( 'Recent Docs', 'commons-in-a-box' ); ?><span class="fa fa-chevron-circle-right" aria-hidden="true"></span></a></h2>
 									<?php
 
 									$docs_query = new BP_Docs_Query(
@@ -151,12 +150,16 @@
 				<div id="members-list" class="info-group">
 
 					<?php
-					$group_permalink = bp_get_group_permalink( $group );
-
 					if ( bp_is_item_admin() || bp_is_item_mod() ) {
-						$href = $group_permalink . '/admin/manage-members/';
+						$href = bp_get_group_url(
+							$group,
+							bp_groups_get_path_chunks( [ 'admin', 'manage-members' ] )
+						);
 					} else {
-						$href = $group_permalink . '/members/';
+						$href = bp_get_group_url(
+							$group,
+							bp_groups_get_path_chunks( [ 'members' ] )
+						);
 					}
 					?>
 

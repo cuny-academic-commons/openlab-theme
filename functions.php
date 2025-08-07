@@ -1,6 +1,6 @@
 <?php
 
-define( 'OPENLAB_VERSION', '1.6.0-1723126444908' );
+define( 'OPENLAB_VERSION', '1.7.0-1754576688378' );
 
 if ( ! defined( 'CSS_DEBUG' ) ) {
 	define( 'CSS_DEBUG', false );
@@ -154,6 +154,7 @@ require_once get_template_directory() . '/lib/sidebar-funcs.php';
 require_once get_template_directory() . '/lib/plugin-hooks.php';
 require_once get_template_directory() . '/lib/theme-hooks.php';
 require_once get_template_directory() . '/lib/widgets.php';
+require_once get_template_directory() . '/lib/sitewide-notice.php';
 
 require_once get_template_directory() . '/lib/customizer.php';
 require_once get_template_directory() . '/lib/buddypress.php';

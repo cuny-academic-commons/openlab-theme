@@ -7367,7 +7367,7 @@ button.oplb-bs .close {
   border-bottom: none;
 }
 .oplb-bs #wpadminbar #wp-toolbar .ab-sub-wrapper .ab-submenu .submenu-title {
-  background: #9fd764;
+  background: #b6d498;
   margin-bottom: 16px;
   color: #333;
 }
@@ -7376,7 +7376,7 @@ button.oplb-bs .close {
   font-size: 14px;
 }
 .oplb-bs #wpadminbar #wp-toolbar .ab-sub-wrapper .ab-submenu .menu-bottom-link {
-  background: #9fd764;
+  background: #b6d498;
   padding: 9px 16px;
   text-align: right;
   border-radius: inherit;
@@ -7566,7 +7566,7 @@ button.oplb-bs .close {
   max-width: 220px;
 }
 .oplb-bs #wpadminbar #wp-toolbar #wp-admin-bar-my-account .ab-sub-wrapper {
-  left: 0;
+  left: auto;
   width: 150%;
   min-width: 250px;
 }

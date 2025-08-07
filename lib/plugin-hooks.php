@@ -87,9 +87,9 @@ function openlab_manage_members_email_status( $user_id = '', $group = '' ) {
 
 	$user_id = (int) $user_id;
 
-	$group_url = bp_get_group_permalink( $group ) . 'admin/manage-members/email';
+	$group_url = bp_get_group_manage_url( $group, bp_groups_get_path_chunks( [ 'manage-members', 'email' ], 'manage' ) );
 	$sub_type  = ass_get_group_subscription_status( $user_id, $group->id );
-	echo '<h5>Email Status</h5>';
+	echo '<h5>' . esc_html__( 'Email Status', 'commons-in-a-box' ) . '</h5>';
 
 	echo '<ul class="group-manage-members-bpges-status">';
 	echo '  <li><input name="group-manage-members-bpges-status-' . esc_attr( $user_id ) . '" type="radio" ' . checked( 'no', $sub_type, false ) . ' data-url="' . esc_url( wp_nonce_url( $group_url . '/no/' . $user_id . '/', 'ass_member_email_status' ) ) . '" value="no" /> ' . esc_html__( 'No Email', 'commons-in-a-box' ) . '</li>';
@@ -179,6 +179,9 @@ add_filter( 'bbp_topic_pagination', 'openlab_bbp_pagination' );
  * @return type
  */
 function openlab_bbp_paginatin_custom_markup( $pagination ) {
+	if ( ! $pagination ) {
+		return $pagination;
+	}
 
 	$pagination = str_replace( 'page-numbers', 'page-numbers pagination', $pagination );
 
@@ -594,7 +597,12 @@ function openlab_filter_bbpress_search_pagination_parameters( $r ) {
 	$search_paged = ! empty( $_GET['search_paged'] ) ? (int) $_GET['search_paged'] : 1;
 	// phpcs:enable WordPress.Security.NonceVerification.Recommended
 
-	$r['base']    = add_query_arg( 'bbp_search', $search_term, bp_get_group_permalink( groups_get_current_group() ) . 'forum/' ) . '&search_paged=%#%';
+	$r['base'] = add_query_arg(
+		'bbp_search',
+		$search_term,
+		bp_get_group_url( groups_get_current_group(), bp_groups_get_path_chunks( [ 'forum' ] ) )
+	) . '&search_paged=%#%';
+
 	$r['current'] = $search_paged;
 
 	return $r;

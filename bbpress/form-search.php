@@ -15,7 +15,7 @@ defined( 'ABSPATH' ) || exit;
 <?php if ( bbp_allow_search() ) : ?>
 
 	<div class="bbp-search-form">
-		<form role="search" method="get" id="bbp-search-form" action="<?php echo esc_url( bp_get_group_permalink( groups_get_current_group() ) ); ?>forum/">
+		<form role="search" method="get" id="bbp-search-form" action="<?php echo esc_url( bp_get_group_url( groups_get_current_group(), bp_groups_get_path_chunks( [ 'forum' ] ) ) ); ?>">
 			<div>
 				<label class="screen-reader-text hidden" for="bbp_search"><?php esc_html_e( 'Search for:', 'bbpress' ); ?></label>
 				<input type="text" value="<?php bbp_search_terms(); ?>" name="bbp_search" id="bbp_search" />

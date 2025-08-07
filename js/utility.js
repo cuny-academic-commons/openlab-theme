@@ -26,6 +26,8 @@
 			OpenLab.utility.adjustGridHeight();
 			OpenLab.utility.initClickableCards();
 			OpenLab.utility.initPortfolioProfileLinkToggle();
+			OpenLab.utility.initGroupMemberSort();
+			OpenLab.utility.initGroupStatusMembershipSettings();
 
 						// Home page column adjustments.
 						var groupTypeWidgets = $( '#home-right .activity-list' );
@@ -666,6 +668,56 @@
 					});
 				})
 			}
+		},
+
+		initGroupMemberSort: function() {
+			var $groupMemberSort = $( '.group-member-sort' );
+			if ( $groupMemberSort.length > 0 ) {
+				$groupMemberSort
+					.show()
+					.css( 'visibility', 'visible' )
+					.find( 'select' ).on( 'change', function() {
+						var selectedValue = $( this ).val();
+						var url = new URL( window.location.href );
+
+						// Update the gmsort param.
+						url.searchParams.set( 'gmsort', selectedValue );
+
+						// Remove paging param.
+						url.searchParams.delete( 'mlpage' );
+
+						window.location.href = url.toString();
+					} );
+			}
+		},
+
+		initGroupStatusMembershipSettings: function() {
+			this.hideShowMembershipSettings();
+
+			$( 'input[name="group-status"]' ).on(
+				'change',
+				function( e ) {
+					OpenLab.utility.hideShowMembershipSettings();
+				}
+			);
+		},
+
+		hideShowMembershipSettings: function() {
+			var membershipSettings = $( '.panel-privacy-membership-settings' );
+			if ( membershipSettings.length === 0 ) {
+				return;
+			}
+
+			var groupStatus = $( 'input[name="group-status"]:checked' ).val();
+			var statusClasses = [ 'public-group', 'private-group', 'hidden-group' ];
+
+			var newStatusClass = groupStatus + '-group';
+
+			if ( statusClasses.indexOf( newStatusClass ) === -1 ) {
+				return;
+			}
+
+			membershipSettings.removeClass( statusClasses.join( ' ' ) ).addClass( newStatusClass );
 		},
 
 		filterAjax: function () {

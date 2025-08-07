@@ -53,6 +53,7 @@ add_action( 'bp_after_group_details_admin', 'openlab_group_term_edit_markup', 4 
 add_action( 'bp_after_group_details_admin', 'openlab_group_contact_field', 5 );
 add_action( 'bp_after_group_details_admin', 'openlab_course_information_edit_panel', 8 );
 add_action( 'bp_after_group_details_admin', 'openlab_group_privacy_settings_markup', 12 );
+add_action( 'bp_after_group_details_admin', 'openlab_group_privacy_membership_settings_markup', 13 );
 add_action( 'bp_after_group_details_admin', 'openlab_group_badges_edit_panel', 14 );
 
 
@@ -65,15 +66,29 @@ function openlab_group_privacy_settings_markup() {
 		return;
 	}
 
-	$the_group    = groups_get_current_group();
-	$group_status = 'public';
+	$available_privacy_options = $group_type->get_available_privacy_options();
+
+	// Super admins can see all options.
+	if ( current_user_can( 'bp_moderate' ) ) {
+		$available_privacy_options = [ 'public', 'private', 'hidden' ];
+	}
+
+	$the_group = groups_get_current_group();
 	if ( $the_group ) {
 		$group_status = $the_group->status;
+	} else {
+		$default_privacy_option = $group_type->get_default_privacy_option();
+
+		if ( in_array( $default_privacy_option, $available_privacy_options, true ) ) {
+			$group_status = $default_privacy_option;
+		} else {
+			$group_status = $available_privacy_options[0];
+		}
 	}
 
 	?>
 
-	<div class="panel panel-default">
+	<div id="panel-privacy" class="panel panel-default">
 		<div class="panel-heading semibold"><?php esc_html_e( 'Privacy Settings', 'commons-in-a-box' ); ?></div>
 
 		<div class="radio group-profile panel-body">
@@ -86,26 +101,32 @@ function openlab_group_privacy_settings_markup() {
 
 			<div class="row">
 				<div class="col-sm-23 col-sm-offset-1">
-					<label><input type="radio" name="group-status" value="public" id="group-status-public" <?php checked( 'public', $group_status ); ?> /><?php esc_html_e( 'Public', 'commons-in-a-box' ); ?></label>
-					<ul>
-						<li><?php echo esc_html( $group_type->get_label( 'privacy_help_text_public_content' ) ); ?></li>
-						<li><?php echo esc_html( $group_type->get_label( 'privacy_help_text_public_directory' ) ); ?></li>
-						<li><?php echo esc_html( $group_type->get_label( 'privacy_help_text_public_membership' ) ); ?></li>
-					</ul>
+					<?php if ( in_array( 'public', $available_privacy_options, true ) ) : ?>
+						<label><input type="radio" name="group-status" value="public" id="group-status-public" <?php checked( 'public', $group_status ); ?> /><?php esc_html_e( 'Public', 'commons-in-a-box' ); ?></label>
+						<ul>
+							<li><?php echo esc_html( $group_type->get_label( 'privacy_help_text_public_content' ) ); ?></li>
+							<li><?php echo esc_html( $group_type->get_label( 'privacy_help_text_public_directory' ) ); ?></li>
+							<li><?php echo esc_html( $group_type->get_label( 'privacy_help_text_public_membership' ) ); ?></li>
+						</ul>
+					<?php endif; ?>
 
-					<label><input type="radio" name="group-status" value="private" id="group-status-private" <?php checked( 'private', $group_status ); ?> /><?php esc_html_e( 'Private', 'commons-in-a-box' ); ?></label>
-					<ul>
-						<li><?php echo esc_html( $group_type->get_label( 'privacy_help_text_private_content' ) ); ?></li>
-						<li><?php echo esc_html( $group_type->get_label( 'privacy_help_text_public_directory' ) ); ?></li>
-						<li><?php echo esc_html( $group_type->get_label( 'privacy_help_text_byrequest_membership' ) ); ?></li>
-					</ul>
+					<?php if ( in_array( 'private', $available_privacy_options, true ) ) : ?>
+						<label><input type="radio" name="group-status" value="private" id="group-status-private" <?php checked( 'private', $group_status ); ?> /><?php esc_html_e( 'Private', 'commons-in-a-box' ); ?></label>
+						<ul>
+							<li><?php echo esc_html( $group_type->get_label( 'privacy_help_text_private_content' ) ); ?></li>
+							<li><?php echo esc_html( $group_type->get_label( 'privacy_help_text_public_directory' ) ); ?></li>
+							<li><?php echo esc_html( $group_type->get_label( 'privacy_help_text_byrequest_membership' ) ); ?></li>
+						</ul>
+					<?php endif; ?>
 
-					<label><input type="radio" name="group-status" value="hidden" id="group-status-hidden" <?php checked( 'hidden', $group_status ); ?> /><?php esc_html_e( 'Hidden', 'commons-in-a-box' ); ?></label>
-					<ul>
-						<li><?php echo esc_html( $group_type->get_label( 'privacy_help_text_private_content' ) ); ?></li>
-						<li><?php echo esc_html( $group_type->get_label( 'privacy_help_text_private_directory' ) ); ?></li>
-						<li><?php echo esc_html( $group_type->get_label( 'privacy_help_text_invited_membership' ) ); ?></li>
-					</ul>
+					<?php if ( in_array( 'hidden', $available_privacy_options, true ) ) : ?>
+						<label><input type="radio" name="group-status" value="hidden" id="group-status-hidden" <?php checked( 'hidden', $group_status ); ?> /><?php esc_html_e( 'Hidden', 'commons-in-a-box' ); ?></label>
+						<ul>
+							<li><?php echo esc_html( $group_type->get_label( 'privacy_help_text_private_content' ) ); ?></li>
+							<li><?php echo esc_html( $group_type->get_label( 'privacy_help_text_private_directory' ) ); ?></li>
+							<li><?php echo esc_html( $group_type->get_label( 'privacy_help_text_invited_membership' ) ); ?></li>
+						</ul>
+					<?php endif; ?>
 				</div>
 			</div>
 
@@ -152,7 +173,7 @@ function openlab_group_site_markup() {
 
 		<?php $group_site_url = openlab_get_group_site_url( $the_group_id ); ?>
 
-		<div class="panel panel-default">
+		<div id="panel-group-site" class="panel panel-default">
 			<div class="panel-heading"><?php esc_html_e( 'Associated Site Details', 'commons-in-a-box' ); ?></div>
 
 			<div class="panel-body">
@@ -187,7 +208,7 @@ function openlab_group_site_markup() {
 						</p>
 
 						<?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-						<ul id="change-group-site"><li><?php echo $group_site_url_out; ?> <a class="button underline confirm" href="<?php echo esc_attr( wp_nonce_url( bp_get_group_permalink( groups_get_current_group() ) . 'admin/site-details/unlink-site/', 'unlink-site' ) ); ?>" id="change-group-site-toggle"><?php esc_html_e( 'Unlink', 'commons-in-a-box' ); ?></a></li></ul>
+						<ul id="change-group-site"><li><?php echo $group_site_url_out; ?> <a class="button underline confirm" href="<?php echo esc_attr( wp_nonce_url( bp_get_group_manage_url( groups_get_current_group(), bp_groups_get_path_chunks( [ 'site-details', 'unlink-site' ], 'manage' ) ), 'unlink-site' ) ); ?>" id="change-group-site-toggle"><?php esc_html_e( 'Unlink', 'commons-in-a-box' ); ?></a></li></ul>
 						<input type="hidden" id="site-is-external" value="<?php echo intval( $site_is_external ); ?>" />
 
 						<?php if ( ! $site_is_external ) : ?>
@@ -425,14 +446,14 @@ function openlab_group_site_member_role_settings_markup() {
 		$settings = [
 			'admin'  => 'administrator',
 			'mod'    => 'editor',
-			'member' => 'author',
+			'member' => cboxol_is_portfolio( bp_get_new_group_id() ) ? 'subscriber' : 'author',
 		];
 	} else {
 		$settings = openlab_get_group_member_role_settings( $the_group_id );
 	}
 
 	?>
-	<div class="panel panel-default member-roles">
+	<div id="panel-member-roles" class="panel panel-default member-roles">
 		<div class="panel-heading semibold"><?php esc_html_e( 'Member Role Settings', 'commons-in-a-box' ); ?></div>
 
 		<div class="group-profile panel-body">
@@ -538,40 +559,67 @@ function openlab_group_site_privacy_settings_markup() {
 		}
 	}
 
+	$allowed_site_privacy_options   = [ '1', '0', '-1', '-2', '-3' ];
+	$available_site_privacy_options = $allowed_site_privacy_options;
+
+	$group_type = cboxol_get_group_group_type( $group_id );
+	if ( ! is_wp_error( $group_type ) ) {
+		$available_site_privacy_options = $group_type->get_available_site_privacy_options();
+
+		if ( bp_is_group_create() ) {
+			// Overriding the above blog_public default with the default set by the admin.
+			$blog_public = $group_type->get_default_site_privacy_option();
+		}
+	}
+
 	?>
 
-		<div class="panel panel-default" id="associated-site-privacy-panel">
+		<div id="panel-site-privacy" class="panel panel-default" id="associated-site-privacy-panel">
 			<div class="panel-heading semibold"><?php esc_html_e( 'Associated Site Privacy Settings', 'commons-in-a-box' ); ?></div>
 			<div class="panel-body">
 				<p class="privacy-settings-tag-c"><?php esc_html_e( 'These settings affect how others view your associated site.', 'commons-in-a-box' ); ?></p>
 
 				<div class="radio group-site">
 
-					<h5><?php esc_html_e( 'Public', 'commons-in-a-box' ); ?></h5>
-					<div class="row">
-						<div class="col-sm-23">
-							<p><label for="blog-private1"><input id="blog-private1" type="radio" name="blog_public" value="1" <?php checked( '1', $blog_public ); ?> /><?php esc_html_e( 'Allow search engines to index this site. The site will show up in web search results.', 'commons-in-a-box' ); ?></label></p>
+					<?php if ( array_intersect( [ '1', '0' ], $available_site_privacy_options ) ) : ?>
+						<h5><?php esc_html_e( 'Public', 'commons-in-a-box' ); ?></h5>
+						<div class="row">
+							<div class="col-sm-23">
+								<?php if ( in_array( '1', $available_site_privacy_options, true ) ) : ?>
+									<p><label for="blog-private1"><input id="blog-private1" type="radio" name="blog_public" value="1" <?php checked( '1', $blog_public ); ?> /><?php esc_html_e( 'Allow search engines to index this site. The site will show up in web search results.', 'commons-in-a-box' ); ?></label></p>
+								<?php endif; ?>
 
-							<p><label for="blog-private0"><input id="blog-private0" type="radio" name="blog_public" value="0" <?php checked( '0', $blog_public ); ?> /><?php esc_html_e( 'Ask search engines not to index this site. The site should not show up in web search results.', 'commons-in-a-box' ); ?></label></p>
-							<p id="search-setting-note" class="group-setting-note italics note"><?php esc_html_e( 'Note: This option will NOT block access to the site. It is up to search engines to honor your request.', 'commons-in-a-box' ); ?></p>
+								<?php if ( in_array( '0', $available_site_privacy_options, true ) ) : ?>
+									<p><label for="blog-private0"><input id="blog-private0" type="radio" name="blog_public" value="0" <?php checked( '0', $blog_public ); ?> /><?php esc_html_e( 'Ask search engines not to index this site. The site should not show up in web search results.', 'commons-in-a-box' ); ?></label></p>
+									<p id="search-setting-note" class="group-setting-note italics note"><?php esc_html_e( 'Note: This option will NOT block access to the site. It is up to search engines to honor your request.', 'commons-in-a-box' ); ?></p>
+								<?php endif; ?>
+							</div>
 						</div>
-					</div>
+					<?php endif; ?>
 
-					<h5><?php esc_html_e( 'Private', 'commons-in-a-box' ); ?></h5>
-					<div class="row">
-						<div class="col-sm-23">
-							<p><label for="blog-private-1"><input id="blog-private-1" type="radio" name="blog_public" value="-1" <?php checked( '-1', $blog_public ); ?>><?php esc_html_e( 'I would like the site to be visible only to members of this community.', 'commons-in-a-box' ); ?></label></p>
+					<?php if ( array_intersect( [ '-1', '-2' ], $available_site_privacy_options ) ) : ?>
+						<h5><?php esc_html_e( 'Private', 'commons-in-a-box' ); ?></h5>
+						<div class="row">
+							<div class="col-sm-23">
+								<?php if ( in_array( '-1', $available_site_privacy_options, true ) ) : ?>
+									<p><label for="blog-private-1"><input id="blog-private-1" type="radio" name="blog_public" value="-1" <?php checked( '-1', $blog_public ); ?>><?php esc_html_e( 'I would like the site to be visible only to members of this community.', 'commons-in-a-box' ); ?></label></p>
+								<?php endif; ?>
 
-							<p><label for="blog-private-2"><input id="blog-private-2" type="radio" name="blog_public" value="-2" <?php checked( '-2', $blog_public ); ?>><?php esc_html_e( 'I would like the site to be visible to community members with a role on the associated site.', 'commons-in-a-box' ); ?></label></p>
+								<?php if ( in_array( '-2', $available_site_privacy_options, true ) ) : ?>
+									<p><label for="blog-private-2"><input id="blog-private-2" type="radio" name="blog_public" value="-2" <?php checked( '-2', $blog_public ); ?>><?php esc_html_e( 'I would like the site to be visible to community members with a role on the associated site.', 'commons-in-a-box' ); ?></label></p>
+								<?php endif; ?>
+							</div>
 						</div>
-					</div>
+					<?php endif; ?>
 
-					<h5><?php esc_html_e( 'Hidden', 'commons-in-a-box' ); ?></h5>
-					<div class="row">
-						<div class="col-sm-23">
-							<p><label for="blog-private-3"><input id="blog-private-3" type="radio" name="blog_public" value="-3" <?php checked( '-3', $blog_public ); ?>><?php esc_html_e( 'I would like my site to be visible only to those members with an administrator role on the associated site.' ); ?></label></p>
+					<?php if ( in_array( '-3', $available_site_privacy_options, true ) ) : ?>
+						<h5><?php esc_html_e( 'Hidden', 'commons-in-a-box' ); ?></h5>
+						<div class="row">
+							<div class="col-sm-23">
+								<p><label for="blog-private-3"><input id="blog-private-3" type="radio" name="blog_public" value="-3" <?php checked( '-3', $blog_public ); ?>><?php esc_html_e( 'I would like my site to be visible only to those members with an administrator role on the associated site.' ); ?></label></p>
+							</div>
 						</div>
-					</div>
+					<?php endif; ?>
 				</div>
 			</div>
 		</div>
@@ -579,7 +627,7 @@ function openlab_group_site_privacy_settings_markup() {
 		<?php wp_nonce_field( 'openlab_site_status', 'openlab-site-status-nonce', false ); ?>
 
 		<?php if ( bp_is_group_create() && cboxol_is_portfolio() ) : ?>
-			<div class="panel panel-default">
+			<div id="panel-portfolio-link" class="panel panel-default">
 				<div class="panel-heading semibold"><?php esc_html_e( 'Portfolio Link on my Profile', 'commons-in-a-box' ); ?></div>
 				<div class="panel-body">
 					<p><?php esc_html_e( 'You can choose to show a link to your Portfolio on your Profile page by checking the box below.', 'commons-in-a-box' ); ?></p>
@@ -614,7 +662,7 @@ function openlab_group_url_markup() {
 
 	?>
 
-	<div class="panel panel-default" id="url-panel">
+	<div id="panel-group-url" class="panel panel-default" id="url-panel">
 		<div class="panel-heading semibold"><label for="group-url"><?php esc_html_e( 'URL (required)', 'commons-in-a-box' ); ?></label></div>
 
 		<div class="panel-body">
@@ -748,12 +796,14 @@ function openlab_group_avatar_markup() {
  * Post group-save actions.
  */
 add_action( 'groups_group_after_save', 'openlab_save_group_status' );
+add_action( 'groups_group_after_save', 'openlab_group_privacy_membership_save', 30 );
 add_action( 'groups_group_after_save', 'openlab_save_braille_status', 40 );
 add_action( 'groups_create_group_step_save_group-details', 'openlab_move_avatar_after_group_create' );
 add_action( 'groups_create_group_step_save_group-details', 'openlab_save_new_group_url' );
 add_action( 'groups_create_group_step_save_site-details', 'openlab_save_group_site' );
 add_action( 'groups_create_group_step_save_site-details', 'openlab_save_group_site_settings', 20 );
 add_action( 'groups_create_group_step_save_site-details', 'openlab_save_group_site_member_role_settings', 20 );
+add_action( 'groups_create_group_step_save_site-details', 'openlab_save_group_default_collaboration_tools', 30 );
 
 /**
  * Catches and processes group status setting.
@@ -992,6 +1042,38 @@ function openlab_save_group_site_settings() {
 }
 
 /**
+ * At group creation, save the default Collaboration Tools settings for this group type.
+ *
+ * @return void
+ */
+function openlab_save_group_default_collaboration_tools() {
+	$group_id     = bp_get_current_group_id();
+	$clone_source = cboxol_get_clone_source_group_id( $group_id );
+
+	// Do nothing for clones. These values are inherited.
+	if ( $clone_source ) {
+		return;
+	}
+
+	$group_type = cboxol_get_group_group_type( $group_id );
+
+	$default_collaboration_tools = $group_type->get_default_collaboration_tools();
+
+	if ( ! in_array( 'discussion', $default_collaboration_tools, true ) ) {
+		groups_update_groupmeta( $group_id, 'openlab_disable_forum', 1 );
+	}
+
+	$enable_docs                   = in_array( 'docs', $default_collaboration_tools, true );
+	$docs_settings                 = bp_docs_get_group_settings( $group_id );
+	$docs_settings['group-enable'] = (int) $enable_docs;
+	groups_update_groupmeta( $group_id, 'bp-docs', $docs_settings );
+
+	if ( ! in_array( 'files', $default_collaboration_tools, true ) ) {
+		groups_update_groupmeta( $group_id, 'group_documents_documents_disabled', 1 );
+	}
+}
+
+/**
  * Catches and processes admin-bar settings.
  */
 function openlab_save_group_site_admin_bar_settings() {
@@ -1057,6 +1139,35 @@ function openlab_save_group_site_member_role_settings() {
 }
 
 /**
+ * Save the group privacy membership settings after save.
+ *
+ * @param BP_Groups_Group $group
+ */
+function openlab_group_privacy_membership_save( $group ) {
+	if ( empty( $_POST['openlab-privacy-membership-nonce'] ) ) {
+		return;
+	}
+
+	check_admin_referer( 'openlab_privacy_membership_' . $group->id, 'openlab-privacy-membership-nonce' );
+
+	switch ( $group->status ) {
+		case 'public' :
+			$group_type = openlab_get_group_type( $group->id );
+
+			$disable = ! empty( $_POST['allow-joining-public'] ) ? '0' : '1';
+			groups_update_groupmeta( $group->id, 'disable_public_group_joining', $disable );
+
+			break;
+
+		case 'private' :
+			$disable = ! empty( $_POST['allow-joining-private'] ) ? '0' : '1';
+			groups_update_groupmeta( $group->id, 'disable_private_group_membership_requests', $disable );
+
+			break;
+	}
+}
+
+/**
  * This function consolidates the group privacy settings in one spot for easier updating
  */
 function openlab_group_privacy_settings( $group_type ) {
@@ -1081,7 +1192,7 @@ function openlab_group_privacy_settings( $group_type ) {
 
 	?>
 
-	<div class="panel panel-default">
+	<div id="panel-privacy" class="panel panel-default">
 		<div class="panel-heading semibold"><?php esc_html_e( 'Privacy Settings', 'commons-in-a-box' ); ?></div>
 
 		<div class="radio group-profile panel-body">
@@ -1132,7 +1243,7 @@ function openlab_group_privacy_settings( $group_type ) {
 
 	<?php $site_id = openlab_get_site_id_by_group_id(); ?>
 	<?php if ( $site_id ) : ?>
-		<div class="panel panel-default">
+		<div id="panel-site-privacy" class="panel panel-default">
 			<div class="panel-heading semibold"><?php esc_html_e( 'Associated Site', 'commons-in-a-box' ); ?></div>
 			<div class="panel-body">
 				<p class="privacy-settings-tag-c"><?php esc_html_e( 'These settings affect how others view your associated site.', 'commons-in-a-box' ); ?></p>
@@ -1150,6 +1261,153 @@ function openlab_group_privacy_settings( $group_type ) {
 		<?php
 	endif;
 }
+
+/**
+ * Markup for the 'Privacy Settings: Membership' section on group settings.
+ *
+ * @since 1.7.0
+ *
+ * @return void
+ */
+function openlab_group_privacy_membership_settings_markup() {
+	$group_id   = bp_get_current_group_id();
+	$group_type = cboxol_get_group_group_type( $group_id );
+
+	if ( ! $group_type || is_wp_error( $group_type ) ) {
+		return;
+	}
+
+	// We use this group for dynamic hiding/showing of the panel. This is the noscript fallback.
+	$status = groups_get_current_group()->status;
+	$class  = '';
+	if ( 'public' === $status ) {
+		$class = 'public-group';
+	} elseif ( 'private' === $status ) {
+		$class = 'private-group';
+	} elseif ( 'hidden' === $status ) {
+		$class = 'hidden-group';
+	}
+
+	$allow_joining_public  = ! openlab_public_group_has_disabled_joining( $group_id );
+	$allow_joining_private = ! openlab_private_group_has_disabled_membership_requests( $group_id );
+
+	?>
+
+	<div id="panel-privacy-membership" class="panel panel-default panel-privacy-membership-settings <?php echo esc_attr( $class ); ?>">
+		<div class="panel-heading semibold"><?php esc_html_e( 'Privacy Settings: Membership', 'commons-in-a-box' ); ?></div>
+		<div class="panel-body">
+			<div class="privacy-membership-settings-public">
+				<p><?php echo esc_html( $group_type->get_label( 'privacy_membership_settings_public' ) ); ?></p>
+
+				<p><input type="checkbox" id="allow-joining-public" name="allow-joining-public" value="1" <?php checked( $allow_joining_public ); ?> /> <label for="allow-joining-public"><?php echo esc_html( $group_type->get_label( 'allow_joining_public_label' ) ); ?></label></p>
+			</div>
+
+			<div class="privacy-membership-settings-private">
+				<p><?php echo esc_html( $group_type->get_label( 'privacy_membership_settings_private' ) ); ?></p>
+
+				<p><input type="checkbox" id="allow-joining-private" name="allow-joining-private" value="1" <?php checked( $allow_joining_private ); ?> <?php disabled( $group_is_inactive ); ?> /> <label for="allow-joining-private"><?php echo esc_html( $group_type->get_label( 'allow_joining_private_label' ) ); ?></label></p>
+			</div>
+		</div>
+	</div>
+
+	<?php
+
+	wp_nonce_field( 'openlab_privacy_membership_' . $group_id, 'openlab-privacy-membership-nonce' );
+}
+
+/**
+ * Determines whether public joining is disabled for a public group.
+ *
+ * @since 1.7.0
+ *
+ * @param int $group_id
+ * @return bool
+ */
+function openlab_public_group_has_disabled_joining( $group_id ) {
+	$raw = groups_get_groupmeta( $group_id, 'disable_public_group_joining', true );
+
+	if ( '' === $raw ) {
+		$group_type = cboxol_get_group_group_type( $group_id );
+		if ( ! $group_type || is_wp_error( $group_type ) ) {
+			return false;
+		}
+
+		$disabled = ! $group_type->get_default_joining_setting();
+	} else {
+		$disabled = '1' === $raw;
+	}
+
+	return $disabled;
+}
+
+/**
+ * Determines whether membership requesting is disabled for a private group.
+ *
+ * @since 1.7.0
+ *
+ * @param int $group_id
+ * @return bool
+ */
+function openlab_private_group_has_disabled_membership_requests( $group_id ) {
+	$raw = groups_get_groupmeta( $group_id, 'disable_private_group_membership_requests', true );
+
+	if ( '' === $raw ) {
+		$group_type = cboxol_get_group_group_type( $group_id );
+		if ( is_wp_error( $group_type ) ) {
+			return false;
+		}
+
+		$disabled = ! $group_type->get_default_joining_setting();
+	} else {
+		$disabled = '1' === $raw;
+	}
+
+	return $disabled;
+}
+
+/**
+ * Modify group nav according to 'joinable' settings.
+ *
+ * @since 1.7.0
+ *
+ * @return void
+ */
+function openlab_modify_nav_for_joinable_settings() {
+	if ( ! bp_is_group() ) {
+		return;
+	}
+
+	if ( ! is_user_logged_in() ) {
+		return;
+	}
+
+	$group_id = bp_get_current_group_id();
+	$group    = groups_get_group( $group_id );
+
+	if ( groups_is_user_member( bp_loggedin_user_id(), $group_id ) ) {
+		return;
+	}
+
+	switch ( $group->status ) {
+		case 'public' :
+			if ( openlab_public_group_has_disabled_joining( $group_id ) ) {
+				remove_action( 'bp_group_header_actions', 'bp_group_join_button', 5 );
+			}
+			break;
+
+		case 'private' :
+			if ( openlab_private_group_has_disabled_membership_requests( $group_id ) ) {
+				remove_action( 'bp_group_header_actions', 'bp_group_join_button', 5 );
+
+				if ( bp_is_current_action( 'request-membership' ) ) {
+					bp_core_redirect( bp_get_group_url( $group_id ) );
+					die;
+				}
+			}
+			break;
+	}
+}
+add_action( 'bp_screens', 'openlab_modify_nav_for_joinable_settings' );
 
 /**
  * AJAX handler for group slugs.
@@ -1408,7 +1666,7 @@ function openlab_add_site_subnav_to_group_admin() {
 			'name'              => _x( 'Site', 'Group admin nav item', 'commons-in-a-box' ),
 			'slug'              => 'site-details',
 			'position'          => 15,
-			'parent_url'        => bp_get_group_permalink( groups_get_current_group() ) . 'admin/',
+			'parent_url'        => bp_get_group_manage_url( groups_get_current_group() ),
 			'parent_slug'       => bp_get_current_group_slug() . '_manage',
 			'screen_function'   => 'openlab_group_site_settings',
 			'user_has_access'   => bp_is_item_admin(),
@@ -1438,7 +1696,12 @@ function openlab_group_site_settings() {
 
 		bp_core_add_message( __( 'Site settings successfully saved.', 'commons-in-a-box' ) );
 
-		bp_core_redirect( bp_get_group_permalink( groups_get_current_group() ) . 'admin/site-details/' );
+		$redirect_url = bp_get_group_manage_url(
+			groups_get_current_group(),
+			bp_groups_get_path_chunks( [ 'site-details' ], 'manage' )
+		);
+
+		bp_core_redirect( $redirect_url );
 	}
 
 	/**
@@ -1528,6 +1791,26 @@ function openlab_custom_group_buttons( $button ) {
 	return $button;
 }
 add_filter( 'bp_get_group_join_button', 'openlab_custom_group_buttons' );
+
+/**
+ * Ensures that all groups have a default value for 'invite_status'.
+ *
+ * The groupmeta was added in BP 14.0.0, and without it it's impossible to join
+ * a group.
+ *
+ * @param mixed  $value    The default value for the group metadata.
+ * @param int    $group_id The ID of the group.
+ * @param string $meta_key The metadata key.
+ * @return mixed The default value.
+ */
+function openlab_provide_default_group_invite_status( $value, $group_id, $meta_key ) {
+	if ( 'invite_status' === $meta_key && empty( $value ) ) {
+		return 'members';
+	}
+
+	return $value;
+}
+add_filter( 'default_group_metadata', 'openlab_provide_default_group_invite_status', 10, 3 );
 
 /**
  * Output the group subscription default settings
@@ -1792,7 +2075,7 @@ function openlab_show_site_posts_and_comments() {
 
 	switch ( $site_type ) {
 		case 'local':
-			if ( current_user_can( 'view_private_members_of_group', $group_id ) ) {
+			if ( current_user_can( 'view_private_members_of_group', [ 'group_id' => $group_id ] ) ) {
 				$group_private_members = [];
 				$post__not_in          = [];
 			} else {
@@ -1919,7 +2202,7 @@ function openlab_show_site_posts_and_comments() {
 						<?php endforeach ?>
 
 						<?php if ( 'external' === $site_type && groups_is_user_admin( bp_loggedin_user_id(), bp_get_current_group_id() ) ) : ?>
-							<p class="description"><?php esc_html_e( 'Feed updates automatically every 10 minutes', 'commons-in-a-box' ); ?> <a class="refresh-feed" id="refresh-posts-feed" href="<?php echo esc_attr( wp_nonce_url( add_query_arg( 'refresh_feed', 'posts', bp_get_group_permalink( groups_get_current_group() ) ), 'refresh-posts-feed' ) ); ?>"><?php esc_html_e( 'Refresh now', 'commons-in-a-box' ); ?></a></p>
+							<p class="description"><?php esc_html_e( 'Feed updates automatically every 10 minutes', 'commons-in-a-box' ); ?> <a class="refresh-feed" id="refresh-posts-feed" href="<?php echo esc_attr( wp_nonce_url( add_query_arg( 'refresh_feed', 'posts', bp_get_group_url( groups_get_current_group() ) ), 'refresh-posts-feed' ) ); ?>"><?php esc_html_e( 'Refresh now', 'commons-in-a-box' ); ?></a></p>
 						<?php endif ?>
 					</div><!-- .recent-posts -->
 				</div><!-- #recent-course -->
@@ -1944,7 +2227,7 @@ function openlab_show_site_posts_and_comments() {
 						<?php endif ?>
 
 						<?php if ( 'external' === $site_type && groups_is_user_admin( bp_loggedin_user_id(), bp_get_current_group_id() ) ) : ?>
-							<p class="refresh-message description"><?php esc_html_e( 'Feed updates automatically every 10 minutes', 'commons-in-a-box' ); ?> <a class="refresh-feed" id="refresh-posts-feed" href="<?php echo esc_attr( wp_nonce_url( add_query_arg( 'refresh_feed', 'comments', bp_get_group_permalink( groups_get_current_group() ) ), 'refresh-comments-feed' ) ); ?>"><?php esc_html_e( 'Refresh now', 'commons-in-a-box' ); ?></a></p>
+							<p class="refresh-message description"><?php esc_html_e( 'Feed updates automatically every 10 minutes', 'commons-in-a-box' ); ?> <a class="refresh-feed" id="refresh-posts-feed" href="<?php echo esc_attr( wp_nonce_url( add_query_arg( 'refresh_feed', 'comments', bp_get_group_url( groups_get_current_group() ) ), 'refresh-comments-feed' ) ); ?>"><?php esc_html_e( 'Refresh now', 'commons-in-a-box' ); ?></a></p>
 						<?php endif ?>
 
 					</div><!-- .recent-posts -->
@@ -3081,4 +3364,213 @@ function openlab_group_member_joined_since() {
 			gmdate( 'F j, Y', strtotime( $members_template->member->date_modified ) )
 		)
 	);
+}
+
+/**
+ * Can a user bulk-import members to a given group?
+ *
+ * @param int $group_id Group ID.
+ * @param int $user_id  User ID.
+ * @return bool
+ */
+function openlab_user_can_bulk_import_group_members( $group_id, $user_id ) {
+	// Only group admins can bulk-import members.
+	if ( ! groups_is_user_admin( $user_id, $group_id ) ) {
+		return false;
+	}
+
+	// No portfolios.
+	if ( cboxol_is_portfolio( $group_id ) ) {
+		return false;
+	}
+
+	$member_type = cboxol_get_user_member_type( $user_id );
+	if ( ! $member_type || is_wp_error( $member_type ) ) {
+		return false;
+	}
+
+	return $member_type->get_can_import_group_users();
+}
+
+/**
+ * Form processor for group bulk import.
+ */
+function openlab_group_bulk_import_members() {
+	if ( ! bp_is_group() || ! bp_is_current_action( 'invite-anyone' ) ) {
+		return;
+	}
+
+	if ( ! isset( $_POST['group-import-members-nonce'] ) ) {
+		return;
+	}
+
+	check_admin_referer( 'group_import_members', 'group-import-members-nonce' );
+
+	if ( ! openlab_user_can_bulk_import_group_members( bp_get_current_group_id(), bp_loggedin_user_id() ) ) {
+		return;
+	}
+
+	$emails_raw = wp_unslash( $_POST['email-addresses-to-import'] );
+
+	$lines  = preg_split( '/\R/', $emails_raw );
+	$emails = [];
+	foreach ( $lines as $line ) {
+		$line_emails = preg_split( '/[,\s]+/', $line );
+
+		$emails = array_merge( $emails, $line_emails );
+	}
+
+	$status = [
+		'success'         => [],
+		'invalid_address' => [],
+		'illegal_address' => [],
+		'not_found'       => [],
+	];
+
+	$group_type      = cboxol_get_group_group_type( bp_get_current_group_id() );
+	$group_type_slug = $group_type && ! is_wp_error( $group_type ) ? $group_type->get_slug() : '';
+
+	openlab_maybe_install_added_to_group_email();
+
+	foreach ( $emails as $email ) {
+		if ( ! is_email( $email ) ) {
+			$status['invalid_address'][] = $email;
+			continue;
+		}
+
+		$email_domains = get_site_option( 'limited_email_domains' );
+		if ( ! is_array( $email_domains ) ) {
+			// Split on commas and line breaks
+			$email_domains = preg_split( '/[\s,]+/', $email_domains );
+			$email_domains = array_filter( $email_domains );
+		}
+
+		if ( ! empty( $email_domains ) ) {
+			$emaildomain = strtolower( substr( $email, 1 + strpos( $email, '@' ) ) );
+			if ( ! in_array( $emaildomain, $email_domains, true ) ) {
+				$status['illegal_address'][] = $email;
+				continue;
+			}
+		}
+
+		if ( is_email_address_unsafe( $email ) ) {
+			$status['illegal_address'][] = $email;
+			continue;
+		}
+
+		$user = get_user_by( 'email', $email );
+		if ( ! $user ) {
+			$status['not_found'][] = $email;
+			continue;
+		}
+
+		// Already sent.
+		if ( in_array( $email, $status['success'], true ) ) {
+			continue;
+		}
+
+		// User is already a member of the group.
+		if ( groups_is_user_member( $user->ID, bp_get_current_group_id() ) ) {
+			$status['success'][] = $email;
+			continue;
+		}
+
+		groups_join_group( bp_get_current_group_id(), $user->ID );
+
+		$group = groups_get_current_group();
+
+		$group_name = stripslashes( $group->name );
+
+		$email_subject = sprintf(
+			// translators: %s is the group name.
+			__( 'You are now a member of %s', 'commons-in-a-box' ),
+			$group_name
+		);
+
+		$email_message = sprintf(
+			// translators: %1$s is the group name, %2$s is a link to the group.
+			__( '<p>You are now a member of %1$s.</p><p>Visit %2$s to make changes to your membership settings or to leave this course.</p>', 'commons-in-a-box' ),
+			$group_name,
+			sprintf( '<a href="%s">%s</a>', bp_get_group_url( $group ), $group_name )
+		);
+
+		$email_args = array(
+			'tokens' => array(
+				'usermessage'   => $email_message,
+				'usersubject'   => $email_subject,
+				'ol.group-name' => stripslashes( $group->name ),
+				'ol.group-url'  => bp_get_group_url( $group ),
+				'ol.group-type' => $group_type_slug,
+			),
+		);
+
+		bp_send_email(
+			'openlab-added-to-group',
+			$email,
+			$email_args
+		);
+
+		$status['success'][] = $email;
+	}
+
+	foreach ( $status as &$emails ) {
+		$emails = array_unique( $emails );
+	}
+
+	$timestamp = time();
+	groups_update_groupmeta( bp_get_current_group_id(), 'import_' . $timestamp, $status );
+
+	bp_core_redirect( bp_get_group_permalink( groups_get_current_group() ) . 'invite-anyone?import_id=' . $timestamp );
+}
+add_action( 'bp_actions', 'openlab_group_bulk_import_members' );
+
+/**
+ * Ensure the 'openlab-added-to-group' email is installed.
+ *
+ * @return void
+ */
+function openlab_maybe_install_added_to_group_email() {
+	$email_type = 'openlab-added-to-group';
+	$tax        = bp_get_email_tax_type();
+	$post_type  = bp_get_email_post_type();
+
+	// Bail if already exists.
+	if ( term_exists( $email_type, $tax ) ) {
+		return;
+	}
+
+	$post_title    = __( '[{{{site.name}}}] You are now a member of {{{ol.group-name}}}', 'commons-in-a-box' );
+	$html_content  = __( 'You are now a member of {{{ol.group-name}}}. Visit <a href="{{{ol.group-url}}}">{{{ol.group-name}}}</a> to make changes to your membership settings or to leave this {{{ol.group-type}}}.', 'commons-in-a-box' );
+	$plain_content = __( 'You are now a member of {{{ol.group-name}}}. Visit {{{ol.group-url}}} to make changes to your membership settings or to leave this {{{ol.group-type}}}.', 'commons-in-a-box' );
+
+	$situation_desc = __( 'A user has been added to a group via the Import tool.', 'commons-in-a-box' );
+
+	$post_id = wp_insert_post(
+		[
+			'post_title'   => $post_title,
+			'post_content' => $html_content,
+			'post_excerpt' => $plain_content,
+			'post_status'  => 'publish',
+			'post_type'    => $post_type,
+		]
+	);
+
+	if ( is_wp_error( $post_id ) ) {
+		return;
+	}
+
+	// Assign term and description.
+	$tt_ids = wp_set_object_terms( $post_id, $email_type, $tax );
+	if ( ! is_wp_error( $tt_ids ) && ! empty( $tt_ids[0] ) ) {
+		$term = get_term_by( 'term_taxonomy_id', (int) $tt_ids[0], $tax );
+		if ( $term && ! is_wp_error( $term ) ) {
+			wp_update_term(
+				$term->term_id,
+				$tax,
+				array(
+					'description' => $situation_desc,
+				)
+			);
+		}
+	}
 }

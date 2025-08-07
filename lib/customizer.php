@@ -9,6 +9,74 @@
  */
 function openlab_customizer_setup( $wp_customize ) {
 	require __DIR__ . '/class-customize-footer-section.php';
+	require __DIR__ . '/class-customize-quill-control.php';
+
+	// Sitewide Notice.
+	$wp_customize->add_setting(
+		'sitewide_notice_toggle',
+		[
+			'default'           => 0,
+			'transport'         => 'postMessage',
+			'sanitize_callback' => 'openlab_sanitize_customizer_setting_intval',
+		]
+	);
+
+	$wp_customize->add_setting(
+		'sitewide_notice_text',
+		array(
+			'default'           => '',
+			'transport'         => 'postMessage',
+			'sanitize_callback' => 'wp_kses_post',
+		)
+	);
+
+	$wp_customize->add_setting(
+		'sitewide_notice_dismissable_toggle',
+		[
+			'default'           => 0,
+			'transport'         => 'postMessage',
+			'sanitize_callback' => 'openlab_sanitize_customizer_setting_intval',
+		]
+	);
+
+	$wp_customize->add_section(
+		'openlab_section_sitewide_notice',
+		array(
+			'title'       => __( 'Main Site Banner Notice', 'commons-in-a-box' ),
+			'description' => __( 'Add a notice that will appear for logged-in site members across the top of all areas of the main site (homepage, group directories, and group home).', 'commons-in-a-box' ),
+		)
+	);
+
+	$wp_customize->add_control(
+		'sitewide_notice_toggle',
+		array(
+			'label'   => __( 'Enable Main Site banner notice', 'commons-in-a-box' ),
+			'section' => 'openlab_section_sitewide_notice',
+			'type'    => 'checkbox',
+		)
+	);
+
+	$wp_customize->add_control(
+		'sitewide_notice_dismissable_toggle',
+		array(
+			'label'   => __( 'Allow members to dismiss this notice', 'commons-in-a-box' ),
+			'section' => 'openlab_section_sitewide_notice',
+			'type'    => 'checkbox',
+		)
+	);
+
+	$wp_customize->add_control(
+		new Quill_Customizer_Control(
+			$wp_customize,
+			'sitewide_notice_text',
+			[
+				'label'       => __( 'Notice Text', 'your-textdomain' ),
+				'section'     => 'openlab_section_sitewide_notice',
+				'settings'    => 'sitewide_notice_text',
+				'description' => __( 'Enter the banner notice text of 120 characters or less, including spaces.', 'commons-in-a-box' ),
+			]
+		)
+	);
 
 	// Color Scheme
 	$wp_customize->remove_section( 'colors' );
@@ -307,6 +375,29 @@ add_action( 'customize_controls_print_styles', 'openlab_customizer_styles' );
 
 function openlab_customizer_scripts() {
 	wp_enqueue_script( 'openlab-theme-customizer', get_template_directory_uri() . '/js/customizer.js', array( 'customize-controls' ), openlab_get_asset_version(), true );
+
+	wp_enqueue_script(
+		'quill',
+		'https://cdn.quilljs.com/1.3.6/quill.min.js',
+		[],
+		OPENLAB_VERSION,
+		true
+	);
+
+	wp_enqueue_style(
+		'quill-css',
+		'https://cdn.quilljs.com/1.3.6/quill.snow.css',
+		[],
+		OPENLAB_VERSION
+	);
+
+	wp_enqueue_script(
+		'customizer-quill',
+		get_template_directory_uri() . '/js/customizer-quill.js',
+		[ 'quill', 'customize-controls' ],
+		OPENLAB_VERSION,
+		true
+	);
 }
 add_action( 'customize_controls_enqueue_scripts', 'openlab_customizer_scripts' );
 

@@ -57,7 +57,7 @@ $header_text = 'add' === $template->operation ? __( 'Add a New File', 'commons-i
 							<div class="col-sm-8 sorting-column">
 								<form id="bp-group-documents-sort-form" method="get" action="<?php echo esc_attr( $template->action_link ); ?>">
 									<label for="files-order-by"><?php esc_html_e( 'Order by:', 'commons-in-a-box' ); ?></label>
-									<select id="files-order-by" name="order" class="form-control group-documents-orderby">
+									<select id="files-order-by" name="bpgrd-order" class="form-control group-documents-orderby">
 										<option value="newest" <?php selected( 'newest', $template->order ); ?>><?php esc_html_e( 'Newest', 'commons-in-a-box' ); ?></option>
 										<option value="alpha" <?php selected( 'alpha', $template->order ); ?>><?php esc_html_e( 'Alphabetical', 'commons-in-a-box' ); ?></option>
 										<option value="popular" <?php selected( 'popular', $template->order ); ?>><?php esc_html_e( 'Most Popular', 'commons-in-a-box' ); ?></option>
@@ -108,12 +108,16 @@ $header_text = 'add' === $template->operation ? __( 'Add a New File', 'commons-i
 								<li class="list-group-item <?php echo esc_attr( $count_class ); ?>">
 									<?php
 									// Show edit and delete options if user is privileged.
+									// An upstream bug in bp-group-documents means we cannot
+									// fully rely on current_user_can().
+									$is_my_document = is_user_logged_in() && bp_loggedin_user_id() === (int) $document->user_id;
+
 									echo '<div class="admin-links pull-right">';
-									if ( $document->current_user_can( 'edit' ) ) {
+									if ( $document->current_user_can( 'edit' ) || $is_my_document ) {
 										$edit_link = wp_nonce_url( $template->action_link . 'edit/' . $document->id, 'group-documents-edit-link' );
 										echo '<a class="btn btn-primary btn-xs link-btn no-margin no-margin-top" href="' . esc_attr( $edit_link ) . '">' . esc_html__( 'Edit', 'commons-in-a-box' ) . '</a> ';
 									}
-									if ( $document->current_user_can( 'delete' ) ) {
+									if ( $document->current_user_can( 'delete' ) || $is_my_document ) {
 										$delete_link = wp_nonce_url( $template->action_link . 'delete/' . $document->id, 'group-documents-delete-link' );
 										echo '<a class="btn btn-primary btn-xs link-btn no-margin no-margin-top" href="' . esc_attr( $delete_link ) . '" id="bp-group-documents-delete">' . esc_html__( 'Delete', 'commons-in-a-box' ) . '</a>';
 									}
@@ -187,12 +191,12 @@ $header_text = 'add' === $template->operation ? __( 'Add a New File', 'commons-i
 					<label><?php esc_html_e( 'Folders:', 'commons-in-a-box' ); ?></label>
 					<div class="group-file-folder-nav">
 						<ul>
-							<li class="show-all-files <?php echo ! $current_category ? 'current-category' : ''; ?>"><i class="fa <?php echo $current_category ? 'fa-folder-o' : 'fa-folder-open-o'; ?>"></i> <a href="<?php echo esc_url( remove_query_arg( 'category', $template->action_link ) ); ?>"><?php esc_html_e( 'All Files', 'commons-in-a-box' ); ?></a></li>
+							<li class="show-all-files <?php echo ! $current_category ? 'current-category' : ''; ?>"><i class="fa <?php echo $current_category ? 'fa-folder-o' : 'fa-folder-open-o'; ?>"></i> <a href="<?php echo esc_url( remove_query_arg( 'bpgrd-category', $template->action_link ) ); ?>"><?php esc_html_e( 'All Files', 'commons-in-a-box' ); ?></a></li>
 							<hr>
 
 							<?php foreach ( $non_empty_folders as $category ) { ?>
 								<?php $is_current_category = ( $category->name === $current_category ); ?>
-								<li class="folder <?php echo $is_current_category ? 'current-category' : ''; ?>"><i class="fa <?php echo $is_current_category ? 'fa-folder-open-o' : 'fa-folder-o'; ?>"></i> <a href="<?php echo esc_attr( add_query_arg( 'category', $category->term_id, $template->action_link ) ); ?>"><?php echo esc_html( $category->name ); ?></a></li>
+								<li class="folder <?php echo $is_current_category ? 'current-category' : ''; ?>"><i class="fa <?php echo $is_current_category ? 'fa-folder-open-o' : 'fa-folder-o'; ?>"></i> <a href="<?php echo esc_attr( add_query_arg( 'bpgrd-category', $category->term_id, $template->action_link ) ); ?>"><?php echo esc_html( $category->name ); ?></a></li>
 							<?php } ?>
 						</ul>
 					</div>
@@ -344,6 +348,8 @@ $header_text = 'add' === $template->operation ? __( 'Add a New File', 'commons-i
 							<?php /* Default to checked for 'add' only, not 'edit' */ ?>
 							<?php openlab_notify_group_members_ui( 'add' === $template->operation ); ?>
 						</div>
+
+						<?php wp_nonce_field( 'bp_group_document_save_' . $template->operation, 'bp_group_document_save_nonce' ); ?>
 
 						<input type="submit" class="btn btn-primary btn-margin btn-margin-top" value="<?php esc_attr_e( 'Submit', 'commons-in-a-box' ); ?>" />
 

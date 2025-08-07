@@ -50,6 +50,7 @@
 		<exclude name="WordPress.Files.FileName.InvalidClassFileName"/>
 
 		<exclude name="PSR2.ControlStructures.SwitchDeclaration.SpaceBeforeColonCASE"/>
+		<exclude name="PSR2.ControlStructures.SwitchDeclaration.SpaceBeforeColonDEFAULT"/>
 	</rule>
 
 	<!-- Add in some extra rules from other standards. -->
