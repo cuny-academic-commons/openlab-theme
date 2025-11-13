@@ -9,7 +9,7 @@
   "author": "OpenLab Team",
   "license": "GPLv2",
   "devDependencies": {
-    "grunt": "^1.4.0",
+    "grunt": "^1.5.3",
     "grunt-contrib-concat": "^0.5.1",
     "grunt-contrib-less": "^2.0.0",
     "grunt-contrib-uglify": "^4.0.0",
