@@ -136,6 +136,10 @@ if ( ! function_exists( 'wp_editor' ) ) {
 
 						<?php wp_nonce_field( 'bp_docs_save' ); ?>
 
+						<?php if ( $doc_id ) : ?>
+							<?php wp_nonce_field( 'bp_docs_edit_' . $doc_id, 'bp_docs_edit_nonce' ); ?>
+						<?php endif; ?>
+
 						<input class="btn btn-primary" type="submit" name="doc-edit-submit" id="doc-edit-submit" value="<?php esc_html_e( 'Save', 'commons-in-a-box' ); ?>"> <a href="<?php bp_docs_cancel_edit_link(); ?>" class="action safe btn btn-default no-deco"><?php esc_html_e( 'Cancel', 'commons-in-a-box' ); ?></a>
 
 						<?php if ( bp_docs_is_existing_doc() && current_user_can( 'bp_docs_manage', $doc_id ) ) : ?>
