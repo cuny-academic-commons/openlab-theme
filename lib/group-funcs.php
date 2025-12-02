@@ -2384,8 +2384,23 @@ function openlab_bp_group_site_pages( $mobile = false ) {
 
 			?>
 
-			<?php /* Abstract the displayed user id, so that this function works properly on my-* pages */ ?>
-			<?php $displayed_user_id = bp_is_user() ? bp_displayed_user_id() : bp_loggedin_user_id(); ?>
+			<?php
+			/*
+			 * Determine the current user ID.
+			 * 1. On a user page, use the displayed user ID.
+			 * 2. On portfolio groups, use the ID of the user to whom the portfolio belongs.
+			 * 3. Otherwise, use the logged-in user ID.
+			 */
+			$displayed_user_id = bp_loggedin_user_id();
+			if ( bp_is_user() ) {
+				$displayed_user_id = bp_displayed_user_id();
+			} elseif ( cboxol_is_portfolio() ) {
+				$group_owner_id = openlab_get_user_id_from_portfolio_group_id( $group_id );
+				if ( $group_owner_id ) {
+					$displayed_user_id = $group_owner_id;
+				}
+			}
+			?>
 
 			<div class="sidebar-block group-site-links <?php echo esc_html( $responsive_class ); ?> ">
 
