@@ -2406,28 +2406,32 @@ function openlab_bp_group_site_pages( $mobile = false ) {
 
 				<?php
 				$account_type = xprofile_get_field_data( 'Account Type', $displayed_user_id );
+
+				$show_dashboard_link = openlab_is_my_portfolio() || is_super_admin();
+				if ( ! $show_dashboard_link && is_user_logged_in() && groups_is_user_member( bp_loggedin_user_id(), $group_id ) ) {
+					// Check to see if the user has a role on the portfolio site.
+					$site_id = openlab_get_site_id_by_group_id( $group_id );
+					if ( $site_id ) {
+						$user_role = get_user_meta( bp_loggedin_user_id(), 'wp_' . $site_id . '_capabilities', true );
+						if ( ! empty( $user_role ) && is_array( $user_role ) ) {
+							$show_dashboard_link = true;
+						}
+					}
+				}
+
 				?>
 
-				<?php if ( openlab_is_my_portfolio() || is_super_admin() ) : ?>
-					<ul class="sidebar-sublinks portfolio-sublinks inline-element-list">
-						<li class="portfolio-site-link bold">
-							<a class="bold no-deco" href="<?php echo esc_url( $group_site_settings['site_url'] ); ?>"><?php echo esc_html( $portfolio_group_type->get_label( 'visit_portfolio_site' ) ); ?><span class="fa fa-chevron-circle-right cyan-circle" aria-hidden="true"></span></a>
-						</li>
+				<ul class="sidebar-sublinks portfolio-sublinks inline-element-list">
+					<li class="portfolio-site-link bold">
+						<a class="bold no-deco" href="<?php echo esc_url( $group_site_settings['site_url'] ); ?>"><?php echo esc_html( $portfolio_group_type->get_label( 'visit_portfolio_site' ) ); ?><span class="fa fa-chevron-circle-right cyan-circle" aria-hidden="true"></span></a>
+					</li>
 
-						<?php if ( openlab_user_portfolio_site_is_local( $displayed_user_id ) ) : ?>
-							<li class="portfolio-dashboard-link">
-								<a class="line-height font-size font-13" href="<?php openlab_user_portfolio_url( $displayed_user_id ); ?>/wp-admin"><?php esc_html_e( 'Site Dashboard', 'commons-in-a-box' ); ?></a>
-							</li>
-						<?php endif ?>
-					</ul>
-				<?php else : ?>
-					<ul class="sidebar-sublinks portfolio-sublinks inline-element-list">
-						<li class="portfolio-site-link">
-							<a class="bold no-deco" href="<?php echo esc_attr( trailingslashit( $group_site_settings['site_url'] ) ); ?>"><?php echo esc_html( $portfolio_group_type->get_label( 'visit_portfolio_site' ) ); ?><span class="fa fa-chevron-circle-right cyan-circle" aria-hidden="true"></span></a>
+					<?php if ( $show_dashboard_link && openlab_user_portfolio_site_is_local( $displayed_user_id ) ) : ?>
+						<li class="portfolio-dashboard-link">
+							<a class="line-height font-size font-13" href="<?php openlab_user_portfolio_url( $displayed_user_id ); ?>/wp-admin"><?php esc_html_e( 'Site Dashboard', 'commons-in-a-box' ); ?></a>
 						</li>
-					</ul>
-
-				<?php endif ?>
+					<?php endif ?>
+				</ul>
 			</div>
 		<?php } else { ?>
 
