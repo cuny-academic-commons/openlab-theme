@@ -251,6 +251,14 @@ function openlab_load_scripts() {
 				$ver,
 				true
 			);
+
+			wp_enqueue_script(
+				'openlab-invitations',
+				$stylesheet_dir_uri . '/js/invitations.js',
+				[ 'jquery' ],
+				$ver,
+				true
+			);
 		}
 	}
 }
