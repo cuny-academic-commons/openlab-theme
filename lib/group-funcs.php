@@ -9,16 +9,19 @@
 function openlab_set_group_creation_steps() {
 	$steps                                     = array(
 		'group-details' => array(
-			'name'     => __( 'Group Details', 'commons-in-a-box' ),
-			'position' => 10,
+			'name'       => __( 'Group Details', 'commons-in-a-box' ),
+			'position'   => 10,
+			'rewrite_id' => 'group-details',
 		),
 		'site-details'  => array(
-			'name'     => __( 'Associated Site', 'commons-in-a-box' ),
-			'position' => 20,
+			'name'       => __( 'Associated Site', 'commons-in-a-box' ),
+			'position'   => 20,
+			'rewrite_id' => 'site-details',
 		),
 		'invite-anyone' => array(
-			'name'     => __( 'Invite Members', 'commons-in-a-box' ),
-			'position' => 30,
+			'name'       => __( 'Invite Members', 'commons-in-a-box' ),
+			'position'   => 30,
+			'rewrite_id' => 'invite-anyone',
 		),
 	);
 	buddypress()->groups->group_creation_steps = $steps;
