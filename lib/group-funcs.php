@@ -2415,10 +2415,7 @@ function openlab_bp_group_site_pages( $mobile = false ) {
 					// Check to see if the user has a role on the portfolio site.
 					$site_id = openlab_get_site_id_by_group_id( $group_id );
 					if ( $site_id ) {
-						$user_role = get_user_meta( bp_loggedin_user_id(), 'wp_' . $site_id . '_capabilities', true );
-						if ( ! empty( $user_role ) && is_array( $user_role ) ) {
-							$show_dashboard_link = true;
-						}
+						$show_dashboard_link = current_user_can_for_site( $site_id, 'read' );
 					}
 				}
 
