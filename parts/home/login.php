@@ -77,21 +77,23 @@ if ( is_user_logged_in() ) :
 	</div><!--login-help-->
 
 <?php else : ?>
-	<?php echo '<div id="open-lab-join" class="log-box">'; ?>
-	<?php echo '<h2 class="title"><span class="fa fa-plus-circle flush-left"></span> ' . esc_html__( 'Sign Up', 'commons-in-a-box' ) . '</h2>'; ?>
-	<?php
-	printf(
-		'<p><a class="btn btn-default btn-primary link-btn pull-right semibold" href="%s">%s</a> <span class="font-size font-14">%s<br />%s</span></p>',
-		esc_attr( bp_get_signup_page() ),
-		esc_html__( 'Sign up', 'commons-in-a-box' ),
-		esc_html__( 'Need an account?', 'commons-in-a-box' ),
-		esc_html__( 'Sign Up to become a member!', 'commons-in-a-box' )
-	);
-	?>
-	<?php echo '</div>'; ?>
-	<?php echo '<div id="open-lab-login" class="log-box">'; ?>
-	<?php do_action( 'bp_after_sidebar_login_form' ); ?>
-	<?php echo '</div>'; ?>
+	<?php if ( bp_get_signup_allowed() ) : ?>
+		<?php echo '<div id="open-lab-join" class="log-box">'; ?>
+		<?php echo '<h2 class="title"><span class="fa fa-plus-circle flush-left"></span> ' . esc_html__( 'Sign Up', 'commons-in-a-box' ) . '</h2>'; ?>
+		<?php
+		printf(
+			'<p><a class="btn btn-default btn-primary link-btn pull-right semibold" href="%s">%s</a> <span class="font-size font-14">%s<br />%s</span></p>',
+			esc_attr( bp_get_signup_page() ),
+			esc_html__( 'Sign up', 'commons-in-a-box' ),
+			esc_html__( 'Need an account?', 'commons-in-a-box' ),
+			esc_html__( 'Sign Up to become a member!', 'commons-in-a-box' )
+		);
+		?>
+		<?php echo '</div>'; ?>
+		<?php echo '<div id="open-lab-login" class="log-box">'; ?>
+		<?php do_action( 'bp_after_sidebar_login_form' ); ?>
+		<?php echo '</div>'; ?>
+	<?php endif; ?>
 
 	<div id="user-login" class="log-box">
 
