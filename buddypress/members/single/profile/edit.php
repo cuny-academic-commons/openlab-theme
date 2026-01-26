@@ -68,14 +68,14 @@ $field_ids = array( 1 );
 
 						<div<?php bp_field_css_class( 'editfield' ); ?>>
 
-							<?php if ( 'textbox' === bp_get_the_profile_field_type() || 'url' === bp_get_the_profile_field_type() ) : ?>
+							<?php if ( 'textbox' === bp_get_the_profile_field_type() || 'url' === bp_get_the_profile_field_type() || 'wp-textbox' === bp_get_the_profile_field_type() ) : ?>
 								<label for="<?php bp_the_profile_field_input_name(); ?>"><?php bp_the_profile_field_name(); ?> <?php echo esc_html( $required_text ); ?></label>
 
 								<input class="form-control" type="text" name="<?php bp_the_profile_field_input_name(); ?>" id="<?php bp_the_profile_field_input_name(); ?>" value="<?php bp_the_profile_field_edit_value(); ?>" />
 
 							<?php endif; ?>
 
-							<?php if ( 'textarea' === bp_get_the_profile_field_type() ) : ?>
+							<?php if ( 'textarea' === bp_get_the_profile_field_type() || 'wp-biography' === bp_get_the_profile_field_type() ) : ?>
 
 								<label for="<?php bp_the_profile_field_input_name(); ?>"><?php bp_the_profile_field_name(); ?> <?php echo esc_html( $required_text ); ?></label>
 								<textarea class="form-control" rows="5" cols="40" name="<?php bp_the_profile_field_input_name(); ?>" id="<?php bp_the_profile_field_input_name(); ?>"><?php bp_the_profile_field_edit_value(); ?></textarea>
