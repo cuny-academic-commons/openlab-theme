@@ -3405,6 +3405,11 @@ function openlab_group_member_joined_since() {
  * @return bool
  */
 function openlab_user_can_bulk_import_group_members( $group_id, $user_id ) {
+	// bp_moderate users can always import.
+	if ( user_can( $user_id, 'bp_moderate' ) ) {
+		return true;
+	}
+
 	// Only group admins can bulk-import members.
 	if ( ! groups_is_user_admin( $user_id, $group_id ) ) {
 		return false;
