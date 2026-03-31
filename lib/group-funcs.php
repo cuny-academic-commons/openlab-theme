@@ -576,9 +576,9 @@ function openlab_group_site_privacy_settings_markup() {
 	 * Filter to determine whether to show the portfolio link by default for new portfolios.
 	 *
 	 * @since 1.7.1
-	 * @param bool $show_portfolio_link Whether to show the portfolio link by default. Default false.
+	 * @param bool $show_portfolio_link Whether to show the portfolio link by default. Default true.
 	 */
-	if ( apply_filters( 'openlab_show_portfolio_link_for_new_portfolios', false ) ) {
+	if ( apply_filters( 'openlab_show_portfolio_link_for_new_portfolios', true ) ) {
 		$show_portfolio_link_checked = 'checked';
 	} else {
 		$show_portfolio_link_checked = '';
