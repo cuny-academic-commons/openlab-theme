@@ -5,9 +5,6 @@
  */
 
 function openlab_get_home_slider() {
-	$slider_mup    = '';
-	$slider_sr_mup = '';
-
 	$slider_args = array(
 		'post_type'      => 'slider',
 		'posts_per_page' => -1,
@@ -16,29 +13,32 @@ function openlab_get_home_slider() {
 
 	$slider_query = new WP_Query( $slider_args );
 
-	if ( $slider_query->have_posts() ) {
-		$slider_mup    = '<div class="camera_wrap clearfix" tabindex="-1" aria-hidden="true">';
-		$slider_sr_mup = '<div class="camera_wrap_sr"><h2 class="sr-only">Slideshow Content</h2><ul class="list-unstyled">';
-		while ( $slider_query->have_posts() ) :
-			$slider_query->the_post();
-			// if the featured image is not set, slider will not be added
-			if ( get_post_thumbnail_id() ) {
-
-				$img_obj = wp_get_attachment_image_src( get_post_thumbnail_id(), 'front-page-slider' );
-
-				$slider_mup    .= '<div data-alt="' . get_the_title() . '" data-src="' . $img_obj[0] . '"><div class="fadeIn camera_content"><h2 class="regular">' . get_the_title() . '</h2>' . get_the_content_with_formatting() . '</div></div>';
-				$slider_sr_mup .= '<li class="sr-only sr-only-focusable camera_content" tabindex="0"><h2 class="regular">' . get_the_title() . '</h2>' . get_the_content_with_formatting() . '</li>';
-			}
-		endwhile;
-		$slider_mup    .= '</div>';
-		$slider_sr_mup .= '</ul></div>';
-	} else {
-		$slider_mup .= '<div class="slider-empty">' . esc_html__( 'You haven\'t added any slides yet!', 'commons-in-a-box' ) . '</div>';
+	if ( ! $slider_query->have_posts() ) {
+		wp_reset_postdata();
+		return '<div class="slider-empty">' . esc_html__( 'You haven\'t added any slides yet!', 'commons-in-a-box' ) . '</div>';
 	}
+
+	$slides = '';
+	while ( $slider_query->have_posts() ) :
+		$slider_query->the_post();
+		if ( ! get_post_thumbnail_id() ) {
+			continue;
+		}
+
+		$img_obj = wp_get_attachment_image_src( get_post_thumbnail_id(), 'front-page-slider' );
+		$slides .= '<li class="splide__slide">';
+		$slides .= '<img src="' . esc_url( $img_obj[0] ) . '" alt="">';
+		$slides .= '<div class="splide__slide__content"><h2 class="regular">' . get_the_title() . '</h2>' . get_the_content_with_formatting() . '</div>';
+		$slides .= '</li>';
+	endwhile;
 
 	wp_reset_postdata();
 
-	return $slider_mup . $slider_sr_mup;
+	$markup  = '<section class="splide" aria-label="' . esc_attr__( 'Slideshow', 'commons-in-a-box' ) . '">';
+	$markup .= '<div class="splide__track"><ul class="splide__list">' . $slides . '</ul></div>';
+	$markup .= '</section>';
+
+	return $markup;
 }
 
 /**

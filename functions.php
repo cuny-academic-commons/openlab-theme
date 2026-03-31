@@ -1,6 +1,6 @@
 <?php
 
-define( 'OPENLAB_VERSION', '1.7.0-1754576688378' );
+define( 'OPENLAB_VERSION', '1.7.0-1774197350335' );
 
 if ( ! defined( 'CSS_DEBUG' ) ) {
 	define( 'CSS_DEBUG', false );
@@ -181,8 +181,8 @@ function openlab_load_scripts() {
 		wp_register_style( 'google-open-sans', set_url_scheme( 'http://fonts.googleapis.com/css?family=Open+Sans:400,400italic,600,600italic,700,700italic' ), array(), $ver, 'all' );
 		wp_enqueue_style( 'google-open-sans' );
 
-		wp_register_style( 'camera-js-styles', $stylesheet_dir_uri . '/css/camera.css', array(), $ver, 'all' );
-		wp_enqueue_style( 'camera-js-styles' );
+		wp_register_style( 'splide-styles', $stylesheet_dir_uri . '/css/splide.css', array(), $ver, 'all' );
+		wp_enqueue_style( 'splide-styles' );
 
 		// less compliation via js so we can check styles in firebug via fireless - local dev only
 		if ( CSS_DEBUG ) {

@@ -87,7 +87,7 @@ module.exports = function (grunt) {
 					'node_modules/jcarousellite/jcarousellite.js',
 					'js/easyaccordion.js',
 					'js/jquery.easing.1.3.js',
-					'js/camera.mod.js',
+					'node_modules/@splidejs/splide/dist/js/splide.min.js',
 					'js/jQuery.succinct.mod.js',
 					'js/detect-zoom.js'],
 					dest: 'js/dist/vendor.js'
@@ -110,7 +110,13 @@ module.exports = function (grunt) {
 					}
 				}
 			},
-			setPHPConstant: {
+			copy: {
+			splide: {
+				src: 'node_modules/@splidejs/splide/dist/css/splide.min.css',
+				dest: 'css/splide.css',
+			},
+		},
+		setPHPConstant: {
 				version: {
 					constant: 'OPENLAB_VERSION',
 					value: '<%= pkg.version %>-' + timestamp,
@@ -122,12 +128,13 @@ module.exports = function (grunt) {
 	grunt.loadNpmTasks( 'grunt-contrib-less' );
 	grunt.loadNpmTasks( 'grunt-contrib-uglify' );
 	grunt.loadNpmTasks( 'grunt-contrib-concat' );
+	grunt.loadNpmTasks( 'grunt-contrib-copy' );
 	grunt.loadNpmTasks( 'grunt-contrib-watch' );
 	grunt.loadNpmTasks( 'grunt-php-set-constant' );
 
 		var taskList = ['concat', 'watch', 'less', 'setPHPConstant'];
 		taskList     = taskList.concat( colorSchemeTasks );
 
-		var defaultTasks = ['concat', 'less', 'setPHPConstant'];
+		var defaultTasks = ['concat', 'copy', 'less', 'setPHPConstant'];
 	grunt.registerTask( 'default', defaultTasks );
 };

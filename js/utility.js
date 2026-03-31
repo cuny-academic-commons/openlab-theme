@@ -19,7 +19,6 @@
 		init: function () {
 
 			OpenLab.utility.adjustLoginBox();
-			OpenLab.utility.sliderFocusHandler();
 			OpenLab.utility.eventValidation();
 			OpenLab.utility.refreshActivity();
 			OpenLab.utility.initMemberRoleDefinitions();
@@ -66,37 +65,6 @@
 				}
 
 			}
-		},
-		sliderFocusHandler: function () {
-
-			if ($( '.camera_wrap_sr' ).length) {
-
-				$( '.camera_wrap_sr .camera_content a' ).each(
-					function () {
-
-						var thisLink = $( this );
-						thisLink.on(
-							'focus',
-							function () {
-
-								thisLink.closest( '.camera_content' ).addClass( 'focus' );
-
-							}
-						);
-						thisLink.on(
-							'blur',
-							function () {
-
-								thisLink.closest( '.camera_content' ).removeClass( 'focus' );
-
-							}
-						);
-
-					}
-				);
-
-			}
-
 		},
 		eventValidation: function () {
 
@@ -984,39 +952,14 @@
 			//setting equal rows on homepage group list
 			equal_row_height();
 
-			//camera js slider on home
-			if ($( '.camera_wrap' ).length) {
-				$( '.camera_wrap' ).camera(
-					{
-						autoAdvance: true,
-						loader: 'none',
-						fx: 'simpleFade',
-						playPause: false,
-						height: '295px',
-						navigation: false,
-						navigationHover: false,
-						onLoaded: function () {
-
-							var cameraImages = $( '.camera_wrap .camera_target' );
-							var cameraSource = $( '.camera_src' );
-
-							//have to do this because on first load, the first image is not
-							//actually 'loaded' per se
-							if ( ! cameraImages.hasClass( 'fully-loaded' )) {
-
-								cameraImages.addClass( 'fully-loaded' );
-								cameraImages.find( '.cameraCont .cameraSlide_0 img' ).attr( 'alt', cameraSource.find( 'div' ).eq( 0 ).data( 'alt' ) );
-
-							} else {
-
-								var currentImage = cameraImages.find( '.cameraCont .cameracurrent' );
-								currentImage.find( 'img' ).attr( 'alt', cameraSource.find( 'div' ).eq( currentImage.index() ).data( 'alt' ) );
-
-							}
-
-						}
-					}
-				);
+			//splide slider on home
+			if ( document.querySelector( '.splide' ) ) {
+				var splideOptions = {};
+				if ( document.querySelectorAll( '.splide__slide' ).length <= 1 ) {
+					splideOptions.arrows     = false;
+					splideOptions.pagination = false;
+				}
+				new Splide( '.splide', splideOptions ).mount();
 			}
 
 			if ($( '#home-new-member-wrap' ).length) {
