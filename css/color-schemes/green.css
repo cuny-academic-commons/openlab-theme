@@ -9240,6 +9240,18 @@ body form .checkbox-list-container {
 .group-setting-note {
   margin-top: -10px;
 }
+.group-setting-note.block-ai-robots-note {
+  margin-top: 0;
+}
+.block-ai-robots-wrapper {
+  padding-left: 30px;
+}
+.block-ai-robots-wrapper.block-ai-robots-wrapper-main-site-blocked label {
+  opacity: 0.7;
+}
+.radio .block-ai-crawlers-wrapper label {
+  padding-left: 0;
+}
 @media (max-width: 767px) {
   .sidebar .sidebar-wrapper {
     width: 95%;
