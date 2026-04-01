@@ -534,6 +534,8 @@ function openlab_group_site_member_role_settings_markup() {
 function openlab_group_site_privacy_settings_markup() {
 	$blog_public = null;
 
+	$site_id = null;
+
 	if ( ! bp_is_group_create() ) {
 		$group_id    = bp_get_current_group_id();
 		$site_id     = cboxol_get_group_site_id();
@@ -584,6 +586,8 @@ function openlab_group_site_privacy_settings_markup() {
 		$show_portfolio_link_checked = '';
 	}
 
+	$block_ai_robots = $site_id ? \CBOX\OL\Robots\is_block_ai_robots_enabled( $site_id ) : false;
+
 	?>
 
 		<div id="panel-site-privacy" class="panel panel-default" id="associated-site-privacy-panel">
@@ -633,7 +637,14 @@ function openlab_group_site_privacy_settings_markup() {
 						</div>
 					<?php endif; ?>
 				</div>
-			</div>
+
+				<h5><?php esc_html_e( 'AI Crawlers', 'commons-in-a-box' ); ?></h5>
+				<div class="row">
+					<div class="col-sm-23">
+						<?php CBOX\OL\Robots\ai_robots_checkbox_markup( $block_ai_robots ); ?>
+					</div>
+				</div>
+			</div><!-- .panel-body -->
 		</div>
 
 		<?php wp_nonce_field( 'openlab_site_status', 'openlab-site-status-nonce', false ); ?>
@@ -1024,7 +1035,8 @@ function openlab_save_group_site() {
  * Catches and processes group site privacy settings.
  */
 function openlab_save_group_site_settings() {
-	$group = groups_get_current_group();
+	$group   = groups_get_current_group();
+	$site_id = cboxol_get_group_site_id( $group->id );
 
 	if ( isset( $_POST['openlab-site-status-nonce'] ) ) {
 		check_admin_referer( 'openlab_site_status', 'openlab-site-status-nonce' );
@@ -1033,12 +1045,16 @@ function openlab_save_group_site_settings() {
 		if ( isset( $_POST['blog_public'] ) ) {
 			$blog_public = (float) $_POST['blog_public'];
 
-			$site_id = cboxol_get_group_site_id( $group->id );
 			if ( $site_id ) {
 				update_blog_option( $site_id, 'blog_public', $blog_public );
 				groups_update_groupmeta( $group->id, 'blog_public', $blog_public );
 			}
 		}
+	}
+
+	if ( $site_id && isset( $_POST['cboxol_block_ai_robots'] ) ) {
+		$block_ai_robots = ! empty( $_POST['cboxol_block_ai_robots'] );
+		update_blog_option( $site_id, 'cboxol_block_ai_robots', $block_ai_robots ? 1 : 0 );
 	}
 
 	// Portfolio profile link
