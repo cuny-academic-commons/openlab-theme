@@ -112,7 +112,14 @@ function openlab_group_privacy_settings_markup() {
 							<li><?php echo esc_html( $group_type->get_label( 'privacy_help_text_public_membership' ) ); ?></li>
 						</ul>
 
-						<div class="form-group block-ai-robots-wrapper <?php if ( $main_site_block_ai_robots ) : ?>block-ai-robots-wrapper-main-site-blocked<?php endif; ?>">
+						<?php
+						$block_ai_robots_wrapper_class = 'form-group block-ai-robots-wrapper';
+						if ( $main_site_block_ai_robots ) {
+							$block_ai_robots_wrapper_class .= ' block-ai-robots-wrapper-main-site-blocked';
+						}
+						?>
+
+						<div class="<?php echo esc_attr( $block_ai_robots_wrapper_class ); ?>">
 							<div class="checkbox">
 								<label>
 									<input type="hidden" name="block_ai_robots" value="0" />
