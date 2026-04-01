@@ -86,6 +86,8 @@ function openlab_group_privacy_settings_markup() {
 		}
 	}
 
+	$block_ai_robots = \CBOX\OL\Robots\is_block_ai_robots_enabled_for_group();
+
 	?>
 
 	<div id="panel-privacy" class="panel panel-default">
@@ -108,6 +110,18 @@ function openlab_group_privacy_settings_markup() {
 							<li><?php echo esc_html( $group_type->get_label( 'privacy_help_text_public_directory' ) ); ?></li>
 							<li><?php echo esc_html( $group_type->get_label( 'privacy_help_text_public_membership' ) ); ?></li>
 						</ul>
+
+						<div class="form-group block-ai-robots-wrapper">
+							<div class="checkbox">
+								<label>
+									<input type="hidden" name="block_ai_robots" value="0" />
+									<input type="checkbox" name="block_ai_robots" id="block_ai_robots" value="1" <?php checked( $block_ai_robots ); ?> />
+									<?php echo esc_html( $group_type->get_label( 'privacy_block_ai_robots_label' ) ); ?>
+								</label>
+
+								<p class="block-ai-robots-note group-setting-note italics note"><?php echo esc_html( $group_type->get_label( 'privacy_block_ai_robots_help_text' ) ); ?></p>
+							</div>
+						</div>
 					<?php endif; ?>
 
 					<?php if ( in_array( 'private', $available_privacy_options, true ) ) : ?>
@@ -867,6 +881,9 @@ function openlab_save_group_status( BP_Groups_Group $group ) {
 	remove_action( 'groups_group_after_save', 'openlab_save_group_status' );
 	$saved = groups_create_group( $group_args );
 	add_action( 'groups_group_after_save', 'openlab_save_group_status' );
+
+	$block_ai_robots = ! empty( $_POST['block_ai_robots'] ) ? 1 : 0;
+	groups_update_groupmeta( (int) $group->id, 'cboxol_block_ai_robots', $block_ai_robots );
 }
 
 /**
