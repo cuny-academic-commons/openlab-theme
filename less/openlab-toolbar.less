@@ -50,75 +50,6 @@
 		}
 	}
 
-    &.navbar-default{
-        background: transparent;
-        border: none;
-        margin-bottom: 80px;
-        .header-mobile-wrapper{
-            background: #fff;
-            position: relative;
-        }
-        .main-nav-wrapper{
-            border-bottom: 1px solid @10gray;
-            @media(max-width: @screen-xs-max){
-                top: 114px;
-                border-bottom: none;
-            }
-        }
-        .container-fluid{
-            margin: 0 auto;
-            .navbar-right{
-                &.search{
-                    .btn{
-                        height: 34px;
-                        padding: 0 2%;
-                        vertical-align: top;
-                    }
-                }
-            }
-        }
-        &.navbar-location-footer{
-            margin-bottom: 0;
-        }
-    }
-    /**sitewide header elements on admin and group sites (mobile only)**/
-    &.navbar-location-oplb-bs{
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        z-index: 210;
-    }
-    /**sitewide header**/
-    .navbar-header{
-        header{
-            margin: 0;
-            border-right: 1px solid @10gray;
-            a{
-                display: block;
-                width: 185px;
-                overflow: hidden;
-            }
-            @media(max-width: @screen-sm-max){
-				height: 63px;
-                width: 136px;
-                margin: 0;
-                a{
-					background-repeat: no-repeat;
-                    background-size: 100%;
-                    background-position: 0 8px;
-					height: 100%;
-					width: 100%;
-
-					img {
-						height: auto;
-						margin-top: 8px;
-						width: 100%;
-					}
-                }
-            }
-        }
-    }
     /**sitewide search**/
     .search{
         position: relative;
@@ -499,12 +430,6 @@ html{
 }
 /**for content placement on group sites and admin**/
 body{
-    &.adminbar-special{
-        padding-top: 50px;
-        @media (max-width: 767px){
-            padding-top: 110px;
-        }
-    }
     .page-table{
         display: table;
         width: 100%;
