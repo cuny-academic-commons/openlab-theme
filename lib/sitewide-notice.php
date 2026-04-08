@@ -45,7 +45,7 @@ function openlab_enqueue_sitewide_notice_js() {
 
 	wp_enqueue_script(
 		'openlab-sitewide-notice',
-		get_stylesheet_directory_uri() . '/js/sitewide-notice.js',
+		get_template_directory_uri() . '/js/sitewide-notice.js',
 		array( 'jquery' ),
 		OPENLAB_VERSION,
 		true
