@@ -15,6 +15,9 @@
   width: 1px;
   word-wrap: normal !important;
 }
+#wpadminbar #wp-admin-bar-openlab-sign-in.menupop.hover ul li .ab-item.ab-empty-item {
+  height: 12px;
+}
 #wpadminbar .logo-wrapper img {
   height: 32px;
 }
@@ -44,6 +47,9 @@
 }
 #wpadminbar #wp-admin-bar-my-openlab-link > a {
   color: #f0f0f1;
+}
+#wp-toolbar a:focus-visible {
+  outline-style: auto;
 }
 #wp-toolbar > ul > li#wp-admin-bar-openlab-sign-in {
   position: relative;
