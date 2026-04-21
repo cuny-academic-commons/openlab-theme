@@ -30,6 +30,7 @@ class Openlab_Clone_Course_Site {
 		if ( ! empty( $this->site_id ) ) {
 			$this->migrate_site_settings();
 			$this->migrate_posts();
+			$this->migrate_forms();
 		}
 
 		/**
@@ -315,6 +316,75 @@ class Openlab_Clone_Course_Site {
 		}
 
 		restore_current_blog();
+	}
+
+	/**
+	 * Migrate Gravity Forms data.
+	 *
+	 * Copies form definitions (and revisions) from the source site using raw SQL,
+	 * so no GF classes need to be loaded. Entry and view tables are recreated
+	 * empty so GF doesn't complain about missing tables.
+	 *
+	 * @since 1.8.0
+	 *
+	 * @return void
+	 */
+	protected function migrate_forms() {
+		global $wpdb;
+
+		$source_prefix = $wpdb->get_blog_prefix( $this->source_site_id );
+		$site_prefix   = $wpdb->get_blog_prefix( $this->site_id );
+
+		// Bail if GF isn't installed on the source site.
+		$source_form_table = $source_prefix . 'gf_form';
+		// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		if ( ! $wpdb->get_var( "SHOW TABLES LIKE '{$source_form_table}'" ) ) {
+			return;
+		}
+
+		// Copy form definitions and revisions. All other tables are created empty
+		// so GF has the expected schema but no stale entries or view counts.
+		$with_data = [
+			'gf_form',
+			'gf_form_meta',
+			'gf_form_revisions',
+		];
+
+		$tables_to_copy = array_merge(
+			$with_data,
+			[
+				'gf_draft_submissions',
+				'gf_entry',
+				'gf_entry_meta',
+				'gf_entry_notes',
+				'gf_form_view',
+				'gf_addon_feed',
+			]
+		);
+
+		foreach ( $tables_to_copy as $ttc ) {
+			$source_table = $source_prefix . $ttc;
+			$table        = $site_prefix . $ttc;
+
+			if ( defined( 'DO_SHARDB' ) && DO_SHARDB ) {
+				global $shardb_hash_length, $shardb_prefix;
+
+				$source_table_hash = strtoupper( substr( md5( $this->source_site_id ), 0, $shardb_hash_length ) );
+				$table_hash        = strtoupper( substr( md5( $this->site_id ), 0, $shardb_hash_length ) );
+
+				$source_table = $shardb_prefix . $source_table_hash . '.' . $source_table;
+				$table        = $shardb_prefix . $table_hash . '.' . $table;
+			}
+
+			// phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			$wpdb->query( "DROP TABLE IF EXISTS {$table}" );
+			$wpdb->query( "CREATE TABLE {$table} LIKE {$source_table}" );
+
+			if ( in_array( $ttc, $with_data, true ) ) {
+				$wpdb->query( "INSERT INTO {$table} SELECT * FROM {$source_table}" );
+			}
+			// phpcs:enable WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		}
 	}
 
 	protected function get_source_group_admins() {
