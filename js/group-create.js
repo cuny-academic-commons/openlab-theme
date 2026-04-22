@@ -578,6 +578,20 @@ jQuery( document ).ready(
 				return true;
 			}
 
+			// Require template selection when the picker panel is visible (multiple templates available).
+			if ( 'new' === new_or_old ) {
+				var $templatePanel = $( '.panel-template-picker' );
+				if ( $templatePanel.length && ! $templatePanel.hasClass( 'hidden' ) ) {
+					var sourceBlob = $( '[name="source_blog"]' ).val();
+					if ( '' === sourceBlob || '0' === sourceBlob ) {
+						$( '.site-template-required-error' ).remove();
+						$templatePanel.after( '<div class="ajax-warning site-template-required-error bp-template-notice error">' + OLGroupCreate.strings.templateRequired + '</div>' );
+						$( 'html,body' ).animate( { scrollTop: $templatePanel.offset().top - 100 }, 1000 );
+						return false;
+					}
+				}
+			}
+
 			event.preventDefault();
 
 			var warn = $domain_field.siblings( '.ajax-warning' );
