@@ -48,10 +48,15 @@
 			display: flex;
 			gap: 6px;
 			align-items: center;
+			margin-right: 16px;
 
 			&:before {
 				content: '';
 				margin: 0;
+			}
+
+			@media(max-width: @screen-xs-max){
+				margin-right: 0;
 			}
 		}
 	}
