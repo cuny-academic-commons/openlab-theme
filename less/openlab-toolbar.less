@@ -3,6 +3,7 @@
 /**importing bootstrap inside of a wrapper class to avoid conflicts with admin and group site styles**/
 /**vendor**/
 @import "../select2/select2.css";
+@import "./bootstrap/variables.less";
 
 @primaryColor: #000;
 @coloredBackgroundTextColor: #000;
@@ -32,17 +33,35 @@
 	}
 
 	.my-openlab-logo {
-		display: inline-block !important;
+		display: inline-block;
 		height: 20px;
+
+		@media(max-width: @screen-xs-max){
+			display: block;
+			height: 32px !important;
+		}
 	}
 
-	#wp-admin-bar-my-account > .ab-item:before {
-		content: '';
-		margin: 0;
+	#wp-admin-bar-my-account {
+		& > a.ab-item {
+			padding-right: 8px;
+			display: flex;
+			gap: 6px;
+			align-items: center;
+
+			&:before {
+				content: '';
+				margin: 0;
+			}
+		}
 	}
 
 	#wp-admin-bar-user-actions.ab-submenu {
 		margin-left: 72px;
+
+		@media(max-width: @screen-xs-max){
+			margin-left: 0;
+		}
 	}
 
 	#wp-admin-bar-user-info {
@@ -57,6 +76,16 @@
 
 		.nicename {
 			font-size: 11px;
+		}
+
+		@media(max-width: @screen-xs-max){
+			.user-avatar {
+				display: none;
+			}
+
+			.username {
+				font-size: 18px;
+			}
 		}
 	}
 
