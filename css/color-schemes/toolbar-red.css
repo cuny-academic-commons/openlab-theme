@@ -20,6 +20,7 @@
 }
 #wpadminbar .logo-wrapper img {
   height: 32px;
+  vertical-align: top;
 }
 #wpadminbar .my-openlab-logo {
   display: inline-block;
