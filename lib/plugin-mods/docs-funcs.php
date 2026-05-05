@@ -214,6 +214,55 @@ function openlab_is_docs_enabled_for_group( $group_id = null ) {
 }
 
 /**
+ * Forces Doc access settings to correspond to group privacy.
+ *
+ * @since 1.8.0
+ *
+ * @param array $settings Doc settings.
+ * @param int   $doc_id   Doc ID.
+ * @param array   $default_settings Default settings.
+ * @param array   $saved_settings Saved settings.
+ * @param int     $group_id Group ID.
+ * @return array
+ */
+function openlab_set_doc_access_settings( $settings, $doc_id ) {
+	$group_id = bp_docs_get_associated_group_id( $doc_id );
+	if ( ! $group_id ) {
+		return $settings;
+	}
+
+	$group = groups_get_group( array( 'group_id' => $group_id ) );
+	if ( empty( $group->id ) ) {
+		return $settings;
+	}
+
+	switch ( $group->status ) {
+		case 'private':
+		case 'hidden':
+			$settings['read']          = 'group-members';
+			$settings['edit']          = 'group-members';
+			$settings['read_comments'] = 'group-members';
+			$settings['post_comments'] = 'group-members';
+			$settings['view_history']  = 'group-members';
+			$settings['manage']        = 'creator';
+			break;
+
+		case 'public':
+		default:
+			$settings['read']          = 'anyone';
+			$settings['edit']          = 'group-members';
+			$settings['read_comments'] = 'anyone';
+			$settings['post_comments'] = 'group-members';
+			$settings['view_history']  = 'anyone';
+			$settings['manage']        = 'creator';
+			break;
+	}
+
+	return $settings;
+}
+add_filter( 'bp_docs_get_doc_settings', 'openlab_set_doc_access_settings', 20, 2 );
+
+/**
  * Manages email notifications for Docs.
  *
  * @since 1.3.0
