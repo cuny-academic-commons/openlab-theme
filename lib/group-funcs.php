@@ -86,9 +86,6 @@ function openlab_group_privacy_settings_markup() {
 		}
 	}
 
-	$block_ai_robots           = \CBOX\OL\Robots\is_block_ai_robots_enabled_for_group();
-	$main_site_block_ai_robots = \CBOX\OL\Robots\is_block_ai_robots_enabled_on_root_site();
-
 	?>
 
 	<div id="panel-privacy" class="panel panel-default">
@@ -111,29 +108,6 @@ function openlab_group_privacy_settings_markup() {
 							<li><?php echo esc_html( $group_type->get_label( 'privacy_help_text_public_directory' ) ); ?></li>
 							<li><?php echo esc_html( $group_type->get_label( 'privacy_help_text_public_membership' ) ); ?></li>
 						</ul>
-
-						<?php
-						$block_ai_robots_wrapper_class = 'form-group block-ai-robots-wrapper';
-						if ( $main_site_block_ai_robots ) {
-							$block_ai_robots_wrapper_class .= ' block-ai-robots-wrapper-main-site-blocked';
-						}
-						?>
-
-						<div class="<?php echo esc_attr( $block_ai_robots_wrapper_class ); ?>">
-							<div class="checkbox">
-								<label>
-									<input type="hidden" name="block_ai_robots" value="0" />
-									<input type="checkbox" name="block_ai_robots" id="block_ai_robots" value="1" <?php checked( $block_ai_robots ); ?> <?php disabled( $main_site_block_ai_robots ); ?> />
-									<?php echo esc_html( $group_type->get_label( 'privacy_block_ai_robots_label' ) ); ?>
-								</label>
-
-								<?php if ( $main_site_block_ai_robots ) : ?>
-									<p class="block-ai-robots-note group-setting-note italics note"><?php esc_html_e( 'Note: AI crawler blocking is enabled for the entire community site.', 'cbox-openlab-core' ); ?></p>
-								<?php else : ?>
-									<p class="block-ai-robots-note group-setting-note italics note"><?php echo esc_html( $group_type->get_label( 'privacy_block_ai_robots_help_text' ) ); ?></p>
-								<?php endif; ?>
-							</div>
-						</div>
 					<?php endif; ?>
 
 					<?php if ( in_array( 'private', $available_privacy_options, true ) ) : ?>
