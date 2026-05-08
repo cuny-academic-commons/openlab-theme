@@ -1081,7 +1081,7 @@ function openlab_save_group_site_settings() {
 
 	if ( $site_id && isset( $_POST['cboxol_block_ai_robots'] ) ) {
 		$block_ai_robots = ! empty( $_POST['cboxol_block_ai_robots'] );
-		update_blog_option( $site_id, 'cboxol_block_ai_robots', $block_ai_robots ? 1 : 0 );
+		\CBOX\OL\Robots\set_block_ai_robots_enabled( $site_id, $block_ai_robots );
 	}
 
 	// Portfolio profile link
