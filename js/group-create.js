@@ -147,7 +147,7 @@ jQuery( document ).ready(
 		}
 
 		function showHideAssociatedSitePrivacy() {
-			var $associatedSitePrivacyPanel = $( '#associated-site-privacy-panel' );
+			var $associatedSitePrivacyPanel = $( '#panel-site-privacy' );
 
 			var $externalInput  = $( '#new_or_old_external' );
 			var $siteIsExternal = $( '#site-is-external' );
