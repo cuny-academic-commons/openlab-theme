@@ -994,7 +994,16 @@ function openlab_save_group_site() {
 		if ( isset( $_POST['new_or_old'] ) && 'new' === $_POST['new_or_old'] ) {
 
 			// Create a new site
-			cboxol_copy_blog_page( $group_id );
+			$result = cboxol_copy_blog_page( $group_id );
+
+			if ( is_wp_error( $result ) ) {
+				$error_message    = $result->get_error_message();
+				$bp_error_message = sprintf( 'There was an error creating the associated site: %s', $error_message );
+
+				bp_core_add_message( esc_html( $bp_error_message ), 'error' );
+				bp_core_redirect( wp_get_referer() );
+				return;
+			}
 		} elseif ( isset( $_POST['new_or_old'] ) && 'old' === $_POST['new_or_old'] && isset( $_POST['groupblog-blogid'] ) ) {
 
 			// Associate an existing site
