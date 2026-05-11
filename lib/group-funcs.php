@@ -1842,6 +1842,46 @@ function openlab_provide_default_group_invite_status( $value, $group_id, $meta_k
 add_filter( 'default_group_metadata', 'openlab_provide_default_group_invite_status', 10, 3 );
 
 /**
+ * Lazily repairs groups whose 'invite_status' groupmeta row contains an empty string.
+ *
+ * Groups created before BP 1.5 (or via the openlab creation flow, which omits the
+ * 'group-settings' step) never have an invite_status row. Before
+ * openlab_provide_default_group_invite_status was introduced, cloning such a group would
+ * read '' and write it as a real DB row, permanently bypassing the default_group_metadata
+ * filter on the clone. This hook intercepts those reads, writes the correct value once,
+ * and returns 'members' — making subsequent reads clean without any migration script.
+ *
+ * A per-group-ID static guard prevents infinite recursion: the one re-entrant call
+ * (made to discover the real DB value) skips back past the guard and resolves normally.
+ *
+ * @param mixed  $check     Short-circuit value. null means proceed normally.
+ * @param int    $object_id The group ID.
+ * @param string $meta_key  The metadata key.
+ * @param bool   $single    Whether a single value is expected.
+ * @return mixed 'members' when a corrupt empty-string row is found; null otherwise.
+ */
+function openlab_repair_empty_group_invite_status( $check, $object_id, $meta_key, $single ) {
+	static $repairing = [];
+
+	if ( 'invite_status' !== $meta_key || ! $single || isset( $repairing[ $object_id ] ) ) {
+		return $check;
+	}
+
+	$repairing[ $object_id ] = true;
+	$value                   = groups_get_groupmeta( $object_id, 'invite_status' );
+	unset( $repairing[ $object_id ] );
+
+	if ( '' !== $value ) {
+		return $check;
+	}
+
+	groups_update_groupmeta( $object_id, 'invite_status', 'members' );
+
+	return 'members';
+}
+add_filter( 'get_group_metadata', 'openlab_repair_empty_group_invite_status', 10, 4 );
+
+/**
  * Output the group subscription default settings
  *
  * This is a lazy way of fixing the fact that the BP Group Email Subscription
