@@ -50,8 +50,30 @@ class Openlab_Clone_Course_Group {
 
 		foreach ( $keys as $k ) {
 			$v = groups_get_groupmeta( $this->source_group_id, $k );
+			$v = $this->sanitize_groupmeta_value_for_clone( $k, $v );
 			groups_update_groupmeta( $this->group_id, $k, $v );
 		}
+	}
+
+	/**
+	 * Validates and sanitizes a groupmeta value before it is written to a cloned group.
+	 *
+	 * Prevents corrupt or missing values on the source group from being propagated.
+	 *
+	 * @param string $meta_key   The groupmeta key.
+	 * @param mixed  $meta_value The value read from the source group.
+	 * @return mixed The sanitized value.
+	 */
+	protected function sanitize_groupmeta_value_for_clone( $meta_key, $meta_value ) {
+		switch ( $meta_key ) {
+			case 'invite_status':
+				if ( ! in_array( $meta_value, [ 'members', 'mods', 'admins' ], true ) ) {
+					return 'members';
+				}
+				break;
+		}
+
+		return $meta_value;
 	}
 
 	protected function migrate_docs() {
