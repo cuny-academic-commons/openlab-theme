@@ -1001,7 +1001,7 @@ function openlab_save_group_site() {
 				$bp_error_message = sprintf( 'There was an error creating the associated site: %s', $error_message );
 
 				bp_core_add_message( esc_html( $bp_error_message ), 'error' );
-				bp_core_redirect( wp_get_referer() );
+				bp_core_redirect( bp_get_requested_url() );
 				return;
 			}
 		} elseif ( isset( $_POST['new_or_old'] ) && 'old' === $_POST['new_or_old'] && isset( $_POST['groupblog-blogid'] ) ) {
