@@ -585,7 +585,7 @@ jQuery( document ).ready(
 					var sourceBlob = $( '[name="source_blog"]' ).val();
 					if ( '' === sourceBlob || '0' === sourceBlob ) {
 						$( '.site-template-required-error' ).remove();
-						$templatePanel.after( '<div class="ajax-warning site-template-required-error bp-template-notice error">' + OLGroupCreate.strings.templateRequired + '</div>' );
+						$templatePanel.before( '<div class="ajax-warning site-template-required-error bp-template-notice error">' + OLGroupCreate.strings.templateRequired + '</div>' );
 						$( 'html,body' ).animate( { scrollTop: $templatePanel.offset().top - 100 }, 1000 );
 						return false;
 					}
