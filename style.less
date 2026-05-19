@@ -1020,6 +1020,7 @@ body{
         font-weight: @normal;
         height: 20px;
         line-height: 155%;
+		position: relative;
         text-align: center;
         vertical-align: middle;
         width: 20px;
@@ -1027,6 +1028,18 @@ body{
             background: @70gray;
 			color: #fff;
         }
+
+		&.has-action-indicator::after {
+			background: #ff7a7a;
+			content: '';
+			position: absolute;
+			display: inline-block;
+			border-radius: 50%;
+			height: 10px;
+			width: 10px;
+			right: -3px;
+			top: -3px;
+		}
     }
     .skip-link{
         position: absolute;
