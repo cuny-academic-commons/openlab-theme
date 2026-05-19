@@ -586,8 +586,6 @@ function openlab_group_site_privacy_settings_markup() {
 		$show_portfolio_link_checked = '';
 	}
 
-	$block_ai_robots = $site_id ? \CBOX\OL\Robots\is_block_ai_robots_enabled( $site_id ) : false;
-
 	?>
 
 		<div id="panel-site-privacy" class="panel panel-default" id="associated-site-privacy-panel">
@@ -610,10 +608,6 @@ function openlab_group_site_privacy_settings_markup() {
 									<p><label for="blog-private0"><input id="blog-private0" type="radio" name="blog_public" value="0" <?php checked( '0', $blog_public ); ?> /><?php esc_html_e( 'Ask search engines not to index this site. The site should not show up in web search results.', 'commons-in-a-box' ); ?></label></p>
 									<p id="search-setting-note" class="group-setting-note italics note"><?php esc_html_e( 'Note: This option will NOT block access to the site. It is up to search engines to honor your request.', 'commons-in-a-box' ); ?></p>
 								<?php endif; ?>
-							</div>
-
-							<div class="col-sm-23">
-								<?php CBOX\OL\Robots\ai_robots_checkbox_markup( $block_ai_robots ); ?>
 							</div>
 						</div>
 					<?php endif; ?>
@@ -866,8 +860,6 @@ function openlab_save_group_status( BP_Groups_Group $group ) {
 	$saved = groups_create_group( $group_args );
 	add_action( 'groups_group_after_save', 'openlab_save_group_status' );
 
-	$block_ai_robots = ! empty( $_POST['block_ai_robots'] ) ? 1 : 0;
-	groups_update_groupmeta( (int) $group->id, 'cboxol_block_ai_robots', $block_ai_robots );
 }
 
 /**
@@ -1060,11 +1052,6 @@ function openlab_save_group_site_settings() {
 				groups_update_groupmeta( $group->id, 'blog_public', $blog_public );
 			}
 		}
-	}
-
-	if ( $site_id && isset( $_POST['cboxol_block_ai_robots'] ) ) {
-		$block_ai_robots = ! empty( $_POST['cboxol_block_ai_robots'] );
-		\CBOX\OL\Robots\set_block_ai_robots_enabled( $site_id, $block_ai_robots );
 	}
 
 	// Portfolio profile link
