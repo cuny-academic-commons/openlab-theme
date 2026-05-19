@@ -166,6 +166,16 @@ blockquote {
                     color: @black;
                 }
             }
+
+			&.has-action-indicator {
+				padding-right: 24px;
+				&::after {
+					width: 13px;
+					height: 13px;
+					top: 5px;
+					right: 6px;
+				}
+			}
         }
         @media (max-width: @screen-xs-max){
             float: none;
@@ -656,6 +666,18 @@ h2.course-title{
     margin: 0 0 8px;
 }
 
+.has-action-indicator::after {
+	background: #ff7a7a;
+	content: '';
+	position: absolute;
+	display: inline-block;
+	border-radius: 50%;
+	height: 10px;
+	width: 10px;
+	right: -3px;
+	top: -3px;
+}
+
 /**fa overrides**/
 .fa{
     font-size: 16px;
@@ -1028,18 +1050,6 @@ body{
             background: @70gray;
 			color: #fff;
         }
-
-		&.has-action-indicator::after {
-			background: #ff7a7a;
-			content: '';
-			position: absolute;
-			display: inline-block;
-			border-radius: 50%;
-			height: 10px;
-			width: 10px;
-			right: -3px;
-			top: -3px;
-		}
     }
     .skip-link{
         position: absolute;

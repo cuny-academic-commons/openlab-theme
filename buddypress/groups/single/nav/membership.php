@@ -16,7 +16,21 @@ $current_tab = bp_action_variable( 0 );
 	<li class="<?php echo 'manage-members' === $current_tab ? 'current-menu-item' : ''; ?>"><a href="<?php echo esc_attr( bp_get_group_manage_url( $group, bp_groups_get_path_chunks( [ 'manage-members' ], 'manage' ) ) ); ?>"><?php esc_html_e( 'Membership', 'commons-in-a-box' ); ?></a></li>
 
 	<?php if ( 'private' === $group->status ) : ?>
-		<li class="<?php echo 'membership-requests' === $current_tab ? 'current-menu-item' : ''; ?>"><a href="<?php echo esc_attr( bp_get_group_manage_url( $group, bp_groups_get_path_chunks( [ 'membership-requests' ], 'manage' ) ) ); ?>"><?php esc_html_e( 'Member Requests', 'commons-in-a-box' ); ?></a></li>
+		<?php
+		// Pending membership request count.
+		$membership_query = new BP_Group_Member_Query(
+			[
+				'group_id'        => bp_get_current_group_id(),
+				'is_confirmed'    => false,
+				'inviter_id'      => 0,
+				'populate_extras' => false,
+			]
+		);
+
+		$membership_indicator_class = count( $membership_query->results ) > 0 ? 'has-action-indicator' : '';
+		?>
+
+		<li class="<?php echo 'membership-requests' === $current_tab ? 'current-menu-item' : ''; ?> <?php echo esc_attr( $membership_indicator_class ); ?>"><a href="<?php echo esc_attr( bp_get_group_manage_url( $group, bp_groups_get_path_chunks( [ 'membership-requests' ], 'manage' ) ) ); ?>"><?php esc_html_e( 'Member Requests', 'commons-in-a-box' ); ?></a></li>
 	<?php endif; ?>
 <?php else : ?>
 	<li class="<?php echo bp_is_current_action( 'members' ) ? 'current-menu-item' : ''; ?>"><a href="<?php echo esc_attr( bp_get_group_url( $group, bp_groups_get_path_chunks( [ 'members' ] ) ) ); ?>"><?php esc_html_e( 'Membership', 'commons-in-a-box' ); ?></a></li>
