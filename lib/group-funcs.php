@@ -859,7 +859,6 @@ function openlab_save_group_status( BP_Groups_Group $group ) {
 	remove_action( 'groups_group_after_save', 'openlab_save_group_status' );
 	$saved = groups_create_group( $group_args );
 	add_action( 'groups_group_after_save', 'openlab_save_group_status' );
-
 }
 
 /**
