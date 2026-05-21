@@ -2555,8 +2555,7 @@ function openlab_get_group_site_settings( $group_id ) {
 				break;
 
 			case -3:
-				$caps       = get_user_meta( get_current_user_id(), 'wp_' . $site_id . '_capabilities', true );
-				$is_visible = isset( $caps['administrator'] );
+				$is_visible = current_user_can_for_blog( $site_id, 'manage_options' );
 				break;
 		}
 	} else {
