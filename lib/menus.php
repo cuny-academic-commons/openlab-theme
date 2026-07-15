@@ -922,10 +922,22 @@ function openlab_filter_subnav_members( $subnav_item ) {
 		}
 	}
 
+	// Pending membership request count.
+	$membership_query = new BP_Group_Member_Query(
+		[
+			'group_id'        => bp_get_current_group_id(),
+			'is_confirmed'    => false,
+			'inviter_id'      => 0,
+			'populate_extras' => false,
+		]
+	);
+
+	$membership_indicator_class = count( $membership_query->results ) > 0 ? 'has-action-indicator' : '';
+
 	// Added classes to member count span.
 	$member_count_formatted = bp_core_number_format( $total_mem );
 	if ( $total_mem > 0 ) {
-		$new_item = preg_replace( '|<span>[^<]+</span>|', '<span class="mol-count pull-right count-' . $total_mem . ' gray">' . $member_count_formatted . '</span>', $new_item );
+		$new_item = preg_replace( '|<span>[^<]+</span>|', '<span class="mol-count pull-right count-' . $total_mem . ' ' . $membership_indicator_class . ' gray">' . $member_count_formatted . '</span>', $new_item );
 	} else {
 		$new_item = preg_replace( '|<span>[^<]+</span>|', '', $new_item );
 	}

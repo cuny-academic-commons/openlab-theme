@@ -284,6 +284,9 @@
 						}
 					);
 
+					// Store the currently focused element.
+					var focusedElement = document.activeElement;
+
 					$.ajax(
 						ajaxurl,
 						{
@@ -296,7 +299,18 @@
 							success: function (response) {
 								$( '#openlab-profile-fields' ).html( response.data );
 								load_error_messages();
-										refresh_field_ids();
+								refresh_field_ids();
+
+								// If the previously focused element is still in the DOM, restore focus.
+								// Otherwise focus the first profile field.
+								if ( document.contains( focusedElement ) ) {
+									focusedElement.focus();
+								} else {
+									var firstField = $( '.panel-body input, .panel-body select, .panel-body textarea' ).first();
+									if ( firstField.length ) {
+										firstField.focus();
+									}
+								}
 							}
 						}
 					);

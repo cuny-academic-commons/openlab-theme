@@ -4,7 +4,7 @@ Theme URL: https://commonsinabox.org
 Description: Commons In A Box theme, based on the OpenLab at City Tech.
 Author: The Commons In A Box OpenLab team
 Author URI: https://commonsinabox.org
-Version: 1.7.0
+Version: 1.8.0
 Text Domain: commons-in-a-box
 */
 /**import bootstrap**/
@@ -1173,10 +1173,10 @@ a.text-warning:hover {
   color: #66512c;
 }
 .text-danger {
-  color: #ff5959;
+  color: #e60000;
 }
 a.text-danger:hover {
-  color: #ff2626;
+  color: #b30000;
 }
 .bg-primary {
   color: #fff;
@@ -3364,25 +3364,25 @@ select[multiple].input-lg {
 .has-error .checkbox,
 .has-error .radio-inline,
 .has-error .checkbox-inline {
-  color: #ff5959;
+  color: #e60000;
 }
 .has-error .form-control {
-  border-color: #ff5959;
+  border-color: #e60000;
   -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
 }
 .has-error .form-control:focus {
-  border-color: #ff2626;
-  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #ffbfbf;
-  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #ffbfbf;
+  border-color: #b30000;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #ff4d4d;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #ff4d4d;
 }
 .has-error .input-group-addon {
-  color: #ff5959;
-  border-color: #ff5959;
+  color: #e60000;
+  border-color: #e60000;
   background-color: #f2dede;
 }
 .has-error .form-control-feedback {
-  color: #ff5959;
+  color: #e60000;
 }
 .has-feedback label.sr-only ~ .form-control-feedback {
   top: 0;
@@ -5665,13 +5665,13 @@ a.thumbnail.active {
 .alert-danger {
   background-color: #f2dede;
   border-color: #ebccd1;
-  color: #ff5959;
+  color: #e60000;
 }
 .alert-danger hr {
   border-top-color: #e4b9c0;
 }
 .alert-danger .alert-link {
-  color: #ff2626;
+  color: #b30000;
 }
 @-webkit-keyframes progress-bar-stripes {
   from {
@@ -5943,26 +5943,26 @@ a.list-group-item-warning.active:focus {
   border-color: #8a6d3b;
 }
 .list-group-item-danger {
-  color: #ff5959;
+  color: #e60000;
   background-color: #f2dede;
 }
 a.list-group-item-danger {
-  color: #ff5959;
+  color: #e60000;
 }
 a.list-group-item-danger .list-group-item-heading {
   color: inherit;
 }
 a.list-group-item-danger:hover,
 a.list-group-item-danger:focus {
-  color: #ff5959;
+  color: #e60000;
   background-color: #ebcccc;
 }
 a.list-group-item-danger.active,
 a.list-group-item-danger.active:hover,
 a.list-group-item-danger.active:focus {
   color: #fff;
-  background-color: #ff5959;
-  border-color: #ff5959;
+  background-color: #e60000;
+  border-color: #e60000;
 }
 .list-group-item-heading {
   margin-top: 0;
@@ -6265,7 +6265,7 @@ a.list-group-item-danger.active:focus {
   border-color: #ebccd1;
 }
 .panel-danger > .panel-heading {
-  color: #ff5959;
+  color: #e60000;
   background-color: #f2dede;
   border-color: #ebccd1;
 }
@@ -6274,7 +6274,7 @@ a.list-group-item-danger.active:focus {
 }
 .panel-danger > .panel-heading .badge {
   color: #f2dede;
-  background-color: #ff5959;
+  background-color: #e60000;
 }
 .panel-danger > .panel-footer + .panel-collapse > .panel-body {
   border-bottom-color: #ebccd1;
@@ -7319,6 +7319,15 @@ blockquote .h6 {
 .nav.nav-inline li.submenu-title:active {
   color: #000000;
 }
+.nav.nav-inline li.has-action-indicator {
+  padding-right: 24px;
+}
+.nav.nav-inline li.has-action-indicator::after {
+  width: 13px;
+  height: 13px;
+  top: 5px;
+  right: 6px;
+}
 @media (max-width: 767px) {
   .nav.nav-inline {
     float: none;
@@ -7809,6 +7818,17 @@ h2.course-title {
   font-size: 32px;
   margin: 0 0 8px;
 }
+.has-action-indicator::after {
+  background: #ff7a7a;
+  content: '';
+  position: absolute;
+  display: inline-block;
+  border-radius: 50%;
+  height: 10px;
+  width: 10px;
+  right: -3px;
+  top: -3px;
+}
 /**fa overrides**/
 .fa {
   font-size: 16px;
@@ -8105,9 +8125,11 @@ body .site-visibility .fa {
   font-weight: 400;
   height: 20px;
   line-height: 155%;
+  min-width: 20px;
+  padding: 0 4px;
+  position: relative;
   text-align: center;
   vertical-align: middle;
-  width: 20px;
 }
 body .mol-count.gray,
 body .site-visibility .fa.gray {

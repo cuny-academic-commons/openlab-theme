@@ -32,6 +32,7 @@ function openlab_bp_enqueue_scripts() {
 					'externalFeedsNotFound'           => __( 'We couldn\'t find any feed URLs for your external site, which we use to pull posts and comments into your activity stream. If your site has feeds, you may enter the URLs below.', 'commons-in-a-box' ),
 					'fieldCannotBeBlank'              => __( 'This field cannot be blank.', 'commons-in-a-box' ),
 					'incompleteCrop'                  => __( 'Please crop your image before continuing.', 'commons-in-a-box' ),
+					'templateRequired'                => __( 'Please select a site template before continuing.', 'commons-in-a-box' ),
 				),
 			)
 		);

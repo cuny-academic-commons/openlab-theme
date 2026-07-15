@@ -4,7 +4,7 @@ Theme URL: https://commonsinabox.org
 Description: Commons In A Box theme, based on the OpenLab at City Tech.
 Author: The Commons In A Box OpenLab team
 Author URI: https://commonsinabox.org
-Version: 1.7.0
+Version: 1.8.0
 Text Domain: commons-in-a-box
 */
 
@@ -166,6 +166,16 @@ blockquote {
                     color: @black;
                 }
             }
+
+			&.has-action-indicator {
+				padding-right: 24px;
+				&::after {
+					width: 13px;
+					height: 13px;
+					top: 5px;
+					right: 6px;
+				}
+			}
         }
         @media (max-width: @screen-xs-max){
             float: none;
@@ -656,6 +666,18 @@ h2.course-title{
     margin: 0 0 8px;
 }
 
+.has-action-indicator::after {
+	background: #ff7a7a;
+	content: '';
+	position: absolute;
+	display: inline-block;
+	border-radius: 50%;
+	height: 10px;
+	width: 10px;
+	right: -3px;
+	top: -3px;
+}
+
 /**fa overrides**/
 .fa{
     font-size: 16px;
@@ -1020,9 +1042,11 @@ body{
         font-weight: @normal;
         height: 20px;
         line-height: 155%;
+		min-width: 20px;
+		padding: 0 4px;
+		position: relative;
         text-align: center;
         vertical-align: middle;
-        width: 20px;
         &.gray{
             background: @70gray;
 			color: #fff;

@@ -147,7 +147,7 @@ jQuery( document ).ready(
 		}
 
 		function showHideAssociatedSitePrivacy() {
-			var $associatedSitePrivacyPanel = $( '#associated-site-privacy-panel' );
+			var $associatedSitePrivacyPanel = $( '#panel-site-privacy' );
 
 			var $externalInput  = $( '#new_or_old_external' );
 			var $siteIsExternal = $( '#site-is-external' );
@@ -576,6 +576,20 @@ jQuery( document ).ready(
 
 			if ( 'undefined' === typeof $domain_field ) {
 				return true;
+			}
+
+			// Require template selection when the picker panel is visible (multiple templates available).
+			if ( 'new' === new_or_old ) {
+				var $templatePanel = $( '.panel-template-picker' );
+				if ( $templatePanel.length && ! $templatePanel.hasClass( 'hidden' ) ) {
+					var sourceBlob = $( '[name="source_blog"]' ).val();
+					if ( '' === sourceBlob || '0' === sourceBlob ) {
+						$( '.site-template-required-error' ).remove();
+						$templatePanel.before( '<div class="ajax-warning site-template-required-error bp-template-notice error">' + OLGroupCreate.strings.templateRequired + '</div>' );
+						$( 'html,body' ).animate( { scrollTop: $templatePanel.offset().top - 100 }, 1000 );
+						return false;
+					}
+				}
 			}
 
 			event.preventDefault();

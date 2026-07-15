@@ -534,6 +534,8 @@ function openlab_group_site_member_role_settings_markup() {
 function openlab_group_site_privacy_settings_markup() {
 	$blog_public = null;
 
+	$site_id = null;
+
 	if ( ! bp_is_group_create() ) {
 		$group_id    = bp_get_current_group_id();
 		$site_id     = cboxol_get_group_site_id();
@@ -572,6 +574,18 @@ function openlab_group_site_privacy_settings_markup() {
 		}
 	}
 
+	/**
+	 * Filter to determine whether to show the portfolio link by default for new portfolios.
+	 *
+	 * @since 1.7.1
+	 * @param bool $show_portfolio_link Whether to show the portfolio link by default. Default true.
+	 */
+	if ( apply_filters( 'openlab_show_portfolio_link_for_new_portfolios', true ) ) {
+		$show_portfolio_link_checked = 'checked';
+	} else {
+		$show_portfolio_link_checked = '';
+	}
+
 	?>
 
 		<div id="panel-site-privacy" class="panel panel-default" id="associated-site-privacy-panel">
@@ -587,6 +601,7 @@ function openlab_group_site_privacy_settings_markup() {
 							<div class="col-sm-23">
 								<?php if ( in_array( '1', $available_site_privacy_options, true ) ) : ?>
 									<p><label for="blog-private1"><input id="blog-private1" type="radio" name="blog_public" value="1" <?php checked( '1', $blog_public ); ?> /><?php esc_html_e( 'Allow search engines to index this site. The site will show up in web search results.', 'commons-in-a-box' ); ?></label></p>
+
 								<?php endif; ?>
 
 								<?php if ( in_array( '0', $available_site_privacy_options, true ) ) : ?>
@@ -621,7 +636,7 @@ function openlab_group_site_privacy_settings_markup() {
 						</div>
 					<?php endif; ?>
 				</div>
-			</div>
+			</div><!-- .panel-body -->
 		</div>
 
 		<?php wp_nonce_field( 'openlab_site_status', 'openlab-site-status-nonce', false ); ?>
@@ -632,7 +647,7 @@ function openlab_group_site_privacy_settings_markup() {
 				<div class="panel-body">
 					<p><?php esc_html_e( 'You can choose to show a link to your Portfolio on your Profile page by checking the box below.', 'commons-in-a-box' ); ?></p>
 
-					<input name="portfolio-profile-link" id="portfolio-profile-link-toggle" type="checkbox" name="portfolio-profile-link-toggle" value="1" /> <label for="portfolio-profile-link-toggle"><?php esc_html_e( 'Show link to my Portfolio on my public Profile', 'commons-in-a-box' ); ?></label>
+					<input name="portfolio-profile-link" id="portfolio-profile-link-toggle" type="checkbox" name="portfolio-profile-link-toggle" value="1" <?php echo esc_attr( $show_portfolio_link_checked ); ?> /> <label for="portfolio-profile-link-toggle"><?php esc_html_e( 'Show link to my Portfolio on my public Profile', 'commons-in-a-box' ); ?></label>
 				</div>
 
 				<?php wp_nonce_field( 'openlab_portfolio_profile_link', 'openlab-portfolio-profile-link-nonce', false ); ?>
@@ -970,7 +985,16 @@ function openlab_save_group_site() {
 		if ( isset( $_POST['new_or_old'] ) && 'new' === $_POST['new_or_old'] ) {
 
 			// Create a new site
-			cboxol_copy_blog_page( $group_id );
+			$result = cboxol_copy_blog_page( $group_id );
+
+			if ( is_wp_error( $result ) ) {
+				$error_message    = $result->get_error_message();
+				$bp_error_message = sprintf( 'There was an error creating the associated site: %s', $error_message );
+
+				bp_core_add_message( esc_html( $bp_error_message ), 'error' );
+				bp_core_redirect( bp_get_requested_url() );
+				return;
+			}
 		} elseif ( isset( $_POST['new_or_old'] ) && 'old' === $_POST['new_or_old'] && isset( $_POST['groupblog-blogid'] ) ) {
 
 			// Associate an existing site
@@ -1012,7 +1036,8 @@ function openlab_save_group_site() {
  * Catches and processes group site privacy settings.
  */
 function openlab_save_group_site_settings() {
-	$group = groups_get_current_group();
+	$group   = groups_get_current_group();
+	$site_id = cboxol_get_group_site_id( $group->id );
 
 	if ( isset( $_POST['openlab-site-status-nonce'] ) ) {
 		check_admin_referer( 'openlab_site_status', 'openlab-site-status-nonce' );
@@ -1021,7 +1046,6 @@ function openlab_save_group_site_settings() {
 		if ( isset( $_POST['blog_public'] ) ) {
 			$blog_public = (float) $_POST['blog_public'];
 
-			$site_id = cboxol_get_group_site_id( $group->id );
 			if ( $site_id ) {
 				update_blog_option( $site_id, 'blog_public', $blog_public );
 				groups_update_groupmeta( $group->id, 'blog_public', $blog_public );
@@ -1813,6 +1837,46 @@ function openlab_provide_default_group_invite_status( $value, $group_id, $meta_k
 add_filter( 'default_group_metadata', 'openlab_provide_default_group_invite_status', 10, 3 );
 
 /**
+ * Lazily repairs groups whose 'invite_status' groupmeta row contains an empty string.
+ *
+ * Groups created before BP 1.5 (or via the openlab creation flow, which omits the
+ * 'group-settings' step) never have an invite_status row. Before
+ * openlab_provide_default_group_invite_status was introduced, cloning such a group would
+ * read '' and write it as a real DB row, permanently bypassing the default_group_metadata
+ * filter on the clone. This hook intercepts those reads, writes the correct value once,
+ * and returns 'members' — making subsequent reads clean without any migration script.
+ *
+ * A per-group-ID static guard prevents infinite recursion: the one re-entrant call
+ * (made to discover the real DB value) skips back past the guard and resolves normally.
+ *
+ * @param mixed  $check     Short-circuit value. null means proceed normally.
+ * @param int    $object_id The group ID.
+ * @param string $meta_key  The metadata key.
+ * @param bool   $single    Whether a single value is expected.
+ * @return mixed 'members' when a corrupt empty-string row is found; null otherwise.
+ */
+function openlab_repair_empty_group_invite_status( $check, $object_id, $meta_key, $single ) {
+	static $repairing = [];
+
+	if ( 'invite_status' !== $meta_key || ! $single || isset( $repairing[ $object_id ] ) ) {
+		return $check;
+	}
+
+	$repairing[ $object_id ] = true;
+	$value                   = groups_get_groupmeta( $object_id, 'invite_status' );
+	unset( $repairing[ $object_id ] );
+
+	if ( '' !== $value ) {
+		return $check;
+	}
+
+	groups_update_groupmeta( $object_id, 'invite_status', 'members' );
+
+	return 'members';
+}
+add_filter( 'get_group_metadata', 'openlab_repair_empty_group_invite_status', 10, 4 );
+
+/**
  * Output the group subscription default settings
  *
  * This is a lazy way of fixing the fact that the BP Group Email Subscription
@@ -2491,8 +2555,7 @@ function openlab_get_group_site_settings( $group_id ) {
 				break;
 
 			case -3:
-				$caps       = get_user_meta( get_current_user_id(), 'wp_' . $site_id . '_capabilities', true );
-				$is_visible = isset( $caps['administrator'] );
+				$is_visible = current_user_can_for_blog( $site_id, 'manage_options' );
 				break;
 		}
 	} else {
@@ -3374,6 +3437,11 @@ function openlab_group_member_joined_since() {
  * @return bool
  */
 function openlab_user_can_bulk_import_group_members( $group_id, $user_id ) {
+	// bp_moderate users can always import.
+	if ( user_can( $user_id, 'bp_moderate' ) ) {
+		return true;
+	}
+
 	// Only group admins can bulk-import members.
 	if ( ! groups_is_user_admin( $user_id, $group_id ) ) {
 		return false;

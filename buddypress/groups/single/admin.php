@@ -14,7 +14,7 @@ $private_users = openlab_get_private_members_of_group( bp_get_group_id() );
 
 <div class="row"><div class="col-md-24">
 	<div class="submenu">
-		<?php if ( bp_is_group_membership_request() || bp_is_action_variable( 'manage-members', 0 ) || bp_is_action_variable( 'notifications', 0 ) ) : ?>
+		<?php if ( bp_is_group_membership_request() || bp_is_action_variable( 'manage-members', 0 ) || bp_is_action_variable( 'notifications', 0 ) || bp_is_action_variable( 'membership-requests', 0 ) ) : ?>
 			<?php do_action( 'bp_before_group_members_content' ); ?>
 
 			<ul class="nav nav-inline">
@@ -32,6 +32,8 @@ $private_users = openlab_get_private_members_of_group( bp_get_group_id() );
 </div></div>
 
 <form action="<?php bp_group_admin_form_action(); ?>" name="group-settings-form" id="openlab-group-settings-form" class="standard-form form-panel" method="post" enctype="multipart/form-data">
+
+	<input type="hidden" name="group_id" id="group_id" value="<?php echo esc_attr( bp_get_current_group_id() ); ?>" />
 
 	<?php do_action( 'bp_before_group_admin_content' ); ?>
 

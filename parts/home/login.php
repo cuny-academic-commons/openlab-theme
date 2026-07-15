@@ -36,6 +36,17 @@ if ( is_user_logged_in() ) :
 		$contact_link = $brand_pages['contact-us']['preview_url'];
 	}
 
+	if ( $help_link && $contact_link ) {
+		// translators: 1. help link, 2. contact link
+		$need_help_text = sprintf( 'Visit the <a class="roll-over-loss" href="%1$s">Help section</a> or <a class="roll-over-loss" href="%2$s">contact us</a> with a question.', esc_attr( $help_link ), esc_attr( $contact_link ) );
+	} elseif ( $help_link ) {
+		// translators: help link
+		$need_help_text = sprintf( 'Questions? Visit the <a class="roll-over-loss" href="%s">Help section</a>.', esc_attr( $help_link ) );
+	} elseif ( $contact_link ) {
+		// translators: contact link
+		$need_help_text = sprintf( '<a class="roll-over-loss" href="%s">Contact us</a> with questions.', esc_attr( $contact_link ) );
+	}
+
 	$user_avatar = bp_get_loggedin_user_avatar(
 		[
 			'type' => 'full',
@@ -72,26 +83,39 @@ if ( is_user_logged_in() ) :
 
 	<div id="login-help" class="log-box">
 		<h2 class="title"><?php esc_html_e( 'Need Help?', 'commons-in-a-box' ); ?></h2>
-		<?php /* translators: 1. help link, 2. contact link */ ?>
-		<p class="font-size font-14"><?php printf( 'Visit the <a class="roll-over-loss" href="%1$s">Help section</a> or <a class="roll-over-loss" href="%2$s">contact us</a> with a question.', esc_attr( $help_link ), esc_attr( $contact_link ) ); ?></p>
+		<p class="font-size font-14">
+			<?php
+			echo wp_kses(
+				$need_help_text,
+				[
+					'a' => [
+						'class' => true,
+						'href'  => true,
+					],
+				]
+			);
+			?>
+		</p>
 	</div><!--login-help-->
 
 <?php else : ?>
-	<?php echo '<div id="open-lab-join" class="log-box">'; ?>
-	<?php echo '<h2 class="title"><span class="fa fa-plus-circle flush-left"></span> ' . esc_html__( 'Sign Up', 'commons-in-a-box' ) . '</h2>'; ?>
-	<?php
-	printf(
-		'<p><a class="btn btn-default btn-primary link-btn pull-right semibold" href="%s">%s</a> <span class="font-size font-14">%s<br />%s</span></p>',
-		esc_attr( bp_get_signup_page() ),
-		esc_html__( 'Sign up', 'commons-in-a-box' ),
-		esc_html__( 'Need an account?', 'commons-in-a-box' ),
-		esc_html__( 'Sign Up to become a member!', 'commons-in-a-box' )
-	);
-	?>
-	<?php echo '</div>'; ?>
-	<?php echo '<div id="open-lab-login" class="log-box">'; ?>
-	<?php do_action( 'bp_after_sidebar_login_form' ); ?>
-	<?php echo '</div>'; ?>
+	<?php if ( bp_get_signup_allowed() ) : ?>
+		<?php echo '<div id="open-lab-join" class="log-box">'; ?>
+		<?php echo '<h2 class="title"><span class="fa fa-plus-circle flush-left"></span> ' . esc_html__( 'Sign Up', 'commons-in-a-box' ) . '</h2>'; ?>
+		<?php
+		printf(
+			'<p><a class="btn btn-default btn-primary link-btn pull-right semibold" href="%s">%s</a> <span class="font-size font-14">%s<br />%s</span></p>',
+			esc_attr( bp_get_signup_page() ),
+			esc_html__( 'Sign up', 'commons-in-a-box' ),
+			esc_html__( 'Need an account?', 'commons-in-a-box' ),
+			esc_html__( 'Sign Up to become a member!', 'commons-in-a-box' )
+		);
+		?>
+		<?php echo '</div>'; ?>
+		<?php echo '<div id="open-lab-login" class="log-box">'; ?>
+		<?php do_action( 'bp_after_sidebar_login_form' ); ?>
+		<?php echo '</div>'; ?>
+	<?php endif; ?>
 
 	<div id="user-login" class="log-box">
 
