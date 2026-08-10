@@ -38,13 +38,13 @@ if ( is_user_logged_in() ) :
 
 	if ( $help_link && $contact_link ) {
 		// translators: 1. help link, 2. contact link
-		$need_help_text = sprintf( 'Visit the <a class="roll-over-loss" href="%1$s">Help section</a> or <a class="roll-over-loss" href="%2$s">contact us</a> with a question.', esc_attr( $help_link ), esc_attr( $contact_link ) );
+		$need_help_text = sprintf( __( 'Visit the <a class="roll-over-loss" href="%1$s">Help section</a> or <a class="roll-over-loss" href="%2$s">contact us</a> with a question.', 'commons-in-a-box' ), esc_url( $help_link ), esc_url( $contact_link ) );
 	} elseif ( $help_link ) {
 		// translators: help link
-		$need_help_text = sprintf( 'Questions? Visit the <a class="roll-over-loss" href="%s">Help section</a>.', esc_attr( $help_link ) );
+		$need_help_text = sprintf( __( 'Questions? Visit the <a class="roll-over-loss" href="%s">Help section</a>.', 'commons-in-a-box' ), esc_url( $help_link ) );
 	} elseif ( $contact_link ) {
 		// translators: contact link
-		$need_help_text = sprintf( '<a class="roll-over-loss" href="%s">Contact us</a> with questions.', esc_attr( $contact_link ) );
+		$need_help_text = sprintf( __( '<a class="roll-over-loss" href="%s">Contact us</a> with questions.', 'commons-in-a-box' ), esc_url( $contact_link ) );
 	}
 
 	$user_avatar = bp_get_loggedin_user_avatar(
@@ -119,15 +119,15 @@ if ( is_user_logged_in() ) :
 
 	<div id="user-login" class="log-box">
 
-		<?php echo '<h2 class="title"><span class="fa fa-arrow-circle-right"></span> Log in</h2>'; ?>
+		<h2 class="title"><span class="fa fa-arrow-circle-right"></span> <?php esc_html_e( 'Log in', 'commons-in-a-box' ); ?></h2>
 		<?php do_action( 'bp_before_sidebar_login_form' ); ?>
 
 		<form name="login-form" class="standard-form" action="<?php echo esc_attr( site_url( 'wp-login.php', 'login_post' ) ); ?>" method="post">
 			<label class="sr-only" for="sidebar-user-login"><?php esc_html_e( 'Username', 'commons-in-a-box' ); ?></label>
-			<input class="form-control input" type="text" name="log" id="sidebar-user-login" value="" placeholder="Username" tabindex="0" />
+			<input class="form-control input" type="text" name="log" id="sidebar-user-login" value="" placeholder="<?php esc_attr_e( 'Username', 'commons-in-a-box' ); ?>" tabindex="0" />
 
 			<label class="sr-only" for="sidebar-user-pass"><?php esc_html_e( 'Password', 'commons-in-a-box' ); ?></label>
-			<input class="form-control input" type="password" name="pwd" id="sidebar-user-pass" value="" placeholder="Password" tabindex="0" />
+			<input class="form-control input" type="password" name="pwd" id="sidebar-user-pass" value="" placeholder="<?php esc_attr_e( 'Password', 'commons-in-a-box' ); ?>" tabindex="0" />
 
 			<div id="keep-logged-in" class="small-text clearfix">
 				<div class="password-wrapper">
