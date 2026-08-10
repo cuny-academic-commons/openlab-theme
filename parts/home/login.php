@@ -36,6 +36,8 @@ if ( is_user_logged_in() ) :
 		$contact_link = $brand_pages['contact-us']['preview_url'];
 	}
 
+	$need_help_text = '';
+
 	if ( $help_link && $contact_link ) {
 		// translators: 1. help link, 2. contact link
 		$need_help_text = sprintf( __( 'Visit the <a class="roll-over-loss" href="%1$s">Help section</a> or <a class="roll-over-loss" href="%2$s">contact us</a> with a question.', 'commons-in-a-box' ), esc_url( $help_link ), esc_url( $contact_link ) );
@@ -81,22 +83,24 @@ if ( is_user_logged_in() ) :
 
 	<?php echo '</div>'; ?>
 
-	<div id="login-help" class="log-box">
-		<h2 class="title"><?php esc_html_e( 'Need Help?', 'commons-in-a-box' ); ?></h2>
-		<p class="font-size font-14">
-			<?php
-			echo wp_kses(
-				$need_help_text,
-				[
-					'a' => [
-						'class' => true,
-						'href'  => true,
-					],
-				]
-			);
-			?>
-		</p>
-	</div><!--login-help-->
+	<?php if ( $need_help_text ) : ?>
+		<div id="login-help" class="log-box">
+			<h2 class="title"><?php esc_html_e( 'Need Help?', 'commons-in-a-box' ); ?></h2>
+			<p class="font-size font-14">
+				<?php
+				echo wp_kses(
+					$need_help_text,
+					[
+						'a' => [
+							'class' => true,
+							'href'  => true,
+						],
+					]
+				);
+				?>
+			</p>
+		</div><!--login-help-->
+	<?php endif; ?>
 
 <?php else : ?>
 	<?php if ( bp_get_signup_allowed() ) : ?>
