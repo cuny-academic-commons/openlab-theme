@@ -13,7 +13,7 @@ get_header();
 <div id="openlab-main-content" class="clearfix row-home-top" role="main">
 	<div class="no-gutter no-gutter-right login">
 		<div id="cuny_openlab_jump_start">
-			<?php get_template_part( 'parts/home/login' ); ?>
+			<?php bp_get_template_part( 'parts/home/login' ); ?>
 		</div>
 	</div>
 	<div class="fill-gutter fill-gutter-left slider">
@@ -44,4 +44,3 @@ get_header();
 
 <?php
 get_footer();
-
